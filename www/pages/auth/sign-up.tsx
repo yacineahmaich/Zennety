@@ -3,8 +3,12 @@ import { NextPageWithLayout } from "@/types/next";
 import type { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-const Home: NextPageWithLayout = () => {
-  return <div>HERO</div>;
+const Signup: NextPageWithLayout = () => {
+  return <div>SIGN UP</div>;
+};
+
+Signup.getLayout = (page) => {
+  return <GuestLayout>{page}</GuestLayout>;
 };
 
 export const getServerSideProps = async ({
@@ -17,8 +21,4 @@ export const getServerSideProps = async ({
   };
 };
 
-Home.getLayout = (page) => {
-  return <GuestLayout>{page}</GuestLayout>;
-};
-
-export default Home;
+export default Signup;
