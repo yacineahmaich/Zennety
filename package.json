@@ -1,0 +1,24 @@
+{
+  "name": "zennety",
+  "version": "1.0.0",
+  "description": "Collaborative project management platform",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "workspaces": [
+    "api",
+    "www"
+  ],
+  "keywords": [],
+  "author": "yacineahmaich",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2"
+  },
+  "lint-staged": {
+    "www/*.{js,ts,jsx,tsx}": "eslint --cache --fix",
+    "www/*.{js,ts,jsx,tsx,css,md}": "prettier --write"
+  }
+}
