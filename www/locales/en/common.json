@@ -1,1 +1,16 @@
-
+{
+  "welcome-back": "Welcome back",
+  "create-an-account": "Create an account",
+  "login-to-your-account": "Login in to your account",
+  "start-free-trial": "Start your 30-day free trial",
+  "name": "Name",
+  "your-name": "Your name",
+  "email": "Email",
+  "your-email": "Your email address",
+  "password": "Password",
+  "your-password": "Your password",
+  "confirm-password": "Confirm password",
+  "your-confirmation-password": "Your confirmation password",
+  "signup": "Sign Up",
+  "login": "Log In"
+}
