@@ -16,14 +16,16 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
 import { z } from "zod";
+import { useLogin } from "@/services";
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6),
+  password: z.string(),
 });
 
 const Login: NextPageWithLayout = () => {
   const { t } = useTranslation();
+  const login = useLogin();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,7 +36,7 @@ const Login: NextPageWithLayout = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    login.mutate(values);
   }
 
   return (
@@ -50,7 +52,7 @@ const Login: NextPageWithLayout = () => {
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder={t('your-email')}
+                    placeholder={t("your-email")}
                     {...field}
                   />
                 </FormControl>
@@ -67,7 +69,7 @@ const Login: NextPageWithLayout = () => {
                 <FormControl>
                   <Input
                     type="password"
-                    placeholder={t('your-password')}
+                    placeholder={t("your-password")}
                     {...field}
                   />
                 </FormControl>

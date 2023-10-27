@@ -16,6 +16,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
 import { z } from "zod";
+import { useRegister } from "@/services";
 
 const formSchema = z
   .object({
@@ -34,8 +35,9 @@ const formSchema = z
     }
   });
 
-const Signup: NextPageWithLayout = () => {
+const Register: NextPageWithLayout = () => {
   const { t } = useTranslation("common");
+  const register = useRegister();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,7 +50,7 @@ const Signup: NextPageWithLayout = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    register.mutate(values);
   }
 
   return (
@@ -114,7 +116,7 @@ const Signup: NextPageWithLayout = () => {
             </FormItem>
           )}
         />
-        <Button className="w-full">{t("signup")}</Button>
+        <Button className="w-full">{t("register")}</Button>
       </form>
     </Form>
   );
@@ -130,7 +132,7 @@ export const getServerSideProps = async ({
   };
 };
 
-Signup.getLayout = (page) => {
+Register.getLayout = (page) => {
   const { t } = useTranslation("common");
 
   return (
@@ -145,4 +147,4 @@ Signup.getLayout = (page) => {
   );
 };
 
-export default Signup;
+export default Register;

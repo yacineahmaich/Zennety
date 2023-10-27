@@ -21,7 +21,7 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
             <Link href="/auth/login">{t("login")}</Link>
           </Button>
           <Button size="sm" asChild>
-            <Link href="/auth/sign-up">{t("signup")}</Link>
+            <Link href="/auth/register">{t("register")}</Link>
           </Button>
         </div>
       </header>
