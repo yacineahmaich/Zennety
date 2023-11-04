@@ -95,13 +95,11 @@ export const getServerSideProps = async ({
 };
 
 Login.getLayout = (page) => {
-  const { t } = useTranslation();
-
   return (
     <GuestLayout>
       <AuthLayout
-        heading={t("welcome-back")}
-        description={t("login-to-your-account")}
+        heading={"welcome-back"}
+        description={"login-to-your-account"}
       >
         {page}
       </AuthLayout>

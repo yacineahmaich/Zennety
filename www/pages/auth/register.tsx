@@ -133,13 +133,11 @@ export const getServerSideProps = async ({
 };
 
 Register.getLayout = (page) => {
-  const { t } = useTranslation("common");
-
   return (
     <GuestLayout>
       <AuthLayout
-        heading={t("create-an-account")}
-        description={t("start-free-trial")}
+        heading={"create-an-account"}
+        description={"start-free-trial"}
       >
         {page}
       </AuthLayout>

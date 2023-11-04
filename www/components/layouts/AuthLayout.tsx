@@ -1,5 +1,6 @@
 import app from "@/lib/app";
 import { ReactNode } from "react";
+import { useTranslation } from "next-i18next";
 
 const AuthLayout = ({
   children,
@@ -10,6 +11,8 @@ const AuthLayout = ({
   heading: string;
   description: string;
 }) => {
+  const { t } = useTranslation("common");
+
   return (
     <div className="flex flex-col items-center gap-2 py-20">
       <div>
@@ -22,12 +25,12 @@ const AuthLayout = ({
         />
         {heading && (
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            {heading}
+            {t(heading)}
           </h2>
         )}
         {description && (
           <p className="mt-2 text-center text-gray-600 dark:text-white">
-            {description}
+            {t(description)}
           </p>
         )}
       </div>

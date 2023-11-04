@@ -35,6 +35,10 @@ const useUser = () =>
   useQuery({
     queryKey: ["user"],
     queryFn: getUser,
+    retry: false,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
 export { useRegister, useLogin, useUser };
