@@ -25,7 +25,7 @@ const formSchema = z.object({
 
 const Login: NextPageWithLayout = () => {
   const { t } = useTranslation();
-  const login = useLogin();
+  const { login, isLoading } = useLogin();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,7 +36,7 @@ const Login: NextPageWithLayout = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    login.mutate(values);
+    login(values);
   }
 
   return (
@@ -53,6 +53,7 @@ const Login: NextPageWithLayout = () => {
                   <Input
                     type="email"
                     placeholder={t("your-email")}
+                    autoComplete="username"
                     {...field}
                   />
                 </FormControl>
@@ -69,6 +70,7 @@ const Login: NextPageWithLayout = () => {
                 <FormControl>
                   <Input
                     type="password"
+                    autoComplete="current-password"
                     placeholder={t("your-password")}
                     {...field}
                   />
@@ -77,7 +79,9 @@ const Login: NextPageWithLayout = () => {
               </FormItem>
             )}
           />
-          <Button className="w-full">{t("login")}</Button>
+          <Button className="w-full" disabled={isLoading}>
+            {t("login")}
+          </Button>
         </form>
       </Form>
     </div>

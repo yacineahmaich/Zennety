@@ -9,14 +9,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRegister } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { GetServerSidePropsContext } from "next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useForm } from "react-hook-form";
-import { useTranslation } from "next-i18next";
 import { z } from "zod";
-import { useRegister } from "@/services";
 
 const formSchema = z
   .object({
@@ -37,7 +37,7 @@ const formSchema = z
 
 const Register: NextPageWithLayout = () => {
   const { t } = useTranslation("common");
-  const register = useRegister();
+  const { register, isLoading } = useRegister();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,7 +50,7 @@ const Register: NextPageWithLayout = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    register.mutate(values);
+    register(values);
   }
 
   return (
@@ -63,7 +63,11 @@ const Register: NextPageWithLayout = () => {
             <FormItem>
               <FormLabel>{t("name")}</FormLabel>
               <FormControl>
-                <Input placeholder={t("your-name")} {...field} />
+                <Input
+                  placeholder={t("your-name")}
+                  autoComplete="username"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -76,7 +80,12 @@ const Register: NextPageWithLayout = () => {
             <FormItem>
               <FormLabel>{t("email")}</FormLabel>
               <FormControl>
-                <Input type="email" placeholder={t("your-email")} {...field} />
+                <Input
+                  type="email"
+                  placeholder={t("your-email")}
+                  autoComplete="email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -91,6 +100,7 @@ const Register: NextPageWithLayout = () => {
               <FormControl>
                 <Input
                   type="password"
+                  autoComplete="current-password"
                   placeholder={t("your-password")}
                   {...field}
                 />
@@ -108,6 +118,7 @@ const Register: NextPageWithLayout = () => {
               <FormControl>
                 <Input
                   type="password"
+                  autoComplete="current-password"
                   placeholder={t("your-confirmation-password")}
                   {...field}
                 />
@@ -116,7 +127,9 @@ const Register: NextPageWithLayout = () => {
             </FormItem>
           )}
         />
-        <Button className="w-full">{t("register")}</Button>
+        <Button className="w-full" disabled={isLoading}>
+          {t("register")}
+        </Button>
       </form>
     </Form>
   );

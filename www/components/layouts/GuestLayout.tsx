@@ -3,8 +3,11 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Button } from "../ui/button";
+import { useUser } from "@/services";
+import { ZapIcon } from "lucide-react";
 
 const GuestLayout = ({ children }: { children: ReactNode }) => {
+  const { user } = useUser();
   const { t } = useTranslation("common");
 
   return (
@@ -17,12 +20,23 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
         </div>
 
         <div className="space-x-2">
-          <Button size="sm" variant="ghost" asChild>
-            <Link href="/auth/login">{t("login")}</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link href="/auth/register">{t("register")}</Link>
-          </Button>
+          {user ? (
+            <Button size="sm" variant="outline" asChild>
+              <Link href="/app">
+                <ZapIcon size={20} className="mr-2" />
+                {t("back-to-zennety")}
+              </Link>
+            </Button>
+          ) : (
+            <>
+              <Button size="sm" variant="outline" asChild>
+                <Link href="/auth/login">{t("login")}</Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/auth/register">{t("register")}</Link>
+              </Button>
+            </>
+          )}
         </div>
       </header>
       <div className="min-h-screen pt-20">{children}</div>
