@@ -15,28 +15,22 @@ const unauthenticatedRoutes = ["/auth/**", "/"];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { data: user, isLoading } = useUser();
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <img src={app.logoUrl} alt={app.name} className="h-12" />
-      </div>
-    );
-  }
+  const { user, isLoading } = useUser();
 
   // Protect routes
-  if (!isMatch(router.asPath, unauthenticatedRoutes)) {
-    if (!user) {
-      router.push("/auth/login");
+  if (!isLoading) {
+    if (!isMatch(router.asPath, unauthenticatedRoutes)) {
+      if (!user) {
+        router.push(`/auth/login?callback=${router.asPath}`);
+        return null;
+      }
+    }
+
+    // Prevent authenticated users from visiting auth pages
+    if (user && isMatch(router.asPath, ["/auth/**"])) {
+      router.push("/app");
       return null;
     }
-  }
-
-  // Prevent authenticated users from visiting auth pages
-  if (user && isMatch(router.asPath, ["/auth/**"])) {
-    router.push("/app");
-    return null;
   }
 
   return (
@@ -46,7 +40,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         fontSans.variable,
       )}
     >
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      {isLoading && (
+        <div className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-background">
+          <img src={app.logoUrl} alt={app.name} className="h-12" />
+        </div>
+      )}
       {children}
     </div>
   );
