@@ -18,7 +18,11 @@
     "lint-staged": "^15.0.2"
   },
   "lint-staged": {
-    "www/*.{js,ts,jsx,tsx}": "eslint --cache --fix",
-    "www/*.{js,ts,jsx,tsx,css,md}": "prettier --write"
+    "www/**/*.{js,ts,jsx,tsx}": [
+      "eslint --cache --fix"
+    ],
+    "www/**/*.{js,ts,jsx,tsx,css,md}": [
+      "prettier --write"
+    ]
   }
 }

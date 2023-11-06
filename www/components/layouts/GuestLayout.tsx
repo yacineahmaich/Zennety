@@ -1,14 +1,16 @@
-import app from "@/lib/app";
-import { useTranslation } from "next-i18next";
-import Link from "next/link";
-import { ReactNode } from "react";
-import { Button } from "../ui/button";
-import { useUser } from "@/services";
-import { ZapIcon } from "lucide-react";
+import app from '@/lib/app';
+import { useTranslation } from 'next-i18next';
+import Link from 'next/link';
+import { ReactNode } from 'react';
+import { Button } from '../ui/button';
+import { useUser } from '@/services';
+import { ZapIcon } from 'lucide-react';
 
 const GuestLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
+
+  const test = 'ajsjas';
 
   return (
     <div className="container">
@@ -24,16 +26,16 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
             <Button size="sm" variant="outline" asChild>
               <Link href="/app">
                 <ZapIcon size={20} className="mr-2" />
-                {t("back-to-zennety")}
+                {t('back-to-zennety')}
               </Link>
             </Button>
           ) : (
             <>
               <Button size="sm" variant="outline" asChild>
-                <Link href="/auth/login">{t("login")}</Link>
+                <Link href="/auth/login">{t('login')}</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="/auth/register">{t("register")}</Link>
+                <Link href="/auth/register">{t('register')}</Link>
               </Button>
             </>
           )}
