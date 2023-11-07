@@ -1,17 +1,17 @@
-import { cn } from "@/lib/utils";
-import { Inter as FontSans } from "next/font/google";
-import { isMatch } from "micromatch";
+import { cn } from '@/lib/utils';
+import { Inter as FontSans } from 'next/font/google';
+import { isMatch } from 'micromatch';
 
-import { useUser } from "@/services";
-import { useRouter } from "next/router";
-import app from "@/lib/app";
+import { useUser } from '@/services';
+import { useRouter } from 'next/router';
+import app from '@/lib/app';
 
 export const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
 });
 
-const unauthenticatedRoutes = ["/auth/**", "/"];
+const unauthenticatedRoutes = ['/auth/**', '/'];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -27,8 +27,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     }
 
     // Prevent authenticated users from visiting auth pages
-    if (user && isMatch(router.asPath, ["/auth/**"])) {
-      router.push("/app");
+    if (user && isMatch(router.asPath, ['/auth/**'])) {
+      router.push('/app');
       return null;
     }
   }
@@ -36,8 +36,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       className={cn(
-        "min-h-screen bg-background font-sans antialiased",
-        fontSans.variable,
+        'min-h-screen bg-background font-sans antialiased',
+        fontSans.variable
       )}
     >
       {isLoading && (

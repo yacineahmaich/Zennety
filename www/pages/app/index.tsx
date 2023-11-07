@@ -1,7 +1,7 @@
-import { AppLayout } from "@/components/layouts";
-import { NextPageWithLayout } from "@/types/next";
-import { GetServerSidePropsContext } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { AppLayout } from '@/components/layouts';
+import { NextPageWithLayout } from '@/types/next';
+import { GetServerSidePropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Dashboard: NextPageWithLayout = () => {
   return <div>Dashboard</div>;
@@ -12,7 +12,7 @@ export const getServerSideProps = async ({
 }: GetServerSidePropsContext) => {
   return {
     props: {
-      ...(locale ? await serverSideTranslations(locale, ["common"]) : {}),
+      ...(locale ? await serverSideTranslations(locale, ['common']) : {}),
     },
   };
 };

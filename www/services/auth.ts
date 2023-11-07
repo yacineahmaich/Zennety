@@ -1,31 +1,31 @@
-import { api, csrf } from "@/lib/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { api, csrf } from '@/lib/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 // =============================================
 // ========= AUTHENTICATION ====================
 // =============================================
 const register = async (data: UserRegister) => {
   await csrf();
-  await api.post("/register", data);
+  await api.post('/register', data);
 
-  window.location.pathname = "/app";
+  window.location.pathname = '/app';
 };
 
 const login = async (data: UserLogin) => {
   await csrf();
-  await api.post("/login", data);
+  await api.post('/login', data);
 
-  window.location.pathname = "/app";
+  window.location.pathname = '/app';
 };
 
 const logout = async () => {
-  await api.post("/logout");
+  await api.post('/logout');
 
-  window.location.pathname = "/auth/login";
+  window.location.pathname = '/auth/login';
 };
 
 const getUser = async (): Promise<App.Models.User> => {
-  const response = await api.get("/api/user");
+  const response = await api.get('/api/user');
   return response.data;
 };
 
@@ -66,7 +66,7 @@ const useLogout = () => {
 // queries
 const useUser = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ["user"],
+    queryKey: ['user'],
     queryFn: getUser,
     retry: false,
     staleTime: Infinity,

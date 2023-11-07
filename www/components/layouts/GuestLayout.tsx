@@ -10,8 +10,6 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
   const { t } = useTranslation('common');
 
-  const test = 'ajsjas';
-
   return (
     <div className="container">
       <header className="container fixed left-0 top-0 flex h-20 w-full items-center justify-between py-4">

@@ -1,5 +1,5 @@
-import { AuthLayout, GuestLayout } from "@/components/layouts";
-import { Button } from "@/components/ui/button";
+import { AuthLayout, GuestLayout } from '@/components/layouts';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormField,
@@ -7,16 +7,16 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { NextPageWithLayout } from "@/types/next";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { GetServerSidePropsContext } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "next-i18next";
-import { z } from "zod";
-import { useLogin } from "@/services";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { NextPageWithLayout } from '@/types/next';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { GetServerSidePropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
+import { z } from 'zod';
+import { useLogin } from '@/services';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -30,8 +30,8 @@ const Login: NextPageWithLayout = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -48,11 +48,11 @@ const Login: NextPageWithLayout = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("email")}</FormLabel>
+                <FormLabel>{t('email')}</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder={t("your-email")}
+                    placeholder={t('your-email')}
                     autoComplete="username"
                     {...field}
                   />
@@ -66,12 +66,12 @@ const Login: NextPageWithLayout = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("password")}</FormLabel>
+                <FormLabel>{t('password')}</FormLabel>
                 <FormControl>
                   <Input
                     type="password"
                     autoComplete="current-password"
-                    placeholder={t("your-password")}
+                    placeholder={t('your-password')}
                     {...field}
                   />
                 </FormControl>
@@ -80,7 +80,7 @@ const Login: NextPageWithLayout = () => {
             )}
           />
           <Button className="w-full" disabled={isLoading}>
-            {t("login")}
+            {t('login')}
           </Button>
         </form>
       </Form>
@@ -93,7 +93,7 @@ export const getServerSideProps = async ({
 }: GetServerSidePropsContext) => {
   return {
     props: {
-      ...(locale ? await serverSideTranslations(locale, ["common"]) : {}),
+      ...(locale ? await serverSideTranslations(locale, ['common']) : {}),
     },
   };
 };
@@ -102,8 +102,8 @@ Login.getLayout = (page) => {
   return (
     <GuestLayout>
       <AuthLayout
-        heading={"welcome-back"}
-        description={"login-to-your-account"}
+        heading={'welcome-back'}
+        description={'login-to-your-account'}
       >
         {page}
       </AuthLayout>

@@ -1,6 +1,6 @@
-import app from "@/lib/app";
-import { ReactNode } from "react";
-import { useTranslation } from "next-i18next";
+import app from '@/lib/app';
+import { ReactNode } from 'react';
+import { useTranslation } from 'next-i18next';
 
 const AuthLayout = ({
   children,
@@ -11,7 +11,7 @@ const AuthLayout = ({
   heading: string;
   description: string;
 }) => {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
 
   return (
     <div className="flex flex-col items-center gap-2 py-20">

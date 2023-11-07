@@ -1,12 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   headers: {
-    "X-Requested-With": "XMLHttpRequest",
-    Accept: "application/json",
+    'X-Requested-With': 'XMLHttpRequest',
+    Accept: 'application/json',
   },
   withCredentials: true,
 });
 
-export const csrf = () => api.get("/sanctum/csrf-cookie");
+export const csrf = () => api.get('/sanctum/csrf-cookie');

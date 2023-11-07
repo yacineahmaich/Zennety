@@ -15,11 +15,11 @@ declare namespace App.Models {
   }
 }
 
-type UserRegister = Pick<App.Models.User, "name" | "email"> & {
+type UserRegister = Pick<App.Models.User, 'name' | 'email'> & {
   password: string;
   password_confirmation: string;
 };
 
-type UserLogin = Pick<App.Models.User, "email"> & {
+type UserLogin = Pick<App.Models.User, 'email'> & {
   password: string;
 };

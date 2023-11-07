@@ -1,16 +1,16 @@
-import app from "@/lib/app";
-import { cn } from "@/lib/utils";
-import { useLogout, useUser } from "@/services";
+import app from '@/lib/app';
+import { cn } from '@/lib/utils';
+import { useLogout, useUser } from '@/services';
 import {
   ChevronLeft,
   ChevronRight,
   LayoutDashboard,
   SettingsIcon,
   UserIcon,
-} from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
-import { Button } from "../ui/button";
+} from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from '../ui/dropdown-menu';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -30,14 +30,14 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex">
       <aside
         className={cn(
-          "flex h-screen flex-col space-y-5 overflow-hidden border-r border-border p-4 transition-all",
-          collapsed ? "w-auto" : "w-64",
+          'flex h-screen flex-col space-y-5 overflow-hidden border-r border-border p-4 transition-all',
+          collapsed ? 'w-auto' : 'w-64'
         )}
       >
         <div
           className={cn(
-            "-mx-4 flex items-center justify-between border-b border-border px-4 pb-4",
-            collapsed && "justify-center",
+            '-mx-4 flex items-center justify-between border-b border-border px-4 pb-4',
+            collapsed && 'justify-center'
           )}
         >
           {!collapsed && (
@@ -79,8 +79,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             >
               <div
                 className={cn(
-                  "mt-auto flex items-center gap-4 py-2",
-                  collapsed && "justify-center",
+                  'mt-auto flex items-center gap-4 py-2',
+                  collapsed && 'justify-center'
                 )}
               >
                 <img src={app.logoUrl} alt={app.name} className="h-7" />

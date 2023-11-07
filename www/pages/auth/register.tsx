@@ -1,5 +1,5 @@
-import { AuthLayout, GuestLayout } from "@/components/layouts";
-import { Button } from "@/components/ui/button";
+import { AuthLayout, GuestLayout } from '@/components/layouts';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -7,16 +7,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useRegister } from "@/services";
-import { NextPageWithLayout } from "@/types/next";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { GetServerSidePropsContext } from "next";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useRegister } from '@/services';
+import { NextPageWithLayout } from '@/types/next';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { GetServerSidePropsContext } from 'next';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const formSchema = z
   .object({
@@ -28,24 +28,24 @@ const formSchema = z
   .superRefine(({ password_confirmation, password }, ctx) => {
     if (password_confirmation !== password) {
       ctx.addIssue({
-        code: "custom",
-        message: "The passwords did not match",
-        path: ["password_confirmation"],
+        code: 'custom',
+        message: 'The passwords did not match',
+        path: ['password_confirmation'],
       });
     }
   });
 
 const Register: NextPageWithLayout = () => {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
   const { register, isLoading } = useRegister();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      password_confirmation: "",
+      name: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
     },
   });
 
@@ -61,10 +61,10 @@ const Register: NextPageWithLayout = () => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("name")}</FormLabel>
+              <FormLabel>{t('name')}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder={t("your-name")}
+                  placeholder={t('your-name')}
                   autoComplete="username"
                   {...field}
                 />
@@ -78,11 +78,11 @@ const Register: NextPageWithLayout = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("email")}</FormLabel>
+              <FormLabel>{t('email')}</FormLabel>
               <FormControl>
                 <Input
                   type="email"
-                  placeholder={t("your-email")}
+                  placeholder={t('your-email')}
                   autoComplete="email"
                   {...field}
                 />
@@ -96,12 +96,12 @@ const Register: NextPageWithLayout = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("password")}</FormLabel>
+              <FormLabel>{t('password')}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   autoComplete="current-password"
-                  placeholder={t("your-password")}
+                  placeholder={t('your-password')}
                   {...field}
                 />
               </FormControl>
@@ -114,12 +114,12 @@ const Register: NextPageWithLayout = () => {
           name="password_confirmation"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("confirm-password")}</FormLabel>
+              <FormLabel>{t('confirm-password')}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
                   autoComplete="current-password"
-                  placeholder={t("your-confirmation-password")}
+                  placeholder={t('your-confirmation-password')}
                   {...field}
                 />
               </FormControl>
@@ -128,7 +128,7 @@ const Register: NextPageWithLayout = () => {
           )}
         />
         <Button className="w-full" disabled={isLoading}>
-          {t("register")}
+          {t('register')}
         </Button>
       </form>
     </Form>
@@ -140,7 +140,7 @@ export const getServerSideProps = async ({
 }: GetServerSidePropsContext) => {
   return {
     props: {
-      ...(locale ? await serverSideTranslations(locale, ["common"]) : {}),
+      ...(locale ? await serverSideTranslations(locale, ['common']) : {}),
     },
   };
 };
@@ -149,8 +149,8 @@ Register.getLayout = (page) => {
   return (
     <GuestLayout>
       <AuthLayout
-        heading={"create-an-account"}
-        description={"start-free-trial"}
+        heading={'create-an-account'}
+        description={'start-free-trial'}
       >
         {page}
       </AuthLayout>
