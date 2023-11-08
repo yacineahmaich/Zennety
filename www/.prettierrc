@@ -1,8 +1,10 @@
 {
-  "singleQuote": true,
   "trailingComma": "es5",
   "semi": true,
   "printWidth": 80,
   "arrowParens": "always",
-  "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-organize-imports"]
+  "plugins": [
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-tailwindcss"
+  ]
 }

@@ -19,5 +19,8 @@
   "resend-verification-email": "Resend Verification Email",
   "login-with-diffrent-account": "Log in with diffrent account",
   "reset-password": "Reset your password",
-  "reset-password-message": "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one."
+  "reset-password-message": "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System"
 }
