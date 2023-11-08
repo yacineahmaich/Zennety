@@ -1,38 +1,49 @@
-import { api, csrf } from '@/lib/api';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { api, csrf } from "@/lib/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 
-// =============================================
-// ========= AUTHENTICATION ====================
-// =============================================
-const register = async (data: UserRegister) => {
+const register = async (data: UserRegister): Promise<App.Models.User> => {
   await csrf();
-  await api.post('/register', data);
+  const response = await api.post("/register", data);
 
-  window.location.pathname = '/app';
+  return response.data;
 };
 
-const login = async (data: UserLogin) => {
+const login = async (data: UserLogin): Promise<App.Models.User> => {
   await csrf();
-  await api.post('/login', data);
+  const response = await api.post("/login", data);
 
-  window.location.pathname = '/app';
+  return response.data;
 };
 
 const logout = async () => {
-  await api.post('/logout');
-
-  window.location.pathname = '/auth/login';
+  await api.post("/logout");
 };
 
 const getUser = async (): Promise<App.Models.User> => {
-  const response = await api.get('/api/user');
+  const response = await api.get("/api/user");
   return response.data;
+};
+
+const resendVerificationEmail = async () => {
+  await api.post("/email/verification-notification");
+};
+
+const sendResetPasswordEmail = async ({ email }: { email: string }) => {
+  await api.post("/forgot-password", { email });
 };
 
 // mutations
 const useRegister = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: register,
+    onSuccess(user) {
+      queryClient.setQueryData(["user"], user);
+      router.push("/app");
+    },
   });
 
   return {
@@ -42,8 +53,15 @@ const useRegister = () => {
 };
 
 const useLogin = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: login,
+    onSuccess(user) {
+      queryClient.setQueryData(["user"], user);
+      router.push((router.query.callback as string) || "/app");
+    },
   });
 
   return {
@@ -53,8 +71,15 @@ const useLogin = () => {
 };
 
 const useLogout = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: logout,
+    onSuccess() {
+      queryClient.setQueryData(["user"], null);
+      router.push("/auth/login");
+    },
   });
 
   return {
@@ -63,10 +88,32 @@ const useLogout = () => {
   };
 };
 
+const useResendVerificationEmail = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: resendVerificationEmail,
+  });
+
+  return {
+    resendVerificationEmail: mutate,
+    isLoading: isPending,
+  };
+};
+
+const useSendResetPasswordEmail = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: sendResetPasswordEmail,
+  });
+
+  return {
+    sendResetPasswordEmail: mutate,
+    isLoading: isPending,
+  };
+};
+
 // queries
 const useUser = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ['user'],
+    queryKey: ["user"],
     queryFn: getUser,
     retry: false,
     staleTime: Infinity,
@@ -81,4 +128,11 @@ const useUser = () => {
   };
 };
 
-export { useRegister, useLogin, useLogout, useUser, getUser };
+export {
+  useRegister,
+  useLogin,
+  useLogout,
+  useUser,
+  useResendVerificationEmail,
+  useSendResetPasswordEmail,
+};
