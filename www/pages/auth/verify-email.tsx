@@ -4,8 +4,8 @@ import { useLogout, useResendVerificationEmail } from '@/services';
 import { NextPageWithLayout } from '@/types/next';
 import { ArrowRightLeftIcon, SendIcon } from 'lucide-react';
 import { GetServerSidePropsContext } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const VerifyEmail: NextPageWithLayout = () => {
   const { resendVerificationEmail, isLoading } = useResendVerificationEmail();
