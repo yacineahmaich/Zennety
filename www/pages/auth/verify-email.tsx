@@ -1,16 +1,16 @@
-import { AuthLayout, GuestLayout } from "@/components/layouts";
-import { Button } from "@/components/ui/button";
-import { useLogout, useResendVerificationEmail } from "@/services";
-import { NextPageWithLayout } from "@/types/next";
-import { ArrowRightLeftIcon, SendIcon } from "lucide-react";
-import { GetServerSidePropsContext } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
+import { AuthLayout, GuestLayout } from '@/components/layouts';
+import { Button } from '@/components/ui/button';
+import { useLogout, useResendVerificationEmail } from '@/services';
+import { NextPageWithLayout } from '@/types/next';
+import { ArrowRightLeftIcon, SendIcon } from 'lucide-react';
+import { GetServerSidePropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 const VerifyEmail: NextPageWithLayout = () => {
   const { resendVerificationEmail, isLoading } = useResendVerificationEmail();
   const { logout } = useLogout();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
 
   return (
     <div className="mt-4 flex gap-2">
@@ -20,7 +20,7 @@ const VerifyEmail: NextPageWithLayout = () => {
         disabled={isLoading}
       >
         <SendIcon size="20" className="mr-2" />
-        {t("resend-verification-email")}
+        {t('resend-verification-email')}
       </Button>
       <Button
         size="sm"
@@ -29,7 +29,7 @@ const VerifyEmail: NextPageWithLayout = () => {
         onClick={() => logout()}
       >
         <ArrowRightLeftIcon size="20" className="mr-2" />
-        {t("login-with-diffrent-account")}
+        {t('login-with-diffrent-account')}
       </Button>
     </div>
   );
@@ -40,7 +40,7 @@ export const getServerSideProps = async ({
 }: GetServerSidePropsContext) => {
   return {
     props: {
-      ...(locale ? await serverSideTranslations(locale, ["common"]) : {}),
+      ...(locale ? await serverSideTranslations(locale, ['common']) : {}),
     },
   };
 };
@@ -48,7 +48,7 @@ export const getServerSideProps = async ({
 VerifyEmail.getLayout = (page) => {
   return (
     <GuestLayout>
-      <AuthLayout heading={"verify-email"} description={"verify-email-message"}>
+      <AuthLayout heading={'verify-email'} description={'verify-email-message'}>
         {page}
       </AuthLayout>
     </GuestLayout>
