@@ -2,22 +2,22 @@ import { AuthLayout, GuestLayout } from "@/components/layouts";
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useLogin } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GetServerSidePropsContext } from "next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useForm } from "react-hook-form";
 import { useTranslation } from "next-i18next";
-import { z } from "zod";
-import { useLogin } from "@/services";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
   email: z.string().email(),

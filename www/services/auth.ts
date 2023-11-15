@@ -21,7 +21,7 @@ const logout = async () => {
 };
 
 const getUser = async (): Promise<App.Models.User> => {
-  const response = await api.get("/api/user");
+  const response = await api.get("/user");
   return response.data;
 };
 
@@ -33,8 +33,34 @@ const sendResetPasswordEmail = async ({ email }: { email: string }) => {
   await api.post("/forgot-password", { email });
 };
 
-// mutations
-const useRegister = () => {
+/**
+ * ==========================================
+ * ========= QUERIES ========================
+ * ==========================================
+ */
+export const useUser = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+    retry: false,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
+  return {
+    user: data,
+    isLoading,
+  };
+};
+
+/**
+ * ==========================================
+ * ========= MUTATIONS ========================
+ * ==========================================
+ */
+export const useRegister = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -52,7 +78,7 @@ const useRegister = () => {
   };
 };
 
-const useLogin = () => {
+export const useLogin = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -70,7 +96,7 @@ const useLogin = () => {
   };
 };
 
-const useLogout = () => {
+export const useLogout = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -88,7 +114,7 @@ const useLogout = () => {
   };
 };
 
-const useResendVerificationEmail = () => {
+export const useResendVerificationEmail = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: resendVerificationEmail,
   });
@@ -99,7 +125,7 @@ const useResendVerificationEmail = () => {
   };
 };
 
-const useSendResetPasswordEmail = () => {
+export const useSendResetPasswordEmail = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: sendResetPasswordEmail,
   });
@@ -108,31 +134,4 @@ const useSendResetPasswordEmail = () => {
     sendResetPasswordEmail: mutate,
     isLoading: isPending,
   };
-};
-
-// queries
-const useUser = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["user"],
-    queryFn: getUser,
-    retry: false,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  return {
-    user: data,
-    isLoading,
-  };
-};
-
-export {
-  useRegister,
-  useLogin,
-  useLogout,
-  useUser,
-  useResendVerificationEmail,
-  useSendResetPasswordEmail,
 };

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  baseURL: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`,
   headers: {
     "X-Requested-With": "XMLHttpRequest",
     Accept: "application/json",
@@ -9,15 +9,14 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-export const csrf = () => api.get("/sanctum/csrf-cookie");
+export const csrf = () =>
+  api.get("/sanctum/csrf-cookie", {
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  });
 
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    // if (error.response?.status == 409) {
-    //   window.location.pathname = "/auth/verify-email";
-    // }
-
     if (error.response) {
       return Promise.reject(error.response.data);
     }
@@ -27,5 +26,5 @@ api.interceptors.response.use(
     }
 
     return Promise.reject("Something went wrong! Please try again");
-  },
+  }
 );

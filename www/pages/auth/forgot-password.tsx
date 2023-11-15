@@ -16,9 +16,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, LoaderIcon, SendIcon } from "lucide-react";
-import { z } from "zod";
 import { useSendResetPasswordEmail } from "@/services";
+import { Loader2Icon, SendIcon } from "lucide-react";
+import { z } from "zod";
 
 const formSchema = z.object({
   email: z.string().email(),

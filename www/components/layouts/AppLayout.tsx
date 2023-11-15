@@ -2,15 +2,14 @@ import app from "@/lib/app";
 import { cn } from "@/lib/utils";
 import { useLogout, useUser } from "@/services";
 import {
-  ChevronLeft,
-  ChevronRight,
-  LayoutDashboard,
+  AlignRightIcon,
+  KanbanSquareIcon,
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { ThemeSwitcher } from "../ThemeSwitcher";
+import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -31,13 +30,13 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex">
       <aside
         className={cn(
-          "flex h-screen flex-col space-y-5 overflow-hidden  border-r border-border px-4 pb-4",
+          "flex h-screen flex-col space-y-5 overflow-hidden border-r border-border px-4 pb-4",
           collapsed ? "w-auto" : "w-64"
         )}
       >
         <div
           className={cn(
-            "-mx-4 flex items-center justify-between border-b border-border px-4 py-4",
+            "-mx-4 flex h-20 items-center justify-between  border-border px-4 py-4",
             collapsed && "justify-center"
           )}
         >
@@ -50,9 +49,10 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
           <Button
             size="icon"
             variant="ghost"
+            className="!p-0"
             onClick={() => setCollapsed((c) => !c)}
           >
-            {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+            <AlignRightIcon size={20} />
           </Button>
         </div>
 
@@ -64,8 +64,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                   href="#"
                   className="flex w-full items-center gap-3 overflow-hidden"
                 >
-                  <LayoutDashboard />
-                  {!collapsed && <span>Dashboard</span>}
+                  <KanbanSquareIcon />
+                  {!collapsed && <span>Boards</span>}
                 </a>
               </Button>
             </li>
@@ -125,10 +125,11 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </aside>
-      <div className="flex-1">
-        <header className="flex justify-end border-b p-4">
+      <div className="flex-1 p-4">
+        <header className="flex items-center justify-end">
           <ThemeSwitcher />
         </header>
+        <div>{children}</div>
       </div>
     </div>
   );

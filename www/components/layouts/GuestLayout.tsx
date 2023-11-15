@@ -4,7 +4,7 @@ import { ZapIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { ThemeSwitcher } from "../ThemeSwitcher";
+import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import { Button } from "../ui/button";
 
 const GuestLayout = ({ children }: { children: ReactNode }) => {

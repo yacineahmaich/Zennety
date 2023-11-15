@@ -17,7 +17,7 @@ export function ThemeSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="self-baseline">
+        <Button variant="outline" size="sm">
           <SunIcon
             size={16}
             className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
