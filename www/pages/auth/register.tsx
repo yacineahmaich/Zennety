@@ -9,6 +9,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { extractFirstErrMsg } from "@/lib/helpers";
 import { useRegister } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +40,7 @@ const formSchema = z
 const Register: NextPageWithLayout = () => {
   const { t } = useTranslation("common");
   const { register, isLoading } = useRegister();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,7 +53,17 @@ const Register: NextPageWithLayout = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    register(values);
+    register(values, {
+      onError({ errors, message }: ApiError) {
+        const errMsg = extractFirstErrMsg(errors) || message;
+
+        toast({
+          variant: "destructive",
+          title: t("could-not-register"),
+          description: errMsg,
+        });
+      },
+    });
   }
 
   return (

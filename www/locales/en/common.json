@@ -22,5 +22,7 @@
   "reset-password-message": "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
   "light": "Light",
   "dark": "Dark",
-  "system": "System"
+  "system": "System",
+  "could-not-login": "Ooops! Could not login",
+  "could-not-register": "Ooops! Could not register"
 }

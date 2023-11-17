@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layouts";
+import { Toaster } from "@/components/ui/toaster";
 import { queryClient } from "@/lib/react-query";
 import "@/styles/globals.css";
 import { AppPropsWithLayout } from "@/types/next";
@@ -24,6 +25,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       >
         <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
       </ThemeProvider>
+      <Toaster />
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
