@@ -15,7 +15,7 @@ export function ThemeSwitcher() {
   const { t } = useTranslation("common");
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
           <SunIcon

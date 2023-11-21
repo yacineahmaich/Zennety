@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { extractFirstErrMsg } from "@/lib/helpers";
 import { useSendResetPasswordEmail } from "@/services";
 import { Loader2Icon, SendIcon } from "lucide-react";
 import { z } from "zod";
@@ -27,6 +29,7 @@ const formSchema = z.object({
 const ForgotPassword: NextPageWithLayout = () => {
   const { sendResetPasswordEmail, isLoading } = useSendResetPasswordEmail();
   const { t } = useTranslation("common");
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -36,7 +39,20 @@ const ForgotPassword: NextPageWithLayout = () => {
   });
 
   function onSubmit({ email }: z.infer<typeof formSchema>) {
-    sendResetPasswordEmail({ email });
+    sendResetPasswordEmail(
+      { email },
+      {
+        onError({ errors, message }: ApiError) {
+          const errMsg = extractFirstErrMsg(errors) || message;
+
+          toast({
+            variant: "destructive",
+            title: t("could-not-send-passwordreset-email"),
+            description: errMsg,
+          });
+        },
+      }
+    );
   }
 
   return (
