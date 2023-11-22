@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+// Auth Routes
+require __DIR__ . '/auth.php';
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::apiResource('workspaces', WorkspaceController::class);
 });
 
-require __DIR__ . '/auth.php';
