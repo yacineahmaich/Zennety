@@ -1,9 +1,3 @@
-/**
- * This file is auto generated using 'php artisan typescript:generate'
- *
- * Changes to this file will be lost when the command is run again
- */
-
 declare namespace App.Models {
   export interface User {
     id: number;
@@ -13,13 +7,10 @@ declare namespace App.Models {
     created_at: string | null;
     updated_at: string | null;
   }
+  export interface Workspace {
+    id: number;
+    title: string;
+    description: string;
+    owner?: User;
+  }
 }
-
-type UserRegister = Pick<App.Models.User, 'name' | 'email'> & {
-  password: string;
-  password_confirmation: string;
-};
-
-type UserLogin = Pick<App.Models.User, 'email'> & {
-  password: string;
-};

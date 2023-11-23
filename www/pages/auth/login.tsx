@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { extractFirstErrMsg } from "@/lib/helpers";
 import { useLogin } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +25,8 @@ const formSchema = z.object({
   password: z.string(),
 });
 
+export type UserLogin = z.infer<typeof formSchema>;
+
 const Login: NextPageWithLayout = () => {
   const { t } = useTranslation();
   const { login, isLoading } = useLogin();
@@ -33,24 +34,10 @@ const Login: NextPageWithLayout = () => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    login(values, {
-      onError({ errors, message }: ApiError) {
-        const errMsg = extractFirstErrMsg(errors) || message;
-
-        toast({
-          variant: "destructive",
-          title: t("could-not-login"),
-          description: errMsg,
-        });
-      },
-    });
+    login(values);
   }
 
   return (

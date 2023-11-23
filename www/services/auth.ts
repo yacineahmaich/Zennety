@@ -1,4 +1,6 @@
 import { api, csrf } from "@/lib/api";
+import { UserLogin } from "@/pages/auth/login";
+import { UserRegister } from "@/pages/auth/register";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
