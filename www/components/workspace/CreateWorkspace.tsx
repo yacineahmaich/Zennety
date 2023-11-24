@@ -2,6 +2,8 @@ import { useCreateWorkspace } from "@/services/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircleIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -27,14 +29,16 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-  title: z.string().min(1).max(55),
+  name: z.string().min(4).max(55),
   description: z.string().max(55),
 });
 
 export type CreateWorkspace = z.infer<typeof formSchema>;
 
 const CreateWorkspace = () => {
+  const router = useRouter();
   const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
   const { createWorkspace, isLoading } = useCreateWorkspace();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,11 +46,19 @@ const CreateWorkspace = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    createWorkspace(values);
+    createWorkspace(values, {
+      onSuccess(data) {
+        if (data.id) {
+          router.push(`/app/workspace/${data.id}`);
+          form.reset({ description: "", name: "" });
+        }
+        setOpen(false);
+      },
+    });
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm">
           <PlusCircleIcon size={20} className="mr-2" /> {t("create")}
@@ -69,18 +81,18 @@ const CreateWorkspace = () => {
 
                 <FormField
                   control={form.control}
-                  name="title"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("title")}</FormLabel>
+                      <FormLabel>{t("name")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder={t("workspace-title-placeholder")}
+                          placeholder={t("workspace-name-placeholder")}
                           {...field}
                         />
                       </FormControl>
                       <FormDescription>
-                        {t("workspace-title-text")}
+                        {t("workspace-name-text")}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

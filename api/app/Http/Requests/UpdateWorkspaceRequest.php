@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateWorkspaceRequest extends FormRequest
 {
@@ -22,7 +23,13 @@ class UpdateWorkspaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'min:4', 'max:55'],
+            'name' => [
+                'required',
+                'min:4',
+                'max:55',
+                Rule::unique('workspaces', 'name')
+                    ->ignore($this->id)
+            ],
             'description' => ['required', 'max:255'],
         ];
     }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('workspaces', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('name');
             $table->string('description');
             $table->foreignId('owner_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->timestamps();

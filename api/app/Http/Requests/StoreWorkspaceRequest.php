@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreWorkspaceRequest extends FormRequest
 {
@@ -22,8 +24,19 @@ class StoreWorkspaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'min:4', 'max:55'],
-            'description' => ['required', 'max:255'],
+            'name' => [
+                'required',
+                'min:4',
+                'max:55',
+                Rule::unique('workspaces', 'name')
+                    ->where(
+                        fn (Builder $query) => $query->where('owner_id', auth()->id())
+                    )
+            ],
+            'description' => [
+                'required',
+                'max:255'
+            ],
         ];
     }
 }

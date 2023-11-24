@@ -11,7 +11,7 @@ class WorkspaceService
     public function store(WorkspaceDTO $workspaceDTO): Workspace
     {
         return Workspace::create([
-            'title' => $workspaceDTO->title,
+            'name' => $workspaceDTO->name,
             'description' => $workspaceDTO->description,
             'owner_id' => auth()->id()
         ]);
@@ -20,7 +20,7 @@ class WorkspaceService
     public function update(WorkspaceDTO $workspaceDTO, Workspace $workspace): Workspace
     {
         return tap($workspace)->update([
-            'title' => $workspaceDTO->title,
+            'name' => $workspaceDTO->name,
             'description' => $workspaceDTO->description,
         ]);
     }

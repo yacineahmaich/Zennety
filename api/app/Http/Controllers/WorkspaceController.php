@@ -32,7 +32,7 @@ class WorkspaceController extends Controller
     {
         $workspace = $this->service->store(
             new WorkspaceDTO(
-                title: $request->validated('title'),
+                name: $request->validated('name'),
                 description: $request->validated('description')
             )
         );
@@ -55,7 +55,7 @@ class WorkspaceController extends Controller
     {
         $workspace = $this->service->update(
             new WorkspaceDTO(
-                title: $request->validated('title'),
+                name: $request->validated('name'),
                 description: $request->validated('description'),
             ),
             $workspace
