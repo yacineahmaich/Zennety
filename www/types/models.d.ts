@@ -9,7 +9,7 @@ declare namespace App.Models {
   }
   export interface Workspace {
     id: number;
-    title: string;
+    name: string;
     description: string;
     owner?: User;
   }

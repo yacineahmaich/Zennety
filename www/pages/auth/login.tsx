@@ -1,5 +1,6 @@
 import { AuthLayout, GuestLayout } from "@/components/layouts";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -9,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 import { useLogin } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +23,7 @@ import { z } from "zod";
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string(),
+  remember: z.boolean().optional(),
 });
 
 export type UserLogin = z.infer<typeof formSchema>;
@@ -30,7 +31,6 @@ export type UserLogin = z.infer<typeof formSchema>;
 const Login: NextPageWithLayout = () => {
   const { t } = useTranslation();
   const { login, isLoading } = useLogin();
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,6 +75,26 @@ const Login: NextPageWithLayout = () => {
                     placeholder={t("your-password")}
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="remember"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl className="flex items-center space-x-2">
+                  <FormLabel htmlFor={field.name}>
+                    <Checkbox
+                      id={field.name}
+                      className="mr-2"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    remember me
+                  </FormLabel>
                 </FormControl>
                 <FormMessage />
               </FormItem>

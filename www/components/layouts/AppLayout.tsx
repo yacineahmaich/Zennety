@@ -31,7 +31,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex">
       <aside
         className={cn(
-          "flex h-screen flex-col space-y-5 overflow-hidden border-r border-border px-4 pb-4",
+          "flex h-screen shrink-0 flex-col space-y-5 overflow-hidden border-r border-border px-4 pb-4",
           collapsed ? "w-auto" : "w-64"
         )}
       >

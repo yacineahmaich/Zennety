@@ -25,9 +25,9 @@
   "system": "System",
 
   "create": "Create",
-  "create-workspace-name": "Create Workspace",
+  "create-workspace-title": "Create Workspace",
   "create-workspace-subtitle": "Enhance your efficiency by streamlining access to boards, making them conveniently accessible from a centralized location for everyone.",
-  "workspace-name-placeholder": "e.g Devops",
+  "workspace-name-placeholder": "e.g Ecommerce",
   "workspace-name-text": "This is the name of your company, team or organization.",
   "description": "Description",
   "workspace-description-placeholder": "Introduce workspace to team memebers",
