@@ -11,6 +11,6 @@ declare namespace App.Models {
     id: number;
     name: string;
     description: string;
-    owner?: User;
+    owner: User;
   }
 }

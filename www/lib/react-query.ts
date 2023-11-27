@@ -4,6 +4,9 @@ import { getFirstApiErrorMsg } from "./helpers";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
+    queries: {
+      retry: process.env.NEXT_PUBLIC_ENV === "production",
+    },
     mutations: {
       retry: false,
       onError(error: ApiError) {

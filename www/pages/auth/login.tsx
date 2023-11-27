@@ -89,7 +89,7 @@ const Login: NextPageWithLayout = () => {
                   <FormLabel htmlFor={field.name}>
                     <Checkbox
                       id={field.name}
-                      className="mr-2"
+                      className="my-2 mr-2"
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
