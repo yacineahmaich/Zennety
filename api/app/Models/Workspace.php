@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\WorkspaceVisibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -13,11 +14,16 @@ class Workspace extends Model
     protected $fillable = [
         'name',
         'description',
+        'visibility',
         'owner_id',
     ];
 
-    public function owner():HasOne
+    protected $casts = [
+        'visibility' => WorkspaceVisibility::class
+    ];
+
+    public function owner(): HasOne
     {
-        return $this->hasOne(User::class,'id', 'owner_id');
+        return $this->hasOne(User::class, 'id', 'owner_id');
     }
 }

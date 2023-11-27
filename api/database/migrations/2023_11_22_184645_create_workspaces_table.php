@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
+            $table->enum('visibility', ['Public', 'Private']);
             $table->foreignId('owner_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->timestamps();
         });
