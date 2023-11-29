@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\WorkspaceVisibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -18,9 +17,14 @@ class Workspace extends Model
         'owner_id',
     ];
 
-    protected $casts = [
-        'visibility' => WorkspaceVisibility::class
-    ];
+    public function resolveRouteBinding($value, $field = null)
+    {
+        // TODO: Search in all user workspaces (owner or member)
+        return $this
+            ->where('id', $value)
+            ->where('owner_id', auth()->id())
+            ->firstOrFail();
+    }
 
     public function owner(): HasOne
     {

@@ -1,5 +1,5 @@
 import { AlertTriangle, MessageCircleIcon, RefreshCcwIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { Button } from "../ui/button";
 
 const Error = ({ message }: { message?: string }) => {
@@ -7,12 +7,12 @@ const Error = ({ message }: { message?: string }) => {
 
   return (
     <div className="flex flex-col items-center rounded-lg p-5 text-center">
-      <AlertTriangle size={30} className="mb-3 text-destructive" />
-      <span className="max-w-sm text-xl font-bold">
+      <AlertTriangle size={40} className="mb-3 text-destructive" />
+      <span className="max-w-sm text-xl font-medium">
         {message || t("something-went-wrong")}
       </span>
       <p className="mb-3 mt-1 max-w-sm text-sm font-medium text-muted-foreground">
-        {"contact-us-for-problem"}
+        {t("contact-us-for-problem")}
       </p>
       <div className="flex gap-2">
         <Button

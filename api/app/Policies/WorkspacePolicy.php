@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Workspace;
-use Illuminate\Auth\Access\Response;
 
 class WorkspacePolicy
 {
@@ -13,7 +12,7 @@ class WorkspacePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +20,8 @@ class WorkspacePolicy
      */
     public function view(User $user, Workspace $workspace): bool
     {
-        //
+        // TODO: Allow only workpsace memebers
+        return $workspace->owner_id === $user->id;
     }
 
     /**
@@ -29,7 +29,7 @@ class WorkspacePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class WorkspacePolicy
      */
     public function update(User $user, Workspace $workspace): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -45,7 +45,7 @@ class WorkspacePolicy
      */
     public function delete(User $user, Workspace $workspace): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class WorkspacePolicy
      */
     public function restore(User $user, Workspace $workspace): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -61,6 +61,6 @@ class WorkspacePolicy
      */
     public function forceDelete(User $user, Workspace $workspace): bool
     {
-        //
+        return true;
     }
 }

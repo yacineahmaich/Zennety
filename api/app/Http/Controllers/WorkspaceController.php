@@ -15,6 +15,7 @@ class WorkspaceController extends Controller
     public function __construct(
         public WorkspaceService $service,
     ) {
+        $this->authorizeResource('workspace');
     }
 
     /**
@@ -31,10 +32,7 @@ class WorkspaceController extends Controller
     public function store(StoreWorkspaceRequest $request)
     {
         $workspace = $this->service->store(
-            new WorkspaceDTO(
-                name: $request->validated('name'),
-                description: $request->validated('description')
-            )
+            WorkspaceDTO::fromRequest($request),
         );
 
         return WorkspaceResource::make($workspace);
@@ -54,10 +52,7 @@ class WorkspaceController extends Controller
     public function update(UpdateWorkspaceRequest $request, Workspace $workspace): WorkspaceResource
     {
         $workspace = $this->service->update(
-            new WorkspaceDTO(
-                name: $request->validated('name'),
-                description: $request->validated('description'),
-            ),
+            WorkspaceDTO::fromRequest($request),
             $workspace
         );
 

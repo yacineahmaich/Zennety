@@ -27,11 +27,13 @@ const Workspace: NextPageWithLayout = () => {
     <div>
       <div className="flex w-full items-center justify-between border-b p-8">
         <div className="flex items-center gap-2 ">
-          <img
-            src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
-            alt="logo"
-            className="h-20 w-20 rounded-xl border shadow-xl"
-          />
+          <div className="h-20 w-20 rounded-xl bg-accent shadow-xl">
+            <img
+              src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+              alt="logo"
+              className="h-full w-full rounded-[inherit]"
+            />
+          </div>
           <div className="flex flex-col">
             <h2 className="font-semibold">{workspace?.name}</h2>
             <div className="flex gap-2 text-xs font-medium">
