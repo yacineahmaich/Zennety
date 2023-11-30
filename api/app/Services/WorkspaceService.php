@@ -13,6 +13,7 @@ class WorkspaceService
         return Workspace::create([
             'name' => $workspaceDTO->name,
             'description' => $workspaceDTO->description,
+            'visibility' => $workspaceDTO->visibility,
             'owner_id' => auth()->id()
         ]);
     }
@@ -22,6 +23,7 @@ class WorkspaceService
         return tap($workspace)->update([
             'name' => $workspaceDTO->name,
             'description' => $workspaceDTO->description,
+            'visibility' => $workspaceDTO->visibility,
         ]);
     }
 }

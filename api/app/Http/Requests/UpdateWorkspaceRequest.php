@@ -30,7 +30,13 @@ class UpdateWorkspaceRequest extends FormRequest
                 Rule::unique('workspaces', 'name')
                     ->ignore($this->id)
             ],
-            'description' => ['required', 'max:255'],
+            'description' => [
+                'required',
+                'max:255'
+            ],
+            'visibility' => [
+                'in:Public,Private'
+            ],
         ];
     }
 }

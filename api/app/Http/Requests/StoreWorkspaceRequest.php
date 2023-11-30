@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\WorkspaceVisibility;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 
 class StoreWorkspaceRequest extends FormRequest
 {
@@ -40,7 +38,7 @@ class StoreWorkspaceRequest extends FormRequest
                 'max:255'
             ],
             'visibility' => [
-                new Enum(WorkspaceVisibility::class),
+                'in:Public,Private'
             ],
         ];
     }

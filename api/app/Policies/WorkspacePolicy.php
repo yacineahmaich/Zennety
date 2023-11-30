@@ -20,8 +20,7 @@ class WorkspacePolicy
      */
     public function view(User $user, Workspace $workspace): bool
     {
-        // TODO: Allow only workpsace memebers
-        return $workspace->owner_id === $user->id;
+        return true;
     }
 
     /**

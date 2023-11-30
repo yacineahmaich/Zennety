@@ -32,6 +32,11 @@
   "description": "Description",
   "workspace-description-placeholder": "Introduce workspace to team memebers",
   "workspace-description-text": "Briefly introduce your Workspace to engage your members.",
+  "visibility": "Visibility",
+  "public": "Public",
+  "private": "Private",
+  "public-text": "Visible to every users including guests.",
+  "private-text": "Visible only to workpace memebers.",
   "create-workspace": "Create workspace",
 
   "something-went-wrong": "Ooops, Something went wrong",

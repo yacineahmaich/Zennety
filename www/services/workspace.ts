@@ -43,8 +43,14 @@ export const useWorkspace = (id: number) => {
  */
 
 export const useCreateWorkspace = () => {
+  // const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: createWorkspace,
+    onSuccess(workspace) {
+      // Enable if navigating using next/router when a workspace created successfully
+      // queryClient.setQueryData(["workspaces", workspace.id], workspace);
+    },
   });
 
   return {

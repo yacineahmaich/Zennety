@@ -35,10 +35,12 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
           collapsed ? "w-auto" : "w-64"
         )}
       >
-        <Logo
-          collapsed={collapsed}
-          toggleCollapsed={() => setCollapsed((c) => !c)}
-        />
+        <Link href="/app">
+          <Logo
+            collapsed={collapsed}
+            toggleCollapsed={() => setCollapsed((c) => !c)}
+          />
+        </Link>
         <SideNav collapsed={collapsed} />
         <UserDropdown collapsed={collapsed} />
       </aside>

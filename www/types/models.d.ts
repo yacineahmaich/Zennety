@@ -11,6 +11,7 @@ declare namespace App.Models {
     id: number;
     name: string;
     description: string;
+    visibility: "Public" | "Private";
     owner: User;
   }
 }

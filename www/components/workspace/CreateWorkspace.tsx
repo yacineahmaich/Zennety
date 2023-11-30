@@ -1,8 +1,8 @@
+import { cn } from "@/lib/utils";
 import { useCreateWorkspace } from "@/services/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusCircleIcon } from "lucide-react";
+import { Globe2Icon, LockIcon, PlusCircleIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,33 +26,36 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(4).max(55),
   description: z.string().max(55),
+  visibility: z.enum(["Public", "Private"]),
 });
 
 export type CreateWorkspace = z.infer<typeof formSchema>;
 
 const CreateWorkspace = () => {
-  const router = useRouter();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const { createWorkspace, isLoading } = useCreateWorkspace();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      visibility: "Private",
+    },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     createWorkspace(values, {
       onSuccess(data) {
         if (data.id) {
-          router.push(`/app/workspace/${data.id}`);
-          form.reset({ description: "", name: "" });
+          // router.push(`/app/workspace/${data.id}`);
+          window.location.href = `/app/workspace/${data.id}`;
         }
-        setOpen(false);
       },
     });
   };
@@ -64,13 +67,13 @@ const CreateWorkspace = () => {
           <PlusCircleIcon size={20} className="mr-2" /> {t("create")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="min-w-[900px]">
+      <DialogContent className="max-h-screen overflow-y-auto lg:min-w-[85vw]">
         <div className="flex gap-8 pt-6">
           <div className="flex-1">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
+                className="space-y-2"
               >
                 <DialogHeader>
                   <DialogTitle>{t("create-workspace-title")}</DialogTitle>
@@ -117,6 +120,68 @@ const CreateWorkspace = () => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="visibility"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("visibility")}</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex space-x-1"
+                        >
+                          <FormItem
+                            className={cn(
+                              "flex-1 rounded-lg border border-border",
+                              field.value === "Private" && "border-foreground"
+                            )}
+                          >
+                            <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
+                              <div className="flex items-center space-x-2">
+                                <LockIcon size={16} />
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value="Private"
+                                    className="hidden"
+                                  />
+                                </FormControl>
+                                <span>{t("private")}</span>
+                              </div>
+                              <FormDescription>
+                                {t("private-text")}
+                              </FormDescription>
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem
+                            className={cn(
+                              "flex-1 rounded-lg border border-border",
+                              field.value === "Public" && "border-foreground"
+                            )}
+                          >
+                            <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
+                              <div className="flex items-center space-x-2">
+                                <Globe2Icon size={16} />
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value="Public"
+                                    className="hidden"
+                                  />
+                                </FormControl>
+                                <span>{t("public")}</span>
+                              </div>
+                              <FormDescription>
+                                {t("public-text")}
+                              </FormDescription>
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <DialogFooter>
                   <Button
@@ -131,7 +196,7 @@ const CreateWorkspace = () => {
               </form>
             </Form>
           </div>
-          <div className="flex-1 rounded-lg bg-foreground"></div>
+          <div className="hidden flex-1 rounded-lg bg-foreground lg:block"></div>
         </div>
       </DialogContent>
     </Dialog>

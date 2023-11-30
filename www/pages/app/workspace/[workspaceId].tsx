@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import WorkspaceLoading from "@/components/workspace/WorkspaceLoading";
 import { useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
-import { KanbanSquareIcon, UserPlusIcon } from "lucide-react";
+import { KanbanSquareIcon, LockIcon, UserPlusIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
@@ -38,7 +38,11 @@ const Workspace: NextPageWithLayout = () => {
             <h2 className="font-semibold">{workspace?.name}</h2>
             <div className="flex gap-2 text-xs font-medium">
               <span>Premium</span>
-              <span>Private</span>
+              <p className="flex items-center space-x-1">
+                {workspace?.visibility === "Private" && <LockIcon size={16} />}
+                {workspace?.visibility === "Public" && <LockIcon size={16} />}
+                <span>{workspace?.visibility}</span>
+              </p>
             </div>
           </div>
         </div>
