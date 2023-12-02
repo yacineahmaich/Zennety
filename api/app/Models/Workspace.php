@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Workspace extends Model
 {
@@ -14,20 +14,18 @@ class Workspace extends Model
         'name',
         'description',
         'visibility',
-        'owner_id',
     ];
 
     public function resolveRouteBinding($value, $field = null)
     {
-        // TODO: Search in all user workspaces (owner or member)
         return $this
             ->where('id', $value)
-            ->where('owner_id', auth()->id())
+            ->whereIn('id', auth()->user()->memberships->pluck('membershipable_id'))
             ->firstOrFail();
     }
 
-    public function owner(): HasOne
+    public function members(): MorphMany
     {
-        return $this->hasOne(User::class, 'id', 'owner_id');
+        return $this->morphMany(Membership::class, 'membershipable');
     }
 }

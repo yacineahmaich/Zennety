@@ -3,7 +3,6 @@ import { useCreateWorkspace } from "@/services/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Globe2Icon, LockIcon, PlusCircleIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
@@ -31,7 +30,7 @@ import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(4).max(55),
-  description: z.string().max(55),
+  description: z.string().max(55).optional(),
   visibility: z.enum(["Public", "Private"]),
 });
 
@@ -39,7 +38,6 @@ export type CreateWorkspace = z.infer<typeof formSchema>;
 
 const CreateWorkspace = () => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
   const { createWorkspace, isLoading } = useCreateWorkspace();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,7 +59,7 @@ const CreateWorkspace = () => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button size="sm">
           <PlusCircleIcon size={20} className="mr-2" /> {t("create")}

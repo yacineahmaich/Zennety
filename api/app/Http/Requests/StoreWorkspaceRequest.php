@@ -27,19 +27,16 @@ class StoreWorkspaceRequest extends FormRequest
             'name' => [
                 'required',
                 'min:4',
-                'max:55',
-                Rule::unique('workspaces', 'name')
-                    ->where(
-                        fn (Builder $query) => $query->where('owner_id', auth()->id())
-                    )
+                'max:55'
             ],
             'description' => [
-                'required',
                 'max:255'
             ],
             'visibility' => [
                 'in:Public,Private'
             ],
+            // User can have only one memebership for wokspace/board
+            Rule::unique('memberships', 'membershipable_id')->where('user_id', auth()->id())
         ];
     }
 }

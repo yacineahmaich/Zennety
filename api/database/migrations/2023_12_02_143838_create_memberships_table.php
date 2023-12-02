@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('workspaces', function (Blueprint $table) {
+        Schema::create('memberships', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->enum('visibility', ['Public', 'Private']);
+            $table->morphs('membershipable');
+            $table->foreignId('user_id')->constrained();
+            $table->unique(['user_id', 'membershipable_type', 'membershipable_id']);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('workspaces');
+        Schema::dropIfExists('memberships');
     }
 };

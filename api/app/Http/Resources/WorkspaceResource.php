@@ -19,7 +19,7 @@ class WorkspaceResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'visibility' => $this->visibility,
-            'owner' => $this->whenLoaded('owner')
+            'members' => $this->whenLoaded('members'),
         ];
     }
 }

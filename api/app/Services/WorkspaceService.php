@@ -10,12 +10,19 @@ class WorkspaceService
 {
     public function store(WorkspaceDTO $workspaceDTO): Workspace
     {
-        return Workspace::create([
+        /**@var Workspace $workspace */
+        $workspace = Workspace::create([
             'name' => $workspaceDTO->name,
             'description' => $workspaceDTO->description,
             'visibility' => $workspaceDTO->visibility,
-            'owner_id' => auth()->id()
         ]);
+
+        // Create workspace owner
+        $workspace->members()->create([
+            "user_id" => auth()->id()
+        ]);
+
+        return $workspace;
     }
 
     public function update(WorkspaceDTO $workspaceDTO, Workspace $workspace): Workspace
