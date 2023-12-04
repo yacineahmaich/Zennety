@@ -23,6 +23,7 @@ class StoreWorkspaceRequest extends FormRequest
      */
     public function rules(): array
     {
+        // TODO: User Cannot have duplicated workspace name (filter workspaces by membership)
         return [
             'name' => [
                 'required',

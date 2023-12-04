@@ -13,7 +13,7 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="container">
-      <header className="container fixed left-0 top-0 flex h-20 w-full items-center justify-between py-4">
+      <header className="container fixed left-0 top-0 flex h-20 w-full items-center justify-between py-4 backdrop-blur">
         <div>
           <Link href="/" className="text-2xl font-bold">
             <img src={app.logoUrl} alt={app.name} className="h-10" />

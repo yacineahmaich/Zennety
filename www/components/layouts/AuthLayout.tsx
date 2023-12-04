@@ -1,6 +1,6 @@
 import app from "@/lib/app";
-import { ReactNode } from "react";
 import { useTranslation } from "next-i18next";
+import { ReactNode } from "react";
 
 const AuthLayout = ({
   children,
@@ -34,7 +34,7 @@ const AuthLayout = ({
           </p>
         )}
       </div>
-      <div>{children}</div>
+      <div className="w-[300px]">{children}</div>
     </div>
   );
 };

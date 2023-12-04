@@ -1,3 +1,4 @@
+import BoardCard from "@/components/board/BoardCard";
 import { AppLayout } from "@/components/layouts";
 import Error from "@/components/shared/Error";
 import { Button } from "@/components/ui/button";
@@ -75,14 +76,7 @@ const Workspace: NextPageWithLayout = () => {
 
         <div className="grid grid-cols-4 gap-6">
           {Array.from({ length: 6 }, (_, i) => (
-            <Card
-              key={i}
-              className=" bg-[url('https://trello-backgrounds.s3.amazonaws.com/SharedBackground/640x960/6cfd81c00dcbe11c24e47049d150cbe4/photo-1691418173358-492743391cf5.jpg')] bg-cover bg-center"
-            >
-              <div className="relative h-28 rounded-[inherit] bg-black/30 p-4">
-                <h3 className="text-sm font-bold text-white">Ecowatt</h3>
-              </div>
-            </Card>
+            <BoardCard key={i} />
           ))}
 
           <Card className="flex items-center justify-center">

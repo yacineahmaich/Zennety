@@ -8,6 +8,14 @@ use App\Models\Workspace;
 
 class WorkspaceService
 {
+    public function getMyWorkspaces()
+    {
+        // TODO: Group query by owned workspaces and guest workspaces
+        return Workspace::with('members')->whereHas('members', function ($query) {
+            $query->where('user_id', auth()->id());
+        })->get();
+    }
+
     public function store(WorkspaceDTO $workspaceDTO): Workspace
     {
         /**@var Workspace $workspace */

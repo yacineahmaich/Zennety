@@ -22,7 +22,9 @@ class WorkspaceController extends Controller
      */
     public function index()
     {
-        //
+        $workspaces = $this->service->getMyWorkspaces();
+
+        return WorkspaceResource::collection($workspaces);
     }
 
     /**

@@ -16,6 +16,12 @@ const getWorkspaceById = async (id: number): Promise<App.Models.Workspace> => {
   return response.data.data;
 };
 
+const getMyWorkspaces = async (): Promise<App.Models.Workspace[]> => {
+  const response = await api.get(`/workspaces`);
+
+  return response.data.data;
+};
+
 /**
  * ==========================================
  * ========= QUERIES ========================
@@ -30,6 +36,20 @@ export const useWorkspace = (id: number) => {
 
   return {
     workspace: data,
+    isLoading,
+    isError,
+    error,
+  };
+};
+
+export const useMyWorkspaces = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["my-workspaces"],
+    queryFn: () => getMyWorkspaces(),
+  });
+
+  return {
+    workspaces: data,
     isLoading,
     isError,
     error,
