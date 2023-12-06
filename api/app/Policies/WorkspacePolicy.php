@@ -20,7 +20,7 @@ class WorkspacePolicy
      */
     public function view(User $user, Workspace $workspace): bool
     {
-        return true;
+        return $user->memberFor($workspace)->hasPermissionTo('view-workspace');
     }
 
     /**
@@ -36,7 +36,7 @@ class WorkspacePolicy
      */
     public function update(User $user, Workspace $workspace): bool
     {
-        return true;
+        return $user->memberFor($workspace)->hasPermissionTo('update-workspace');
     }
 
     /**
@@ -44,7 +44,7 @@ class WorkspacePolicy
      */
     public function delete(User $user, Workspace $workspace): bool
     {
-        return true;
+        return $user->memberFor($workspace)->hasPermissionTo('delete-workspace');
     }
 
     /**

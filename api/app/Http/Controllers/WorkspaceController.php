@@ -44,6 +44,8 @@ class WorkspaceController extends Controller
      */
     public function show(Workspace $workspace): WorkspaceResource
     {
+        $this->authorize('view', $workspace);
+
         return WorkspaceResource::make($workspace);
     }
 
@@ -52,6 +54,8 @@ class WorkspaceController extends Controller
      */
     public function update(UpdateWorkspaceRequest $request, Workspace $workspace): WorkspaceResource
     {
+        $this->authorize('update', $workspace);
+
         $workspace = $this->service->update(
             WorkspaceDTO::fromRequest($request),
             $workspace
@@ -65,6 +69,8 @@ class WorkspaceController extends Controller
      */
     public function destroy(Workspace $workspace): Response
     {
+        $this->authorize('delete', $workspace);
+
         $workspace->delete();
 
         return response()->noContent();

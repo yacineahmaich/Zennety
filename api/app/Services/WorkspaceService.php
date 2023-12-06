@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\DTO\WorkspaceDTO;
+use App\Http\Resources\WorkspaceResource;
 use App\Models\Workspace;
 
 class WorkspaceService
@@ -11,9 +12,11 @@ class WorkspaceService
     public function getMyWorkspaces()
     {
         // TODO: Group query by owned workspaces and guest workspaces
-        return Workspace::with('members')->whereHas('members', function ($query) {
-            $query->where('user_id', auth()->id());
-        })->get();
+        return WorkspaceResource::collection(
+            Workspace::with('members')->whereHas('members', function ($query) {
+                    $query->where('user_id', auth()->id());
+                })->get()
+        );
     }
 
     public function store(WorkspaceDTO $workspaceDTO): Workspace
@@ -26,9 +29,12 @@ class WorkspaceService
         ]);
 
         // Create workspace owner
-        $workspace->members()->create([
+        /**@var App\Models\Membership $owner */
+        $owner = $workspace->members()->create([
             "user_id" => auth()->id()
         ]);
+
+        $owner->assignRole('owner');
 
         return $workspace;
     }
