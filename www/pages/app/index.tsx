@@ -1,5 +1,6 @@
 import { AppLayout } from "@/components/layouts";
 import WorkspaceCard from "@/components/workspace/WorkspaceCard";
+import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { useMyWorkspaces, useUser } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
@@ -11,34 +12,15 @@ const Dashboard: NextPageWithLayout = () => {
   const { user } = useUser();
   const { t } = useTranslation("common");
 
+  const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
+
   if (isLoading) return <div></div>;
-
-  // Group workspaces by user role (owner  => owner, else => guest)
-  const groupedWorkspaces = workspaces?.reduce(
-    (
-      groups: { owner: App.Models.Workspace[]; guest: App.Models.Workspace[] },
-      workspace
-    ) => {
-      const member = workspace.members?.find(
-        (member) => member.id === user?.id
-      );
-
-      if (member?.role === "owner") {
-        groups.owner.push(workspace);
-      } else {
-        groups.guest.push(workspace);
-      }
-
-      return groups;
-    },
-    { owner: [], guest: [] }
-  );
 
   return (
     <div className="space-y-10">
       <section>
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-tight text-muted-foreground">
-          {t("your-workspaces")}
+          {t("my-workspaces")}
         </h2>
 
         <div className="grid grid-cols-3 gap-4">

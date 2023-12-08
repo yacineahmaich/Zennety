@@ -52,7 +52,7 @@ export const useUser = () => {
   });
 
   return {
-    user: data,
+    user: data!,
     isLoading,
   };
 };

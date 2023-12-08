@@ -1,15 +1,19 @@
 import app from "@/lib/app";
+import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
-import { useLogout, useUser } from "@/services";
+import { useLogout, useMyWorkspaces, useUser, useWorkspace } from "@/services";
 import {
   AlignRightIcon,
   ChevronDownIcon,
   KanbanSquareIcon,
   LayersIcon,
+  Loader2Icon,
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import { Button } from "../ui/button";
@@ -59,42 +63,60 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 const WorkspacesDropdown = () => {
+  const router = useRouter();
+  const { t } = useTranslation("common");
+  const { user } = useUser();
+  const { workspaces, isLoading } = useMyWorkspaces();
+  const { workspaceId } = router.query as { workspaceId: string };
+  const { workspace } = useWorkspace(+workspaceId);
+
+  const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
-          <LayersIcon size={20} className="mr-2" /> My workspace
+          <LayersIcon size={20} className="mr-2" />
+          <span>{workspace?.name || t("my-workspaces")}</span>
           <ChevronDownIcon size={20} className="ml-2" />
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56 max-w-full">
-        <DropdownMenuLabel>My workspaces</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/app/profile" className="cursor-pointer">
-              <UserIcon size={20} className="mr-2" />
-              Ecowat
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/app/profile" className="cursor-pointer">
-              <SettingsIcon size={20} className="mr-2" />
-              Ecotaqa
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuLabel>My workspaces</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/app/profile" className="cursor-pointer">
-              <UserIcon size={20} className="mr-2" />
-              Eshop
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        {isLoading ? (
+          <Loader2Icon size={30} className="mx-auto my-6 animate-spin" />
+        ) : (
+          <>
+            <DropdownMenuLabel>{t("my-workspaces")}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {groupedWorkspaces.owner.map((workspace) => (
+                <DropdownMenuItem key={workspace.id} asChild>
+                  <Link
+                    href={`/app/w/${workspace.id}`}
+                    className="cursor-pointer"
+                  >
+                    <span>{workspace.name}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+            <DropdownMenuLabel>{t("guest-workspaces")}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {groupedWorkspaces.guest.map((workspace) => (
+                <DropdownMenuItem key={workspace.id} asChild>
+                  <Link
+                    href={`/app/w/${workspace.id}`}
+                    className="cursor-pointer"
+                  >
+                    <span>{workspace.name}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
