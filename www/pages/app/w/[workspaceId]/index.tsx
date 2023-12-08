@@ -31,42 +31,44 @@ const Workspace: NextPageWithLayout = () => {
 
   return (
     <div>
-      <div className="flex w-full items-center justify-between border-b p-8">
-        <div>
-          <div className="flex items-center gap-2 ">
-            <div className="h-20 w-20 rounded-xl bg-accent shadow-xl">
-              <img
-                src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
-                alt="logo"
-                className="h-full w-full rounded-[inherit]"
-              />
-            </div>
-            <div className="flex flex-col">
-              <h2 className="font-semibold">{workspace?.name}</h2>
-              <div className="flex gap-2 text-xs font-medium">
-                <span>Premium</span>
-                <p className="flex items-center space-x-1">
-                  {workspace?.visibility === "Private" && (
-                    <LockIcon size={16} />
-                  )}
-                  {workspace?.visibility === "Public" && (
-                    <Globe2Icon size={16} />
-                  )}
-                  <span>{workspace?.visibility}</span>
-                </p>
+      <div className="w-full border-b p-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="h-20 w-20 rounded-xl bg-accent shadow-xl">
+                <img
+                  src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+                  alt="logo"
+                  className="h-full w-full rounded-[inherit]"
+                />
+              </div>
+              <div className="flex flex-col">
+                <h2 className="font-semibold">{workspace?.name}</h2>
+                <div className="flex gap-2 text-xs font-medium">
+                  <span>Premium</span>
+                  <p className="flex items-center space-x-1">
+                    {workspace?.visibility === "Private" && (
+                      <LockIcon size={16} />
+                    )}
+                    {workspace?.visibility === "Public" && (
+                      <Globe2Icon size={16} />
+                    )}
+                    <span>{workspace?.visibility}</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          {workspace?.description && (
-            <p className="mt-2 text-sm text-muted-foreground">
-              {workspace.description}
-            </p>
-          )}
+          <Button size="sm" variant="secondary">
+            <UserPlusIcon size={20} className="mr-2" />
+            Invite workspace members
+          </Button>
         </div>
-        <Button size="sm" variant="secondary">
-          <UserPlusIcon size={20} className="mr-2" />
-          Invite workspace members
-        </Button>
+        {workspace?.description && (
+          <p className="mt-2 max-w-2xl break-all text-sm text-muted-foreground">
+            {workspace.description}
+          </p>
+        )}
       </div>
       <div className="p-8">
         <span className="mb-4 flex items-center">

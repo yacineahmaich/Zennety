@@ -29,8 +29,8 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-  name: z.string().min(4).max(55),
-  description: z.string().max(55).optional(),
+  name: z.string().min(4).max(25),
+  description: z.string().max(255).optional(),
   visibility: z.enum(["Public", "Private"]),
 });
 
@@ -52,7 +52,7 @@ const CreateWorkspace = () => {
       onSuccess(data) {
         if (data.id) {
           // router.push(`/app/workspace/${data.id}`);
-          window.location.href = `/app/workspace/${data.id}`;
+          window.location.href = `/app/w/${data.id}`;
         }
       },
     });
@@ -132,8 +132,9 @@ const CreateWorkspace = () => {
                         >
                           <FormItem
                             className={cn(
-                              "flex-1 rounded-lg border border-border",
-                              field.value === "Private" && "border-foreground"
+                              "flex-1 rounded-lg",
+                              field.value === "Private" &&
+                                "ring-2 ring-ring ring-offset-2"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
@@ -154,8 +155,9 @@ const CreateWorkspace = () => {
                           </FormItem>
                           <FormItem
                             className={cn(
-                              "flex-1 rounded-lg border border-border",
-                              field.value === "Public" && "border-foreground"
+                              "flex-1 rounded-lg",
+                              field.value === "Public" &&
+                                "ring-2 ring-ring ring-offset-2"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">

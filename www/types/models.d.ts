@@ -1,5 +1,5 @@
 declare namespace App.Models {
-  export interface User {
+  interface User {
     id: number;
     name: string;
     email: string;
@@ -7,10 +7,18 @@ declare namespace App.Models {
     created_at: string | null;
     updated_at: string | null;
   }
-  export interface Workspace {
+  interface Workspace {
     id: number;
     name: string;
     description: string;
     visibility: "Public" | "Private";
+    members?: Member[];
+  }
+  interface Member {
+    id: number;
+    name: string;
+    email: string;
+    permissions: string[];
+    role: string;
   }
 }

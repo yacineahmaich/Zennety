@@ -42,5 +42,8 @@
   "something-went-wrong": "Ooops, Something went wrong",
   "contact-us-for-problem": "If the problem persist please contact us.",
   "contact-us": "Contact Us",
-  "try-again": "Try Again"
+  "try-again": "Try Again",
+
+  "your-workspaces": "Your Workspaces",
+  "guest-workspaces": "Guest Workspaces"
 }

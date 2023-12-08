@@ -26,7 +26,7 @@ class UpdateWorkspaceRequest extends FormRequest
             'name' => [
                 'required',
                 'min:4',
-                'max:55',
+                'max:25',
                 Rule::unique('workspaces', 'name')
                     ->ignore($this->id)
             ],
