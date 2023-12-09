@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Visibility;
 use App\Models\User;
 use App\Models\Workspace;
 
@@ -20,7 +21,15 @@ class WorkspacePolicy
      */
     public function view(User $user, Workspace $workspace): bool
     {
-        return $user->memberFor($workspace)->hasPermissionTo('view-workspace');
+        if ($workspace->visibility == Visibility::PUBLIC) {
+            return true;
+        }
+
+        if (!$member = $user->memberFor($workspace)) {
+            return false;
+        }
+
+        return $member->hasPermissionTo('view-workspace');
     }
 
     /**

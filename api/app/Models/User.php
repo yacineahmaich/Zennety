@@ -51,10 +51,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Membership::class);
     }
 
-    public function memberFor(Workspace $workspace): Membership
+    public function memberFor(Workspace $workspace): ?Membership
     {
-        return Membership::where('membershipable_type', 'App\Models\Workspace')
+        return $this->memberships()
+            ->where('membershipable_type', 'App\Models\Workspace')
             ->where('membershipable_id', $workspace->id)
+            ->where('user_id', $this->id)
             ->first();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Enums\Visibility;
 
 class Workspace extends Model
 {
@@ -20,7 +21,16 @@ class Workspace extends Model
     {
         return $this
             ->where('id', $value)
-            ->whereIn('id', auth()->user()->memberships->pluck('membershipable_id'))
+            ->where(function ($query) {
+                $query->whereIn(
+                    'id',
+                    auth()->user()
+                        ->memberships()
+                        ->where('membershipable_type', 'App\Models\Workspace')
+                        ->select('membershipable_id')
+                )
+                    ->orWhere('visibility', Visibility::PUBLIC);
+            })
             ->firstOrFail();
     }
 
