@@ -1,5 +1,6 @@
 import app from "@/lib/app";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
+import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useLogout, useMyWorkspaces, useUser, useWorkspace } from "@/services";
 import {
@@ -39,7 +40,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
           collapsed ? "w-auto" : "w-64"
         )}
       >
-        <Link href="/app">
+        <Link href={route("app")}>
           <Logo
             collapsed={collapsed}
             toggleCollapsed={() => setCollapsed((c) => !c)}
@@ -93,9 +94,10 @@ const WorkspacesDropdown = () => {
               {groupedWorkspaces.owner.map((workspace) => (
                 <DropdownMenuItem key={workspace.id} asChild>
                   <Link
-                    href={`/app/w/${workspace.id}`}
+                    href={route("workspace", workspace.id)}
                     className="cursor-pointer"
                   >
+                    <KanbanSquareIcon size={16} className="mr-2" />
                     <span>{workspace.name}</span>
                   </Link>
                 </DropdownMenuItem>
@@ -107,7 +109,7 @@ const WorkspacesDropdown = () => {
               {groupedWorkspaces.guest.map((workspace) => (
                 <DropdownMenuItem key={workspace.id} asChild>
                   <Link
-                    href={`/app/w/${workspace.id}`}
+                    href={route("workspace", workspace.id)}
                     className="cursor-pointer"
                   >
                     <span>{workspace.name}</span>

@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { route } from "@/lib/routes";
 import { useLogin } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -93,7 +94,7 @@ const Login: NextPageWithLayout = () => {
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
-                    remember me
+                    {t("remember-me")}
                   </FormLabel>
                 </FormControl>
                 <FormMessage />
@@ -104,10 +105,10 @@ const Login: NextPageWithLayout = () => {
             {t("login")}
           </Button>
           <Link
-            href="/auth/forgot-password"
+            href={route("forgot-password")}
             className="mt-4 block text-sm text-secondary-foreground hover:underline"
           >
-            Forgot your password?
+            {t("forgot-password")}
           </Link>
         </form>
       </Form>

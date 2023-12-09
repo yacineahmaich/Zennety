@@ -13,6 +13,8 @@
   "your-confirmation-password": "Your confirmation password",
   "register": "Register",
   "login": "Log In",
+  "remember-me": "remember me",
+  "forgot-password": "Forgot your password?",
   "back-to-zennety": "Back to Zennety",
   "verify-email": "Verify your email",
   "verify-email-message": "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
