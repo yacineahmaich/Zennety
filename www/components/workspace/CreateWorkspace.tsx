@@ -135,7 +135,7 @@ const CreateWorkspace = () => {
                             className={cn(
                               "flex-1 rounded-lg",
                               field.value === "Private" &&
-                                "ring-2 ring-ring ring-offset-2"
+                                "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
@@ -158,7 +158,7 @@ const CreateWorkspace = () => {
                             className={cn(
                               "flex-1 rounded-lg",
                               field.value === "Public" &&
-                                "ring-2 ring-ring ring-offset-2"
+                                "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">

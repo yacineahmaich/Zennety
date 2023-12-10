@@ -1,7 +1,9 @@
 import BoardCard from "@/components/board/BoardCard";
+import EmptyWorkspace from "@/components/board/EmptyWorkspace";
 import { AppLayout } from "@/components/layouts";
 import { buttonVariants } from "@/components/ui/button";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
+import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { KanbanSquareIcon, SettingsIcon, UserIcon } from "lucide-react";
@@ -10,13 +12,11 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 
-const Dashboard: NextPageWithLayout = () => {
+const AppPage: NextPageWithLayout = () => {
   const { workspaces, isLoading } = useMyWorkspaces();
   const { user } = useUser();
 
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
-
-  if (isLoading) return <div></div>;
 
   return (
     <div className="space-y-10">
@@ -41,6 +41,8 @@ const WorkspaceSection = ({
 }) => {
   const { t } = useTranslation("common");
 
+  if (workspaces.length === 0) return;
+
   return (
     <section>
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-tight text-muted-foreground">
@@ -50,23 +52,24 @@ const WorkspaceSection = ({
       <div>
         {workspaces.map((workspace) => (
           <div key={workspace.id} className="p-4">
-            <div className="mb-4 flex items-center justify-between rounded">
+            <div className="mb-4 flex items-center justify-between">
               <h3 className="text-sm font-semibold tracking-tight text-muted-foreground">
                 {workspace.name}
               </h3>
               <div className="space-x-1 text-muted-foreground">
                 <Link
-                  href=""
+                  href={route("workspace", workspace.id)}
                   className={buttonVariants({ size: "sm", variant: "ghost" })}
                 >
                   <KanbanSquareIcon size={16} className="mr-2" />
-                  {t("boards")}
+                  {t("boards")} ({workspace.boards?.length})
                 </Link>
                 <Link
                   href=""
                   className={buttonVariants({ size: "sm", variant: "ghost" })}
                 >
-                  <UserIcon size={16} className="mr-2" /> {t("members")}
+                  <UserIcon size={16} className="mr-2" />
+                  {t("members")} ({workspace.members?.length})
                 </Link>
                 <Link
                   href=""
@@ -80,6 +83,10 @@ const WorkspaceSection = ({
               {workspace?.boards?.map((board) => (
                 <BoardCard key={board.id} board={board} />
               ))}
+
+              {workspace.boards?.length === 0 && (
+                <EmptyWorkspace workspace={workspace} />
+              )}
             </div>
           </div>
         ))}
@@ -98,8 +105,8 @@ export const getServerSideProps = async ({
   };
 };
 
-Dashboard.getLayout = (page) => {
+AppPage.getLayout = (page) => {
   return <AppLayout>{page}</AppLayout>;
 };
 
-export default Dashboard;
+export default AppPage;

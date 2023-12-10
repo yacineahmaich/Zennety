@@ -1,8 +1,10 @@
 import BoardCard from "@/components/board/BoardCard";
 import CreateBoard from "@/components/board/CreateBoard";
+import EmptyWorkspace from "@/components/board/EmptyWorkspace";
 import { AppLayout } from "@/components/layouts";
 import Error from "@/components/shared/Error";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import WorkspaceLoading from "@/components/workspace/WorkspaceLoading";
 import { useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
@@ -10,6 +12,7 @@ import {
   Globe2Icon,
   KanbanSquareIcon,
   LockIcon,
+  PenSquareIcon,
   UserPlusIcon,
 } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
@@ -83,7 +86,23 @@ const Workspace: NextPageWithLayout = () => {
             <BoardCard key={board.id} board={board} />
           ))}
 
-          {workspace && <CreateBoard workspace={workspace} />}
+          {workspace?.boards?.length === 0 && (
+            <EmptyWorkspace workspace={workspace} />
+          )}
+
+          {workspace?.boards && workspace.boards.length > 0 && (
+            <CreateBoard
+              openTrigger={
+                <Card className="flex items-center justify-center ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2">
+                  <Button variant="ghost" className="h-full w-full">
+                    <PenSquareIcon size={16} className="mr-2" />
+                    {t("create-new-board")}
+                  </Button>
+                </Card>
+              }
+              workspace={workspace}
+            />
+          )}
         </div>
       </div>
     </div>

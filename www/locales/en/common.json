@@ -58,5 +58,7 @@
   "members": "Members",
   "settings": "Settings",
   "create-new-board": "Create New Board",
-  "invite-workspace-members": "Invite workspace members"
+  "invite-workspace-members": "Invite workspace members",
+  "empty-workspace-title": "This workspace doesn't have any board yet.",
+  "empty-workspace-subtitle": "Start by creating a board in your workspace."
 }

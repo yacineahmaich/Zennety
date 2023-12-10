@@ -2,12 +2,11 @@ import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useCreateBoard } from "@/services";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Globe2Icon, LockIcon, PenSquareIcon } from "lucide-react";
+import { Globe2Icon, LockIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../ui/button";
-import { Card } from "../ui/card";
 import {
   Dialog,
   DialogContent,
@@ -39,7 +38,13 @@ const formSchema = z.object({
 
 export type CreateBoard = z.infer<typeof formSchema>;
 
-const CreateBoard = ({ workspace }: { workspace: App.Models.Workspace }) => {
+const CreateBoard = ({
+  workspace,
+  openTrigger,
+}: {
+  workspace: App.Models.Workspace;
+  openTrigger: JSX.Element;
+}) => {
   const { t } = useTranslation("common");
   const { createBoard, isLoading } = useCreateBoard();
 
@@ -64,13 +69,7 @@ const CreateBoard = ({ workspace }: { workspace: App.Models.Workspace }) => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Card className="flex items-center justify-center ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2">
-          <Button variant="ghost" className="h-full w-full">
-            <PenSquareIcon size={16} className="mr-2" /> {t("create-new-board")}
-          </Button>
-        </Card>
-      </DialogTrigger>
+      <DialogTrigger asChild>{openTrigger}</DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-auto lg:min-w-[85vw]">
         <div className="flex gap-8 pt-6">
           <div className="flex-1">
@@ -138,7 +137,7 @@ const CreateBoard = ({ workspace }: { workspace: App.Models.Workspace }) => {
                             className={cn(
                               "flex-1 rounded-lg",
                               field.value === "Private" &&
-                                "ring-2 ring-ring ring-offset-2"
+                                "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
@@ -161,7 +160,7 @@ const CreateBoard = ({ workspace }: { workspace: App.Models.Workspace }) => {
                             className={cn(
                               "flex-1 rounded-lg",
                               field.value === "Public" &&
-                                "ring-2 ring-ring ring-offset-2"
+                                "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
