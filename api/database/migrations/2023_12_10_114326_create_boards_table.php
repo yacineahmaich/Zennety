@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Visibility;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('memberships', function (Blueprint $table) {
+        Schema::create('boards', function (Blueprint $table) {
             $table->id();
-            $table->morphs('membershipable');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->unique(['user_id', 'membershipable_type', 'membershipable_id']);
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->enum('visibility', Visibility::values());
+            $table->foreignId('workspace_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('memberships');
+        Schema::dropIfExists('boards');
     }
 };

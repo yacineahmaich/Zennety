@@ -46,7 +46,7 @@ class WorkspaceController extends Controller
     {
         $this->authorize('view', $workspace);
 
-        return WorkspaceResource::make($workspace);
+        return WorkspaceResource::make($workspace->load('boards'));
     }
 
     /**

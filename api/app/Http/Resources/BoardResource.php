@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WorkspaceResource extends JsonResource
+class BoardResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,11 @@ class WorkspaceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'workspaceId' => $this->workspace_id,
             'name' => $this->name,
             'description' => $this->description,
             'visibility' => $this->visibility,
-            'members' => MembershipResource::collection($this->whenLoaded('members')),
-            'boards' => BoardResource::collection($this->whenLoaded('boards')),
+            'members' => MembershipResource::collection($this->whenLoaded('members'))
         ];
     }
 }

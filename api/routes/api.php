@@ -24,6 +24,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::apiResource('workspaces', WorkspaceController::class);
+    require __DIR__ . '/workspace.php';
+    require __DIR__ . '/board.php';
 });
-
