@@ -1,11 +1,45 @@
+import { Globe2Icon, LockIcon, StarIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
+import { route } from "www/lib/routes";
+import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 
-const BoardCard = () => {
+type Props = {
+  board: App.Models.Board;
+};
+
+const BoardCard = ({ board }: Props) => {
   return (
-    <Card className=" bg-[url('https://trello-backgrounds.s3.amazonaws.com/SharedBackground/640x960/6cfd81c00dcbe11c24e47049d150cbe4/photo-1691418173358-492743391cf5.jpg')] bg-cover bg-center">
-      <div className="relative h-28 rounded-[inherit] bg-black/30 p-4">
-        <h3 className="text-sm font-bold text-white">Ecowatt</h3>
+    <Card className="group flex flex-col overflow-hidden p-4 ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2">
+      <header className="flex items-center justify-between">
+        <Link href={route("board", board.workspaceId, board.id)}>
+          <h3 className="text-sm font-bold  hover:underline">{board.name}</h3>
+        </Link>
+        <Badge variant="secondary" className="space-x-1 ">
+          {board?.visibility === "Private" && <LockIcon size={14} />}
+          {board?.visibility === "Public" && <Globe2Icon size={14} />}
+          <span>{board.visibility}</span>
+        </Badge>
+      </header>
+      <div className="my-4">
+        <p className="line-clamp-2 max-w-[80%] break-all text-xs text-muted-foreground">
+          {board.description}
+        </p>
       </div>
+      <footer className="mt-auto flex items-center justify-between">
+        <div className="flex items-center divide-x">
+          <div className="flex items-center pr-2 text-xs text-muted-foreground">
+            <UserIcon size={14} />
+            <span>{board.members?.length}</span>
+          </div>
+          <p className="pl-2 text-xs text-muted-foreground">
+            Updated 2 hours ago
+          </p>
+        </div>
+        <button>
+          <StarIcon size={16} />
+        </button>
+      </footer>
     </Card>
   );
 };

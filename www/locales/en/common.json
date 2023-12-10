@@ -25,7 +25,6 @@
   "light": "Light",
   "dark": "Dark",
   "system": "System",
-
   "create": "Create",
   "create-workspace-title": "Create Workspace",
   "create-workspace-subtitle": "Enhance your efficiency by streamlining access to boards, making them conveniently accessible from a centralized location for everyone.",
@@ -37,15 +36,27 @@
   "visibility": "Visibility",
   "public": "Public",
   "private": "Private",
-  "public-text": "Visible to every users including guests.",
-  "private-text": "Visible only to workpace memebers.",
+  "public-workspace-text": "Visible to every users including guests.",
+  "private-workspace-text": "Visible only to workpace memebers.",
   "create-workspace": "Create workspace",
-
+  "create-board": "Create board",
+  "create-board-title": "Create board",
+  "create-board-subtitle": "Centralized board hub for streamlined collaboration.",
+  "board-name-placeholder": "e.g Devops enginnering",
+  "board-name-text": "This is the name of your project, team or organization.",
+  "board-description-placeholder": "Introduce board to team memebers",
+  "board-description-text": "Briefly introduce your Workspace to engage your members.",
+  "public-board-text": "Visible to every users including guests.",
+  "private-board-text": "Visible only to board memebers.",
   "something-went-wrong": "Ooops, Something went wrong",
   "contact-us-for-problem": "If the problem persist please contact us.",
   "contact-us": "Contact Us",
   "try-again": "Try Again",
-
   "my-workspaces": "My Workspaces",
-  "guest-workspaces": "Guest Workspaces"
+  "guest-workspaces": "Guest Workspaces",
+  "boards": "Boards",
+  "members": "Members",
+  "settings": "Settings",
+  "create-new-board": "Create New Board",
+  "invite-workspace-members": "Invite workspace members"
 }

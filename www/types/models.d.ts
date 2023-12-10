@@ -13,6 +13,15 @@ declare namespace App.Models {
     description: string;
     visibility: "Public" | "Private";
     members?: Member[];
+    boards?: Board[];
+  }
+  interface Board {
+    id: number;
+    workspaceId: number;
+    name: string;
+    description: string;
+    visibility: "Public" | "Private";
+    members?: Member[];
   }
   interface Member {
     id: number;

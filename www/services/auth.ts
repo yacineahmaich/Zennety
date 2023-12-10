@@ -1,4 +1,5 @@
 import { api, csrf } from "@/lib/api";
+import { route } from "@/lib/routes";
 import { UserLogin } from "@/pages/auth/login";
 import { UserRegister } from "@/pages/auth/register";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -70,7 +71,7 @@ export const useRegister = () => {
     mutationFn: register,
     onSuccess(user) {
       queryClient.setQueryData(["user"], user);
-      router.push("/app");
+      router.replace(route("app"));
     },
   });
 
@@ -88,7 +89,7 @@ export const useLogin = () => {
     mutationFn: login,
     onSuccess(user) {
       queryClient.setQueryData(["user"], user);
-      router.push((router.query.callback as string) || "/app");
+      router.replace((router.query.callback as string) || route("app"));
     },
   });
 
@@ -106,7 +107,7 @@ export const useLogout = () => {
     mutationFn: logout,
     onSuccess() {
       queryClient.setQueryData(["user"], null);
-      router.push("/auth/login");
+      router.replace(route("login"));
     },
   });
 

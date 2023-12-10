@@ -1,3 +1,4 @@
+import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useCreateWorkspace } from "@/services/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,19 +41,19 @@ const CreateWorkspace = () => {
   const { t } = useTranslation();
   const { createWorkspace, isLoading } = useCreateWorkspace();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<CreateWorkspace>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       visibility: "Private",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: CreateWorkspace) => {
     createWorkspace(values, {
-      onSuccess(data) {
-        if (data.id) {
+      onSuccess({ id }) {
+        if (id) {
           // router.push(`/app/workspace/${data.id}`);
-          window.location.href = `/app/w/${data.id}`;
+          window.location.href = route("workspace", id);
         }
       },
     });

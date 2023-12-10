@@ -1,5 +1,13 @@
-import { ImageIcon, MoreHorizontalIcon, PlusCircleIcon } from "lucide-react";
+import { route } from "@/lib/routes";
+import { cn } from "@/lib/utils";
+import { useCreateBoard } from "@/services";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Globe2Icon, LockIcon, PenSquareIcon } from "lucide-react";
+import { useTranslation } from "next-i18next";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "../ui/button";
+import { Card } from "../ui/card";
 import {
   Dialog,
   DialogContent,
@@ -9,47 +17,191 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Textarea } from "../ui/textarea";
 
-const CreateBoard = () => {
+const formSchema = z.object({
+  name: z.string().min(4).max(25),
+  description: z.string().max(255).optional(),
+  workspaceId: z.number(),
+  visibility: z.enum(["Public", "Private"]),
+});
+
+export type CreateBoard = z.infer<typeof formSchema>;
+
+const CreateBoard = ({ workspace }: { workspace: App.Models.Workspace }) => {
+  const { t } = useTranslation("common");
+  const { createBoard, isLoading } = useCreateBoard();
+
+  const form = useForm<CreateBoard>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      workspaceId: workspace.id,
+      visibility: "Private",
+    },
+  });
+
+  const onSubmit = (values: CreateBoard) => {
+    createBoard(values, {
+      onSuccess({ id }) {
+        if (id) {
+          // router.push(`/app/workspace/${data.id}`);
+          window.location.href = route("board", workspace.id, id);
+        }
+      },
+    });
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm">
-          <PlusCircleIcon size={20} className="mr-2" /> Create
-        </Button>
+        <Card className="flex items-center justify-center ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2">
+          <Button variant="ghost" className="h-full w-full">
+            <PenSquareIcon size={16} className="mr-2" /> {t("create-new-board")}
+          </Button>
+        </Card>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[350px]">
-        <DialogHeader>
-          <DialogTitle>Create Board</DialogTitle>
-          <DialogDescription>
-            Centralized board hub for streamlined collaboration.
-          </DialogDescription>
-        </DialogHeader>
-        <h3 className="text-xs font-semibold text-gray-600">Background</h3>
-        <div className="grid grid-cols-6 gap-3">
-          <div className="aspect-square rounded-lg bg-red-400"></div>
-          <div className="aspect-square rounded-lg bg-yellow-400"></div>
-          <div className="aspect-square rounded-lg bg-blue-400"></div>
-          <div className="aspect-square rounded-lg bg-pink-400"></div>
-          <div className="aspect-square rounded-lg bg-purple-400"></div>
-          <div className="flex aspect-square cursor-pointer items-center justify-center rounded-lg bg-gray-200">
-            <MoreHorizontalIcon size={16} />
-          </div>
-        </div>
+      <DialogContent className="max-h-screen overflow-y-auto lg:min-w-[85vw]">
+        <div className="flex gap-8 pt-6">
+          <div className="flex-1">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-2"
+              >
+                <DialogHeader>
+                  <DialogTitle>{t("create-board-title")}</DialogTitle>
+                  <DialogDescription>
+                    {t("create-board-subtitle")}
+                  </DialogDescription>
+                </DialogHeader>
 
-        <label
-          htmlFor="background-image"
-          className="flex h-20 cursor-pointer items-center justify-center rounded-lg border border-border"
-        >
-          <ImageIcon size={20} className="text-muted-foreground" />
-          <Input id="background-image" type="file" className="hidden" />
-        </label>
-        <h3 className="text-xs font-semibold text-gray-600">Name</h3>
-        <Input placeholder="Workspace name" />
-        <DialogFooter>
-          <Button type="submit">Create</Button>
-        </DialogFooter>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("name")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t("board-name-placeholder")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>{t("board-name-text")}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("description")}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t("board-description-placeholder")}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        {t("board-description-text")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="visibility"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("visibility")}</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex space-x-1"
+                        >
+                          <FormItem
+                            className={cn(
+                              "flex-1 rounded-lg",
+                              field.value === "Private" &&
+                                "ring-2 ring-ring ring-offset-2"
+                            )}
+                          >
+                            <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
+                              <div className="flex items-center space-x-2">
+                                <LockIcon size={16} />
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value="Private"
+                                    className="hidden"
+                                  />
+                                </FormControl>
+                                <span>{t("private")}</span>
+                              </div>
+                              <FormDescription>
+                                {t("private-board-text")}
+                              </FormDescription>
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem
+                            className={cn(
+                              "flex-1 rounded-lg",
+                              field.value === "Public" &&
+                                "ring-2 ring-ring ring-offset-2"
+                            )}
+                          >
+                            <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
+                              <div className="flex items-center space-x-2">
+                                <Globe2Icon size={16} />
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value="Public"
+                                    className="hidden"
+                                  />
+                                </FormControl>
+                                <span>{t("public")}</span>
+                              </div>
+                              <FormDescription>
+                                {t("public-board-text")}
+                              </FormDescription>
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <DialogFooter>
+                  <Button
+                    size="sm"
+                    type="submit"
+                    className="mt-4 w-full"
+                    disabled={isLoading}
+                  >
+                    {t("create-board")}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </div>
+          <div className="hidden flex-1 rounded-lg bg-foreground lg:block"></div>
+        </div>
       </DialogContent>
     </Dialog>
   );

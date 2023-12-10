@@ -40,12 +40,10 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
           collapsed ? "w-auto" : "w-64"
         )}
       >
-        <Link href={route("app")}>
-          <Logo
-            collapsed={collapsed}
-            toggleCollapsed={() => setCollapsed((c) => !c)}
-          />
-        </Link>
+        <Logo
+          collapsed={collapsed}
+          toggleCollapsed={() => setCollapsed((c) => !c)}
+        />
         <SideNav collapsed={collapsed} />
         <UserDropdown collapsed={collapsed} />
       </aside>
@@ -139,10 +137,12 @@ const Logo = ({
       )}
     >
       {!collapsed && (
-        <div className="flex items-center gap-2">
-          <img src={app.logoUrl} alt={app.name} className="h-10" />
-          <span className="text-xl font-bold">{app.name}</span>
-        </div>
+        <Link href={route("app")}>
+          <div className="flex items-center gap-2">
+            <img src={app.logoUrl} alt={app.name} className="h-10" />
+            <span className="text-xl font-bold">{app.name}</span>
+          </div>
+        </Link>
       )}
       <Button
         size="icon"
