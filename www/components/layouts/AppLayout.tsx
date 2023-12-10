@@ -33,10 +33,10 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="flex">
+    <div className={cn("flex", collapsed ? "pl-24" : "pl-64")}>
       <aside
         className={cn(
-          "flex h-screen shrink-0 flex-col space-y-5 overflow-hidden border-r border-border px-4 pb-4",
+          "fixed left-0 top-0 flex h-screen shrink-0 flex-col space-y-5 overflow-hidden border-r border-border bg-background px-4 pb-4",
           collapsed ? "w-auto" : "w-64"
         )}
       >
@@ -47,7 +47,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <SideNav collapsed={collapsed} />
         <UserDropdown collapsed={collapsed} />
       </aside>
-      <div className="flex-1 p-4">
+      <div className="min-w-[1024px] flex-1 p-4">
         <header className="mb-10 flex items-center justify-between">
           <div className="space-x-2">
             <WorkspacesDropdown />
@@ -161,7 +161,11 @@ const SideNav = ({ collapsed }: { collapsed: boolean }) => {
     <nav className="flex-1">
       <ul className="space-y-2 overflow-y-auto">
         <li>
-          <Button variant="ghost" className="justify-start" asChild>
+          <Button
+            variant="ghost"
+            className={cn(collapsed ? "justify-center" : "justify-start")}
+            asChild
+          >
             <a
               href="#"
               className="flex w-full items-center gap-3 overflow-hidden"
