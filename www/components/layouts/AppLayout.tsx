@@ -90,35 +90,43 @@ const WorkspacesDropdown = () => {
           <Loader2Icon size={30} className="mx-auto my-6 animate-spin" />
         ) : (
           <>
-            <DropdownMenuLabel>{t("my-workspaces")}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              {groupedWorkspaces.owner.map((workspace) => (
-                <DropdownMenuItem key={workspace.id} asChild>
-                  <Link
-                    href={route("workspace", workspace.id)}
-                    className="cursor-pointer"
-                  >
-                    <KanbanSquareIcon size={16} className="mr-2" />
-                    <span>{workspace.name}</span>
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuGroup>
-            <DropdownMenuLabel>{t("guest-workspaces")}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              {groupedWorkspaces.guest.map((workspace) => (
-                <DropdownMenuItem key={workspace.id} asChild>
-                  <Link
-                    href={route("workspace", workspace.id)}
-                    className="cursor-pointer"
-                  >
-                    <span>{workspace.name}</span>
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuGroup>
+            {groupedWorkspaces.owner.length > 0 && (
+              <>
+                <DropdownMenuLabel>{t("my-workspaces")}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  {groupedWorkspaces.owner.map((workspace) => (
+                    <DropdownMenuItem key={workspace.id} asChild>
+                      <Link
+                        href={route("workspace", workspace.id)}
+                        className="cursor-pointer"
+                      >
+                        <KanbanSquareIcon size={16} className="mr-2" />
+                        <span>{workspace.name}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </>
+            )}
+            {groupedWorkspaces.guest.length > 0 && (
+              <>
+                <DropdownMenuLabel>{t("guest-workspaces")}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  {groupedWorkspaces.guest.map((workspace) => (
+                    <DropdownMenuItem key={workspace.id} asChild>
+                      <Link
+                        href={route("workspace", workspace.id)}
+                        className="cursor-pointer"
+                      >
+                        <span>{workspace.name}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </>
+            )}
           </>
         )}
       </DropdownMenuContent>
