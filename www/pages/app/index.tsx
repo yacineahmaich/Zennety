@@ -6,7 +6,13 @@ import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
-import { KanbanSquareIcon, SettingsIcon, UserIcon } from "lucide-react";
+import {
+  FolderKanbanIcon,
+  GripHorizontalIcon,
+  KanbanSquareIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -19,7 +25,7 @@ const AppPage: NextPageWithLayout = () => {
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
 
   return (
-    <div className="space-y-10">
+    <div>
       <WorkspaceSection
         title="my-workspaces"
         workspaces={groupedWorkspaces.owner}
@@ -45,15 +51,18 @@ const WorkspaceSection = ({
 
   return (
     <section>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-tight text-muted-foreground">
-        {t(title)}
+      <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">
+        <FolderKanbanIcon className="mr-2 w-6" />
+        <span>{t(title)}</span>
       </h2>
 
-      <div>
+      <div className="ml-3 border-l border-accent pb-5">
         {workspaces.map((workspace) => (
           <div key={workspace.id} className="p-4">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-sm font-semibold tracking-tight text-muted-foreground">
+              <h3 className="-ml-4 flex items-center gap-1 text-sm font-semibold tracking-tight text-muted-foreground">
+                <span className="h-px w-4 bg-accent"></span>
+                <GripHorizontalIcon size={20} />
                 {workspace.name}
               </h3>
               <div className="space-x-1 text-muted-foreground">

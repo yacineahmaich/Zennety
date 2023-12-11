@@ -150,7 +150,7 @@ const CreateWorkspace = () => {
                                 <span>{t("private")}</span>
                               </div>
                               <FormDescription>
-                                {t("private-text")}
+                                {t("private-workspace-text")}
                               </FormDescription>
                             </FormLabel>
                           </FormItem>
@@ -173,7 +173,7 @@ const CreateWorkspace = () => {
                                 <span>{t("public")}</span>
                               </div>
                               <FormDescription>
-                                {t("public-text")}
+                                {t("public-workspace-text")}
                               </FormDescription>
                             </FormLabel>
                           </FormItem>
