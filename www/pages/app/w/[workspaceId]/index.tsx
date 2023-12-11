@@ -66,7 +66,7 @@ const Workspace: NextPageWithLayout = () => {
           </div>
           <Button size="sm" variant="secondary">
             <UserPlusIcon size={20} className="mr-2" />
-            {"invite-workspace-members"}
+            {t("invite-workspace-members")}
           </Button>
         </div>
         {workspace?.description && (
