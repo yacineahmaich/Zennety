@@ -3,9 +3,6 @@ declare namespace App.Models {
     id: number;
     name: string;
     email: string;
-    email_verified_at: string | null;
-    created_at: string | null;
-    updated_at: string | null;
   }
   interface Workspace {
     id: number;
