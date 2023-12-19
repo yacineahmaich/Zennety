@@ -43,7 +43,7 @@ class BoardController extends Controller
      */
     public function show(Board $board)
     {
-        //
+        return BoardResource::make($board);
     }
 
     /**
