@@ -72,7 +72,7 @@ const WorkspacesDropdown = () => {
   const { user } = useUser();
   const { workspaces, isLoading } = useMyWorkspaces();
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace } = useWorkspace(+workspaceId);
+  const { workspace } = useWorkspace(workspaceId);
 
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
 
