@@ -24,7 +24,7 @@ const Workspace: NextPageWithLayout = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace, isLoading, isError, error } = useWorkspace(+workspaceId);
+  const { workspace, isLoading, isError, error } = useWorkspace(workspaceId);
 
   if (isError) {
     return <Error message={error?.message} />;

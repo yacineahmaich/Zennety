@@ -60,5 +60,7 @@
   "create-new-board": "Create New Board",
   "invite-workspace-members": "Invite workspace members",
   "empty-workspace-title": "This workspace doesn't have any board yet.",
-  "empty-workspace-subtitle": "Start by creating a board in your workspace."
+  "empty-workspace-subtitle": "Start by creating a board in your workspace.",
+  "home": "Home",
+  "templates": "Templates"
 }

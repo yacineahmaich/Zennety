@@ -39,7 +39,7 @@ const routes: Route[] = [
   },
   {
     name: "board",
-    buildPath: (params) => `/app/w/${params[0]}/b/${params[1]}`,
+    buildPath: (params) => `/app/b/${params[0]}`,
   },
 ];
 

@@ -7,18 +7,19 @@ import {
   ChevronDownIcon,
   ChevronLeftSquareIcon,
   ChevronRightSquareIcon,
+  FolderKanbanIcon,
   KanbanSquareIcon,
   LayersIcon,
-  Loader2Icon,
   SettingsIcon,
   UserIcon,
+  WalletCardsIcon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -86,47 +87,41 @@ const WorkspacesDropdown = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56 max-w-full">
-        {isLoading ? (
-          <Loader2Icon size={30} className="mx-auto my-6 animate-spin" />
-        ) : (
+        {groupedWorkspaces.owner.length > 0 && (
           <>
-            {groupedWorkspaces.owner.length > 0 && (
-              <>
-                <DropdownMenuLabel>{t("my-workspaces")}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  {groupedWorkspaces.owner.map((workspace) => (
-                    <DropdownMenuItem key={workspace.id} asChild>
-                      <Link
-                        href={route("workspace", workspace.id)}
-                        className="cursor-pointer"
-                      >
-                        <KanbanSquareIcon size={16} className="mr-2" />
-                        <span>{workspace.name}</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuGroup>
-              </>
-            )}
-            {groupedWorkspaces.guest.length > 0 && (
-              <>
-                <DropdownMenuLabel>{t("guest-workspaces")}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  {groupedWorkspaces.guest.map((workspace) => (
-                    <DropdownMenuItem key={workspace.id} asChild>
-                      <Link
-                        href={route("workspace", workspace.id)}
-                        className="cursor-pointer"
-                      >
-                        <span>{workspace.name}</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuGroup>
-              </>
-            )}
+            <DropdownMenuLabel>{t("my-workspaces")}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {groupedWorkspaces.owner.map((workspace) => (
+                <DropdownMenuItem key={workspace.id} asChild>
+                  <Link
+                    href={route("workspace", workspace.id)}
+                    className="cursor-pointer"
+                  >
+                    <KanbanSquareIcon size={16} className="mr-2" />
+                    <span>{workspace.name}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+          </>
+        )}
+        {groupedWorkspaces.guest.length > 0 && (
+          <>
+            <DropdownMenuLabel>{t("guest-workspaces")}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {groupedWorkspaces.guest.map((workspace) => (
+                <DropdownMenuItem key={workspace.id} asChild>
+                  <Link
+                    href={route("workspace", workspace.id)}
+                    className="cursor-pointer"
+                  >
+                    <span>{workspace.name}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
           </>
         )}
       </DropdownMenuContent>
@@ -164,15 +159,33 @@ const Logo = ({
 };
 
 const SideNav = () => {
+  const { t } = useTranslation();
+
   return (
     <nav className="flex-1 overflow-y-auto overflow-x-hidden">
-      <ul className="space-y-2">
+      <ul className="space-y-2 border-b border-accent pb-2">
         <li>
-          <Button variant="ghost" className="justify-start" asChild>
-            <a href="#" className="w-full">
-              <KanbanSquareIcon className="mr-2" /> Boards
-            </a>
-          </Button>
+          <Link
+            href={route("app")}
+            className={cn(
+              buttonVariants({ size: "sm", variant: "ghost" }),
+              "w-full justify-start"
+            )}
+          >
+            <FolderKanbanIcon className="mr-2" /> {t("home")}
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="#"
+            className={cn(
+              buttonVariants({ size: "sm", variant: "ghost" }),
+              "w-full justify-start [&[aria-disabled]]:cursor-not-allowed"
+            )}
+            aria-disabled
+          >
+            <WalletCardsIcon className="mr-2" /> {t("templates")}
+          </Link>
         </li>
       </ul>
     </nav>

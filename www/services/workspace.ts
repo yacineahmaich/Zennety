@@ -10,7 +10,7 @@ const createWorkspace = async (
   return response.data.data;
 };
 
-const getWorkspaceById = async (id: number): Promise<App.Models.Workspace> => {
+const getWorkspaceById = async (id: string): Promise<App.Models.Workspace> => {
   const response = await api.get(`/workspaces/${id}`);
 
   return response.data.data;
@@ -28,7 +28,7 @@ const getMyWorkspaces = async (): Promise<App.Models.Workspace[]> => {
  * ==========================================
  */
 
-export const useWorkspace = (id: number) => {
+export const useWorkspace = (id: string) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["workspaces", id],
     queryFn: () => getWorkspaceById(id),
