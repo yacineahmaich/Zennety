@@ -62,5 +62,9 @@
   "empty-workspace-title": "This workspace doesn't have any board yet.",
   "empty-workspace-subtitle": "Start by creating a board in your workspace.",
   "home": "Home",
-  "templates": "Templates"
+  "templates": "Templates",
+  "share": "Share",
+  "activity": "Activity",
+  "status-name-placeholder": "e.g IN PROGRESS",
+  "add-new-status": "Add new status"
 }

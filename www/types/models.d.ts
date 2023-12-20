@@ -19,6 +19,7 @@ declare namespace App.Models {
     description: string;
     visibility: "Public" | "Private";
     members?: Member[];
+    statuses?: Status[];
   }
   interface Member {
     id: number;
@@ -26,5 +27,9 @@ declare namespace App.Models {
     email: string;
     permissions: string[];
     role: string;
+  }
+  interface Status {
+    id: number;
+    name: string;
   }
 }

@@ -1,13 +1,13 @@
+import CreateStatus from "@/components/Status/CreateStatus";
+import StatusHeader from "@/components/Status/StatusHeader";
 import { AppLayout } from "@/components/layouts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import {
   CalendarSearchIcon,
   ChevronsRightIcon,
-  MoreHorizontalIcon,
   SettingsIcon,
   StarIcon,
   UserPlusIcon,
@@ -27,45 +27,19 @@ const Board: NextPageWithLayout = () => {
   return (
     <div>
       <Header board={board} />
-      <Kanban />
+      <Kanban board={board} />
     </div>
   );
 };
 
-const Kanban = () => {
+const Kanban = ({ board }: { board: App.Models.Board }) => {
   return (
     <main className=" overflow-x-auto p-3">
-      <div className="flex gap-4">
-        <Card className="flex w-64 shrink-0 items-center justify-between bg-primary px-4 py-2 text-background">
-          <h4 className="text-sm font-semibold">Pending</h4>
-          <button>
-            <MoreHorizontalIcon size={16} />
-          </button>
-        </Card>
-        <Card className="flex w-64 shrink-0 items-center justify-between bg-primary px-4 py-2 text-background">
-          <h4 className="text-sm font-semibold">In Progress</h4>
-          <button>
-            <MoreHorizontalIcon size={16} />
-          </button>
-        </Card>
-        <Card className="flex w-64 shrink-0 items-center justify-between bg-primary px-4 py-2 text-background">
-          <h4 className="text-sm font-semibold">Done</h4>
-          <button>
-            <MoreHorizontalIcon size={16} />
-          </button>
-        </Card>
-        <Card className="flex w-64 shrink-0 items-center justify-between bg-primary px-4 py-2 text-background">
-          <h4 className="text-sm font-semibold">Review</h4>
-          <button>
-            <MoreHorizontalIcon size={16} />
-          </button>
-        </Card>
-        <Card className="flex w-64 shrink-0 items-center justify-between bg-primary px-4 py-2 text-background">
-          <h4 className="text-sm font-semibold">Closed</h4>
-          <button>
-            <MoreHorizontalIcon size={16} />
-          </button>
-        </Card>
+      <div className="flex items-start gap-4">
+        {board.statuses?.map((status) => (
+          <StatusHeader key={status.id} status={status} />
+        ))}
+        <CreateStatus board={board} />
       </div>
     </main>
   );
@@ -105,7 +79,7 @@ const Header = ({ board }: { board: App.Models.Board }) => {
       <div className="flex items-center space-x-4">
         <div className="flex items-center">
           <Button size="sm" className="flex items-center gap-2 text-xs">
-            <UserPlusIcon size={16} /> Share
+            <UserPlusIcon size={16} /> {t("share")}
           </Button>
           <Button
             size="sm"

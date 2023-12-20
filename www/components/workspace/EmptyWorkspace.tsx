@@ -1,7 +1,7 @@
 import { PenSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import CreateBoard from "../board/CreateBoard";
 import { Button } from "../ui/button";
-import CreateBoard from "./CreateBoard";
 
 const EmptyWorkspace = ({ workspace }: { workspace: App.Models.Workspace }) => {
   const { t } = useTranslation("common");

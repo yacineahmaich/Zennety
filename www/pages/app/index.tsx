@@ -1,7 +1,7 @@
 import BoardCard from "@/components/board/BoardCard";
-import EmptyWorkspace from "@/components/board/EmptyWorkspace";
 import { AppLayout } from "@/components/layouts";
 import { buttonVariants } from "@/components/ui/button";
+import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";

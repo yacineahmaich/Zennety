@@ -1,10 +1,10 @@
 import BoardCard from "@/components/board/BoardCard";
 import CreateBoard from "@/components/board/CreateBoard";
-import EmptyWorkspace from "@/components/board/EmptyWorkspace";
 import { AppLayout } from "@/components/layouts";
 import Error from "@/components/shared/Error";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
 import WorkspaceLoading from "@/components/workspace/WorkspaceLoading";
 import { useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
