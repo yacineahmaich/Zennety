@@ -106,7 +106,7 @@ export const useLogout = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: logout,
     onSuccess() {
-      queryClient.setQueryData(["user"], null);
+      queryClient.clear();
       router.replace(route("login"));
     },
   });
