@@ -23,7 +23,7 @@ export function getFirstApiErrorMsg(error: ApiError) {
  * @returns string
  */
 export function groupWorkspacesByOwnership(
-  workspaces: App.Models.Workspace[],
+  workspaces: App.Models.Workspace[] = [],
   user: App.Models.User
 ) {
   const groupedWorkspaces = workspaces?.reduce(

@@ -2,7 +2,7 @@ import app from "@/lib/app";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { useLogout, useMyWorkspaces, useUser, useWorkspace } from "@/services";
+import { useLogout, useMyWorkspaces, useUser } from "@/services";
 import {
   ChevronDownIcon,
   ChevronLeftSquareIcon,
@@ -17,7 +17,7 @@ import {
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import { Button, buttonVariants } from "../ui/button";
 import {
@@ -72,16 +72,23 @@ const WorkspacesDropdown = () => {
   const { user } = useUser();
   const { workspaces, isLoading } = useMyWorkspaces();
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace } = useWorkspace(workspaceId);
 
-  const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
+  const currentWorkspace = useMemo(() => {
+    return workspaces?.find(
+      (worksapce) => worksapce.id.toString() === workspaceId
+    );
+  }, [workspaceId]);
+
+  const groupedWorkspaces = useMemo(() => {
+    return groupWorkspacesByOwnership(workspaces, user);
+  }, [workspaces?.length]);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
           <LayersIcon size={20} className="mr-2" />
-          <span>{workspace?.name || t("my-workspaces")}</span>
+          <span>{currentWorkspace?.name || t("my-workspaces")}</span>
           <ChevronDownIcon size={20} className="ml-2" />
         </Button>
       </DropdownMenuTrigger>
