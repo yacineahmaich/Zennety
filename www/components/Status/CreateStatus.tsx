@@ -49,7 +49,7 @@ const CreateStatus = ({ board }: { board: App.Models.Board }) => {
   if (!showForm) {
     return (
       <button onClick={() => setShowForm(true)}>
-        <Card className="flex w-64 shrink-0 items-center justify-between bg-accent px-4 py-2">
+        <Card className="flex w-64 shrink-0 items-center justify-between px-4 py-2">
           <h4 className="text-sm font-semibold">{t("add-new-status")}</h4>
           <PlusIcon size={16} />
         </Card>
@@ -82,7 +82,7 @@ const CreateStatus = ({ board }: { board: App.Models.Board }) => {
               className="h-7 w-full text-xs"
               disabled={isLoading}
             >
-              <CheckIcon size={16} />
+              <CheckIcon size={16} className="mr-1" /> {t("save")}
             </Button>
             <Button
               size="icon"
@@ -93,7 +93,7 @@ const CreateStatus = ({ board }: { board: App.Models.Board }) => {
                 form.unregister();
               }}
             >
-              <XIcon size={16} />
+              <XIcon size={16} className="mr-1" /> {t("cancel")}
             </Button>
           </div>
         </form>

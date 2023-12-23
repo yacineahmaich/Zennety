@@ -66,5 +66,9 @@
   "share": "Share",
   "activity": "Activity",
   "status-name-placeholder": "e.g IN PROGRESS",
-  "add-new-status": "Add new status"
+  "add-new-status": "Add new status",
+  "add-new-card": "Add new card",
+  "save": "Save",
+  "cancel": "Cancel",
+  "card-name-placeholder": "e.g `do something cool today`"
 }
