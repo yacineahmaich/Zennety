@@ -40,7 +40,13 @@ class Workspace extends Model
         return $this->morphMany(Membership::class, 'membershipable');
     }
 
-    public function boards(): HasMany {
+    public function boards(): HasMany
+    {
         return $this->hasMany(Board::class);
+    }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
     }
 }
