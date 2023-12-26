@@ -1,4 +1,5 @@
 import { CreateWorkspace } from "@/components/workspace/CreateWorkspace";
+import { InviteMembers } from "@/components/workspace/InviteWorkspaceMembers";
 import { api } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -22,6 +23,15 @@ const getMyWorkspaces = async (): Promise<App.Models.Workspace[]> => {
   return response.data.data;
 };
 
+const inviteWorkspaceMembers = async ({
+  workspaceId,
+  data,
+}: {
+  workspaceId: number;
+  data: InviteMembers;
+}): Promise<void> => {
+  await api.post(`/worksapces/${workspaceId}/invitations`, data);
+};
 /**
  * ==========================================
  * ========= QUERIES ========================
@@ -75,6 +85,17 @@ export const useCreateWorkspace = () => {
 
   return {
     createWorkspace: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useInviteWorksapceMembers = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: inviteWorkspaceMembers,
+  });
+
+  return {
+    inviteWorkspaceMembers: mutate,
     isLoading: isPending,
   };
 };

@@ -1,6 +1,7 @@
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { Button } from "../ui/button";
+import InviteWorkspaceMembers from "./InviteWorkspaceMembers";
 
 const WorkspaceBanner = ({
   workspace,
@@ -38,10 +39,15 @@ const WorkspaceBanner = ({
             </div>
           </div>
         </div>
-        <Button size="sm" variant="secondary">
-          <UserPlusIcon size={20} className="mr-2" />
-          {t("invite-workspace-members")}
-        </Button>
+        <InviteWorkspaceMembers
+          worksapce={workspace}
+          openTrigger={
+            <Button size="sm" variant="secondary">
+              <UserPlusIcon size={20} className="mr-2" />
+              {t("invite-workspace-members")}
+            </Button>
+          }
+        />
       </div>
       {workspace?.description && (
         <p className="mt-2 max-w-2xl break-all text-sm text-muted-foreground">
