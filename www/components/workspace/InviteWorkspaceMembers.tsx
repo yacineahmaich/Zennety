@@ -4,10 +4,12 @@ import { useInviteWorksapceMembers } from "@/services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { components } from "react-select";
 import Select from "react-select/async";
 import { z } from "zod";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -25,7 +27,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
-import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   users: z.number().array().min(1, "Please some user(s) to invite them."),
@@ -42,6 +43,7 @@ const InviteWorkspaceMembers = ({
   openTrigger: JSX.Element;
 }) => {
   const { t } = useTranslation("common");
+  const [open, setOpen] = useState(false);
   const { inviteWorkspaceMembers, isLoading } = useInviteWorksapceMembers();
 
   const form = useForm<InviteMembers>({
@@ -59,23 +61,20 @@ const InviteWorkspaceMembers = ({
       { workspaceId: worksapce.id, data },
       {
         onSuccess() {
-          toast({
-            title: "Invitations sent successufully",
-            description: "Waiting for users to accept your invitation",
-          });
+          setOpen(false);
         },
       }
     );
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{openTrigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("invite-to-worksapce-title")}</DialogTitle>
+          <DialogTitle>{t("invite-to-workspace-title")}</DialogTitle>
           <DialogDescription className="text-xs">
-            {t("invite-to-worksapce-subtitle")}
+            {t("invite-to-workspace-subtitle")}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -89,9 +88,7 @@ const InviteWorkspaceMembers = ({
                     <Select
                       isMulti
                       //@ts-ignore
-                      getOptionValue={({ label, user }) =>
-                        `${label} - ${user.email}`
-                      }
+                      getOptionValue={(value) => value}
                       //@ts-ignore
                       getOptionLabel={({ label, user }) =>
                         `${label} - ${user.email}`
@@ -112,7 +109,10 @@ const InviteWorkspaceMembers = ({
                         multiValueRemove: (state) => "!hover:bg-red-500",
                         placeholder: (state) =>
                           "!text-sm !text-muted-foreground",
-                        menu: (state) => "!bg-background !border",
+                        menu: (state) => "!bg-background !border-border",
+                        menuList: (state) => "!divide-y",
+                        noOptionsMessage: (state) =>
+                          "!text-muted-foreground !text-sm !font-medium",
                         option: (state) =>
                           cn(
                             "!bg-transparent !hover:bg-accent !text-xs !font-semibold",
@@ -126,12 +126,42 @@ const InviteWorkspaceMembers = ({
                         const users = value.map<number>(({ user }) => user.id);
                         form.setValue("users", users);
                       }}
+                      filterOption={(option) =>
+                        //@ts-ignore
+                        !form.watch("users").includes(option.value.user.id)
+                      }
+                      noOptionsMessage={() => t("invite-members-no-options")}
                       components={{
                         DropdownIndicator: (props) => (
                           <components.DropdownIndicator {...props}>
                             <UserIcon size={16} />
                           </components.DropdownIndicator>
                         ),
+                        Option: (props) => {
+                          //@ts-ignore
+                          const value = props.value;
+                          const { name, email } = value.user as App.Models.User;
+                          return (
+                            <div
+                              className="flex cursor-pointer items-center gap-2 p-2 text-xs font-medium transition-colors hover:bg-accent focus:bg-accent"
+                              {...props}
+                              onClick={() => props.selectOption(value)}
+                            >
+                              <Avatar className="h-8 w-8 object-cover">
+                                <AvatarImage src="https://github.com/shadcn.png" />
+                                <AvatarFallback>
+                                  {name.slice(0, 2).toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div className="divide-x">
+                                <span className="pr-2 uppercase">{name}</span>
+                                <span className="pl-2 text-muted-foreground">
+                                  {email}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        },
                       }}
                       // TODO: debounce api request
                       loadOptions={(search) =>

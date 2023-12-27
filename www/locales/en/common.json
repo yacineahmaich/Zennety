@@ -71,8 +71,9 @@
   "save": "Save",
   "cancel": "Cancel",
   "card-name-placeholder": "e.g `do something cool today`",
-  "invite-to-workspace-title" : "Invite to Workspace",
+  "invite-to-workspace-title": "Invite to Workspace",
   "invite-to-workspace-subtitle": "Unlock the Power of Teamwork by Inviting Members to Your Workspace",
   "worksapce-invitation-message-placeholder": "Message that will be atttached to invitation.",
-  "send-invitation": "Send Invitation"
+  "send-invitation": "Send Invitation",
+  "invite-members-no-options": "There is not results to shose."
 }
