@@ -22,5 +22,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     require __DIR__ . '/workspace.php';
     require __DIR__ . '/board.php';
     require __DIR__ . '/status.php';
+    require __DIR__ . '/invitation.php';
     require __DIR__ . '/notification.php';
 });

@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Role;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreInvitationRequest extends FormRequest
+class InvitationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +24,7 @@ class StoreInvitationRequest extends FormRequest
     {
         return [
             "users" => ["required", "array", "min:1"],
+            "role" => ["in:" . implode(',', Role::values())],
             "message" => ["required"],
         ];
     }

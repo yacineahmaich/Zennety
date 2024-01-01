@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\InvitationDTO;
 use App\DTO\WorkspaceDTO;
+use App\Http\Requests\InvitationRequest;
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
 use App\Models\Workspace;
+use App\Services\InvitationService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\Response;
 
@@ -14,6 +17,7 @@ class WorkspaceController extends Controller
 {
     public function __construct(
         public WorkspaceService $service,
+        public InvitationService $invitationService
     ) {
     }
 
@@ -72,6 +76,16 @@ class WorkspaceController extends Controller
         $this->authorize('delete', $workspace);
 
         $workspace->delete();
+
+        return response()->noContent();
+    }
+
+    public function invite(InvitationRequest $request, Workspace $workspace)
+    {
+        $this->invitationService->send(
+            $workspace,
+            InvitationDTO::fromRequest($request)
+        );
 
         return response()->noContent();
     }

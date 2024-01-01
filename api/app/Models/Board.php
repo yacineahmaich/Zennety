@@ -50,4 +50,9 @@ class Board extends Model
     {
         return $this->hasMany(Status::class);
     }
+
+    public function invitations(): MorphMany
+    {
+        return $this->morphMany(Invitation::class, 'inviteable');
+    }
 }

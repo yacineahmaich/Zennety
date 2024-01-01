@@ -14,13 +14,16 @@ class InvitationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             "id" => $this->id,
+            "related" => $this->inviteable,
+            "relatedType" => $this->inviteable_type,
             "token" => $this->token,
-            "email" => $this->email,
+            "role" => $this->role,
+            "invitedEmail" => $this->invited_email,
             "message" => $this->message,
             "invitedBy" => UserResource::make($this->user),
-            "worksapce" => WorkspaceResource::make($this->whenLoaded('worksapce')),
             "expiresAt" => $this->expires_at,
         ];
     }

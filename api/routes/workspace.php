@@ -8,3 +8,4 @@ Route::post("/workspaces", [WorkspaceController::class, 'store']);
 Route::get("/workspaces/{workspace}", [WorkspaceController::class, 'show']);
 Route::put("/workspaces/{workspace}", [WorkspaceController::class, 'update']);
 Route::delete("/workspaces/{workspace}", [WorkspaceController::class, 'destroy']);
+Route::post('/worksapces/{workspace}/invitations', [WorkspaceController::class, 'invite']);

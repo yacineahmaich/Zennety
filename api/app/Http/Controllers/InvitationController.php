@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreInvitationRequest;
 use App\Http\Requests\UpdateInvitationRequest;
+use App\Http\Resources\InvitationResource;
 use App\Models\Invitation;
-use App\Models\User;
-use App\Models\Workspace;
-use Ramsey\Uuid\Uuid;
+use App\Services\InvitationService;
 
 class InvitationController extends Controller
 {
+    public function __construct(
+        public InvitationService $service
+    ) {
+    }
     /**
      * Display a listing of the resource.
      */
@@ -20,25 +22,11 @@ class InvitationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Accept a worksapce/board membership invitation.
      */
-    public function store(StoreInvitationRequest $request, Workspace $worksapce)
+    public function accept(Invitation $invitation)
     {
-        $users = User::query()->whereIn('id', $request->validated('users'))->get();
-
-        $invitations = [];
-
-        foreach ($users as $user) {
-            $invitations[] = [
-                "token" => Uuid::uuid4(),
-                "email" => $user->email,
-                "message" => $request->validated('message'),
-                "user_id" => auth()->id(),
-                "expires_at" => now()->addWeek(),
-            ];
-        }
-
-        $worksapce->invitations()->createMany($invitations);
+        $this->service->accept($invitation);
 
         return response()->noContent();
     }
@@ -48,7 +36,7 @@ class InvitationController extends Controller
      */
     public function show(Invitation $invitation)
     {
-        //
+        return InvitationResource::make($invitation);
     }
 
     /**
