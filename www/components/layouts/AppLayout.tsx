@@ -2,15 +2,25 @@ import app from "@/lib/app";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { useLogout, useMyWorkspaces, useUser } from "@/services";
 import {
+  useLogout,
+  useMyWorkspaces,
+  useNotifications,
+  useUser,
+} from "@/services";
+import {
+  CheckIcon,
   ChevronDownIcon,
   ChevronLeftSquareIcon,
   ChevronRightSquareIcon,
+  CircleDotIcon,
   FolderKanbanIcon,
+  InboxIcon,
   KanbanSquareIcon,
   LayersIcon,
+  MailWarningIcon,
   SettingsIcon,
+  Trash2Icon,
   UserIcon,
   WalletCardsIcon,
 } from "lucide-react";
@@ -29,6 +39,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import CreateWorkspace from "../workspace/CreateWorkspace";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
@@ -58,11 +75,71 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <WorkspacesDropdown />
             <CreateWorkspace />
           </div>
-          <ThemeSwitcher />
+          <div className="flex items-center gap-2">
+            <Notifications />
+            <ThemeSwitcher />
+          </div>
         </header>
         {children}
       </div>
     </div>
+  );
+};
+
+const Notifications = () => {
+  const { notifications } = useNotifications();
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button size="sm" variant="outline">
+          <InboxIcon size={16} />
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="min-w-[450px] overflow-y-scroll p-3">
+        <SheetHeader>
+          <SheetTitle>Notifications(0)</SheetTitle>
+        </SheetHeader>
+
+        <div className="mt-6 space-y-2">
+          {notifications?.map((notification, i) => (
+            <Link
+              href={notification.link}
+              key={notification.id}
+              className="group flex items-center rounded-lg border p-3 ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2"
+            >
+              <div className="mr-2 self-start">
+                {i % 2 === 0 ? (
+                  <MailWarningIcon size={14} />
+                ) : (
+                  <CircleDotIcon size={14} />
+                )}
+                {/* <AlertCircleIcon size={14} /> */}
+              </div>
+              <div className="mr-4 self-start">
+                <h2 className="text-xs font-semibold">
+                  {notification.title}
+                  {/* worksapce invitation */}
+                </h2>
+                <p className="line-clamp-2 text-xs">
+                  {/* New Team action in the Sidebar doesn't open the Modal when it
+                  was open once */}
+                  {notification.description}
+                </p>
+              </div>
+              <div className="ml-auto flex flex-col justify-end space-y-1 opacity-0 group-hover:opacity-100">
+                <Button variant="outline" className="h-5 text-xs font-medium">
+                  <CheckIcon size={14} />
+                </Button>
+                <Button variant="outline" className="h-5 text-xs font-medium">
+                  <Trash2Icon size={14} />
+                </Button>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 

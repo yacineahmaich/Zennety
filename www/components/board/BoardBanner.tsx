@@ -18,16 +18,16 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
         <button className="border-r pr-2">
           <StarIcon size={16} />
         </button>
-        <div className="flex select-none items-center -space-x-2">
-          <Avatar className="h-6 w-6 transition-all hover:z-40 hover:scale-150 hover:shadow-xl">
+        <div className="flex select-none items-center -space-x-2 hover:space-x-1">
+          <Avatar className="h-7 w-7 transition-all hover:shadow-xl">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <Avatar className="h-6 w-6 transition-all hover:z-40 hover:scale-150 hover:shadow-xl">
+          <Avatar className="h-7 w-7 transition-all hover:shadow-xl">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <Avatar className="h-6 w-6 transition-all hover:z-40 hover:scale-150 hover:shadow-xl">
+          <Avatar className="h-7 w-7 transition-all hover:shadow-xl">
             <AvatarImage src="https://github.com/shadcn.png" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>

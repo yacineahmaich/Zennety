@@ -25,7 +25,7 @@ const logout = async () => {
 
 const getUser = async (): Promise<App.Models.User> => {
   const response = await api.get("/user");
-  return response.data;
+  return response.data.data;
 };
 
 const resendVerificationEmail = async () => {
