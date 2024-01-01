@@ -1,5 +1,6 @@
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { Visibility } from "www/types/enums";
 import { Button } from "../ui/button";
 import InviteWorkspaceMembers from "./InviteWorkspaceMembers";
 
@@ -27,10 +28,10 @@ const WorkspaceBanner = ({
               <div className="flex gap-2 text-xs font-medium">
                 <span>Premium</span>
                 <p className="flex items-center space-x-1">
-                  {workspace?.visibility === "Private" && (
+                  {workspace?.visibility === Visibility.PRIVATE && (
                     <LockIcon size={16} />
                   )}
-                  {workspace?.visibility === "Public" && (
+                  {workspace?.visibility === Visibility.PUBLIC && (
                     <Globe2Icon size={16} />
                   )}
                   <span>{workspace?.visibility}</span>

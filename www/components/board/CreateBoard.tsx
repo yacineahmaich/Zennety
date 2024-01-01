@@ -1,6 +1,7 @@
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useCreateBoard } from "@/services";
+import { Visibility } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Globe2Icon, LockIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -33,7 +34,7 @@ const formSchema = z.object({
   name: z.string().min(4).max(25),
   description: z.string().max(255).optional(),
   workspaceId: z.number(),
-  visibility: z.enum(["Public", "Private"]),
+  visibility: z.nativeEnum(Visibility),
 });
 
 export type CreateBoard = z.infer<typeof formSchema>;
@@ -52,7 +53,7 @@ const CreateBoard = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       workspaceId: workspace.id,
-      visibility: "Private",
+      visibility: Visibility.PRIVATE,
     },
   });
 
@@ -60,7 +61,6 @@ const CreateBoard = ({
     createBoard(values, {
       onSuccess({ id }) {
         if (id) {
-          // router.push(`/app/workspace/${data.id}`);
           window.location.href = route("board", workspace.id, id);
         }
       },
@@ -136,7 +136,7 @@ const CreateBoard = ({
                           <FormItem
                             className={cn(
                               "flex-1 rounded-lg",
-                              field.value === "Private" &&
+                              field.value === Visibility.PRIVATE &&
                                 "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
@@ -145,7 +145,7 @@ const CreateBoard = ({
                                 <LockIcon size={16} />
                                 <FormControl>
                                   <RadioGroupItem
-                                    value="Private"
+                                    value={Visibility.PRIVATE}
                                     className="hidden"
                                   />
                                 </FormControl>
@@ -159,7 +159,7 @@ const CreateBoard = ({
                           <FormItem
                             className={cn(
                               "flex-1 rounded-lg",
-                              field.value === "Public" &&
+                              field.value === Visibility.PUBLIC &&
                                 "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
@@ -168,7 +168,7 @@ const CreateBoard = ({
                                 <Globe2Icon size={16} />
                                 <FormControl>
                                   <RadioGroupItem
-                                    value="Public"
+                                    value={Visibility.PUBLIC}
                                     className="hidden"
                                   />
                                 </FormControl>

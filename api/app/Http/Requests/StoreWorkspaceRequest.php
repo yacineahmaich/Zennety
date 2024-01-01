@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Visibility;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -34,7 +35,7 @@ class StoreWorkspaceRequest extends FormRequest
                 'max:255'
             ],
             'visibility' => [
-                'in:Public,Private'
+                'in:' . implode(',', Visibility::values())
             ],
             // User can have only one memebership for wokspace/board
             Rule::unique('memberships', 'membershipable_id')->where('user_id', auth()->id())

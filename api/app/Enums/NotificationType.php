@@ -5,6 +5,7 @@ namespace App\Enums;
 class NotificationType
 {
     const NORMAL = "Normal";
+    const INFO = "Info";
     const WARNING = "Warning";
     const DANGER = "Danger";
 

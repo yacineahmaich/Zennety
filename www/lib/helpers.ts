@@ -4,6 +4,8 @@
  * @returns string
  */
 
+import { Role } from "@/types/enums";
+
 export function getFirstApiErrorMsg(error: ApiError) {
   let errorMessage = error.message;
 
@@ -35,7 +37,7 @@ export function groupWorkspacesByOwnership(
         (member) => member.id === user?.id
       );
 
-      if (member?.role === "owner") {
+      if (member?.role === Role.OWNER) {
         groups.owner.push(workspace);
       } else {
         groups.guest.push(workspace);

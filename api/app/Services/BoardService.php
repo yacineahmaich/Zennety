@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\DTO\BoardDTO;
+use App\Enums\Role;
 use App\Models\Board;
 use App\Models\Workspace;
 
@@ -29,7 +30,7 @@ class BoardService
             ["name" => "Done"],
         ]);
 
-        $owner->assignRole('owner');
+        $owner->assignRole(Role::OWNER);
 
         return $board;
     }

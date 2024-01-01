@@ -1,6 +1,7 @@
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useCreateWorkspace } from "@/services/workspace";
+import { Visibility } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Globe2Icon, LockIcon, PlusCircleIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -32,7 +33,7 @@ import { Textarea } from "../ui/textarea";
 const formSchema = z.object({
   name: z.string().min(4).max(25),
   description: z.string().max(255).optional(),
-  visibility: z.enum(["Public", "Private"]),
+  visibility: z.nativeEnum(Visibility),
 });
 
 export type CreateWorkspace = z.infer<typeof formSchema>;
@@ -44,7 +45,7 @@ const CreateWorkspace = () => {
   const form = useForm<CreateWorkspace>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      visibility: "Private",
+      visibility: Visibility.PRIVATE,
     },
   });
 
@@ -52,7 +53,6 @@ const CreateWorkspace = () => {
     createWorkspace(values, {
       onSuccess({ id }) {
         if (id) {
-          // router.push(`/app/workspace/${data.id}`);
           window.location.href = route("workspace", id);
         }
       },
@@ -134,7 +134,7 @@ const CreateWorkspace = () => {
                           <FormItem
                             className={cn(
                               "flex-1 rounded-lg",
-                              field.value === "Private" &&
+                              field.value === Visibility.PRIVATE &&
                                 "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
@@ -143,7 +143,7 @@ const CreateWorkspace = () => {
                                 <LockIcon size={16} />
                                 <FormControl>
                                   <RadioGroupItem
-                                    value="Private"
+                                    value={Visibility.PRIVATE}
                                     className="hidden"
                                   />
                                 </FormControl>
@@ -157,7 +157,7 @@ const CreateWorkspace = () => {
                           <FormItem
                             className={cn(
                               "flex-1 rounded-lg",
-                              field.value === "Public" &&
+                              field.value === Visibility.PUBLIC &&
                                 "ring-2 ring-ring ring-offset-2 ring-offset-background"
                             )}
                           >
@@ -166,7 +166,7 @@ const CreateWorkspace = () => {
                                 <Globe2Icon size={16} />
                                 <FormControl>
                                   <RadioGroupItem
-                                    value="Public"
+                                    value={Visibility.PUBLIC}
                                     className="hidden"
                                   />
                                 </FormControl>

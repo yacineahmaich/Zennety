@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -21,10 +20,10 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'update-workspace']);
         Permission::create(['name' => 'delete-workspace']);
 
-        $owner = Role::create(['name' => 'owner']);
-        $admin = Role::create(['name' => 'admin']);
-        $member = Role::create(['name' => 'member']);
-        $viewer = Role::create(['name' => 'viewer']);
+        $owner = Role::create(['name' => \App\Enums\Role::OWNER]);
+        $admin = Role::create(['name' => \App\Enums\Role::ADMIN]);
+        $member = Role::create(['name' => \App\Enums\Role::MEMBER]);
+        $viewer = Role::create(['name' => \App\Enums\Role::VIEWER]);
 
         $owner->givePermissionTo(
             'view-workspace',

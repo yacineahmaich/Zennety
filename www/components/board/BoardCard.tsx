@@ -1,6 +1,7 @@
 import { Globe2Icon, LockIcon, StarIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { route } from "www/lib/routes";
+import { Visibility } from "www/types/enums";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 
@@ -16,8 +17,8 @@ const BoardCard = ({ board }: Props) => {
           <h3 className="text-sm font-bold  hover:underline">{board.name}</h3>
         </Link>
         <Badge variant="secondary" className="space-x-1 ">
-          {board?.visibility === "Private" && <LockIcon size={14} />}
-          {board?.visibility === "Public" && <Globe2Icon size={14} />}
+          {board?.visibility === Visibility.PRIVATE && <LockIcon size={14} />}
+          {board?.visibility === Visibility.PUBLIC && <Globe2Icon size={14} />}
           <span>{board.visibility}</span>
         </Badge>
       </header>

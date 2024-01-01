@@ -4,6 +4,7 @@
 namespace App\Services;
 
 use App\DTO\WorkspaceDTO;
+use App\Enums\Role;
 use App\Models\Workspace;
 
 class WorkspaceService
@@ -32,7 +33,7 @@ class WorkspaceService
             "user_id" => auth()->id()
         ]);
 
-        $owner->assignRole('owner');
+        $owner->assignRole(Role::OWNER);
 
         return $workspace;
     }

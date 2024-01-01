@@ -32,4 +32,12 @@ declare namespace App.Models {
     id: number;
     name: string;
   }
+  interface Notification {
+    id: number;
+    type: string;
+    title: string;
+    description: string;
+    link: string;
+    isRead: boolean;
+  }
 }
