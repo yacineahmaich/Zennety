@@ -17,7 +17,7 @@ export const useNotifications = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["notifications"],
     queryFn: () => getNotifications(),
-    refetchInterval: 1000 * 30,
+    refetchInterval: 1000 * 30, // Poll every 30 seconds
   });
 
   return {

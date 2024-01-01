@@ -40,4 +40,14 @@ declare namespace App.Models {
     link: string;
     isRead: boolean;
   }
+  interface Invitation {
+    id: number;
+    related: Workspace | Board;
+    relatedType: "App\\Models\\Workspace" | "App\\Models\\Board";
+    token: string;
+    invitedEmail: string;
+    message: string;
+    invitedBy: User;
+    expiresAt: string;
+  }
 }

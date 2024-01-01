@@ -1,13 +1,14 @@
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { useInviteWorksapceMembers } from "@/services";
+import { Role } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserIcon } from "lucide-react";
+import { UserCogIcon, UserIcon, UserSearchIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { components } from "react-select";
-import Select from "react-select/async";
+import SelectAsync from "react-select/async";
 import { z } from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -26,10 +27,18 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-  users: z.number().array().min(1, "Please some user(s) to invite them."),
+  users: z.number().array().min(1, "Please chose some user(s) to invite them."),
+  role: z.nativeEnum(Role),
   message: z.string(),
 });
 
@@ -49,6 +58,7 @@ const InviteWorkspaceMembers = ({
   const form = useForm<InviteMembers>({
     defaultValues: {
       users: [],
+      role: Role.MEMBER,
       message: "Join this worksapce and let's work together.",
     },
     resolver: zodResolver(formSchema),
@@ -85,7 +95,7 @@ const InviteWorkspaceMembers = ({
               render={() => (
                 <FormItem>
                   <FormControl>
-                    <Select
+                    <SelectAsync
                       isMulti
                       //@ts-ignore
                       getOptionValue={(value) => value}
@@ -174,6 +184,44 @@ const InviteWorkspaceMembers = ({
                       }
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a role" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={Role.ADMIN}>
+                        <div className="flex items-center gap-2">
+                          <UserCogIcon size={16} /> <span>{Role.ADMIN}</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value={Role.MEMBER}>
+                        <div className="flex items-center gap-2">
+                          <UserIcon size={16} /> <span>{Role.MEMBER}</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value={Role.VIEWER}>
+                        <div className="flex items-center gap-2">
+                          <UserSearchIcon size={16} />{" "}
+                          <span>{Role.VIEWER}</span>
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
