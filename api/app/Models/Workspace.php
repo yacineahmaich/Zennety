@@ -42,7 +42,11 @@ class Workspace extends Model
 
     public function boards(): HasMany
     {
-        return $this->hasMany(Board::class);
+        return $this->hasMany(Board::class)
+            ->where('visibility', Visibility::PUBLIC)
+            ->orWhereHas('members', function ($query) {
+                $query->where('user_id', auth()->id());
+            });
     }
 
     public function invitations(): MorphMany
