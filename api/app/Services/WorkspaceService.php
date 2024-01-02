@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\DTO\WorkspaceDTO;
 use App\Enums\Role;
+use App\Enums\Visibility;
 use App\Models\Workspace;
 
 class WorkspaceService
@@ -13,10 +14,21 @@ class WorkspaceService
     {
         // TODO: Group query by owned workspaces and guest workspaces
         return Workspace::with('members')
-            ->with('boards')
             ->whereHas('members', function ($query) {
                 $query->where('user_id', auth()->id());
-            })->get();
+            })
+            ->with('boards', function ($query) {
+                $query->whereHas('members', function ($query) {
+                    $query->where('user_id', auth()->id());
+                })
+                    ->orWhere('visibility', Visibility::PUBLIC);
+            })
+            ->orWhereHas('boards', function ($query) {
+                $query->whereHas('members', function ($query) {
+                    $query->where('user_id', auth()->id());
+                });
+            })
+            ->get();
     }
 
     public function store(WorkspaceDTO $workspaceDTO): Workspace
