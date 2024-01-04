@@ -25,6 +25,13 @@ class Invitation extends Model
         'expires_at'
     ];
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this
+            ->where('expires_at', '>', now())
+            ->firstOrFail();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
