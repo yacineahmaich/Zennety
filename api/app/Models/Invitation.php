@@ -28,6 +28,7 @@ class Invitation extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->where('token', $value)
             ->where('expires_at', '>', now())
             ->firstOrFail();
     }

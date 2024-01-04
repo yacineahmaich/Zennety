@@ -21,6 +21,7 @@ class Workspace extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         return $this
+            ->where('id', $value)
             ->where(function ($query) {
                 $query->whereIn(
                     'id',
