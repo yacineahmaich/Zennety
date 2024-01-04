@@ -8,21 +8,24 @@ import {
   useNotifications,
   useUser,
 } from "@/services";
+import { NotificationType } from "@/types/enums";
+import { format } from "date-fns";
 import {
   CheckIcon,
   ChevronDownIcon,
   ChevronLeftSquareIcon,
   ChevronRightSquareIcon,
-  CircleDotIcon,
   FolderKanbanIcon,
   InboxIcon,
   KanbanSquareIcon,
   LayersIcon,
-  MailWarningIcon,
+  MessageSquareIcon,
+  MessageSquareWarningIcon,
+  MessageSquareXIcon,
   SettingsIcon,
-  Trash2Icon,
   UserIcon,
   WalletCardsIcon,
+  XIcon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
@@ -98,41 +101,53 @@ const Notifications = () => {
       </SheetTrigger>
       <SheetContent className="min-w-[450px] overflow-y-scroll p-3">
         <SheetHeader>
-          <SheetTitle>Notifications(0)</SheetTitle>
+          <SheetTitle>Notifications ({notifications?.length ?? 0})</SheetTitle>
         </SheetHeader>
 
         <div className="mt-6 space-y-2">
-          {notifications?.map((notification, i) => (
+          {notifications?.map((notification) => (
             <Link
-              href={notification.link}
               key={notification.id}
-              className="group flex items-center rounded-lg border p-3 ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2"
+              href={notification.link}
+              className="group relative flex items-center rounded-lg border p-3 ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2"
             >
+              {!notification.isRead && (
+                <span className="absolute left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-muted-foreground" />
+              )}
               <div className="mr-2 self-start">
-                {i % 2 === 0 ? (
-                  <MailWarningIcon size={14} />
-                ) : (
-                  <CircleDotIcon size={14} />
+                {notification.type === NotificationType.NORMAL && (
+                  <MessageSquareIcon size={14} />
                 )}
-                {/* <AlertCircleIcon size={14} /> */}
+                {notification.type === NotificationType.WARNING && (
+                  <MessageSquareWarningIcon size={14} />
+                )}
+                {notification.type === NotificationType.DANGER && (
+                  <MessageSquareXIcon size={14} />
+                )}
               </div>
               <div className="mr-4 self-start">
-                <h2 className="text-xs font-semibold">
-                  {notification.title}
-                  {/* worksapce invitation */}
-                </h2>
+                <h2 className="text-xs font-semibold">{notification.title}</h2>
                 <p className="line-clamp-2 text-xs">
-                  {/* New Team action in the Sidebar doesn't open the Modal when it
-                  was open once */}
                   {notification.description}
                 </p>
+                <span className="text-xs">
+                  {format(new Date(notification.date), "d MMMM yyyy")}
+                </span>
               </div>
               <div className="ml-auto flex flex-col justify-end space-y-1 opacity-0 group-hover:opacity-100">
-                <Button variant="outline" className="h-5 text-xs font-medium">
+                <Button
+                  variant="outline"
+                  className="h-5 text-xs font-medium"
+                  title="mark as read"
+                >
                   <CheckIcon size={14} />
                 </Button>
-                <Button variant="outline" className="h-5 text-xs font-medium">
-                  <Trash2Icon size={14} />
+                <Button
+                  variant="outline"
+                  className="h-5 text-xs font-medium"
+                  title="delete"
+                >
+                  <XIcon size={14} />
                 </Button>
               </div>
             </Link>
