@@ -19,7 +19,6 @@ class InvitationService
             $users = User::whereIn('id', $invitationDTO->users)->get();
 
             $invitations = [];
-            $notifications = [];
 
             foreach ($users as $user) {
                 $invitation = [
@@ -31,20 +30,18 @@ class InvitationService
                     'expires_at' => now()->addWeek(),
                 ];
 
-                $notification = [
+                Notification::create([
                     'type' => NotificationType::NORMAL,
                     'title' => 'Invited to join w/' . $inviteable->name,
                     'description' => $invitationDTO->message,
                     'link' => '/app/invitations/' . $invitation['token'],
                     'user_id' => $user->id
-                ];
+                ]);
 
                 $invitations[] = $invitation;
-                $notifications[] = $notification;
             }
 
             $inviteable->invitations()->createMany($invitations);
-            Notification::insert($notifications);
         });
     }
 
