@@ -13,6 +13,12 @@ const acceptInvitation = async ({ token }: { token: string }) => {
   return response.data.data;
 };
 
+const rejectInvitation = async ({ token }: { token: string }) => {
+  const response = await api.post(`/invitations/${token}/reject`);
+
+  return response.data.data;
+};
+
 /**
  * ==========================================
  * ========= QUERIES ========================
@@ -44,7 +50,7 @@ export const useAcceptInvitation = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: acceptInvitation,
-    onSuccess(data, { token }) {
+    onSuccess() {
       queryClient.removeQueries({
         queryKey: ["invitations"],
       });
@@ -53,6 +59,24 @@ export const useAcceptInvitation = () => {
 
   return {
     acceptInvitation: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useRejectInvitation = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: rejectInvitation,
+    onSuccess() {
+      queryClient.removeQueries({
+        queryKey: ["invitations"],
+      });
+    },
+  });
+
+  return {
+    rejectInvitation: mutate,
     isLoading: isPending,
   };
 };

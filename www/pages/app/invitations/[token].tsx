@@ -3,7 +3,11 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { route } from "@/lib/routes";
-import { useAcceptInvitation, useInvitation } from "@/services";
+import {
+  useAcceptInvitation,
+  useInvitation,
+  useRejectInvitation,
+} from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { CheckIcon, XIcon } from "lucide-react";
@@ -15,11 +19,14 @@ const AcceptInvitation: NextPageWithLayout = () => {
   const router = useRouter();
   const { token } = router.query as { token: string };
   const { invitation } = useInvitation(token);
-  const { acceptInvitation, isLoading } = useAcceptInvitation();
+  const { acceptInvitation, isLoading: isAccepting } = useAcceptInvitation();
+  const { rejectInvitation, isLoading: isRejecting } = useRejectInvitation();
 
   if (!invitation) return;
 
-  const onAccept = () => {
+  const isLoading = isAccepting || isRejecting;
+
+  const handleAccept = () => {
     acceptInvitation(
       { token: invitation.token },
       {
@@ -30,6 +37,17 @@ const AcceptInvitation: NextPageWithLayout = () => {
           if (invitation.relatedType === "App\\Models\\Board") {
             router.push(route("board", invitation.related.id));
           }
+        },
+      }
+    );
+  };
+
+  const handleReject = () => {
+    rejectInvitation(
+      { token: invitation.token },
+      {
+        onSuccess() {
+          router.back();
         },
       }
     );
@@ -55,12 +73,18 @@ const AcceptInvitation: NextPageWithLayout = () => {
           <Button
             size="sm"
             className="flex-1"
-            onClick={onAccept}
+            onClick={handleAccept}
             disabled={isLoading}
           >
             <CheckIcon size={16} className="mr-1" /> Accept
           </Button>
-          <Button size="sm" variant="outline" className="flex-1">
+          <Button
+            size="sm"
+            variant="outline"
+            className="flex-1"
+            onClick={handleReject}
+            disabled={isLoading}
+          >
             <XIcon size={16} className="mr-1" /> Reject
           </Button>
         </div>
