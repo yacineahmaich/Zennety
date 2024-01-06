@@ -12,12 +12,14 @@ import { NextPageWithLayout } from "@/types/next";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { CheckIcon, XIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
 const AcceptInvitation: NextPageWithLayout = () => {
   const router = useRouter();
   const { token } = router.query as { token: string };
+  const { t } = useTranslation("common");
   const { invitation } = useInvitation(token);
   const { acceptInvitation, isLoading: isAccepting } = useAcceptInvitation();
   const { rejectInvitation, isLoading: isRejecting } = useRejectInvitation();
@@ -62,7 +64,7 @@ const AcceptInvitation: NextPageWithLayout = () => {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <h2 className="text-sm">
-            {invitation?.invitedBy.name} invited to join
+            {invitation?.invitedBy.name} {t("invited-you-to-join")}
             <span className="ml-1 rounded-lg bg-accent p-1 font-medium">
               {invitation?.related.name}
             </span>
@@ -76,7 +78,7 @@ const AcceptInvitation: NextPageWithLayout = () => {
             onClick={handleAccept}
             disabled={isLoading}
           >
-            <CheckIcon size={16} className="mr-1" /> Accept
+            <CheckIcon size={16} className="mr-1" /> {t("accept")}
           </Button>
           <Button
             size="sm"
@@ -85,7 +87,7 @@ const AcceptInvitation: NextPageWithLayout = () => {
             onClick={handleReject}
             disabled={isLoading}
           >
-            <XIcon size={16} className="mr-1" /> Reject
+            <XIcon size={16} className="mr-1" /> {t("reject")}
           </Button>
         </div>
       </Card>

@@ -9,6 +9,7 @@ import {
   MessageSquareXIcon,
   MinusIcon,
 } from "lucide-react";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -21,6 +22,7 @@ import {
 } from "../ui/sheet";
 
 const Notifications = () => {
+  const { t } = useTranslation("common");
   const { notifications } = useNotifications();
   const [open, setOpen] = useState(false);
 
@@ -33,7 +35,9 @@ const Notifications = () => {
       </SheetTrigger>
       <SheetContent className="min-w-[450px] overflow-y-scroll p-3">
         <SheetHeader>
-          <SheetTitle>Notifications ({notifications?.length ?? 0})</SheetTitle>
+          <SheetTitle>
+            {t("notifications")} ({notifications?.length ?? 0})
+          </SheetTitle>
         </SheetHeader>
 
         <div className="mt-6 space-y-2">

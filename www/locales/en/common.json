@@ -75,5 +75,9 @@
   "invite-to-workspace-subtitle": "Unlock the Power of Teamwork by Inviting Members to Your Workspace",
   "worksapce-invitation-message-placeholder": "Message that will be atttached to invitation.",
   "send-invitation": "Send Invitation",
-  "invite-members-no-options": "There is not results to shose."
+  "invite-members-no-options": "There is not results to shose.",
+  "notifications": "Notifications",
+  "invited-you-to-join": "invited you to join",
+  "accept": "Accept",
+  "reject": "Reject"
 }
