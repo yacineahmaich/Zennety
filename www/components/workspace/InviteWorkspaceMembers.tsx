@@ -37,7 +37,10 @@ import {
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-  users: z.number().array().min(1, "Please chose some user(s) to invite them."),
+  users: z
+    .number()
+    .array()
+    .min(1, "Please select some user(s) to invite them."),
   role: z.nativeEnum(Role),
   message: z.string(),
 });
@@ -119,7 +122,8 @@ const InviteWorkspaceMembers = ({
                         multiValueRemove: (state) => "!hover:bg-red-500",
                         placeholder: (state) =>
                           "!text-sm !text-muted-foreground",
-                        menu: (state) => "!bg-background !border-border",
+                        menu: (state) =>
+                          "!bg-background !border !border-border",
                         menuList: (state) => "!divide-y",
                         noOptionsMessage: (state) =>
                           "!text-muted-foreground !text-sm !font-medium",

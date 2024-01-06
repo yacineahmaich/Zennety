@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const getInvitation = async (token: string): Promise<App.Models.Invitation> => {
   const response = await api.get(`/invitations/${token}`);
@@ -40,8 +40,15 @@ export const useInvitation = (token: string) => {
  */
 
 export const useAcceptInvitation = () => {
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: acceptInvitation,
+    onSuccess(data, { token }) {
+      queryClient.removeQueries({
+        queryKey: ["invitations"],
+      });
+    },
   });
 
   return {

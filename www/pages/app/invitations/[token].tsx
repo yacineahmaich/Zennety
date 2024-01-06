@@ -3,10 +3,12 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { route } from "@/lib/routes";
-import { useAcceptInvitation, useInvitation } from "@/services/invitation";
+import { useAcceptInvitation, useInvitation } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { CheckIcon, XIcon } from "lucide-react";
+import { GetServerSidePropsContext } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
 const AcceptInvitation: NextPageWithLayout = () => {
@@ -65,6 +67,16 @@ const AcceptInvitation: NextPageWithLayout = () => {
       </Card>
     </div>
   );
+};
+
+export const getServerSideProps = async ({
+  locale,
+}: GetServerSidePropsContext) => {
+  return {
+    props: {
+      ...(locale ? await serverSideTranslations(locale, ["common"]) : {}),
+    },
+  };
 };
 
 AcceptInvitation.getLayout = (page) => {
