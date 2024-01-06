@@ -1,4 +1,4 @@
-import { useNotifications } from "@/services";
+import { useMarkNotificationAsRead, useNotifications } from "@/services";
 import { NotificationType } from "@/types/enums";
 import { format } from "date-fns";
 import {
@@ -7,9 +7,10 @@ import {
   MessageSquareIcon,
   MessageSquareWarningIcon,
   MessageSquareXIcon,
-  XIcon,
+  MinusIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Sheet,
@@ -21,9 +22,10 @@ import {
 
 const Notifications = () => {
   const { notifications } = useNotifications();
+  const [open, setOpen] = useState(false);
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button size="sm" variant="outline">
           <InboxIcon size={16} />
@@ -36,55 +38,90 @@ const Notifications = () => {
 
         <div className="mt-6 space-y-2">
           {notifications?.map((notification) => (
-            <Link
+            <Notification
               key={notification.id}
-              href={notification.link}
-              className="group relative flex items-center rounded-lg border p-3 ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2"
-            >
-              {!notification.isRead && (
-                <span className="absolute left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-muted-foreground" />
-              )}
-              <div className="mr-2 self-start">
-                {notification.type === NotificationType.NORMAL && (
-                  <MessageSquareIcon size={14} />
-                )}
-                {notification.type === NotificationType.WARNING && (
-                  <MessageSquareWarningIcon size={14} />
-                )}
-                {notification.type === NotificationType.DANGER && (
-                  <MessageSquareXIcon size={14} />
-                )}
-              </div>
-              <div className="mr-4 self-start">
-                <h2 className="text-xs font-semibold">{notification.title}</h2>
-                <p className="line-clamp-2 text-xs">
-                  {notification.description}
-                </p>
-                <span className="text-xs">
-                  {format(new Date(notification.date), "d MMMM yyyy")}
-                </span>
-              </div>
-              <div className="ml-auto flex flex-col justify-end space-y-1 opacity-0 group-hover:opacity-100">
-                <Button
-                  variant="outline"
-                  className="h-5 text-xs font-medium"
-                  title="mark as read"
-                >
-                  <CheckIcon size={14} />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-5 text-xs font-medium"
-                  title="delete"
-                >
-                  <XIcon size={14} />
-                </Button>
-              </div>
-            </Link>
+              notification={notification}
+              onClose={() => setOpen(false)}
+            />
           ))}
         </div>
       </SheetContent>
     </Sheet>
+  );
+};
+
+const Notification = ({
+  notification,
+  onClose,
+}: {
+  notification: App.Models.Notification;
+  onClose: () => void;
+}) => {
+  const { markNotificationAsRead, isLoading } = useMarkNotificationAsRead();
+
+  return (
+    <Link
+      key={notification.id}
+      href={notification.link}
+      onClick={() => {
+        if (!notification.isRead) {
+          markNotificationAsRead({ id: notification.id });
+        }
+        onClose();
+      }}
+      className="group relative flex items-center rounded-lg border p-3 ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2"
+    >
+      {!notification.isRead && (
+        <span className="absolute left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-muted-foreground" />
+      )}
+      <div className="mr-2 self-start">
+        {notification.type === NotificationType.NORMAL && (
+          <MessageSquareIcon size={14} />
+        )}
+        {notification.type === NotificationType.WARNING && (
+          <MessageSquareWarningIcon size={14} />
+        )}
+        {notification.type === NotificationType.DANGER && (
+          <MessageSquareXIcon size={14} />
+        )}
+      </div>
+      <div className="mr-4 self-start">
+        <h2 className="text-xs font-semibold">{notification.title}</h2>
+        <p className="line-clamp-2 text-xs">{notification.description}</p>
+        <span className="text-xs">
+          {format(new Date(notification.date), "d MMMM yyyy")}
+        </span>
+      </div>
+      <div className="ml-auto flex flex-col justify-end space-y-1 opacity-0 group-hover:opacity-100">
+        {!notification.isRead && (
+          <Button
+            variant="outline"
+            className="h-5 text-xs font-medium"
+            title="mark as read"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              markNotificationAsRead({ id: notification.id });
+            }}
+            disabled={isLoading}
+          >
+            <CheckIcon size={14} />
+          </Button>
+        )}
+        <Button
+          variant="outline"
+          className="h-5 text-xs font-medium"
+          title="delete"
+          disabled={isLoading}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
+          <MinusIcon size={14} />
+        </Button>
+      </div>
+    </Link>
   );
 };
 
