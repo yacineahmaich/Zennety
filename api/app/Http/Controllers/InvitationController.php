@@ -32,6 +32,16 @@ class InvitationController extends Controller
     }
 
     /**
+     * Reject a worksapce/board membership invitation.
+     */
+    public function reject(Invitation $invitation)
+    {
+        $this->service->reject($invitation);
+
+        return response()->noContent();
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Invitation $invitation)

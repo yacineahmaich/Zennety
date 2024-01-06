@@ -47,18 +47,26 @@ class InvitationService
 
     public function accept(Invitation $invitation)
     {
+        DB::transaction(function () use ($invitation) {
+            $inviteable = $invitation->inviteable;
 
+            /**@var App\Models\Membership $member */
+            $member = $inviteable->members()->create([
+                'user_id' => auth()->id(),
+            ]);
+
+            $member->assignRole($invitation->role);
+
+            $invitation->update([
+                "expires_at" => now()
+            ]);
+        });
+    }
+
+    public function reject(Invitation $invitation)
+    {
         $invitation->update([
             "expires_at" => now()
         ]);
-
-        $inviteable = $invitation->inviteable;
-
-        /**@var App\Models\Membership $member */
-        $member = $inviteable->members()->create([
-            'user_id' => auth()->id(),
-        ]);
-
-        $member->assignRole($invitation->role);
     }
 }
