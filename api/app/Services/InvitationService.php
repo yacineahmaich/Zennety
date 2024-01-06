@@ -48,6 +48,10 @@ class InvitationService
     public function accept(Invitation $invitation)
     {
 
+        $invitation->update([
+            "expires_at" => now()
+        ]);
+
         $inviteable = $invitation->inviteable;
 
         /**@var App\Models\Membership $member */
