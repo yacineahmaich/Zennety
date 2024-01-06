@@ -28,11 +28,8 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (Throwable $e, Request $request) {
             if ($request->wantsJson()) {
-                if ($e instanceof ModelNotFoundException) {
-                    return response()->json(['message' => 'Record not found or might be deleted'], 404);
-                }
                 if ($e instanceof NotFoundHttpException) {
-                    return response()->json(['message' => 'Requested resource not found'], 404);
+                    return response()->json(['message' => 'Record not found or might be deleted'], 404);
                 }
             }
         });

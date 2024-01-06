@@ -16,7 +16,7 @@ class Notification extends Model
         'description',
         'link',
         'is_read',
-        'user_id'
+        'user_id',
     ];
 
     public function user(): BelongsTo

@@ -12,7 +12,8 @@ class WorkspaceService
 {
     public function getMyWorkspaces()
     {
-        // TODO: Group query by owned workspaces and guest workspaces
+        // TODO: Group query by owned workspaces and guest workspaces (currently done in frontend)
+        // TODO: include workspaces in whish user is a member of its boards
         return Workspace::with('members')
             ->whereHas('members', function ($query) {
                 $query->where('user_id', auth()->id());
@@ -22,11 +23,6 @@ class WorkspaceService
                     $query->where('user_id', auth()->id());
                 })
                     ->orWhere('visibility', Visibility::PUBLIC);
-            })
-            ->orWhereHas('boards', function ($query) {
-                $query->whereHas('members', function ($query) {
-                    $query->where('user_id', auth()->id());
-                });
             })
             ->get();
     }
