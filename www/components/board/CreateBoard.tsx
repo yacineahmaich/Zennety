@@ -61,7 +61,7 @@ const CreateBoard = ({
     createBoard(values, {
       onSuccess({ id }) {
         if (id) {
-          window.location.href = route("board", workspace.id, id);
+          window.location.href = route("board", id);
         }
       },
     });

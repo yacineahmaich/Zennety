@@ -39,6 +39,7 @@ declare namespace App.Models {
     description: string;
     link: string;
     isRead: boolean;
+    date: string;
   }
   interface Invitation {
     id: number;
