@@ -31,4 +31,14 @@ class NotificationController extends Controller
 
         return response()->json();
     }
+
+    /**
+     * Delete a user notifications.
+     */
+    public function delete(Notification $notification)
+    {
+        $notification->delete();
+
+        return response()->json();
+    }
 }

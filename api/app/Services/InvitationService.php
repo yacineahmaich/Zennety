@@ -5,7 +5,6 @@ namespace App\Services;
 use App\DTO\InvitationDTO;
 use App\Enums\NotificationType;
 use App\Models\Invitation;
-use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -30,12 +29,11 @@ class InvitationService
                     'expires_at' => now()->addWeek(),
                 ];
 
-                Notification::create([
+                $user->notifications()->create([
                     'type' => NotificationType::NORMAL,
                     'title' => 'Invited to join w/' . $inviteable->name,
                     'description' => $invitationDTO->message,
                     'link' => '/app/invitations/' . $invitation['token'],
-                    'user_id' => $user->id
                 ]);
 
                 $invitations[] = $invitation;
