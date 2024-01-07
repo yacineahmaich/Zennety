@@ -1,4 +1,8 @@
-import { useMarkNotificationAsRead, useNotifications } from "@/services";
+import {
+  useDeleteNotification,
+  useMarkNotificationAsRead,
+  useNotifications,
+} from "@/services";
 import { NotificationType } from "@/types/enums";
 import { format } from "date-fns";
 import {
@@ -61,7 +65,9 @@ const Notification = ({
   notification: App.Models.Notification;
   onClose: () => void;
 }) => {
-  const { markNotificationAsRead, isLoading } = useMarkNotificationAsRead();
+  const { markNotificationAsRead, isLoading: isMarkingAsRead } =
+    useMarkNotificationAsRead();
+  const { deleteNotification, isLoading: isDeleting } = useDeleteNotification();
 
   return (
     <Link
@@ -103,11 +109,11 @@ const Notification = ({
             className="h-5 text-xs font-medium"
             title="mark as read"
             onClick={(e) => {
+              if (isMarkingAsRead) return;
               e.preventDefault();
               e.stopPropagation();
               markNotificationAsRead({ id: notification.id });
             }}
-            disabled={isLoading}
           >
             <CheckIcon size={14} />
           </Button>
@@ -116,10 +122,11 @@ const Notification = ({
           variant="outline"
           className="h-5 text-xs font-medium"
           title="delete"
-          disabled={isLoading}
           onClick={(e) => {
+            if (isDeleting) return;
             e.preventDefault();
             e.stopPropagation();
+            deleteNotification({ id: notification.id });
           }}
         >
           <MinusIcon size={14} />

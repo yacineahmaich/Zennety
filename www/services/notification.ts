@@ -11,6 +11,10 @@ const markNotificationAsRead = async ({ id }: { id: number }) => {
   await api.post(`/notifications/${id}/mark-as-read`);
 };
 
+const deleteNotification = async ({ id }: { id: number }) => {
+  await api.delete(`/notifications/${id}`);
+};
+
 /**
  * ==========================================
  * ========= QUERIES ========================
@@ -50,17 +54,39 @@ export const useMarkNotificationAsRead = () => {
           notifications?.map((n) => (n.id === id ? { ...n, isRead: true } : n))
       );
     },
-    onError(data, { id }) {
-      queryClient.setQueryData<App.Models.Notification[]>(
-        ["notifications"],
-        (notifications) =>
-          notifications?.map((n) => (n.id === id ? { ...n, isRead: false } : n))
-      );
+    onSettled() {
+      queryClient.invalidateQueries({
+        queryKey: ["notifications"],
+      });
     },
   });
 
   return {
     markNotificationAsRead: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useDeleteNotification = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteNotification,
+    onMutate({ id }) {
+      queryClient.setQueryData<App.Models.Notification[]>(
+        ["notifications"],
+        (notifications) => notifications?.filter((n) => n.id !== id)
+      );
+    },
+    onSettled() {
+      queryClient.invalidateQueries({
+        queryKey: ["notifications"],
+      });
+    },
+  });
+
+  return {
+    deleteNotification: mutate,
     isLoading: isPending,
   };
 };
