@@ -3,6 +3,7 @@ import { useState } from "react";
 import Notifications from "../_partials/Notifications";
 import SideNav from "../_partials/SideNav";
 import SidebarLogo from "../_partials/SidebarLogo";
+import SidebarWorkspaces from "../_partials/SidebarWorkspaces";
 import UserDropdown from "../_partials/UserDropdown";
 import WorkspacesDropdown from "../_partials/WorkspacesDropdown";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
@@ -25,8 +26,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
           collapsed={collapsed}
           toggleCollapsed={() => setCollapsed((c) => !c)}
         />
-
         {!collapsed && <SideNav />}
+        {!collapsed && <SidebarWorkspaces />}
         {!collapsed && <UserDropdown />}
       </aside>
       <div className="min-w-[1024px] flex-1 p-4">

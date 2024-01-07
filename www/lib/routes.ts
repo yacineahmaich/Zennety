@@ -19,7 +19,7 @@ const routes: Route[] = [
   },
   {
     name: "login",
-    buildPath: () => "/auth/login",
+    buildPath: (params) => `/auth/login?callback=${params[0]}`,
   },
   {
     name: "register",
@@ -45,8 +45,8 @@ const routes: Route[] = [
 
 /**
  *
- * @param name route name
- * @param params values need to build route path
+ * @param RouteName
+ * @param params values needed to build route path
  */
 export function route(name: RouteName, ...params: any[]) {
   const route = routes.find((route) => route.name === name);

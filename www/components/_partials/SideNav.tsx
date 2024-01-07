@@ -9,7 +9,7 @@ const SideNav = () => {
   const { t } = useTranslation("common");
 
   return (
-    <nav className="flex-1 overflow-y-auto overflow-x-hidden">
+    <nav className="overflow-x-hidden">
       <ul className="space-y-2 border-b border-accent pb-2">
         <li>
           <Link
