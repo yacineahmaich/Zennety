@@ -19,7 +19,8 @@ const routes: Route[] = [
   },
   {
     name: "login",
-    buildPath: (params) => `/auth/login?callback=${params[0]}`,
+    buildPath: (params) =>
+      `/auth/login${params[0] ? `?callback=${params[0]}` : ""}`,
   },
   {
     name: "register",

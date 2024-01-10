@@ -60,7 +60,7 @@ export const useUser = () => {
 
 /**
  * ==========================================
- * ========= MUTATIONS ========================
+ * ========= MUTATIONS ======================
  * ==========================================
  */
 export const useRegister = () => {
@@ -83,13 +83,13 @@ export const useRegister = () => {
 
 export const useLogin = () => {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: login,
-    onSuccess(user) {
-      queryClient.setQueryData(["user"], user);
-      router.replace((router.query.callback as string) || route("app"));
+    onSuccess() {
+      window.location.replace(
+        (router.query.callback as string) || route("app")
+      );
     },
   });
 
@@ -100,14 +100,10 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-
   const { mutate, isPending } = useMutation({
     mutationFn: logout,
     onSuccess() {
-      queryClient.clear();
-      router.replace(route("login"));
+      window.location.replace(route("login"));
     },
   });
 
