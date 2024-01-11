@@ -64,7 +64,7 @@ const WorkspaceAccordion = ({
           {t("boards")}
         </Link>
         <Link
-          href=""
+          href={route("workspace/members", workspace.id)}
           className={cn(
             buttonVariants({ size: "sm", variant: "ghost" }),
             "w-full justify-start"

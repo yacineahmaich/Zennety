@@ -79,5 +79,9 @@
   "notifications": "Notifications",
   "invited-you-to-join": "invited you to join",
   "accept": "Accept",
-  "reject": "Reject"
+  "reject": "Reject",
+  "all": "All",
+  "admin": "Admin",
+  "member": "Mmeber",
+  "viewer": "Viewer"
 }
