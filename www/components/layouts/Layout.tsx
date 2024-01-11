@@ -21,14 +21,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   if (!isLoading) {
     if (!isMatch(router.asPath, unauthenticatedRoutes)) {
       if (!user) {
-        router.push(`/auth/login?callback=${router.asPath}`);
+        router.replace(`/auth/login?callback=${router.asPath}`);
         return null;
       }
     }
 
     // Prevent authenticated users from visiting auth pages
     if (user && isMatch(router.asPath, ["/auth/**"])) {
-      router.push("/app");
+      router.replace("/app");
       return null;
     }
   }
