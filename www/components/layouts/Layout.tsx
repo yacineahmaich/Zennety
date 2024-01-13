@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { isMatch } from "micromatch";
 import { Inter as FontSans } from "next/font/google";
 
@@ -8,7 +7,6 @@ import { useRouter } from "next/router";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
-  variable: "--font-sans",
 });
 
 const unauthenticatedRoutes = ["/auth/**", "/"];
@@ -34,12 +32,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div
-      className={cn(
-        "min-h-screen bg-background font-sans antialiased",
-        fontSans.variable
-      )}
-    >
+    <div className={fontSans.className}>
       {isLoading && (
         <div className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-background">
           <img src={app.logoUrl} alt={app.name} className="h-12" />
