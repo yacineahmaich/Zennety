@@ -81,7 +81,9 @@
   "accept": "Accept",
   "reject": "Reject",
   "all": "All",
+  "owner": "Owner",
   "admin": "Admin",
-  "member": "Mmeber",
-  "viewer": "Viewer"
+  "member": "Member",
+  "viewer": "Viewer",
+  "search-by-username-or-email": "Search by name or email address"
 }

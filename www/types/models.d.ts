@@ -23,8 +23,7 @@ declare namespace App.Models {
   }
   interface Member {
     id: number;
-    name: string;
-    email: string;
+    profile: User;
     permissions: string[];
     role: string;
   }
