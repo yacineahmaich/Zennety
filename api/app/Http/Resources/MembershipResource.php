@@ -15,9 +15,8 @@ class MembershipResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->user->id,
-            'name' => $this->user->name,
-            'email' => $this->user->email,
+            'id' => $this->id,
+            'profile' => UserResource::make($this->user),
             // TODO: we should select name attribute at database query level for performance 
             'permissions' => $this->getAllPermissions()->pluck('name'),
             'role' => $this->roles()->pluck('name')->first()
