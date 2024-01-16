@@ -16,33 +16,33 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Permission::create(['name' => 'view-workspace']);
-        Permission::create(['name' => 'update-workspace']);
-        Permission::create(['name' => 'delete-workspace']);
+        // Create permissions
+        Permission::create(['name' => 'view']);
+        Permission::create(['name' => 'update']);
+        Permission::create(['name' => 'delete']);
 
+        // Create roles
         $owner = Role::create(['name' => \App\Enums\Role::OWNER]);
         $admin = Role::create(['name' => \App\Enums\Role::ADMIN]);
         $member = Role::create(['name' => \App\Enums\Role::MEMBER]);
         $viewer = Role::create(['name' => \App\Enums\Role::VIEWER]);
 
+        // Assign permissions to roles
         $owner->givePermissionTo(
-            'view-workspace',
-            'update-workspace',
-            'delete-workspace',
+            'view',
+            'update',
+            'delete',
         );
-
         $admin->givePermissionTo(
-            'view-workspace',
-            'update-workspace',
-            'delete-workspace',
+            'view',
+            'update',
         );
-
         $member->givePermissionTo(
-            'view-workspace',
+            'view',
+        );
+        $viewer->givePermissionTo(
+            'view',
         );
 
-        $viewer->givePermissionTo(
-            'view-workspace',
-        );
     }
 }

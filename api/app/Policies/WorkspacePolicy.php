@@ -29,7 +29,7 @@ class WorkspacePolicy
             return false;
         }
 
-        return $member->hasPermissionTo('view-workspace');
+        return $member->checkPermissionTo('view');
     }
 
     /**
@@ -45,7 +45,10 @@ class WorkspacePolicy
      */
     public function update(User $user, Workspace $workspace): bool
     {
-        return $user->memberFor($workspace)->hasPermissionTo('update-workspace');
+        if (!$member = $user->memberFor($workspace)) {
+            return false;
+        }
+        return $member->checkPermissionTo('update');
     }
 
     /**
@@ -53,7 +56,10 @@ class WorkspacePolicy
      */
     public function delete(User $user, Workspace $workspace): bool
     {
-        return $user->memberFor($workspace)->hasPermissionTo('delete-workspace');
+        if (!$member = $user->memberFor($workspace)) {
+            return false;
+        }
+        return $member->checkPermissionTo('delete');
     }
 
     /**
