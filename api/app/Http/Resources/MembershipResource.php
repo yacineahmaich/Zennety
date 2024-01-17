@@ -16,7 +16,9 @@ class MembershipResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'profile' => UserResource::make($this->user),
+            'userId' => $this->user_id,
+            'resourceId' => $this->membershipable_id,
+            'profile' => UserResource::make($this->whenLoaded('user')),
             // TODO: we should select name attribute at database query level for performance 
             'permissions' => $this->getAllPermissions()->pluck('name'),
             'role' => $this->roles()->pluck('name')->first()

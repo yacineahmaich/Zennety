@@ -34,7 +34,7 @@ export function groupWorkspacesByOwnership(
       workspace
     ) => {
       const member = workspace.members?.find(
-        (member) => member.id === user?.id
+        (member) => member.userId === user?.id
       );
 
       if (member?.role === Role.OWNER) {

@@ -23,6 +23,8 @@ declare namespace App.Models {
   }
   interface Member {
     id: number;
+    userId: number;
+    resourceId: number;
     profile: User;
     permissions: string[];
     role: string;
