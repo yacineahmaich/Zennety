@@ -12,7 +12,7 @@ class UserController extends Controller
     {
         $user = $request->user();
 
-        return UserResource::make($user);
+        return UserResource::make($user->load(['memberships']));
     }
     public function search($search)
     {
