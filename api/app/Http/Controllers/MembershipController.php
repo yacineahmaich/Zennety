@@ -12,16 +12,18 @@ class MembershipController extends Controller
     {
         $role = $request->get('role');
         $search = $request->get('search');
+        $namespace = $request->get("namespace"); // App\Models\Workspace or App\Models\Board
 
         $memberships = Membership::where('membershipable_id', $membershipable_id)
+            ->where('membershipable_type', $namespace)
             ->with('user')
             ->with('roles')
             ->whereHas('user', function ($query) use ($search) {
                 $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');
             })
-            ->whereHas('roles', function ($q) use($role) {
-                if($role) {
+            ->whereHas('roles', function ($q) use ($role) {
+                if ($role) {
                     $q->where('roles.name', $role);
                 }
             })

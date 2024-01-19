@@ -1,10 +1,9 @@
 import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
 import { useMembers } from "@/services";
-import { Role } from "@/types/enums";
+import { Namespace, Role } from "@/types/enums";
 import { ListFilterIcon, TrashIcon, UserCogIcon, UserIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -23,7 +22,6 @@ const WorkspaceMembers = ({
 }: {
   workspace: App.Models.Workspace;
 }) => {
-  const router = useRouter();
   const { t } = useTranslation("common");
   const [role, setRole] = useState("");
   const [_search, setSearch] = useState("");
@@ -31,6 +29,7 @@ const WorkspaceMembers = ({
   const { data } = useMembers(workspace.id, {
     search,
     role: role === "all" ? "" : role,
+    namespace: Namespace.WORKSPACE,
   });
 
   return (

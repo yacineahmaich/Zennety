@@ -14,3 +14,7 @@ export enum NotificationType {
   WARNING = "Warning",
   DANGER = "Danger",
 }
+export enum Namespace {
+  WORKSPACE = "App\\Models\\Workspace",
+  BOARD = "App\\Models\\Board",
+}
