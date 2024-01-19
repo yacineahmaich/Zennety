@@ -1,19 +1,26 @@
-import { PenSquareIcon } from "lucide-react";
+import { FolderSearchIcon, PenSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import CreateBoard from "../board/CreateBoard";
 import { Button } from "../ui/button";
 
-const EmptyWorkspace = ({ workspace }: { workspace: App.Models.Workspace }) => {
+const EmptyWorkspace = ({
+  workspace,
+  withIcon = false,
+}: {
+  workspace: App.Models.Workspace;
+  withIcon?: boolean;
+}) => {
   const { t } = useTranslation("common");
 
   return (
-    <div className="col-span-full flex flex-col items-center p-6 text-center">
-      <h4 className="mb-2 text-lg font-semibold text-muted-foreground">
-        {t("empty-workspace-title")}
-      </h4>
-      <p className="mb-4 text-sm text-muted-foreground">
-        {t("empty-workspace-subtitle")}
-      </p>
+    <div className="col-span-full flex flex-col items-center justify-center p-6 text-center text-muted-foreground">
+      {withIcon && <FolderSearchIcon size={85} />}
+
+      <div className="my-4 space-y-1">
+        <h4 className="text-lg font-semibold">{t("empty-workspace-title")}</h4>
+        <p className="text-sm">{t("empty-workspace-subtitle")}</p>
+      </div>
+
       <CreateBoard
         openTrigger={
           <Button size="sm" variant="secondary">

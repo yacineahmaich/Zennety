@@ -44,7 +44,7 @@ const Workspace: NextPageWithLayout = () => {
           ))}
 
           {workspace?.boards?.length === 0 && (
-            <EmptyWorkspace workspace={workspace} />
+            <EmptyWorkspace workspace={workspace} withIcon />
           )}
 
           {workspace?.boards && workspace.boards.length > 0 && (
