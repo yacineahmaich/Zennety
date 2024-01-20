@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\DTO\BoardDTO;
+use App\DTO\InvitationDTO;
+use App\Http\Requests\InvitationRequest;
 use App\Http\Requests\StoreBoardRequest;
 use App\Http\Requests\UpdateBoardRequest;
 use App\Http\Resources\BoardResource;
 use App\Models\Board;
 use App\Models\Workspace;
 use App\Services\BoardService;
+use App\Services\InvitationService;
 
 class BoardController extends Controller
 {
     public function __construct(
-        public BoardService $service
+        public BoardService $service,
+        public InvitationService $invitationService
     ) {
     }
 
@@ -60,5 +64,15 @@ class BoardController extends Controller
     public function destroy(Board $board)
     {
         //
+    }
+
+    public function invite(InvitationRequest $request, Board $board)
+    {
+        $this->invitationService->send(
+            $board,
+            InvitationDTO::fromRequest($request)
+        );
+
+        return response()->noContent();
     }
 }
