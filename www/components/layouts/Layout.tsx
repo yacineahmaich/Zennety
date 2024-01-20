@@ -33,12 +33,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className={fontSans.className}>
-      {isLoading && (
+      {isLoading ? (
         <div className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-background">
           <img src={app.logoUrl} alt={app.name} className="h-12" />
         </div>
+      ) : (
+        children
       )}
-      {children}
     </div>
   );
 };
