@@ -1,6 +1,6 @@
 import app from "@/lib/app";
 import { route } from "@/lib/routes";
-import { useUser } from "@/services";
+import { useQueryClient } from "@tanstack/react-query";
 import { ZapIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
@@ -9,7 +9,8 @@ import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import { buttonVariants } from "../ui/button";
 
 const GuestLayout = ({ children }: { children: ReactNode }) => {
-  const { user } = useUser();
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData<App.Models.User>(["user"]);
   const { t } = useTranslation("common");
 
   return (

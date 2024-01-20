@@ -18,14 +18,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   // Protect routes
   if (!isLoading) {
     if (!isMatch(router.asPath, unauthenticatedRoutes)) {
-      if (!user) {
+      if (!user?.id) {
         router.replace(`/auth/login?callback=${router.asPath}`);
         return null;
       }
     }
 
     // Prevent authenticated users from visiting auth pages
-    if (user && isMatch(router.asPath, ["/auth/**"])) {
+    if (user?.id && isMatch(router.asPath, ["/auth/**"])) {
       router.replace("/app");
       return null;
     }

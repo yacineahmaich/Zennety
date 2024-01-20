@@ -44,12 +44,9 @@ const sendResetPasswordEmail = async ({ email }: { email: string }) => {
 export const useUser = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["user"],
-    queryFn: getUser,
+    queryFn: () => getUser(),
     retry: false,
     staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
 
   return {
