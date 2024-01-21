@@ -73,6 +73,10 @@
   "card-name-placeholder": "e.g `do something cool today`",
   "invite-to-workspace-title": "Invite to Workspace",
   "invite-to-workspace-subtitle": "Unlock the Power of Teamwork by Inviting Members to Your Workspace",
+  "invite-to-board-title": "Invite to Board",
+  "invite-to-board-subtitle": "Unlock the Power of Teamwork by Inviting Members to Your Board",
+  "search-by-username-or-email": "Search by name or email address",
+  "default-invitation-message": "Join now and let's work together.",
   "worksapce-invitation-message-placeholder": "Message that will be atttached to invitation.",
   "send-invitation": "Send Invitation",
   "invite-members-no-options": "There is not results to shose.",
@@ -84,6 +88,5 @@
   "owner": "Owner",
   "admin": "Admin",
   "member": "Member",
-  "viewer": "Viewer",
-  "search-by-username-or-email": "Search by name or email address"
+  "viewer": "Viewer"
 }

@@ -1,3 +1,4 @@
+import { Namespace } from "@/types/enums";
 import {
   CalendarSearchIcon,
   ChevronsRightIcon,
@@ -6,6 +7,7 @@ import {
   UserPlusIcon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import InviteMembers from "../shared/InviteMembers";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 
@@ -42,9 +44,17 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
 
       <div className="flex items-center space-x-4">
         <div className="flex items-center">
-          <Button size="sm" className="flex items-center gap-2 text-xs">
-            <UserPlusIcon size={16} /> {t("share")}
-          </Button>
+          <InviteMembers
+            openTrigger={
+              <Button size="sm" className="flex items-center gap-2 text-xs">
+                <UserPlusIcon size={16} /> {t("share")}
+              </Button>
+            }
+            targetId={board?.id}
+            namespace={Namespace.BOARD}
+            title={t("invite-to-board-title")}
+            subtitle={t("invite-to-board-subtitle")}
+          />
           <Button
             size="sm"
             variant="link"

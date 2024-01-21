@@ -1,5 +1,22 @@
+import { InviteMembers } from "@/components/shared/InviteMembers";
 import { api } from "@/lib/api";
+import { Namespace } from "@/types/enums";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+const sendMembershipInvitations = async ({
+  data,
+  params,
+}: {
+  data: InviteMembers;
+  params: {
+    namespace: Namespace;
+    targetId: number;
+  };
+}) => {
+  await api.post("/invitations", data, {
+    params,
+  });
+};
 
 const getInvitation = async (token: string): Promise<App.Models.Invitation> => {
   const response = await api.get(`/invitations/${token}`);
@@ -77,6 +94,17 @@ export const useRejectInvitation = () => {
 
   return {
     rejectInvitation: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useSendMembershipInvitations = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: sendMembershipInvitations,
+  });
+
+  return {
+    sendMembershipInvitations: mutate,
     isLoading: isPending,
   };
 };

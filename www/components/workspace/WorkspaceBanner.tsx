@@ -1,8 +1,8 @@
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { Visibility } from "www/types/enums";
+import { Namespace, Visibility } from "www/types/enums";
+import InviteMembers from "../shared/InviteMembers";
 import { Button } from "../ui/button";
-import InviteWorkspaceMembers from "./InviteWorkspaceMembers";
 
 const WorkspaceBanner = ({
   workspace,
@@ -40,8 +40,11 @@ const WorkspaceBanner = ({
             </div>
           </div>
         </div>
-        <InviteWorkspaceMembers
-          worksapce={workspace}
+        <InviteMembers
+          targetId={workspace?.id}
+          namespace={Namespace.WORKSPACE}
+          title={t("invite-to-workspace-title")}
+          subtitle={t("invite-to-workspace-subtitle")}
           openTrigger={
             <Button size="sm" variant="secondary">
               <UserPlusIcon size={20} className="mr-2" />

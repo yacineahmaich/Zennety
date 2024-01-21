@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { useInviteWorksapceMembers } from "@/services";
-import { Role } from "@/types/enums";
+import { useSendMembershipInvitations } from "@/services";
+import { Namespace, Role } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserCogIcon, UserIcon, UserSearchIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -47,31 +47,41 @@ const formSchema = z.object({
 
 export type InviteMembers = z.infer<typeof formSchema>;
 
-const InviteWorkspaceMembers = ({
-  worksapce,
+const InviteMembers = ({
+  targetId,
+  namespace,
+  title,
+  subtitle,
   openTrigger,
 }: {
-  worksapce?: App.Models.Workspace;
+  targetId?: number;
+  namespace: Namespace;
+  title: string;
+  subtitle: string;
   openTrigger: JSX.Element;
 }) => {
   const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
-  const { inviteWorkspaceMembers, isLoading } = useInviteWorksapceMembers();
+  const { sendMembershipInvitations, isLoading } =
+    useSendMembershipInvitations();
 
   const form = useForm<InviteMembers>({
     defaultValues: {
       users: [],
       role: Role.MEMBER,
-      message: "Join this worksapce and let's work together.",
+      message: t("default-invitation-message"),
     },
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = (data: InviteMembers) => {
-    if (!worksapce) return;
+    if (!targetId) return;
 
-    inviteWorkspaceMembers(
-      { workspaceId: worksapce.id, data },
+    sendMembershipInvitations(
+      {
+        data,
+        params: { namespace, targetId },
+      },
       {
         onSuccess() {
           setOpen(false);
@@ -85,10 +95,8 @@ const InviteWorkspaceMembers = ({
       <DialogTrigger asChild>{openTrigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t("invite-to-workspace-title")}</DialogTitle>
-          <DialogDescription className="text-xs">
-            {t("invite-to-workspace-subtitle")}
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription className="text-xs">{subtitle}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -266,4 +274,4 @@ const searchUsers = async (search: string): Promise<App.Models.User[]> => {
   return response.data.data;
 };
 
-export default InviteWorkspaceMembers;
+export default InviteMembers;
