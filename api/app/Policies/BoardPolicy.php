@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\Board;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Models\Workspace;
 
 class BoardPolicy
 {
@@ -27,9 +27,14 @@ class BoardPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, Workspace $workspace): bool
     {
-        //
+        if (!$member = $user->memberFor($workspace)) {
+            return false;
+        }
+
+        // if user can update workspace then he can create a board
+        return $member->checkPermissionTo('update');
     }
 
     /**

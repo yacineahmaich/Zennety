@@ -32,6 +32,8 @@ class BoardController extends Controller
      */
     public function store(StoreBoardRequest $request, Workspace $workspace)
     {
+        $this->authorize('create', [Board::class, $workspace]);
+
         $board = $this->service->store(
             BoardDTO::fromRequest($request),
             $workspace
