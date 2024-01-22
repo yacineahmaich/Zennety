@@ -21,7 +21,11 @@ class BoardPolicy
      */
     public function view(User $user, Board $board): bool
     {
-        //
+        if (!$member = $user->memberFor($board)) {
+            return false;
+        }
+
+        return $member->checkPermissionTo('view');
     }
 
     /**
@@ -42,7 +46,11 @@ class BoardPolicy
      */
     public function update(User $user, Board $board): bool
     {
-        //
+        if (!$member = $user->memberFor($board)) {
+            return false;
+        }
+
+        return $member->checkPermissionTo('update');
     }
 
     /**
@@ -50,7 +58,11 @@ class BoardPolicy
      */
     public function delete(User $user, Board $board): bool
     {
-        //
+        if (!$member = $user->memberFor($board)) {
+            return false;
+        }
+
+        return $member->checkPermissionTo('delete');
     }
 
     /**

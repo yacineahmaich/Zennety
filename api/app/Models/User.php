@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,11 +50,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Membership::class);
     }
 
-    public function memberFor(Workspace $workspace): ?Membership
+    public function memberFor(Model $membershipable): ?Membership
     {
         return $this->memberships()
-            ->where('membershipable_type', 'App\Models\Workspace')
-            ->where('membershipable_id', $workspace->id)
+            ->where('membershipable_type', get_class($membershipable))
+            ->where('membershipable_id', $membershipable->id)
             ->where('user_id', $this->id)
             ->first();
     }

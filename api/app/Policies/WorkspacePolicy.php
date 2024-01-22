@@ -13,7 +13,7 @@ class WorkspacePolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        //
     }
 
     /**
@@ -37,7 +37,7 @@ class WorkspacePolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        //
     }
 
     /**
@@ -67,7 +67,7 @@ class WorkspacePolicy
      */
     public function restore(User $user, Workspace $workspace): bool
     {
-        return true;
+        //
     }
 
     /**
@@ -75,6 +75,6 @@ class WorkspacePolicy
      */
     public function forceDelete(User $user, Workspace $workspace): bool
     {
-        return true;
+        //
     }
 }

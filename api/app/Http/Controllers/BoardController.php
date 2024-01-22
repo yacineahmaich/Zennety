@@ -47,6 +47,8 @@ class BoardController extends Controller
      */
     public function show(Board $board)
     {
+        $this->authorize('view', $board);
+
         return BoardResource::make($board);
     }
 
