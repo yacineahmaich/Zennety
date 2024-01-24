@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Visibility;
 use App\Models\Board;
 use App\Models\User;
 use App\Models\Workspace;
@@ -21,6 +22,12 @@ class BoardPolicy
      */
     public function view(User $user, Board $board): bool
     {
+        if ($board->visibility == Visibility::PUBLIC) {
+            if ($user->memberFor($board->workspace)) {
+                return true;
+            }
+        }
+
         if (!$member = $user->memberFor($board)) {
             return false;
         }
