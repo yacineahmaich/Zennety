@@ -3,6 +3,7 @@ declare namespace App.Models {
     id: number;
     name: string;
     email: string;
+    memberships: Member[];
   }
   interface Workspace {
     id: number;
@@ -25,6 +26,7 @@ declare namespace App.Models {
     id: number;
     userId: number;
     resourceId: number;
+    namespace: string;
     profile: User;
     permissions: string[];
     role: string;

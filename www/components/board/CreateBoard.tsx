@@ -1,7 +1,8 @@
+import { useCan } from "@/hooks/useCan";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useCreateBoard } from "@/services";
-import { Visibility } from "@/types/enums";
+import { Namespace, Visibility } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Globe2Icon, LockIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -48,6 +49,7 @@ const CreateBoard = ({
 }) => {
   const { t } = useTranslation("common");
   const { createBoard, isLoading } = useCreateBoard();
+  const canCreate = useCan("update", Namespace.WORKSPACE, workspace.id);
 
   const form = useForm<CreateBoard>({
     resolver: zodResolver(formSchema),
@@ -66,6 +68,8 @@ const CreateBoard = ({
       },
     });
   };
+
+  if (!canCreate) return null;
 
   return (
     <Dialog>
