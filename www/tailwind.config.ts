@@ -12,7 +12,7 @@ module.exports = {
     },
     extend: {
       height: {
-        card: "8.5rem",
+        card: "var(--card-height)",
       },
       colors: {
         border: "hsl(var(--border))",

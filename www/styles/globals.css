@@ -73,4 +73,8 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  :root {
+    --card-height: 8.5rem;
+  }
 }
