@@ -6,7 +6,7 @@ type Action = "view" | "update" | "delete";
 export const useCan = (
   action: Action,
   namespace: Namespace,
-  resourceId: number
+  resourceId?: number
 ) => {
   const { user } = useUser();
 

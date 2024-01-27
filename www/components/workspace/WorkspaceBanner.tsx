@@ -1,3 +1,4 @@
+import { useCan } from "@/hooks/useCan";
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { Namespace, Visibility } from "www/types/enums";
@@ -10,6 +11,7 @@ const WorkspaceBanner = ({
   workspace?: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
+  const canInvite = useCan("update", Namespace.WORKSPACE, workspace?.id);
 
   return (
     <div className="w-full border-b p-8">
@@ -40,18 +42,20 @@ const WorkspaceBanner = ({
             </div>
           </div>
         </div>
-        <InviteMembers
-          targetId={workspace?.id}
-          namespace={Namespace.WORKSPACE}
-          title={t("invite-to-workspace-title")}
-          subtitle={t("invite-to-workspace-subtitle")}
-          openTrigger={
-            <Button size="sm" variant="secondary">
-              <UserPlusIcon size={20} className="mr-2" />
-              {t("invite-workspace-members")}
-            </Button>
-          }
-        />
+        {canInvite && (
+          <InviteMembers
+            targetId={workspace?.id}
+            namespace={Namespace.WORKSPACE}
+            title={t("invite-to-workspace-title")}
+            subtitle={t("invite-to-workspace-subtitle")}
+            openTrigger={
+              <Button size="sm" variant="secondary">
+                <UserPlusIcon size={20} className="mr-2" />
+                {t("invite-workspace-members")}
+              </Button>
+            }
+          />
+        )}
       </div>
       {workspace?.description && (
         <p className="mt-2 max-w-2xl break-all text-sm text-muted-foreground">
