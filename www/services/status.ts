@@ -3,10 +3,14 @@ import { api } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const createStatus = async ({
+  workspaceId,
   boardId,
   ...status
 }: CreateStatus): Promise<App.Models.Status> => {
-  const response = await api.post(`/boards/${boardId}/statuses`, status);
+  const response = await api.post(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses`,
+    status
+  );
 
   return response.data.data;
 };
@@ -22,9 +26,14 @@ export const useCreateStatus = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: createStatus,
-    onSuccess(status, { boardId }) {
+    onSuccess(status, { workspaceId, boardId }) {
       queryClient.invalidateQueries({
-        queryKey: ["boards", boardId.toString()],
+        queryKey: [
+          "workspaces",
+          workspaceId.toString(),
+          "boards",
+          boardId.toString(),
+        ],
       });
     },
   });

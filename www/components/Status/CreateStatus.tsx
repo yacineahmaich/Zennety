@@ -19,6 +19,7 @@ import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string(),
+  workspaceId: z.number(),
   boardId: z.number(),
 });
 
@@ -33,6 +34,7 @@ const CreateStatus = ({ board }: { board: App.Models.Board }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       boardId: board.id,
+      workspaceId: board.workspaceId,
     },
   });
 

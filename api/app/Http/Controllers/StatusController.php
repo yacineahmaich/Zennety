@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateStatusRequest;
 use App\Http\Resources\StatusResource;
 use App\Models\Board;
 use App\Models\Status;
+use App\Models\Workspace;
 use App\Services\StatusService;
 
 class StatusController extends Controller
@@ -27,7 +28,7 @@ class StatusController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStatusRequest $request, Board $board)
+    public function store(StoreStatusRequest $request, Workspace $workspace, Board $board)
     {
         $status = $this->service->store(
             StatusDTO::fromRequest($request),
