@@ -41,7 +41,7 @@ const routes: Route[] = [
   },
   {
     name: "board",
-    buildPath: (params) => `/app/b/${params[0]}`,
+    buildPath: (params) => `/app/w/${params[0]}/b/${params[1]}`,
   },
   {
     name: "workspace/members",

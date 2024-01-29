@@ -11,8 +11,13 @@ const createBoard = async ({
   return response.data.data;
 };
 
-const getBoardById = async (id: string): Promise<App.Models.Board> => {
-  const response = await api.get(`/boards/${id}`);
+const getBoardById = async (
+  workspaceId: string,
+  boardId: string
+): Promise<App.Models.Board> => {
+  const response = await api.get(
+    `/workspaces/${workspaceId}/boards/${boardId}`
+  );
 
   return response.data.data;
 };
@@ -40,10 +45,11 @@ export const useCreateBoard = () => {
   };
 };
 
-export const useBoard = (id: string) => {
+export const useBoard = (workspaceId: string, boardId: string) => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["boards", id],
-    queryFn: () => getBoardById(id),
+    queryKey: ["workspaces", workspaceId, "boards", boardId],
+    queryFn: () => getBoardById(workspaceId, boardId),
+    enabled: !!workspaceId && !!boardId,
   });
 
   return {

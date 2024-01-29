@@ -45,7 +45,7 @@ class BoardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Board $board)
+    public function show(Workspace $workspace, Board $board)
     {
         $this->authorize('view', $board);
 

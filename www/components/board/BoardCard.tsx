@@ -13,7 +13,7 @@ const BoardCard = ({ board }: Props) => {
   return (
     <Card className="group flex h-card flex-col overflow-hidden p-4 ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2">
       <header className="flex items-center justify-between">
-        <Link href={route("board", board.id)}>
+        <Link href={route("board", board.workspaceId, board.id)}>
           <h3 className="text-sm font-bold  hover:underline">{board.name}</h3>
         </Link>
         <Badge variant="secondary" className="space-x-1 ">

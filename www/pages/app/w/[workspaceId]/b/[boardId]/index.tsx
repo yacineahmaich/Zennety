@@ -25,8 +25,13 @@ import { z } from "zod";
 
 const Board: NextPageWithLayout = () => {
   const router = useRouter();
-  const { boardId } = router.query as { boardId: string };
-  const { board } = useBoard(boardId);
+  const { workspaceId, boardId } = router.query as {
+    workspaceId: string;
+    boardId: string;
+  };
+  const { board } = useBoard(workspaceId, boardId);
+
+  console.log(workspaceId, boardId);
 
   if (!board) return;
 
