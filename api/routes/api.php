@@ -54,5 +54,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/notifications/{notification}', [NotificationController::class, 'delete']);
 
     // Membership
-    Route::get('/memberships/{membership_id}/members', [MembershipController::class, 'index']);
+    Route::get('/memberships/{type}/{id}/members', [MembershipController::class, 'index']);
 });

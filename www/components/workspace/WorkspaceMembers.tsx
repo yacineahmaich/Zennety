@@ -1,7 +1,7 @@
 import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
 import { useMembers } from "@/services";
-import { Namespace, Role } from "@/types/enums";
+import { Role } from "@/types/enums";
 import { ListFilterIcon, TrashIcon, UserCogIcon, UserIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
@@ -25,11 +25,11 @@ const WorkspaceMembers = ({
   const { t } = useTranslation("common");
   const [role, setRole] = useState("");
   const [_search, setSearch] = useState("");
-  const search = useDebounce(_search, 1);
-  const { data } = useMembers(workspace.id, {
+  const search = useDebounce(_search, 0.3);
+
+  const { data } = useMembers("workspace", workspace.id, {
     search,
     role: role === "all" ? "" : role,
-    namespace: Namespace.WORKSPACE,
   });
 
   return (

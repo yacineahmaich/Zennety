@@ -8,25 +8,16 @@ use Illuminate\Http\Request;
 
 class MembershipController extends Controller
 {
-    public function index(Request $request, int $membershipable_id)
+    public function index(Request $request)
     {
         $role = $request->get('role');
         $search = $request->get('search');
-        $namespace = $request->get("namespace"); // App\Models\Workspace or App\Models\Board
 
-        $memberships = Membership::where('membershipable_id', $membershipable_id)
-            ->where('membershipable_type', $namespace)
+        $memberships = Membership::fromRequest($request)
             ->with('user')
             ->with('roles')
-            ->whereHas('user', function ($query) use ($search) {
-                $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
-            })
-            ->whereHas('roles', function ($q) use ($role) {
-                if ($role) {
-                    $q->where('roles.name', $role);
-                }
-            })
+            ->whereHas('user', fn ($q) => $q->search($search))
+            ->whereHas('roles', fn ($q) =>  $role ? $q->where('roles.name', $role): null)
             ->paginate();
 
         return MembershipResource::collection($memberships);

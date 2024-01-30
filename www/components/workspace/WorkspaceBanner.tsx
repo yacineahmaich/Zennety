@@ -1,7 +1,7 @@
 import { useCan } from "@/hooks/useCan";
+import { Namespace, Visibility } from "@/types/enums";
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { Namespace, Visibility } from "www/types/enums";
 import InviteMembers from "../shared/InviteMembers";
 import { Button } from "../ui/button";
 
