@@ -1,15 +1,18 @@
 import { api } from "@/lib/api";
-import { MembershipableType } from "@/types/helpers";
+import { ResourceType } from "@/types/helpers";
 import { useQuery } from "@tanstack/react-query";
 
 const getMembers = async (
-  type: MembershipableType,
-  id: number,
+  resourceType: ResourceType,
+  resourceId: number,
   params: Record<string, string>
 ): Promise<Paginator<App.Models.Member>> => {
-  const response = await api.get(`/memberships/${type}/${id}/members`, {
-    params,
-  });
+  const response = await api.get(
+    `/memberships/${resourceType}/${resourceId}/members`,
+    {
+      params,
+    }
+  );
 
   return response.data;
 };
@@ -21,14 +24,14 @@ const getMembers = async (
  */
 
 export const useMembers = (
-  type: MembershipableType,
-  id: number,
+  resourceType: ResourceType,
+  resourceId: number,
   params: Record<string, string>
 ) => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["memberships", type, id, params],
-    queryFn: () => getMembers(type, id, params),
-    enabled: !!type && !!id,
+    queryKey: ["memberships", resourceType, resourceId, params],
+    queryFn: () => getMembers(resourceType, resourceId, params),
+    enabled: !!resourceType && !!resourceId,
   });
 
   return {

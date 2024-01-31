@@ -1,7 +1,8 @@
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { useSendMembershipInvitations } from "@/services";
-import { Namespace, Role } from "@/types/enums";
+import { Role } from "@/types/enums";
+import { ResourceType } from "@/types/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserCogIcon, UserIcon, UserSearchIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -48,14 +49,14 @@ const formSchema = z.object({
 export type InviteMembers = z.infer<typeof formSchema>;
 
 const InviteMembers = ({
-  targetId,
-  namespace,
+  resourceId,
+  resourceType,
   title,
   subtitle,
   openTrigger,
 }: {
-  targetId?: number;
-  namespace: Namespace;
+  resourceId?: number;
+  resourceType: ResourceType;
   title: string;
   subtitle: string;
   openTrigger: JSX.Element;
@@ -75,12 +76,13 @@ const InviteMembers = ({
   });
 
   const onSubmit = (data: InviteMembers) => {
-    if (!targetId) return;
+    if (!resourceId) return;
 
     sendMembershipInvitations(
       {
+        resourceType,
+        resourceId,
         data,
-        params: { namespace, targetId },
       },
       {
         onSuccess() {

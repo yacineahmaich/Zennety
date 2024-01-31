@@ -1,5 +1,5 @@
 import { useCan } from "@/hooks/useCan";
-import { Namespace, Visibility } from "@/types/enums";
+import { Visibility } from "@/types/enums";
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import InviteMembers from "../shared/InviteMembers";
@@ -11,7 +11,7 @@ const WorkspaceBanner = ({
   workspace?: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
-  const canInvite = useCan("update", Namespace.WORKSPACE, workspace?.id);
+  const canInvite = useCan("update", "workspace", workspace?.id);
 
   return (
     <div className="w-full border-b p-8">
@@ -44,8 +44,8 @@ const WorkspaceBanner = ({
         </div>
         {canInvite && (
           <InviteMembers
-            targetId={workspace?.id}
-            namespace={Namespace.WORKSPACE}
+            resourceType="workspace"
+            resourceId={workspace?.id}
             title={t("invite-to-workspace-title")}
             subtitle={t("invite-to-workspace-subtitle")}
             openTrigger={

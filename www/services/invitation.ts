@@ -1,21 +1,18 @@
 import { InviteMembers } from "@/components/shared/InviteMembers";
 import { api } from "@/lib/api";
-import { Namespace } from "@/types/enums";
+import { ResourceType } from "@/types/helpers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const sendMembershipInvitations = async ({
+  resourceType,
+  resourceId,
   data,
-  params,
 }: {
+  resourceType: ResourceType;
+  resourceId: number;
   data: InviteMembers;
-  params: {
-    namespace: Namespace;
-    targetId: number;
-  };
 }) => {
-  await api.post("/invitations", data, {
-    params,
-  });
+  await api.post(`/invitations/${resourceType}/${resourceId}/invite`, data);
 };
 
 const getInvitation = async (token: string): Promise<App.Models.Invitation> => {
@@ -25,15 +22,11 @@ const getInvitation = async (token: string): Promise<App.Models.Invitation> => {
 };
 
 const acceptInvitation = async ({ token }: { token: string }) => {
-  const response = await api.post(`/invitations/${token}/accept`);
-
-  return response.data.data;
+  await api.post(`/invitations/${token}/accept`);
 };
 
 const rejectInvitation = async ({ token }: { token: string }) => {
-  const response = await api.post(`/invitations/${token}/reject`);
-
-  return response.data.data;
+  await api.post(`/invitations/${token}/reject`);
 };
 
 /**

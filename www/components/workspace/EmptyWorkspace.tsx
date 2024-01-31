@@ -1,5 +1,4 @@
 import { useCan } from "@/hooks/useCan";
-import { Namespace } from "@/types/enums";
 import { FolderSearchIcon, PenSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import CreateBoard from "../board/CreateBoard";
@@ -13,7 +12,7 @@ const EmptyWorkspace = ({
   withIcon?: boolean;
 }) => {
   const { t } = useTranslation("common");
-  const canCreate = useCan("update", Namespace.WORKSPACE, workspace.id);
+  const canCreate = useCan("update", "workspace", workspace.id);
 
   return (
     <div className="col-span-full flex flex-col items-center justify-center p-6 text-center text-muted-foreground">

@@ -26,7 +26,7 @@ declare namespace App.Models {
     id: number;
     userId: number;
     resourceId: number;
-    namespace: string;
+    resourceType: string;
     profile: User;
     permissions: string[];
     role: string;
@@ -47,7 +47,7 @@ declare namespace App.Models {
   interface Invitation {
     id: number;
     related: Workspace | Board;
-    relatedType: "App\\Models\\Workspace" | "App\\Models\\Board";
+    relatedType: string;
     token: string;
     invitedEmail: string;
     message: string;

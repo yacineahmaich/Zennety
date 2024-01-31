@@ -6,8 +6,9 @@ use App\DTO\InvitationDTO;
 use App\Http\Requests\InvitationRequest;
 use App\Http\Requests\UpdateInvitationRequest;
 use App\Http\Resources\InvitationResource;
+use App\Models\Board;
 use App\Models\Invitation;
-use App\Models\Membership;
+use App\Models\Workspace;
 use App\Services\InvitationService;
 
 class InvitationController extends Controller
@@ -27,19 +28,23 @@ class InvitationController extends Controller
     /**
      * Send a membership invitation .
      */
-    public function invite(InvitationRequest $request)
+    public function invite(InvitationRequest $request, string $type, int $id)
     {
-        // App\Models\Workspace or App\Models\Board
-        $namespace = $request->get("namespace");
-        $target_id = $request->get("targetId");
+        $invitable = null;
 
-        $membership = Membership::where('membershipable_type', $namespace)
-            ->where('membershipable_id', $target_id)
-            ->firstOrFail();
+        if ($type === "workspace") {
+            $invitable = Workspace::find($id);
+        } else if ($type === "board") {
+            $invitable = Board::find($id);
+        }
+
+        if (is_null($invitable)) {
+            abort(404);
+        }
 
 
         $this->service->send(
-            $membership->membershipable,
+            $invitable,
             InvitationDTO::fromRequest($request)
         );
 

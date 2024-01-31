@@ -33,10 +33,10 @@ const AcceptInvitation: NextPageWithLayout = () => {
       { token: invitation.token },
       {
         onSuccess() {
-          if (invitation.relatedType === "App\\Models\\Workspace") {
+          if (invitation.relatedType === "workspace") {
             router.push(route("workspace", invitation.related.id));
           }
-          if (invitation.relatedType === "App\\Models\\Board") {
+          if (invitation.relatedType === "board") {
             router.push(route("board", invitation.related.id));
           }
         },

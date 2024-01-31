@@ -1,17 +1,17 @@
 import { useUser } from "@/services";
-import { Namespace } from "@/types/enums";
+import { ResourceType } from "@/types/helpers";
 
 type Action = "view" | "update" | "delete";
 
 export const useCan = (
   action: Action,
-  namespace: Namespace,
+  resourceType: ResourceType,
   resourceId?: number
 ) => {
   const { user } = useUser();
 
   const membership = user?.memberships?.find(
-    (m) => m.resourceId === resourceId && m.namespace === namespace
+    (m) => m.resourceId === resourceId && m.resourceType === resourceType
   );
 
   if (!membership) return false;

@@ -1,5 +1,4 @@
 import { useCan } from "@/hooks/useCan";
-import { Namespace } from "@/types/enums";
 import {
   CalendarSearchIcon,
   ChevronsRightIcon,
@@ -14,7 +13,7 @@ import { Button } from "../ui/button";
 
 const BoardBanner = ({ board }: { board: App.Models.Board }) => {
   const { t } = useTranslation("common");
-  const canInvite = useCan("update", Namespace.BOARD, board.id);
+  const canInvite = useCan("update", "board", board.id);
 
   return (
     <header className="flex items-center justify-between border-b p-3">
@@ -54,8 +53,8 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
                   <UserPlusIcon size={16} /> {t("share")}
                 </Button>
               }
-              targetId={board?.id}
-              namespace={Namespace.BOARD}
+              resourceId={board?.id}
+              resourceType="board"
               title={t("invite-to-board-title")}
               subtitle={t("invite-to-board-subtitle")}
             />

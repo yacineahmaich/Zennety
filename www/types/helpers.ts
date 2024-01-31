@@ -1,1 +1,1 @@
-export type MembershipableType = "workspace" | "board";
+export type ResourceType = "workspace" | "board";
