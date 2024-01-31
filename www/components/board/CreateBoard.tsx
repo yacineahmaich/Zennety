@@ -61,9 +61,9 @@ const CreateBoard = ({
 
   const onSubmit = (values: CreateBoard) => {
     createBoard(values, {
-      onSuccess({ id }) {
+      onSuccess({ workspaceId, id }) {
         if (id) {
-          window.location.href = route("board", id);
+          window.location.href = route("board", workspaceId, id);
         }
       },
     });

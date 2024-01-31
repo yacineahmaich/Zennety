@@ -34,10 +34,21 @@ const AcceptInvitation: NextPageWithLayout = () => {
       {
         onSuccess() {
           if (invitation.relatedType === "workspace") {
-            router.push(route("workspace", invitation.related.id));
+            router.push(
+              route(
+                "workspace",
+                (invitation.related as App.Models.Workspace).id
+              )
+            );
           }
           if (invitation.relatedType === "board") {
-            router.push(route("board", invitation.related.id));
+            router.push(
+              route(
+                "board",
+                (invitation.related as App.Models.Board).workspaceId,
+                (invitation.related as App.Models.Board).id
+              )
+            );
           }
         },
       }
