@@ -33,11 +33,14 @@ const Notifications = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button size="sm" variant="outline">
+        <Button size="sm" variant="outline" className="relative">
+          {notifications && notifications.some((n) => !n.isRead) && (
+            <span className="absolute left-0 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-muted-foreground" />
+          )}
           <InboxIcon size={16} />
         </Button>
       </SheetTrigger>
-      <SheetContent className="min-w-[450px] overflow-y-scroll p-3">
+      <SheetContent className="min-w-[450px] overflow-y-auto p-3">
         <SheetHeader>
           <SheetTitle>
             {t("notifications")} ({notifications?.length ?? 0})
