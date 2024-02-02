@@ -1,23 +1,26 @@
+import BoardBanner from "@/components/board/BoardBanner";
 import { AppLayout } from "@/components/layouts";
 import Members from "@/components/shared/Members";
-import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
-import { useWorkspace } from "@/services";
+import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
-const WorkspaceMembers: NextPageWithLayout = () => {
+const BoardMembers: NextPageWithLayout = () => {
   const router = useRouter();
-  const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace } = useWorkspace(workspaceId);
+  const { workspaceId, boardId } = router.query as {
+    workspaceId: string;
+    boardId: string;
+  };
+  const { board } = useBoard(workspaceId, boardId);
 
-  if (!workspace) return;
+  if (!board) return;
 
   return (
     <div>
-      <WorkspaceBanner workspace={workspace} />
-      <Members resourceType="workspace" resourceId={workspace.id} />
+      <BoardBanner board={board} />
+      <Members resourceType="board" resourceId={board.id} />
     </div>
   );
 };
@@ -32,8 +35,8 @@ export const getServerSideProps = async ({
   };
 };
 
-WorkspaceMembers.getLayout = (page) => {
+BoardMembers.getLayout = (page) => {
   return <AppLayout>{page}</AppLayout>;
 };
 
-export default WorkspaceMembers;
+export default BoardMembers;

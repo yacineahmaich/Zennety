@@ -74,7 +74,7 @@ const WorkspaceSection = ({
                   {t("boards")} ({workspace.boards?.length})
                 </Link>
                 <Link
-                  href=""
+                  href={route("workspace/members", workspace.id)}
                   className={buttonVariants({ size: "sm", variant: "ghost" })}
                 >
                   <UserIcon size={16} className="mr-2" />

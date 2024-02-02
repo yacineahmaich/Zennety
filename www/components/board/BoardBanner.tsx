@@ -1,15 +1,19 @@
 import { useCan } from "@/hooks/useCan";
+import { route } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import {
   CalendarSearchIcon,
   ChevronsRightIcon,
   SettingsIcon,
   StarIcon,
+  UserIcon,
   UserPlusIcon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 import InviteMembers from "../shared/InviteMembers";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 
 const BoardBanner = ({ board }: { board: App.Models.Board }) => {
   const { t } = useTranslation("common");
@@ -59,20 +63,33 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
               subtitle={t("invite-to-board-subtitle")}
             />
           )}
-          <Button
-            size="sm"
-            variant="link"
-            className="flex items-center gap-2 text-xs"
+          <Link
+            href="#"
+            className={cn(
+              buttonVariants({ size: "sm", variant: "link" }),
+              "text-xs"
+            )}
           >
-            <SettingsIcon size={16} /> {t("settings")}
-          </Button>
-          <Button
-            size="sm"
-            variant="link"
-            className="flex items-center gap-2 text-xs"
+            <SettingsIcon size={16} className="mr-1" /> {t("settings")}
+          </Link>
+          <Link
+            href={route("board/members", board.workspaceId, board.id)}
+            className={cn(
+              buttonVariants({ size: "sm", variant: "link" }),
+              "text-xs"
+            )}
           >
-            <CalendarSearchIcon size={16} /> {t("activity")}
-          </Button>
+            <UserIcon size={16} className="mr-1" /> {t("members")}
+          </Link>
+          <Link
+            href="#"
+            className={cn(
+              buttonVariants({ size: "sm", variant: "link" }),
+              "text-xs"
+            )}
+          >
+            <CalendarSearchIcon size={16} className="mr-1" /> {t("activity")}
+          </Link>
         </div>
       </div>
     </header>

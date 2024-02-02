@@ -6,7 +6,8 @@ type RouteName =
   | "app"
   | "workspace"
   | "board"
-  | "workspace/members";
+  | "workspace/members"
+  | "board/members";
 
 type Route = {
   name: RouteName;
@@ -46,6 +47,10 @@ const routes: Route[] = [
   {
     name: "workspace/members",
     buildPath: (params) => `/app/w/${params[0]}/members`,
+  },
+  {
+    name: "board/members",
+    buildPath: (params) => `/app/w/${params[0]}/b/${params[1]}/members`,
   },
 ];
 

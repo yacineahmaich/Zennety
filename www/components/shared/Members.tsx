@@ -2,6 +2,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
 import { useMembers } from "@/services";
 import { Role } from "@/types/enums";
+import { ResourceType } from "@/types/helpers";
 import { ListFilterIcon, TrashIcon, UserCogIcon, UserIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
@@ -17,17 +18,19 @@ import {
   SelectValue,
 } from "../ui/select";
 
-const WorkspaceMembers = ({
-  workspace,
+const Members = ({
+  resourceType,
+  resourceId,
 }: {
-  workspace: App.Models.Workspace;
+  resourceType: ResourceType;
+  resourceId: number;
 }) => {
   const { t } = useTranslation("common");
   const [role, setRole] = useState("");
   const [_search, setSearch] = useState("");
   const search = useDebounce(_search, 0.3);
 
-  const { data } = useMembers("workspace", workspace.id, {
+  const { data } = useMembers(resourceType, resourceId, {
     search,
     role: role === "all" ? "" : role,
   });
@@ -41,7 +44,7 @@ const WorkspaceMembers = ({
       <span className="mb-4 flex items-center">
         <UserIcon size={20} className="mr-2" />
         <h2 className="text-lg font-semibold">
-          {t("members")} ({workspace?.members?.length || 0})
+          {t("members")} ({members?.length || 0})
         </h2>
       </span>
       <div>
@@ -134,4 +137,4 @@ const WorkspaceMembers = ({
   );
 };
 
-export default WorkspaceMembers;
+export default Members;
