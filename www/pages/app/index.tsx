@@ -2,6 +2,7 @@ import BoardCard from "@/components/board/BoardCard";
 import { AppLayout } from "@/components/layouts";
 import { buttonVariants } from "@/components/ui/button";
 import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
+import { useCan } from "@/hooks/useCan";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
@@ -26,11 +27,11 @@ const AppPage: NextPageWithLayout = () => {
 
   return (
     <div>
-      <WorkspaceSection
+      <WorkspaceGroup
         title="my-workspaces"
         workspaces={groupedWorkspaces.owner}
       />
-      <WorkspaceSection
+      <WorkspaceGroup
         title="guest-workspaces"
         workspaces={groupedWorkspaces.guest}
       />
@@ -38,7 +39,7 @@ const AppPage: NextPageWithLayout = () => {
   );
 };
 
-const WorkspaceSection = ({
+const WorkspaceGroup = ({
   title,
   workspaces,
 }: {
@@ -58,49 +59,66 @@ const WorkspaceSection = ({
 
       <div className="ml-3 border-l border-accent pb-5">
         {workspaces.map((workspace) => (
-          <div key={workspace.id} className="p-4">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="-ml-4 flex items-center gap-1 text-sm font-semibold tracking-tight text-muted-foreground">
-                <span className="h-px w-4 bg-accent"></span>
-                <GripHorizontalIcon size={20} />
-                {workspace.name}
-              </h3>
-              <div className="space-x-1 text-muted-foreground">
-                <Link
-                  href={route("workspace", workspace.id)}
-                  className={buttonVariants({ size: "sm", variant: "ghost" })}
-                >
-                  <KanbanSquareIcon size={16} className="mr-2" />
-                  {t("boards")} ({workspace.boards?.length})
-                </Link>
-                <Link
-                  href={route("workspace/members", workspace.id)}
-                  className={buttonVariants({ size: "sm", variant: "ghost" })}
-                >
-                  <UserIcon size={16} className="mr-2" />
-                  {t("members")} ({workspace.members?.length})
-                </Link>
-                <Link
-                  href=""
-                  className={buttonVariants({ size: "sm", variant: "ghost" })}
-                >
-                  <SettingsIcon size={16} className="mr-2" /> {t("settings")}
-                </Link>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {workspace?.boards?.map((board) => (
-                <BoardCard key={board.id} board={board} />
-              ))}
-
-              {workspace.boards?.length === 0 && (
-                <EmptyWorkspace workspace={workspace} />
-              )}
-            </div>
-          </div>
+          <WorkspaceSection key={workspace.id} workspace={workspace} />
         ))}
       </div>
     </section>
+  );
+};
+
+const WorkspaceSection = ({
+  workspace,
+}: {
+  workspace: App.Models.Workspace;
+}) => {
+  const { t } = useTranslation("common");
+  const canViewMembersAndSeetings = useCan("update", "workspace", workspace.id);
+
+  return (
+    <div key={workspace.id} className="p-4">
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="-ml-4 flex items-center gap-1 text-sm font-semibold tracking-tight text-muted-foreground">
+          <span className="h-px w-4 bg-accent"></span>
+          <GripHorizontalIcon size={20} />
+          {workspace.name}
+        </h3>
+        <div className="space-x-1 text-muted-foreground">
+          <Link
+            href={route("workspace", workspace.id)}
+            className={buttonVariants({ size: "sm", variant: "ghost" })}
+          >
+            <KanbanSquareIcon size={16} className="mr-2" />
+            {t("boards")} ({workspace.boards?.length})
+          </Link>
+          {canViewMembersAndSeetings && (
+            <Link
+              href={route("workspace/members", workspace.id)}
+              className={buttonVariants({ size: "sm", variant: "ghost" })}
+            >
+              <UserIcon size={16} className="mr-2" />
+              {t("members")} ({workspace.members?.length})
+            </Link>
+          )}
+          {canViewMembersAndSeetings && (
+            <Link
+              href=""
+              className={buttonVariants({ size: "sm", variant: "ghost" })}
+            >
+              <SettingsIcon size={16} className="mr-2" /> {t("settings")}
+            </Link>
+          )}
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {workspace?.boards?.map((board) => (
+          <BoardCard key={board.id} board={board} />
+        ))}
+
+        {workspace.boards?.length === 0 && (
+          <EmptyWorkspace workspace={workspace} />
+        )}
+      </div>
+    </div>
   );
 };
 
