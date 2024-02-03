@@ -22,7 +22,7 @@ class MembershipResource extends JsonResource
             'userId' => $this->user_id,
             'resourceId' => $this->membershipable_id,
             'resourceType' => $resourceType,
-            'profile' => UserResource::make($this->whenLoaded('user')),
+            'profile' => UserResource::make($this->user),
             'permissions' => $this->getAllPermissions()->pluck('name'),
             'role' => $this->roles()->pluck('name')->first()
         ];

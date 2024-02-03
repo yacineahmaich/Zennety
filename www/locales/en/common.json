@@ -65,6 +65,7 @@
   "templates": "Templates",
   "share": "Share",
   "activity": "Activity",
+  "kanban": "Kanban",
   "status-name-placeholder": "e.g IN PROGRESS",
   "add-new-status": "Add new status",
   "add-new-card": "Add new card",

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   CalendarSearchIcon,
   ChevronsRightIcon,
+  KanbanIcon,
   SettingsIcon,
   StarIcon,
   UserIcon,
@@ -19,6 +20,8 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
   const { t } = useTranslation("common");
   const canInvite = useCan("update", "board", board.id);
 
+  const members = board?.members || [];
+
   return (
     <header className="flex items-center justify-between border-b p-3">
       <div className="flex items-center gap-2">
@@ -26,25 +29,23 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
         <button className="border-r pr-2">
           <StarIcon size={16} />
         </button>
-        <div className="flex select-none items-center -space-x-2 hover:space-x-1">
-          <Avatar className="h-7 w-7 transition-all hover:shadow-xl">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <Avatar className="h-7 w-7 transition-all hover:shadow-xl">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <Avatar className="h-7 w-7 transition-all hover:shadow-xl">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <button>
-            <ChevronsRightIcon
-              size={14}
-              className="translate-x-2 text-muted-foreground"
-            />
-          </button>
+        <div className="flex items-center">
+          <div className="flex select-none items-center -space-x-2 hover:space-x-0">
+            {members?.slice(0, 3).map((member) => (
+              <Avatar
+                key={member.id}
+                className="h-8 w-8 transition-all hover:shadow-xl"
+              >
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>{member.profile.name}</AvatarFallback>
+              </Avatar>
+            ))}
+          </div>
+          {members.length > 3 && (
+            <Link href={route("board/members", board.workspaceId, board.id)}>
+              <ChevronsRightIcon size={14} className="text-muted-foreground" />
+            </Link>
+          )}
         </div>
       </div>
 
@@ -63,6 +64,15 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
               subtitle={t("invite-to-board-subtitle")}
             />
           )}
+          <Link
+            href={route("board", board.workspaceId, board.id)}
+            className={cn(
+              buttonVariants({ size: "sm", variant: "link" }),
+              "text-xs"
+            )}
+          >
+            <KanbanIcon size={16} className="mr-1" /> {t("kanban")}
+          </Link>
           <Link
             href="#"
             className={cn(
