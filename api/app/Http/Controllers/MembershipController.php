@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateMembershipRequest;
 use App\Http\Resources\MembershipResource;
 use App\Models\Membership;
 use Illuminate\Http\Request;
@@ -21,6 +22,13 @@ class MembershipController extends Controller
             ->paginate();
 
         return MembershipResource::collection($memberships);
+    }
+
+    public function update(UpdateMembershipRequest $request, string $type, int $id, Membership $membership)
+    {
+        $membership->syncRoles([$request->validated('role')]);
+
+        return response()->noContent();
     }
 
     public function delete(string $type, int $id, Membership $membership)
