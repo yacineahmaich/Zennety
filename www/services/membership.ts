@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import { ResourceType } from "@/types/helpers";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const getMembers = async (
   resourceType: ResourceType,
@@ -15,6 +15,18 @@ const getMembers = async (
   );
 
   return response.data;
+};
+
+const deleteMember = async ({
+  id,
+  resourceId,
+  resourceType,
+}: {
+  id: number;
+  resourceType: ResourceType;
+  resourceId: number;
+}) => {
+  await api.delete(`/memberships/${resourceType}/${resourceId}/members/${id}`);
 };
 
 /**
@@ -39,5 +51,29 @@ export const useMembers = (
     isLoading,
     isError,
     error,
+  };
+};
+
+/**
+ * ==========================================
+ * ========= MUTATIONS ======================
+ * ==========================================
+ */
+
+export const useDeleteMember = () => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending: isLoading } = useMutation({
+    mutationFn: deleteMember,
+    onSuccess(data, { resourceType, resourceId }) {
+      queryClient.invalidateQueries({
+        queryKey: ["memberships", resourceType, resourceId],
+      });
+    },
+  });
+
+  return {
+    deleteMember: mutateAsync,
+    isLoading,
   };
 };

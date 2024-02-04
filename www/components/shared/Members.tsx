@@ -1,12 +1,12 @@
 import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
-import { useMembers } from "@/services";
+import { useDeleteMember, useMembers } from "@/services";
 import { Role } from "@/types/enums";
 import { ResourceType } from "@/types/helpers";
 import { ListFilterIcon, TrashIcon, UserCogIcon, UserIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Input } from "../ui/input";
@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { ConfirmationDialog } from "./ConfirmationDialog";
 
 const Members = ({
   resourceType,
@@ -80,60 +81,86 @@ const Members = ({
         </div>
         <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
           {members.map((member) => (
-            <Card
+            <Member
               key={member.id}
-              className="flex items-center justify-between gap-2 p-2"
-            >
-              <div className="flex items-center gap-2">
-                <Avatar>
-                  <AvatarImage
-                    src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
-                    className="h-9 w-9 rounded"
-                  />
-                </Avatar>
-                <div className="text-xs">
-                  <h2 className="font-semibold">{member.profile.name}</h2>
-                  <p>{member.profile.email}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <Select
-                  value={member.role}
-                  disabled={member.role === Role.OWNER}
-                >
-                  <SelectTrigger className="h-7 text-xs">
-                    <SelectValue placeholder="Select a role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {member.role === Role.OWNER && (
-                      <SelectItem value={Role.OWNER} disabled>
-                        <div className="flex h-4 items-center gap-1 text-xs">
-                          <UserCogIcon size={14} />
-                          <span>{t(Role.OWNER.toLowerCase())}</span>
-                        </div>
-                      </SelectItem>
-                    )}
-                    {roles
-                      .filter((r) => r !== Role.OWNER)
-                      .map((role) => (
-                        <SelectItem key={role} value={role}>
-                          <div className="flex h-4 items-center gap-1 text-xs">
-                            <UserCogIcon size={14} />
-                            <span>{t(role.toLowerCase())}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-                <Button size="sm" variant="destructive" className="h-6 p-2">
-                  <TrashIcon size={16} />
-                </Button>
-              </div>
-            </Card>
+              member={member}
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
           ))}
         </div>
       </div>
     </div>
+  );
+};
+
+const Member = ({
+  member,
+  resourceId,
+  resourceType,
+}: {
+  member: App.Models.Member;
+  resourceId: number;
+  resourceType: ResourceType;
+}) => {
+  const { t } = useTranslation("common");
+  const { deleteMember, isLoading } = useDeleteMember();
+
+  return (
+    <Card className="flex items-center justify-between gap-2 p-2">
+      <div className="flex items-center gap-2">
+        <Avatar>
+          <AvatarImage
+            src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+            className="h-9 w-9 rounded"
+          />
+          <AvatarFallback>{member.profile.name}</AvatarFallback>
+        </Avatar>
+        <div className="text-xs">
+          <h2 className="font-semibold">{member.profile.name}</h2>
+          <p>{member.profile.email}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-1">
+        <Select value={member.role} disabled={member.role === Role.OWNER}>
+          <SelectTrigger className="h-7 text-xs">
+            <SelectValue placeholder="Select a role" />
+          </SelectTrigger>
+          <SelectContent>
+            {member.role === Role.OWNER && (
+              <SelectItem value={Role.OWNER} disabled>
+                <div className="flex h-4 items-center gap-1 text-xs">
+                  <UserCogIcon size={14} />
+                  <span>{t(Role.OWNER.toLowerCase())}</span>
+                </div>
+              </SelectItem>
+            )}
+            {roles
+              .filter((r) => r !== Role.OWNER)
+              .map((role) => (
+                <SelectItem key={role} value={role}>
+                  <div className="flex h-4 items-center gap-1 text-xs">
+                    <UserCogIcon size={14} />
+                    <span>{t(role.toLowerCase())}</span>
+                  </div>
+                </SelectItem>
+              ))}
+          </SelectContent>
+        </Select>
+        <ConfirmationDialog
+          desc={t("delete-member-desc")}
+          onConfirm={() =>
+            deleteMember({ id: member.id, resourceType, resourceId })
+          }
+          disabled={isLoading}
+          openTrigger={
+            <Button size="sm" variant="destructive" className="h-6 p-2">
+              <TrashIcon size={16} />
+            </Button>
+          }
+        />
+      </div>
+    </Card>
   );
 };
 
