@@ -1,9 +1,15 @@
 import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
-import { useDeleteMember, useMembers } from "@/services";
+import { useDeleteMember, useMembers, useUpdateMemberRole } from "@/services";
 import { Role } from "@/types/enums";
 import { ResourceType } from "@/types/helpers";
-import { ListFilterIcon, TrashIcon, UserCogIcon, UserIcon } from "lucide-react";
+import {
+  ListFilterIcon,
+  LoaderIcon,
+  TrashIcon,
+  UserCogIcon,
+  UserIcon,
+} from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -104,7 +110,8 @@ const Member = ({
   resourceType: ResourceType;
 }) => {
   const { t } = useTranslation("common");
-  const { deleteMember, isLoading } = useDeleteMember();
+  const { deleteMember, isLoading: isDeleting } = useDeleteMember();
+  const { updateMemberRole, isLoading: isUpdatingRole } = useUpdateMemberRole();
 
   return (
     <Card className="flex items-center justify-between gap-2 p-2">
@@ -122,9 +129,19 @@ const Member = ({
         </div>
       </div>
       <div className="flex items-center gap-1">
-        <Select value={member.role} disabled={member.role === Role.OWNER}>
+        <Select
+          value={member.role}
+          disabled={member.role === Role.OWNER || isUpdatingRole}
+          onValueChange={(role) =>
+            updateMemberRole({ id: member.id, role, resourceType, resourceId })
+          }
+        >
           <SelectTrigger className="h-7 text-xs">
-            <SelectValue placeholder="Select a role" />
+            {isUpdatingRole ? (
+              <LoaderIcon size={14} className="animate-spin" />
+            ) : (
+              <SelectValue placeholder="Select a role" />
+            )}
           </SelectTrigger>
           <SelectContent>
             {member.role === Role.OWNER && (
@@ -152,7 +169,7 @@ const Member = ({
           onConfirm={() =>
             deleteMember({ id: member.id, resourceType, resourceId })
           }
-          disabled={isLoading}
+          disabled={isDeleting}
           openTrigger={
             <Button size="sm" variant="destructive" className="h-6 p-2">
               <TrashIcon size={16} />

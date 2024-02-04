@@ -17,6 +17,22 @@ const getMembers = async (
   return response.data;
 };
 
+const updateMemberRole = async ({
+  id,
+  resourceId,
+  resourceType,
+  role,
+}: {
+  id: number;
+  resourceType: ResourceType;
+  resourceId: number;
+  role: string;
+}) => {
+  await api.put(`/memberships/${resourceType}/${resourceId}/members/${id}`, {
+    role,
+  });
+};
+
 const deleteMember = async ({
   id,
   resourceId,
@@ -66,7 +82,7 @@ export const useDeleteMember = () => {
   const { mutateAsync, isPending: isLoading } = useMutation({
     mutationFn: deleteMember,
     onSuccess(data, { resourceType, resourceId }) {
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: ["memberships", resourceType, resourceId],
       });
     },
@@ -74,6 +90,24 @@ export const useDeleteMember = () => {
 
   return {
     deleteMember: mutateAsync,
+    isLoading,
+  };
+};
+
+export const useUpdateMemberRole = () => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending: isLoading } = useMutation({
+    mutationFn: updateMemberRole,
+    onSuccess(data, { resourceType, resourceId }) {
+      return queryClient.invalidateQueries({
+        queryKey: ["memberships", resourceType, resourceId],
+      });
+    },
+  });
+
+  return {
+    updateMemberRole: mutateAsync,
     isLoading,
   };
 };
