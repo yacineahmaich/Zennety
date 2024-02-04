@@ -17,9 +17,16 @@ class MembershipController extends Controller
             ->with('user')
             ->with('roles')
             ->whereHas('user', fn ($q) => $q->search($search))
-            ->whereHas('roles', fn ($q) =>  $role ? $q->where('roles.name', $role): null)
+            ->whereHas('roles', fn ($q) =>  $role ? $q->where('roles.name', $role) : null)
             ->paginate();
 
         return MembershipResource::collection($memberships);
+    }
+
+    public function delete(string $type, int $id, Membership $membership)
+    {
+        $membership->delete();
+
+        return response()->noContent();
     }
 }

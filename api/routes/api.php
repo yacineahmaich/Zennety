@@ -55,4 +55,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Membership
     Route::get('/memberships/{type}/{id}/members', [MembershipController::class, 'index']);
+    Route::delete('/memberships/{type}/{id}/members/{membership}', [MembershipController::class, 'delete']);
 });
