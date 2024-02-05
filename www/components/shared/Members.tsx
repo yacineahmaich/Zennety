@@ -1,3 +1,4 @@
+import { useCan } from "@/hooks/useCan";
 import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
 import { useDeleteMember, useMembers, useUpdateMemberRole } from "@/services";
@@ -112,15 +113,13 @@ const Member = ({
   const { t } = useTranslation("common");
   const { deleteMember, isLoading: isDeleting } = useDeleteMember();
   const { updateMemberRole, isLoading: isUpdatingRole } = useUpdateMemberRole();
+  const canUpdate = useCan("update", resourceType, resourceId);
 
   return (
     <Card className="flex items-center justify-between gap-2 p-2">
       <div className="flex items-center gap-2">
         <Avatar>
-          <AvatarImage
-            src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
-            className="h-9 w-9 rounded"
-          />
+          <AvatarImage src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png" />
           <AvatarFallback>{member.profile.name}</AvatarFallback>
         </Avatar>
         <div className="text-xs">
@@ -131,7 +130,7 @@ const Member = ({
       <div className="flex items-center gap-1">
         <Select
           value={member.role}
-          disabled={member.role === Role.OWNER || isUpdatingRole}
+          disabled={member.role === Role.OWNER || !canUpdate || isUpdatingRole}
           onValueChange={(role) =>
             updateMemberRole({ id: member.id, role, resourceType, resourceId })
           }
@@ -164,18 +163,20 @@ const Member = ({
               ))}
           </SelectContent>
         </Select>
-        <ConfirmationDialog
-          desc={t("delete-member-desc")}
-          onConfirm={() =>
-            deleteMember({ id: member.id, resourceType, resourceId })
-          }
-          disabled={isDeleting}
-          openTrigger={
-            <Button size="sm" variant="destructive" className="h-6 p-2">
-              <TrashIcon size={16} />
-            </Button>
-          }
-        />
+        {canUpdate && (
+          <ConfirmationDialog
+            desc={t("delete-member-desc")}
+            onConfirm={() =>
+              deleteMember({ id: member.id, resourceType, resourceId })
+            }
+            disabled={isDeleting}
+            openTrigger={
+              <Button size="sm" variant="destructive" className="h-6 p-2">
+                <TrashIcon size={16} />
+              </Button>
+            }
+          />
+        )}
       </div>
     </Card>
   );
