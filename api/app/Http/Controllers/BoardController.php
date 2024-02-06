@@ -49,7 +49,7 @@ class BoardController extends Controller
     {
         $this->authorize('view', $board);
 
-        return BoardResource::make($board);
+        return BoardResource::make($board->load(['statuses', 'members.user']));
     }
 
     /**

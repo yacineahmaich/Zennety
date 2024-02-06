@@ -20,8 +20,8 @@ class BoardResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'visibility' => $this->visibility,
-            'members' => MembershipResource::collection($this->members),
-            'statuses' => StatusResource::collection($this->statuses),
+            'members' => MembershipResource::collection($this->whenLoaded('members')),
+            'statuses' => StatusResource::collection($this->whenLoaded('statuses')),
         ];
     }
 }
