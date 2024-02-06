@@ -163,7 +163,7 @@ const Member = ({
               ))}
           </SelectContent>
         </Select>
-        {canUpdate && (
+        {canUpdate && member.role !== Role.OWNER && (
           <ConfirmationDialog
             desc={t("delete-member-desc")}
             onConfirm={() =>
