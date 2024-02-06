@@ -30,8 +30,7 @@ class WorkspaceService
 
     public function store(WorkspaceDTO $workspaceDTO): Workspace
     {
-        $workspace = DB::transaction(function () {
-            global $workspaceDTO;
+        $workspace = DB::transaction(function () use ($workspaceDTO) {
             /**@var Workspace $workspace */
             $workspace = Workspace::create([
                 'name' => $workspaceDTO->name,

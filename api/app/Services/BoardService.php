@@ -13,9 +13,7 @@ class BoardService
 {
     public function store(BoardDTO $boardDTO, Workspace $workspace): Board
     {
-        $board = DB::transaction(function () {
-            global $workspace, $boardDTO;
-            
+        $board = DB::transaction(function () use ($workspace, $boardDTO) {
             $board = $workspace->boards()->create([
                 'name' => $boardDTO->name,
                 'description' => $boardDTO->description,
