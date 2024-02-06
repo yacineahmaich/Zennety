@@ -15,12 +15,21 @@ class InvitationResource extends JsonResource
     public function toArray(Request $request): array
     {
         // get the resource 'App\Models\Workspace' => 'workspace'
-        $relatedType = strtolower(explode('\\', $this->inviteable_type)[2]);
+        $related_type = strtolower(explode('\\', $this->inviteable_type)[2]);
         
+        $related = null;
+
+        if($related_type === "workspace") {
+            $related = WorkspaceResource::make($this->inviteable);
+        }elseif($related_type === "board") {
+            $related = BoardResource::make($this->inviteable);
+        }
+
         return [
             "id" => $this->id,
-            "related" => $this->inviteable,
-            "relatedType" => $relatedType,
+            "related" => $related,
+            "relatedId" => $this->inviteable->id,
+            "relatedType" => $related_type,
             "token" => $this->token,
             "role" => $this->role,
             "invitedEmail" => $this->invited_email,

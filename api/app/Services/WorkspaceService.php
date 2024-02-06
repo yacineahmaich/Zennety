@@ -23,7 +23,8 @@ class WorkspaceService
                 $query->whereHas('members', function ($query) {
                     $query->where('user_id', auth()->id());
                 })
-                    ->orWhere('visibility', Visibility::PUBLIC);
+                    ->orWhere('visibility', Visibility::PUBLIC)
+                    ->with('members');
             })
             ->get();
     }

@@ -30,8 +30,15 @@ class Workspace extends Model
                         ->where('membershipable_type', 'App\Models\Workspace')
                         ->select('membershipable_id')
                 )
-                    ->orWhere('visibility', Visibility::PUBLIC);
+                    ->orWhere('visibility', Visibility::PUBLIC)
+                    // Prevent having 404 when accessing a board without being a workspace member
+                    ->orWhereHas('boards', function ($query) {
+                        $query->whereHas('members', function ($query) {
+                            $query->where('user_id', auth()->id());
+                        });
+                    });
             })
+
             ->firstOrFail();
     }
 
