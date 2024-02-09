@@ -1,5 +1,5 @@
 import { MoreHorizontalIcon } from "lucide-react";
-import { Card } from "../ui/card";
+import { Card } from "../../ui/card";
 
 const StatusHeader = ({ status }: { status: App.Models.Status }) => {
   return (

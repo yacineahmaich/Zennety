@@ -1,4 +1,4 @@
-import { CreateStatus } from "@/components/Status/CreateStatus";
+import { CreateStatus } from "@/components/board/status/CreateStatus";
 import { api } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
