@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\NotificationController;
@@ -41,6 +42,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Status
     Route::post('/workspaces/{workspace}/boards/{board}/statuses', [StatusController::class, 'store']);
+
+    // Card
+    Route::post('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards', [CardController::class, 'store']);
 
     // Invitation
     Route::get('/invitations/{invitation:token}', [InvitationController::class, 'show']);
