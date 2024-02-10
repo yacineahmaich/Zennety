@@ -34,6 +34,13 @@ declare namespace App.Models {
   interface Status {
     id: number;
     name: string;
+    cards?: Card[];
+    boardId: number;
+  }
+  interface Card {
+    id: number;
+    name: string;
+    statusId: number;
   }
   interface Notification {
     id: number;

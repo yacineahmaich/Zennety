@@ -7,40 +7,57 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { useCreateCard } from "@/services/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckIcon, PlusIcon, XIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string(),
+  workspaceId: z.number(),
+  boardId: z.number(),
   statusId: z.number(),
 });
 
 export type CreateCard = z.infer<typeof formSchema>;
 
 const CreateCard = ({ status }: { status: App.Models.Status }) => {
+  const router = useRouter();
   const { t } = useTranslation("common");
   const [showForm, setShowForm] = useState(false);
+  const { createCard, isLoading } = useCreateCard();
+  const { workspaceId, boardId } = router.query as {
+    workspaceId: string;
+    boardId: string;
+  };
 
   const form = useForm<CreateCard>({
     defaultValues: {
+      workspaceId: +workspaceId,
+      boardId: +boardId,
       statusId: status.id,
     },
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = (values: CreateCard) => {
-    console.log(values);
+    createCard(values, {
+      onSuccess() {
+        setShowForm(false);
+        form.unregister();
+      },
+    });
   };
 
   if (!showForm) {
     return (
       <Button
         size="sm"
-        variant="ghost"
+        variant="secondary"
         className="w-full text-xs text-muted-foreground"
         onClick={() => setShowForm(true)}
       >
@@ -69,7 +86,12 @@ const CreateCard = ({ status }: { status: App.Models.Status }) => {
             )}
           />
           <div className="flex gap-1">
-            <Button size="icon" className="h-7 w-full text-xs">
+            <Button
+              type="submit"
+              size="icon"
+              className="h-7 w-full text-xs"
+              disabled={isLoading}
+            >
               <CheckIcon size={16} className="mr-1" /> {t("save")}
             </Button>
             <Button
