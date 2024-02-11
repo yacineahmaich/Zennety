@@ -18,7 +18,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     >
       <aside
         className={cn(
-          "fixed left-0 top-0 flex h-screen shrink-0 flex-col space-y-5 overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",
+          "fixed left-0 top-0 z-50 flex h-screen shrink-0 flex-col space-y-5 overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",
           collapsed ? "w-12" : "w-64"
         )}
       >
