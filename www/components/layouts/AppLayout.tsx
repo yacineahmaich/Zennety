@@ -30,7 +30,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         {!collapsed && <SidebarWorkspaces />}
         {!collapsed && <UserDropdown />}
       </aside>
-      <div className="min-w-[1024px] flex-1 p-4">
+      <div className="min-w-[1024px] flex-1 p-4 pb-0">
         <header className="mb-10 flex h-10 items-center justify-between">
           <div className="space-x-2">
             <WorkspacesDropdown />

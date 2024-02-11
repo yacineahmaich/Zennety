@@ -19,7 +19,7 @@ const Board: NextPageWithLayout = () => {
   if (!board) return;
 
   return (
-    <div className="flex h-[calc(100vh-7rem)] flex-col">
+    <div className="flex h-[calc(100vh-6rem)] flex-col">
       <BoardBanner board={board} />
       <Kanban board={board} />
     </div>

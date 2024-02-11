@@ -20,7 +20,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
 
 const Status = ({ status }: { status: App.Models.Status }) => {
   return (
-    <div className="flex h-full flex-col space-y-4">
+    <div className="flex h-full w-72 flex-col space-y-4">
       <StatusHeader status={status} />
       <div className="flex flex-col space-y-2 overflow-y-hidden rounded-lg bg-accent px-1 py-2 shadow-md">
         {status?.cards && status.cards.length > 0 && (
@@ -30,9 +30,7 @@ const Status = ({ status }: { status: App.Models.Status }) => {
             ))}
           </div>
         )}
-        <div className="px-1">
-          <CreateCard status={status} />
-        </div>
+        <CreateCard status={status} />
       </div>
     </div>
   );
