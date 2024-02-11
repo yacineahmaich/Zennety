@@ -50,7 +50,7 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
           <ThemeSwitcher />
         </div>
       </header>
-      <div className="min-h-screen pt-20">{children}</div>
+      <div className="pt-20">{children}</div>
     </div>
   );
 };
