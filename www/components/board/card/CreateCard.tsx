@@ -9,10 +9,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateCard } from "@/services/card";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckIcon, PlusIcon, XIcon } from "lucide-react";
+import { CheckIcon, XIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,10 +25,16 @@ const formSchema = z.object({
 
 export type CreateCard = z.infer<typeof formSchema>;
 
-const CreateCard = ({ status }: { status: App.Models.Status }) => {
+const CreateCard = ({
+  status,
+  onHide,
+}: {
+  status: App.Models.Status;
+  onHide: () => void;
+}) => {
   const router = useRouter();
   const { t } = useTranslation("common");
-  const [showForm, setShowForm] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const { createCard, isLoading } = useCreateCard();
   const { workspaceId, boardId } = router.query as {
     workspaceId: string;
@@ -47,24 +53,15 @@ const CreateCard = ({ status }: { status: App.Models.Status }) => {
   const onSubmit = (values: CreateCard) => {
     createCard(values, {
       onSuccess() {
-        setShowForm(false);
-        form.unregister();
+        onHide();
       },
     });
   };
 
-  if (!showForm) {
-    return (
-      <Button
-        size="sm"
-        variant="secondary"
-        className="w-full text-xs text-muted-foreground"
-        onClick={() => setShowForm(true)}
-      >
-        <PlusIcon size={16} className="mr-2" /> {t("add-new-card")}
-      </Button>
-    );
-  }
+  useEffect(() => {
+    ref.current?.scrollIntoView();
+    form.setFocus("name");
+  });
 
   return (
     <div>
@@ -75,7 +72,7 @@ const CreateCard = ({ status }: { status: App.Models.Status }) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
+                <FormControl ref={ref}>
                   <Textarea
                     placeholder={t("card-name-placeholder")}
                     {...field}
@@ -100,8 +97,7 @@ const CreateCard = ({ status }: { status: App.Models.Status }) => {
               variant="outline"
               className="h-7 w-full text-xs"
               onClick={() => {
-                setShowForm(false);
-                form.unregister();
+                onHide();
               }}
             >
               <XIcon size={16} className="mr-1" /> {t("cancel")}

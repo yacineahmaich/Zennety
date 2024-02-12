@@ -1,5 +1,8 @@
-import { MessageCircleIcon } from "lucide-react";
+import { MessageCircleIcon, PlusIcon } from "lucide-react";
+import { useTranslation } from "next-i18next";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import CreateCard from "./card/CreateCard";
 import CreateStatus from "./status/CreateStatus";
@@ -19,18 +22,37 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
 };
 
 const Status = ({ status }: { status: App.Models.Status }) => {
+  const { t } = useTranslation("common");
+  const [showForm, setShowForm] = useState(false);
+
   return (
     <div className="flex h-full w-72 flex-col space-y-4">
       <StatusHeader status={status} />
       <div className="flex flex-col space-y-2 overflow-y-hidden rounded-lg bg-accent px-1 py-2 shadow-md">
-        {status?.cards && status.cards.length > 0 && (
+        {((status?.cards && status.cards.length > 0) || showForm) && (
           <div className="w-full flex-1 space-y-2 overflow-y-auto px-1 pb-2">
             {status?.cards?.map((card) => (
               <StatusCard key={card.id} card={card} />
             ))}
+            {showForm && (
+              <div className="pt-1">
+                <CreateCard status={status} onHide={() => setShowForm(false)} />
+              </div>
+            )}
           </div>
         )}
-        <CreateCard status={status} />
+        {!showForm && (
+          <Button
+            size="sm"
+            variant="ghost"
+            className="w-full text-xs text-muted-foreground"
+            onClick={() => {
+              setShowForm(true);
+            }}
+          >
+            <PlusIcon size={16} className="mr-2" /> {t("add-new-card")}
+          </Button>
+        )}
       </div>
     </div>
   );
