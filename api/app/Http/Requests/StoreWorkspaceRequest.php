@@ -28,7 +28,6 @@ class StoreWorkspaceRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'min:4',
                 'max:25'
             ],
             'description' => [
@@ -37,8 +36,6 @@ class StoreWorkspaceRequest extends FormRequest
             'visibility' => [
                 'in:' . implode(',', Visibility::values())
             ],
-            // User can have only one memebership for wokspace/board
-            Rule::unique('memberships', 'membershipable_id')->where('user_id', auth()->id())
         ];
     }
 }

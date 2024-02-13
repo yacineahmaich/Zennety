@@ -48,6 +48,14 @@ class InvitationService
         DB::transaction(function () use ($invitation) {
             $inviteable = $invitation->inviteable;
 
+            /**@var App\Models\User $user */
+            $user = auth()->user();
+
+            // Check if user is already a member 
+            if ($user->memberFor($inviteable)) {
+                abort(402, 'You\'re aleady a member of - ' . $inviteable->name);
+            };
+
             /**@var App\Models\Membership $member */
             $member = $inviteable->members()->create([
                 'user_id' => auth()->id(),
@@ -55,6 +63,7 @@ class InvitationService
 
             $member->assignRole($invitation->role);
 
+            // Mark invitation as expired so its no longer accessible
             $invitation->update([
                 "expires_at" => now()
             ]);

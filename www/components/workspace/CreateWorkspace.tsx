@@ -31,7 +31,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-  name: z.string().min(4).max(25),
+  name: z.string().max(25),
   description: z.string().max(255).optional(),
   visibility: z.nativeEnum(Visibility),
 });
