@@ -1,6 +1,17 @@
 import { CreateStatus } from "@/components/board/status/CreateStatus";
 import { api } from "@/lib/api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+const getStatuses = async (
+  workspaceId: string,
+  boardId: string
+): Promise<App.Models.Status[]> => {
+  const response = await api.get(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses`
+  );
+
+  return response.data.data;
+};
 
 const createStatus = async ({
   workspaceId,
@@ -13,6 +24,31 @@ const createStatus = async ({
   );
 
   return response.data.data;
+};
+
+/**
+ * ==========================================
+ * ========= QUERIES ========================
+ * ==========================================
+ */
+
+export const useStatuses = (workspaceId: string, boardId: string) => {
+  const {
+    data: statuses,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["workspaces", workspaceId, "boards", boardId, "statuses"],
+    queryFn: () => getStatuses(workspaceId, boardId),
+  });
+
+  return {
+    statuses,
+    isLoading,
+    isError,
+    error,
+  };
 };
 
 /**

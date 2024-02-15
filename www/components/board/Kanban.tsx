@@ -1,5 +1,7 @@
+import { useStatuses } from "@/services";
 import { MessageCircleIcon, PlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -9,13 +11,24 @@ import CreateStatus from "./status/CreateStatus";
 import StatusHeader from "./status/StatusHeader";
 
 const Kanban = ({ board }: { board: App.Models.Board }) => {
+  const router = useRouter();
+  const { workspaceId, boardId } = router.query as {
+    workspaceId: string;
+    boardId: string;
+  };
+  const { statuses } = useStatuses(workspaceId, boardId);
+
   return (
     <main className="flex-1 overflow-x-auto p-3">
       <div className="flex h-full items-start gap-4">
-        {board?.statuses?.map((status) => (
-          <Status key={status.id} status={status} />
-        ))}
-        <CreateStatus board={board} />
+        {(statuses || []).length > 0 && (
+          <>
+            {statuses?.map((status) => (
+              <Status key={status.id} status={status} />
+            ))}
+            <CreateStatus board={board} />
+          </>
+        )}
       </div>
     </main>
   );
