@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get("/workspaces/{workspace}/boards/{board}", [BoardController::class, 'show']);
 
     // Status
+    Route::get('/workspaces/{workspace}/boards/{board}/statuses', [StatusController::class, 'index']);
     Route::post('/workspaces/{workspace}/boards/{board}/statuses', [StatusController::class, 'store']);
 
     // Card

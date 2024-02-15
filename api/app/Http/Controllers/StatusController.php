@@ -20,9 +20,9 @@ class StatusController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Workspace $workspace, Board $board)
     {
-        //
+        return StatusResource::collection($board->statuses->load('cards'));
     }
 
     /**
