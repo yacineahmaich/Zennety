@@ -58,8 +58,10 @@ declare namespace App.Models {
     relatedType: string;
     token: string;
     invitedEmail: string;
+    role: string;
     message: string;
-    invitedBy: User;
+    invitedBy?: User;
+    invited?: User;
     expiresAt: string;
   }
 }

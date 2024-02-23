@@ -1,14 +1,14 @@
 import { useCan } from "@/hooks/useCan";
 import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
-import { useDeleteMember, useMembers, useUpdateMemberRole } from "@/services";
-import { Role } from "@/types/enums";
+import { useInvitations } from "@/services";
 import { ResourceType } from "@/types/helpers";
+import { format } from "date-fns";
 import {
+  CalendarX2Icon,
   ListFilterIcon,
-  LoaderIcon,
+  MailOpenIcon,
   TrashIcon,
-  UserCogIcon,
   UserIcon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -26,7 +26,7 @@ import {
 } from "../ui/select";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 
-const Members = ({
+const Invitations = ({
   resourceType,
   resourceId,
 }: {
@@ -38,21 +38,21 @@ const Members = ({
   const [_search, setSearch] = useState("");
   const search = useDebounce(_search, 0.3);
 
-  const { data } = useMembers(resourceType, resourceId, {
+  const { data } = useInvitations(resourceType, resourceId, {
     search,
     role: role === "all" ? "" : role,
   });
 
   if (!data) return null;
 
-  const { data: members, meta } = data;
+  const { data: invitations, meta } = data;
 
   return (
     <div className="p-8">
       <span className="mb-4 flex items-center">
-        <UserIcon size={20} className="mr-2" />
+        <MailOpenIcon size={20} className="mr-2" />
         <h2 className="text-lg font-semibold">
-          {t("members")} ({members?.length || 0})
+          {t("invitations")} ({invitations?.length || 0})
         </h2>
       </span>
       <div>
@@ -87,10 +87,10 @@ const Members = ({
           </Select>
         </div>
         <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
-          {members.map((member) => (
-            <Member
-              key={member.id}
-              member={member}
+          {invitations.map((invitation) => (
+            <Invitation
+              key={invitation.id}
+              invitation={invitation}
               resourceId={resourceId}
               resourceType={resourceType}
             />
@@ -101,75 +101,53 @@ const Members = ({
   );
 };
 
-const Member = ({
-  member,
+const Invitation = ({
+  invitation,
   resourceId,
   resourceType,
 }: {
-  member: App.Models.Member;
+  invitation: App.Models.Invitation;
   resourceId: number;
   resourceType: ResourceType;
 }) => {
   const { t } = useTranslation("common");
-  const { deleteMember, isLoading: isDeleting } = useDeleteMember();
-  const { updateMemberRole, isLoading: isUpdatingRole } = useUpdateMemberRole();
   const canUpdate = useCan("update", resourceType, resourceId);
+
+  const expirationDate = format(new Date(invitation.expiresAt), "d MMMM yyyy");
 
   return (
     <Card className="flex items-center justify-between gap-2 p-2">
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarImage src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png" />
-          <AvatarFallback>{member.profile.name}</AvatarFallback>
+          <AvatarFallback>{invitation.invited?.name}</AvatarFallback>
         </Avatar>
         <div className="text-xs">
-          <h2 className="font-semibold">{member.profile.name}</h2>
-          <p>{member.profile.email}</p>
+          <h2 className="font-semibold">{invitation.invited?.name}</h2>
+          <p>{invitation.invited?.email}</p>
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Select
-          value={member.role}
-          disabled={member.role === Role.OWNER || !canUpdate || isUpdatingRole}
-          onValueChange={(role) =>
-            updateMemberRole({ id: member.id, role, resourceType, resourceId })
-          }
-        >
-          <SelectTrigger className="h-7 text-xs">
-            {isUpdatingRole ? (
-              <LoaderIcon size={14} className="animate-spin" />
-            ) : (
-              <SelectValue placeholder="Select a role" />
-            )}
-          </SelectTrigger>
-          <SelectContent>
-            {member.role === Role.OWNER && (
-              <SelectItem value={Role.OWNER} disabled>
-                <div className="flex h-4 items-center gap-1 text-xs">
-                  <UserCogIcon size={14} />
-                  <span>{t(Role.OWNER.toLowerCase())}</span>
-                </div>
-              </SelectItem>
-            )}
-            {roles
-              .filter((r) => r !== Role.OWNER)
-              .map((role) => (
-                <SelectItem key={role} value={role}>
-                  <div className="flex h-4 items-center gap-1 text-xs">
-                    <UserCogIcon size={14} />
-                    <span>{t(role.toLowerCase())}</span>
-                  </div>
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
-        {canUpdate && member.role !== Role.OWNER && (
+        <div className="flex flex-col items-end justify-center gap-1 text-xs">
+          <p className="g-1 flex items-center">
+            <UserIcon size={14} />
+            {invitation.role}
+          </p>
+          <p
+            className="g-1 flex items-center"
+            title={`Expires at ${expirationDate}`}
+          >
+            <CalendarX2Icon size={14} />
+            {expirationDate}
+          </p>
+        </div>
+        {canUpdate && (
           <ConfirmationDialog
             desc={t("delete-member-desc")}
-            onConfirm={() =>
-              deleteMember({ id: member.id, resourceType, resourceId })
+            onConfirm={
+              () => {}
+              //   deleteMember({ id: member.id, resourceType, resourceId })
             }
-            disabled={isDeleting}
             openTrigger={
               <Button size="sm" variant="destructive" className="p-2">
                 <TrashIcon size={16} />
@@ -182,4 +160,4 @@ const Member = ({
   );
 };
 
-export default Members;
+export default Invitations;

@@ -1,5 +1,6 @@
 import BoardBanner from "@/components/board/BoardBanner";
 import { AppLayout } from "@/components/layouts";
+import Invitations from "@/components/shared/Invitations";
 import Members from "@/components/shared/Members";
 import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
@@ -21,6 +22,7 @@ const BoardMembers: NextPageWithLayout = () => {
     <div>
       <BoardBanner board={board} />
       <Members resourceType="board" resourceId={board.id} />
+      <Invitations resourceType="board" resourceId={board.id} />
     </div>
   );
 };

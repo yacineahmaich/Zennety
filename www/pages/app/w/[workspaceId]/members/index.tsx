@@ -1,4 +1,5 @@
 import { AppLayout } from "@/components/layouts";
+import Invitations from "@/components/shared/Invitations";
 import Members from "@/components/shared/Members";
 import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
 import { useWorkspace } from "@/services";
@@ -18,6 +19,7 @@ const WorkspaceMembers: NextPageWithLayout = () => {
     <div>
       <WorkspaceBanner workspace={workspace} />
       <Members resourceType="workspace" resourceId={workspace.id} />
+      <Invitations resourceType="workspace" resourceId={workspace.id} />
     </div>
   );
 };

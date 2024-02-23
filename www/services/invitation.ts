@@ -15,6 +15,18 @@ const sendMembershipInvitations = async ({
   await api.post(`/invitations/${resourceType}/${resourceId}/invite`, data);
 };
 
+const getInvitations = async (
+  resourceType: ResourceType,
+  resourceId: number,
+  params: Record<string, string>
+): Promise<Paginator<App.Models.Invitation>> => {
+  const response = await api.get(`/invitations/${resourceType}/${resourceId}`, {
+    params,
+  });
+
+  return response.data;
+};
+
 const getInvitation = async (token: string): Promise<App.Models.Invitation> => {
   const response = await api.get(`/invitations/${token}`);
 
@@ -43,6 +55,25 @@ export const useInvitation = (token: string) => {
 
   return {
     invitation: data,
+    isLoading,
+    isError,
+    error,
+  };
+};
+
+export const useInvitations = (
+  resourceType: ResourceType,
+  resourceId: number,
+  params: Record<string, string>
+) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["invitations", resourceType, resourceId, params],
+    queryFn: () => getInvitations(resourceType, resourceId, params),
+    enabled: !!resourceType && !!resourceId,
+  });
+
+  return {
+    data,
     isLoading,
     isError,
     error,
