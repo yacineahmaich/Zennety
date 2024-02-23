@@ -10,6 +10,7 @@ use App\Models\Board;
 use App\Models\Status;
 use App\Models\Workspace;
 use App\Services\StatusService;
+use Illuminate\Http\Request;
 
 class StatusController extends Controller
 {
@@ -22,7 +23,13 @@ class StatusController extends Controller
      */
     public function index(Workspace $workspace, Board $board)
     {
-        return StatusResource::collection($board->statuses->load('cards'));
+        return StatusResource::collection(
+            $board
+                ->statuses()
+                ->orderBy('pos')
+                ->get()
+                ->load('cards')
+        );
     }
 
     /**
@@ -60,5 +67,15 @@ class StatusController extends Controller
     public function destroy(Status $status)
     {
         //
+    }
+
+    public function reorder(Request $request, Workspace $workspace, Board $board)
+    {
+        $this->service->reorder(
+            $board->statuses()->orderBy('pos')->get(),
+            $request->get('statuses_order', [])
+        );
+
+        return response()->noContent();
     }
 }

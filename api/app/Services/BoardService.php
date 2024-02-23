@@ -25,13 +25,6 @@ class BoardService
                 "user_id" => auth()->id()
             ]);
 
-            // Create some default statuses
-            $board->statuses()->createMany([
-                ["name" => "Pending"],
-                ["name" => "In Progress"],
-                ["name" => "Done"],
-            ]);
-
             $owner->assignRole(Role::OWNER);
 
             return $board;

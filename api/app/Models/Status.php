@@ -13,6 +13,7 @@ class Status extends Model
 
     protected $fillable = [
         'name',
+        'pos',
         'board_id'
     ];
 

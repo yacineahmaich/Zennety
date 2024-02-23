@@ -17,6 +17,7 @@ class StatusResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'pos' => $this->pos,
             'cards' => CardResource::collection($this->whenLoaded('cards'))
         ];
     }
