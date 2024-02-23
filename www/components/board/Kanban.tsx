@@ -1,19 +1,17 @@
-import { useStatuses } from "@/services";
+import { useReorderStatuses, useStatuses } from "@/services";
 import {
   DndContext,
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
 } from "@dnd-kit/core";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import { useQueryClient } from "@tanstack/react-query";
+import { SortableContext } from "@dnd-kit/sortable";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import CreateStatus from "./status/CreateStatus";
 import StatusColumn from "./status/StatusColumn";
 
 const Kanban = ({ board }: { board: App.Models.Board }) => {
-  const queryClient = useQueryClient();
   const router = useRouter();
   const [active, setActive] = useState<App.Models.Status | null>(null);
   const { workspaceId, boardId } = router.query as {
@@ -21,6 +19,8 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
     boardId: string;
   };
   const { statuses } = useStatuses(workspaceId, boardId);
+  const { reorderStatuses, optimistacallyReorderStatuses } =
+    useReorderStatuses();
 
   const handleDragStart = (e: DragStartEvent) => {
     if (e.active.data.current?.type === "status") {
@@ -36,28 +36,22 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
 
     if (activeStatusId === overStatusId) return;
 
-    queryClient.setQueryData<App.Models.Status[]>(
-      [
-        "workspaces",
-        board.workspaceId.toString(),
-        "boards",
-        board.id.toString(),
-        "statuses",
-      ],
-      (statuses = []) => {
-        const activeStatusIndex = statuses?.findIndex(
-          (s) => s.id == activeStatusId
-        );
-        const overStatusIndex = statuses?.findIndex(
-          (s) => s.id == overStatusId
-        );
+    const statusesOrder = optimistacallyReorderStatuses({
+      workspaceId,
+      boardId,
+      activeStatusId: +activeStatusId,
+      overStatusId: +overStatusId,
+    });
+    // this is neccessary to avoid delayed optimistic update :(
+    setActive(null);
 
-        // Hack to avoid delayed ui update
-        setActive(null);
+    if (!statusesOrder) return;
 
-        return arrayMove(statuses, activeStatusIndex, overStatusIndex);
-      }
-    );
+    reorderStatuses({
+      workspaceId,
+      boardId,
+      statusesOrder,
+    });
   };
 
   const items = useMemo(() => statuses?.map((status) => status.id), [statuses]);
@@ -76,9 +70,9 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
                   {active && <StatusColumn status={active} />}
                 </DragOverlay>
               </SortableContext>
-              <CreateStatus board={board} />
             </>
           )}
+          <CreateStatus board={board} />
         </div>
       </main>
     </DndContext>

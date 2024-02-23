@@ -34,6 +34,7 @@ declare namespace App.Models {
   interface Status {
     id: number;
     name: string;
+    pos: number;
     cards?: Card[];
     boardId: number;
   }

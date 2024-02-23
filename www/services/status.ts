@@ -1,5 +1,6 @@
 import { CreateStatus } from "@/components/board/status/CreateStatus";
 import { api } from "@/lib/api";
+import { arrayMove } from "@dnd-kit/sortable";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const getStatuses = async (
@@ -21,6 +22,25 @@ const createStatus = async ({
   const response = await api.post(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses`,
     status
+  );
+
+  return response.data.data;
+};
+
+const reorderStatuses = async ({
+  workspaceId,
+  boardId,
+  statusesOrder,
+}: {
+  workspaceId: string;
+  boardId: string;
+  statusesOrder: Record<number, number>;
+}): Promise<App.Models.Status> => {
+  const response = await api.put(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/reorder`,
+    {
+      statuses_order: statusesOrder,
+    }
   );
 
   return response.data.data;
@@ -76,6 +96,66 @@ export const useCreateStatus = () => {
 
   return {
     createStatus: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useReorderStatuses = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: reorderStatuses,
+    onSuccess(status, { workspaceId, boardId }) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId.toString(),
+          "boards",
+          boardId.toString(),
+        ],
+      });
+    },
+  });
+
+  const optimistacallyReorderStatuses = ({
+    workspaceId,
+    boardId,
+    activeStatusId,
+    overStatusId,
+  }: {
+    workspaceId: string;
+    boardId: string;
+    activeStatusId: number;
+    overStatusId: number;
+  }) => {
+    const reorderedStatuses = queryClient.setQueryData<App.Models.Status[]>(
+      ["workspaces", workspaceId, "boards", boardId, "statuses"],
+      (statuses = []) => {
+        const activeStatusIndex = statuses?.findIndex(
+          (s) => s.id == activeStatusId
+        );
+        const overStatusIndex = statuses?.findIndex(
+          (s) => s.id == overStatusId
+        );
+
+        // Hack to avoid delayed ui update
+        // setActive(null);
+
+        return arrayMove(statuses, activeStatusIndex, overStatusIndex);
+      }
+    );
+
+    const statusesOrder = reorderedStatuses?.reduce(
+      (acc, status, idx) => ({ ...acc, [status.id]: idx }),
+      {}
+    );
+
+    return statusesOrder;
+  };
+
+  return {
+    reorderStatuses: mutate,
+    optimistacallyReorderStatuses,
     isLoading: isPending,
   };
 };
