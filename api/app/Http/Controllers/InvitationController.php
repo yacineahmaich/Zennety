@@ -20,9 +20,21 @@ class InvitationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $type, int $id)
     {
-        //
+        $invitable = null;
+
+        if ($type === "workspace") {
+            $invitable = Workspace::find($id);
+        } else if ($type === "board") {
+            $invitable = Board::find($id);
+        }
+
+        if (is_null($invitable)) {
+            abort(404);
+        }
+
+        return InvitationResource::collection($invitable->invitations);
     }
 
     /**
