@@ -34,18 +34,14 @@ const Invitations = ({
   resourceId: number;
 }) => {
   const { t } = useTranslation("common");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("all");
   const [_search, setSearch] = useState("");
   const search = useDebounce(_search, 0.3);
 
-  const { data } = useInvitations(resourceType, resourceId, {
+  const { invitations, pagination } = useInvitations(resourceType, resourceId, {
     search,
     role: role === "all" ? "" : role,
   });
-
-  if (!data) return null;
-
-  const { data: invitations, meta } = data;
 
   return (
     <div className="p-8">
@@ -87,7 +83,7 @@ const Invitations = ({
           </Select>
         </div>
         <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
-          {invitations.map((invitation) => (
+          {invitations?.map((invitation) => (
             <Invitation
               key={invitation.id}
               invitation={invitation}

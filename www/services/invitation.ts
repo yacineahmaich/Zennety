@@ -69,11 +69,13 @@ export const useInvitations = (
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["invitations", resourceType, resourceId, params],
     queryFn: () => getInvitations(resourceType, resourceId, params),
+    placeholderData: (previousData) => previousData,
     enabled: !!resourceType && !!resourceId,
   });
 
   return {
-    data,
+    invitations: data?.data,
+    pagination: data?.meta,
     isLoading,
     isError,
     error,

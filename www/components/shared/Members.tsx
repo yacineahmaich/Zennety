@@ -34,18 +34,14 @@ const Members = ({
   resourceId: number;
 }) => {
   const { t } = useTranslation("common");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("all");
   const [_search, setSearch] = useState("");
   const search = useDebounce(_search, 0.3);
 
-  const { data } = useMembers(resourceType, resourceId, {
+  const { members, pagination } = useMembers(resourceType, resourceId, {
     search,
     role: role === "all" ? "" : role,
   });
-
-  if (!data) return null;
-
-  const { data: members, meta } = data;
 
   return (
     <div className="p-8">
@@ -87,7 +83,7 @@ const Members = ({
           </Select>
         </div>
         <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
-          {members.map((member) => (
+          {members?.map((member) => (
             <Member
               key={member.id}
               member={member}

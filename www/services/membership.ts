@@ -59,11 +59,13 @@ export const useMembers = (
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["memberships", resourceType, resourceId, params],
     queryFn: () => getMembers(resourceType, resourceId, params),
+    placeholderData: (previousData) => previousData,
     enabled: !!resourceType && !!resourceId,
   });
 
   return {
-    data,
+    members: data?.data,
+    pagination: data?.meta,
     isLoading,
     isError,
     error,
