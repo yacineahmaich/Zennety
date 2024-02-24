@@ -10,6 +10,7 @@ use App\Models\Board;
 use App\Models\Invitation;
 use App\Models\Workspace;
 use App\Services\InvitationService;
+use Illuminate\Http\Request;
 
 class InvitationController extends Controller
 {
@@ -20,21 +21,18 @@ class InvitationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $type, int $id)
+    public function index(Request $request)
     {
-        $invitable = null;
+        $role = $request->get('role');
+        $search = $request->get('search');
 
-        if ($type === "workspace") {
-            $invitable = Workspace::find($id);
-        } else if ($type === "board") {
-            $invitable = Board::find($id);
-        }
+        $invitations = Invitation::fromRequest($request)
+            ->with('invited')
+            ->whereHas('invited', fn ($q) => $q->search($search))
+            ->where(fn ($q) =>  $role ? $q->where('role', $role) : null)
+            ->paginate();
 
-        if (is_null($invitable)) {
-            abort(404);
-        }
-
-        return InvitationResource::collection($invitable->invitations);
+        return InvitationResource::collection($invitations);
     }
 
     /**

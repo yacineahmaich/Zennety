@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,8 +25,6 @@ class InvitationResource extends JsonResource
             $related = BoardResource::make($this->inviteable);
         }
 
-        $invited = User::where('email', $this->invited_email)->first();
-
         return [
             "id" => $this->id,
             "related" => $related,
@@ -37,7 +34,7 @@ class InvitationResource extends JsonResource
             "role" => $this->role,
             "invitedEmail" => $this->invited_email,
             "message" => $this->message,
-            "invited" => UserResource::make($invited),
+            "invited" => UserResource::make($this->invited),
             "invitedBy" => UserResource::make($this->user),
             "expiresAt" => $this->expires_at,
         ];

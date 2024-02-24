@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Http\Request;
 
 class Invitation extends Model
 {
@@ -38,8 +40,22 @@ class Invitation extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function invited():BelongsTo {
+        return $this->belongsTo(User::class, 'invited_email', 'email');
+    }
+
     public function inviteable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public static function fromRequest(Request $request): Builder
+    {
+        $id = $request->route('id');
+        $type = "App\\Models\\" . ucfirst($request->route('type'));
+
+        return self::query()
+            ->where('inviteable_id', $id)
+            ->where('inviteable_type', $type);
     }
 }
