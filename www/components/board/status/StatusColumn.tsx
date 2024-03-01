@@ -1,5 +1,10 @@
-import { useSortable } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useMemo } from "react";
 import StatusCard from "../card/StatusCard";
 import StatusColumnWrapper from "./StatusColumnWrapper";
 import StatusHeader from "./StatusHeader";
@@ -13,7 +18,7 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
     transition,
     isDragging,
   } = useSortable({
-    id: status.id,
+    id: `status-${status.id}`,
     data: {
       type: "status",
       status,
@@ -24,6 +29,11 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
     transition,
     transform: CSS.Transform.toString(transform),
   };
+
+  const items = useMemo(
+    () => status.cards?.map((card) => `card-${card.id}`),
+    [status.cards]
+  );
 
   if (isDragging) {
     return (
@@ -48,7 +58,14 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
         <StatusHeader status={status} />
       </button>
       <StatusColumnWrapper status={status}>
-        {status?.cards?.map((card) => <StatusCard key={card.id} card={card} />)}
+        <SortableContext
+          items={items || []}
+          strategy={verticalListSortingStrategy}
+        >
+          {status?.cards?.map((card) => (
+            <StatusCard key={card.id} card={card} />
+          ))}
+        </SortableContext>
       </StatusColumnWrapper>
     </div>
   );

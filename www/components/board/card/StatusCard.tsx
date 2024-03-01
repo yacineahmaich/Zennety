@@ -1,10 +1,42 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { MessageCircleIcon } from "lucide-react";
 
 const StatusCard = ({ card }: { card: App.Models.Card }) => {
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: `card-${card.id}`,
+    data: {
+      type: "card",
+      card,
+    },
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
+
   return (
-    <Card key={card.id} className="w-full space-y-6 border p-4 hover:shadow-md">
+    <Card
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={cn(
+        "w-full space-y-6 border p-4 hover:shadow-md",
+        isDragging && "opacity-50"
+      )}
+    >
       <h2 className="break-words text-sm font-medium">{card.name}</h2>
       <footer className="flex items-center justify-between text-muted-foreground">
         <div className="flex items-center gap-1">
