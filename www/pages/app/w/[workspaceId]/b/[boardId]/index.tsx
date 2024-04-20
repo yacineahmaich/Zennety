@@ -1,6 +1,7 @@
 import BoardBanner from "@/components/board/BoardBanner";
 import Kanban from "@/components/board/Kanban";
 import { AppLayout } from "@/components/layouts";
+import Loader from "@/components/shared/Loader";
 
 import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
@@ -14,9 +15,13 @@ const Board: NextPageWithLayout = () => {
     workspaceId: string;
     boardId: string;
   };
-  const { board } = useBoard(workspaceId, boardId);
+  const { board, isLoading } = useBoard(workspaceId, boardId);
 
+  
+  if(isLoading) return <Loader />
   if (!board) return;
+
+
 
   return (
     <div className="flex h-[calc(100vh-6rem)] flex-col">

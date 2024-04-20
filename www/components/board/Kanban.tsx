@@ -15,6 +15,7 @@ import { createPortal } from "react-dom";
 import StatusCard from "./card/StatusCard";
 import CreateStatus from "./status/CreateStatus";
 import StatusColumn from "./status/StatusColumn";
+import Loader from "../shared/Loader";
 
 const Kanban = ({ board }: { board: App.Models.Board }) => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
     workspaceId: string;
     boardId: string;
   };
-  const { statuses } = useStatuses(workspaceId, boardId);
+  const { statuses, isLoading } = useStatuses(workspaceId, boardId);
   const { reorderStatuses, optimistacallyReorderStatuses } =
     useReorderStatuses();
 
@@ -81,6 +82,8 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
     () => statuses?.map((status) => `status-${status.id}`),
     [statuses]
   );
+
+  if(isLoading) return <Loader />
 
   return (
     <DndContext

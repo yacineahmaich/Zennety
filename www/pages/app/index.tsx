@@ -1,5 +1,6 @@
 import BoardCard from "@/components/board/BoardCard";
 import { AppLayout } from "@/components/layouts";
+import Loader from "@/components/shared/Loader";
 import { buttonVariants } from "@/components/ui/button";
 import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
 import { useCan } from "@/hooks/useCan";
@@ -22,6 +23,10 @@ import Link from "next/link";
 const AppPage: NextPageWithLayout = () => {
   const { workspaces, isLoading } = useMyWorkspaces();
   const { user } = useUser();
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
 

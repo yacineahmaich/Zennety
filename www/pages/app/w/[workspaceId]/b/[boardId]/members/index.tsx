@@ -1,6 +1,7 @@
 import BoardBanner from "@/components/board/BoardBanner";
 import { AppLayout } from "@/components/layouts";
 import Invitations from "@/components/shared/Invitations";
+import Loader from "@/components/shared/Loader";
 import Members from "@/components/shared/Members";
 import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
@@ -14,8 +15,9 @@ const BoardMembers: NextPageWithLayout = () => {
     workspaceId: string;
     boardId: string;
   };
-  const { board } = useBoard(workspaceId, boardId);
+  const { board, isLoading } = useBoard(workspaceId, boardId);
 
+  if(isLoading) return <Loader />
   if (!board) return;
 
   return (

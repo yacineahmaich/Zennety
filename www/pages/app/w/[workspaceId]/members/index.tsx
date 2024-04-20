@@ -1,5 +1,6 @@
 import { AppLayout } from "@/components/layouts";
 import Invitations from "@/components/shared/Invitations";
+import Loader from "@/components/shared/Loader";
 import Members from "@/components/shared/Members";
 import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
 import { useWorkspace } from "@/services";
@@ -11,8 +12,9 @@ import { useRouter } from "next/router";
 const WorkspaceMembers: NextPageWithLayout = () => {
   const router = useRouter();
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace } = useWorkspace(workspaceId);
+  const { workspace, isLoading } = useWorkspace(workspaceId);
 
+  if(isLoading) return <Loader />
   if (!workspace) return;
 
   return (
