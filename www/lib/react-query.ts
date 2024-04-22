@@ -6,6 +6,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: process.env.NEXT_PUBLIC_ENV === "production",
+      throwOnError: true
     },
     mutations: {
       retry: false,

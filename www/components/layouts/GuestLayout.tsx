@@ -5,6 +5,7 @@ import { ZapIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { ReactNode } from "react";
+import ErrorBoundary from "../shared/ErrorBoundary";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import { buttonVariants } from "../ui/button";
 
@@ -50,7 +51,9 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
           <ThemeSwitcher />
         </div>
       </header>
-      <div className="pt-20">{children}</div>
+      <div className="pt-20">
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </div>
     </div>
   );
 };

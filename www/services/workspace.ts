@@ -32,6 +32,7 @@ export const useWorkspace = (id: string) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["workspaces", id],
     queryFn: () => getWorkspaceById(id),
+    enabled: !!id
   });
 
   return {

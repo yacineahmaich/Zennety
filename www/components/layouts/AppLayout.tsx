@@ -6,6 +6,7 @@ import SidebarLogo from "../_partials/SidebarLogo";
 import SidebarWorkspaces from "../_partials/SidebarWorkspaces";
 import UserDropdown from "../_partials/UserDropdown";
 import WorkspacesDropdown from "../_partials/WorkspacesDropdown";
+import ErrorBoundary from "../shared/ErrorBoundary";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import CreateWorkspace from "../workspace/CreateWorkspace";
 
@@ -41,7 +42,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <ThemeSwitcher />
           </div>
         </header>
-        {children}
+        <ErrorBoundary>{children}</ErrorBoundary>
       </div>
     </div>
   );
