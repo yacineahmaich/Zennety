@@ -30,6 +30,7 @@ class InvitationController extends Controller
             ->with('invited')
             ->whereHas('invited', fn ($q) => $q->search($search))
             ->where(fn ($q) =>  $role ? $q->where('role', $role) : null)
+            ->where('expires_at', '>', now())
             ->paginate();
 
         return InvitationResource::collection($invitations);

@@ -53,7 +53,7 @@ class InvitationService
 
             // Check if user is already a member 
             if ($user->memberFor($inviteable)) {
-                abort(402, 'You\'re aleady a member of - ' . $inviteable->name);
+                abort(402, 'You\'re aleady a member in - ' . $inviteable->name);
             };
 
             /**@var App\Models\Membership $member */
