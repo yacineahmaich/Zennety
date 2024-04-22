@@ -12,10 +12,10 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import Loader from "../shared/Loader";
 import StatusCard from "./card/StatusCard";
 import CreateStatus from "./status/CreateStatus";
 import StatusColumn from "./status/StatusColumn";
-import Loader from "../shared/Loader";
 
 const Kanban = ({ board }: { board: App.Models.Board }) => {
   const router = useRouter();
@@ -83,7 +83,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
     [statuses]
   );
 
-  if(isLoading) return <Loader />
+  if (isLoading) return <Loader />;
 
   return (
     <DndContext
