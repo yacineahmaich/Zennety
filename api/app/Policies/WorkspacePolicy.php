@@ -25,6 +25,12 @@ class WorkspacePolicy
             return true;
         }
 
+        foreach($workspace->boards as $board) {
+            if($member = $user->memberFor($board)) {
+                return true;
+            }
+        }
+
         if (!$member = $user->memberFor($workspace)) {
             return false;
         }
