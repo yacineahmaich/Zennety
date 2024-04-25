@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Visibility;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreBoardRequest extends FormRequest
 {
@@ -25,7 +26,8 @@ class StoreBoardRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'max:25'
+                'max:25',
+                Rule::unique('boards', 'name')->where('workspace_id', $this->route('workspace'))
             ],
             'description' => [
                 'max:255'
