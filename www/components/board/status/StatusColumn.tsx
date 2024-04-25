@@ -1,15 +1,18 @@
+import { Button } from "@/components/ui/button";
 import {
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import StatusCard from "../card/StatusCard";
 import StatusColumnWrapper from "./StatusColumnWrapper";
 import StatusHeader from "./StatusHeader";
 
 const StatusColumn = ({ status }: { status: App.Models.Status }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
   const {
     setNodeRef,
     attributes,
@@ -23,6 +26,7 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
       type: "status",
       status,
     },
+    disabled: collapsed,
   });
 
   const style = {
@@ -52,21 +56,41 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex h-full w-72 flex-col space-y-4"
+      className="flex h-full  flex-col space-y-4 transition-[width]"
     >
       <button {...attributes} {...listeners}>
-        <StatusHeader status={status} />
+        <StatusHeader
+          status={status}
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+        />
       </button>
-      <StatusColumnWrapper status={status}>
-        <SortableContext
-          items={items || []}
-          strategy={verticalListSortingStrategy}
+      {collapsed ? (
+        <Button
+          variant="secondary"
+          className="grid h-full w-16 place-items-center rounded-lg bg-secondary"
+          onClick={() => setCollapsed(false)}
         >
-          {status?.cards?.map((card) => (
-            <StatusCard key={card.id} card={card} />
-          ))}
-        </SortableContext>
-      </StatusColumnWrapper>
+          <p
+            className="rotate-180 text-sm uppercase"
+            style={{ textOrientation: "mixed", writingMode: "vertical-lr" }}
+          >
+            {status.name}
+          </p>
+        </Button>
+      ) : (
+        <StatusColumnWrapper status={status}>
+          <SortableContext
+            items={items || []}
+            strategy={verticalListSortingStrategy}
+            disabled={collapsed}
+          >
+            {status?.cards?.map((card) => (
+              <StatusCard key={card.id} card={card} />
+            ))}
+          </SortableContext>
+        </StatusColumnWrapper>
+      )}
     </div>
   );
 };

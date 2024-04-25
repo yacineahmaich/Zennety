@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layouts";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 import { Toaster } from "@/components/ui/toaster";
 import { queryClient } from "@/lib/react-query";
 import "@/styles/globals.css";
@@ -16,18 +17,20 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <QueryClientProvider client={_queryClient}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
-      </ThemeProvider>
-      <Toaster />
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={_queryClient}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
+        </ThemeProvider>
+        <Toaster />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 
