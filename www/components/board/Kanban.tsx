@@ -2,13 +2,16 @@ import { useReorderStatuses, useStatuses } from "@/services";
 import {
   DndContext,
   DragEndEvent,
+  DragOverEvent,
   DragOverlay,
   DragStartEvent,
   PointerSensor,
+  pointerWithin,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableContext } from "@dnd-kit/sortable";
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -18,6 +21,7 @@ import CreateStatus from "./status/CreateStatus";
 import StatusColumn from "./status/StatusColumn";
 
 const Kanban = ({ board }: { board: App.Models.Board }) => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const [activeStatus, setActiveStatus] = useState<App.Models.Status | null>(
     null
@@ -41,17 +45,18 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    if (!over || active.id === over.id) return;
+
     // this is neccessary to avoid delayed optimistic update :(
     setActiveStatus(null);
     setActiveCard(null);
 
-    if (!over) return;
-
-    if (active.data.current?.type === "status") {
+    if (
+      active.data.current?.type === "status" &&
+      over.data.current?.type === "status"
+    ) {
       const activeStatus = active.data.current?.status as App.Models.Status;
       const overStatus = over.data.current?.status as App.Models.Status;
-
-      if (active.id === over.id) return;
 
       const statusesOrder = optimistacallyReorderStatuses({
         workspaceId,
@@ -67,6 +72,130 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
         boardId,
         statusesOrder,
       });
+    } else if (
+      active.data.current?.type === "card" &&
+      over.data.current?.type === "card"
+    ) {
+      const activeCard = active.data.current?.card as App.Models.Card;
+      const overCard = over.data.current?.card as App.Models.Card;
+
+      if (activeCard.id === overCard.id) return;
+
+      queryClient.setQueryData<App.Models.Status[]>(
+        ["workspaces", workspaceId, "boards", boardId, "statuses"],
+        (statuses = []) => {
+          return statuses.map((status) => {
+            if (status.id !== activeCard.statusId) return status;
+
+            const cards = status.cards || [];
+            const activeCardIndex = cards.findIndex(
+              (card) => card.id === activeCard.id
+            );
+            const overCardIndex = cards?.findIndex(
+              (card) => card.id === overCard.id
+            );
+
+            const updatedCards = arrayMove(
+              cards,
+              activeCardIndex,
+              overCardIndex
+            );
+
+            return {
+              ...status,
+              cards: updatedCards,
+            };
+          });
+        }
+      );
+    }
+  };
+
+  const handleDragOver = ({ active, over }: DragOverEvent) => {
+    if (!over || active.data?.current?.type !== "card") return;
+
+    const activeCard = active.data.current?.card as App.Models.Card;
+
+    if (over?.data.current?.type === "card") {
+      // Swapp the two status cards
+      const overCard = over.data.current?.card as App.Models.Card;
+
+      if (
+        activeCard.id === overCard.id ||
+        activeCard.statusId === overCard.statusId
+      )
+        return;
+
+      queryClient.setQueryData<App.Models.Status[]>(
+        ["workspaces", workspaceId, "boards", boardId, "statuses"],
+        (statuses = []) => {
+          // find the index of the active card status
+          const activeCardStatusIndex = statuses.findIndex(
+            (status) => status.id === activeCard.statusId
+          );
+
+          // find the index of the over card status
+          const overCardStatusIndex = statuses.findIndex(
+            (status) => status.id === overCard.statusId
+          );
+
+          // find the over card index
+          const overCardIndex = statuses[overCardStatusIndex].cards?.findIndex(
+            (card) => card.id === overCard.id
+          );
+
+          if (overCardIndex === undefined || overCardIndex === -1)
+            return statuses;
+
+          // remove active card from old status
+          statuses[activeCardStatusIndex].cards = statuses[
+            activeCardStatusIndex
+          ].cards?.filter((card) => card.id !== activeCard.id);
+
+          // add card to over card status
+          activeCard.statusId = overCard.statusId;
+          statuses[overCardStatusIndex].cards?.push(activeCard);
+
+          // move the card to the right position
+          statuses[overCardStatusIndex].cards = arrayMove(
+            statuses[overCardStatusIndex].cards ?? [],
+            -1,
+            overCardIndex
+          );
+
+          return statuses;
+        }
+      );
+    } else if (over?.data.current?.type === "status") {
+      const overStatus = over?.data.current?.status as App.Models.Status;
+
+      if (activeCard.statusId === overStatus.id) return;
+
+      queryClient.setQueryData<App.Models.Status[]>(
+        ["workspaces", workspaceId, "boards", boardId, "statuses"],
+        (statuses = []) => {
+          // find the index of the active card status
+          const activeCardStatusIndex = statuses.findIndex(
+            (status) => status.id === activeCard.statusId
+          );
+
+          // find the index of the over status
+          const overStatusIndex = statuses.findIndex(
+            (status) => status.id === overStatus.id
+          );
+
+          // remove active card from old status
+          statuses[activeCardStatusIndex].cards = statuses[
+            activeCardStatusIndex
+          ].cards?.filter((card) => card.id !== activeCard.id);
+
+          // add card to over card status
+          activeCard.statusId = overStatus.id;
+          statuses[overStatusIndex].cards?.unshift(activeCard);
+
+          return statuses;
+        }
+      );
     }
   };
 
@@ -90,6 +219,8 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
       sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onDragOver={handleDragOver}
+      collisionDetection={pointerWithin}
     >
       <main className="flex-1 overflow-x-auto p-3">
         <div className="flex h-full items-start gap-4">

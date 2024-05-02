@@ -138,9 +138,6 @@ export const useReorderStatuses = () => {
           (s) => s.id == overStatusId
         );
 
-        // Hack to avoid delayed ui update
-        // setActive(null);
-
         return arrayMove(statuses, activeStatusIndex, overStatusIndex);
       }
     );
