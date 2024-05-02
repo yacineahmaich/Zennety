@@ -10,7 +10,11 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  arrayMove,
+  horizontalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
@@ -226,7 +230,10 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
         <div className="flex h-full items-start gap-4">
           {(statuses || []).length > 0 && (
             <>
-              <SortableContext items={items || []}>
+              <SortableContext
+                strategy={horizontalListSortingStrategy}
+                items={items || []}
+              >
                 {statuses?.map((status) => (
                   <StatusColumn key={status.id} status={status} />
                 ))}

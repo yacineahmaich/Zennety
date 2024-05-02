@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   SortableContext,
   useSortable,
@@ -26,7 +27,6 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
       type: "status",
       status,
     },
-    disabled: collapsed,
   });
 
   const style = {
@@ -56,7 +56,10 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex h-full  flex-col space-y-4 transition-[width]"
+      className={cn(
+        "flex h-full flex-col space-y-4 transition-[width]",
+        collapsed ? "w-auto" : "w-72"
+      )}
     >
       <button {...attributes} {...listeners}>
         <StatusHeader
