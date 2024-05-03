@@ -54,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/invitations/{type}/{id}', [InvitationController::class, 'index']);
     Route::post('/invitations/{invitation:token}/accept', [InvitationController::class, 'accept']);
     Route::post('/invitations/{invitation:token}/reject', [InvitationController::class, 'reject']);
+    Route::delete('/invitations/{invitation:token}', [InvitationController::class, 'destroy']);
 
     // Notification
     Route::get('/notifications', [NotificationController::class, 'index']);
