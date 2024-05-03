@@ -75,7 +75,7 @@ const AcceptInvitation: NextPageWithLayout = () => {
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <h2 className="text-sm">
-            {invitation?.invitedBy.name} {t("invited-you-to-join")}
+            {invitation?.invitedBy?.name} {t("invited-you-to-join")}
             <span className="ml-1 rounded-lg bg-accent p-1 font-medium">
               {invitation?.related.name}
             </span>

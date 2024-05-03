@@ -1,7 +1,7 @@
 import { useCan } from "@/hooks/useCan";
 import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
-import { useInvitations } from "@/services";
+import { useDeleteInvitation, useInvitations } from "@/services";
 import { ResourceType } from "@/types/helpers";
 import { format } from "date-fns";
 import {
@@ -118,6 +118,7 @@ const Invitation = ({
   resourceType: ResourceType;
 }) => {
   const { t } = useTranslation("common");
+  const { deleteInvitation, isLoading } = useDeleteInvitation();
   const canUpdate = useCan("update", resourceType, resourceId);
 
   const expirationDate = format(new Date(invitation.expiresAt), "d MMMM yyyy");
@@ -150,16 +151,14 @@ const Invitation = ({
         </div>
         {canUpdate && (
           <ConfirmationDialog
-            desc={t("delete-member-desc")}
-            onConfirm={
-              () => {}
-              //   deleteMember({ id: member.id, resourceType, resourceId })
-            }
+            desc={t("delete-invitation-desc")}
+            onConfirm={() => deleteInvitation({ token: invitation.token })}
             openTrigger={
               <Button size="sm" variant="destructive" className="p-2">
                 <TrashIcon size={16} />
               </Button>
             }
+            disabled={isLoading}
           />
         )}
       </div>

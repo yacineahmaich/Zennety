@@ -41,6 +41,10 @@ const rejectInvitation = async ({ token }: { token: string }) => {
   await api.post(`/invitations/${token}/reject`);
 };
 
+const deleteInvitation = async ({ token }: { token: string }) => {
+  await api.delete(`/invitations/${token}`);
+};
+
 /**
  * ==========================================
  * ========= QUERIES ========================
@@ -125,12 +129,37 @@ export const useRejectInvitation = () => {
 };
 
 export const useSendMembershipInvitations = () => {
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: sendMembershipInvitations,
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["invitations"],
+      });
+    },
   });
 
   return {
     sendMembershipInvitations: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useDeleteInvitation = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteInvitation,
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["invitations"],
+      });
+    },
+  });
+
+  return {
+    deleteInvitation: mutate,
     isLoading: isPending,
   };
 };
