@@ -24,6 +24,7 @@ class Invitation extends Model
         'invited_id',
         'invited_email',
         'user_id',
+        'notification_id',
         'expires_at'
     ];
 
@@ -47,6 +48,10 @@ class Invitation extends Model
     public function inviteable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function notification(): BelongsTo {
+        return $this->belongsTo(Notification::class);
     }
 
     public static function fromRequest(Request $request): Builder

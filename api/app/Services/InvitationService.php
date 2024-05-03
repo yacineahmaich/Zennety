@@ -20,23 +20,25 @@ class InvitationService
             $invitations = [];
 
             foreach ($users as $user) {
-                $invitation = [
-                    'token' => Str::uuid(),
+                $invitation_token = Str::uuid();
+
+                // Create notification for invitation
+                $notification = $user->notifications()->create([
+                    'type' => NotificationType::NORMAL,
+                    'title' => 'Invited to join w/' . $inviteable->name,
+                    'description' => $invitationDTO->message,
+                    'link' => '/app/invitations/' . $invitation_token,
+                ]);
+
+                $invitations[] = [
+                    'token' => $invitation_token,
                     'invited_email' => $user->email,
                     'message' => $invitationDTO->message,
                     'role' => $invitationDTO->role,
                     'user_id' => auth()->id(),
+                    'notification_id' => $notification->id,
                     'expires_at' => now()->addWeek(),
                 ];
-
-                $user->notifications()->create([
-                    'type' => NotificationType::NORMAL,
-                    'title' => 'Invited to join w/' . $inviteable->name,
-                    'description' => $invitationDTO->message,
-                    'link' => '/app/invitations/' . $invitation['token'],
-                ]);
-
-                $invitations[] = $invitation;
             }
 
             $inviteable->invitations()->createMany($invitations);
@@ -63,17 +65,19 @@ class InvitationService
 
             $member->assignRole($invitation->role);
 
-            // Mark invitation as expired so its no longer accessible
-            $invitation->update([
-                "expires_at" => now()
-            ]);
+            $invitation->notification()->delete();
+            $invitation->delete();
+
         });
     }
 
     public function reject(Invitation $invitation)
     {
-        $invitation->update([
-            "expires_at" => now()
-        ]);
+        DB::transaction(function () use ($invitation) {
+            $invitation->delete();
+            $invitation->notification()->delete();
+        });
+
+        return response()->noContent();
     }
 }

@@ -124,11 +124,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
       // Swapp the two status cards
       const overCard = over.data.current?.card as App.Models.Card;
 
-      if (
-        activeCard.id === overCard.id ||
-        activeCard.statusId === overCard.statusId
-      )
-        return;
+      if (activeCard.id === overCard.id) return;
 
       queryClient.setQueryData<App.Models.Status[]>(
         ["workspaces", workspaceId, "boards", boardId, "statuses"],

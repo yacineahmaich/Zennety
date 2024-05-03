@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('expires_at');
             // author
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();
+            $table->foreignId("notification_id")->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
