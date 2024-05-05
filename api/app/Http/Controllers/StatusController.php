@@ -64,9 +64,11 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Status $status)
+    public function destroy(Workspace $workspace, Board $board, Status $status)
     {
-        //
+        $status->delete();
+
+        return response()->noContent();
     }
 
     public function reorder(Request $request, Workspace $workspace, Board $board)
