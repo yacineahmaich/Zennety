@@ -18,7 +18,7 @@ import { Input } from "../../ui/input";
 import { toast } from "../../ui/use-toast";
 
 const formSchema = z.object({
-  name: z.string(),
+  name: z.string().max(100),
   workspaceId: z.number(),
   boardId: z.number(),
 });
@@ -71,6 +71,7 @@ const CreateStatus = ({ board }: { board: App.Models.Board }) => {
                   <Input
                     placeholder={t("status-name-placeholder")}
                     className="uppercase placeholder:normal-case"
+                    autoComplete="off"
                     {...field}
                   />
                 </FormControl>

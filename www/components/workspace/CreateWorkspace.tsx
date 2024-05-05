@@ -31,7 +31,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
-  name: z.string().max(25),
+  name: z.string().max(100),
   description: z.string().max(255).optional(),
   visibility: z.nativeEnum(Visibility),
 });
@@ -90,6 +90,7 @@ const CreateWorkspace = () => {
                       <FormControl>
                         <Input
                           placeholder={t("workspace-name-placeholder")}
+                          autoComplete="off"
                           {...field}
                         />
                       </FormControl>
