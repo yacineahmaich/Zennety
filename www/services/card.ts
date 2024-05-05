@@ -1,4 +1,4 @@
-import { CreateCard } from "@/components/board/card/CreateCard";
+import { CreateCard } from "@/components/card/CreateCard";
 import { api } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

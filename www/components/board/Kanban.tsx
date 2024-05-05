@@ -19,10 +19,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import StatusCard from "../card/StatusCard";
 import Loader from "../shared/Loader";
-import StatusCard from "./card/StatusCard";
-import CreateStatus from "./status/CreateStatus";
-import StatusColumn from "./status/StatusColumn";
+import CreateStatus from "../status/CreateStatus";
+import StatusColumn from "../status/StatusColumn";
 
 const Kanban = ({ board }: { board: App.Models.Board }) => {
   const queryClient = useQueryClient();

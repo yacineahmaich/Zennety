@@ -5,17 +5,17 @@ import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "../../ui/button";
-import { Card } from "../../ui/card";
+import { Button } from "../ui/button";
+import { Card } from "../ui/card";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
-import { toast } from "../../ui/use-toast";
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().max(100),

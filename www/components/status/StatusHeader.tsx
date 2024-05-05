@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { Dispatch, SetStateAction } from "react";
-import { Card } from "../../ui/card";
+import { Card } from "../ui/card";
 
 const StatusHeader = ({
   board,

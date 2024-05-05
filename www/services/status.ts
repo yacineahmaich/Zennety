@@ -1,4 +1,4 @@
-import { CreateStatus } from "@/components/board/status/CreateStatus";
+import { CreateStatus } from "@/components/status/CreateStatus";
 import { api } from "@/lib/api";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
