@@ -27,6 +27,20 @@ const createStatus = async ({
   return response.data.data;
 };
 
+const deleteStatus = async ({
+  workspaceId,
+  boardId,
+  statusId,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+}) => {
+  await api.delete(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}`
+  );
+};
+
 const reorderStatuses = async ({
   workspaceId,
   boardId,
@@ -96,6 +110,30 @@ export const useCreateStatus = () => {
 
   return {
     createStatus: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useDeleteStatus = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteStatus,
+    onSuccess(_, { workspaceId, boardId }) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId.toString(),
+          "boards",
+          boardId.toString(),
+          "statuses",
+        ],
+      });
+    },
+  });
+
+  return {
+    deleteStatus: mutate,
     isLoading: isPending,
   };
 };

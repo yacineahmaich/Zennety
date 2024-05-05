@@ -11,7 +11,13 @@ import StatusCard from "../card/StatusCard";
 import StatusColumnWrapper from "./StatusColumnWrapper";
 import StatusHeader from "./StatusHeader";
 
-const StatusColumn = ({ status }: { status: App.Models.Status }) => {
+const StatusColumn = ({
+  board,
+  status,
+}: {
+  board: App.Models.Board;
+  status: App.Models.Status;
+}) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const {
@@ -63,6 +69,7 @@ const StatusColumn = ({ status }: { status: App.Models.Status }) => {
     >
       <button {...attributes} {...listeners}>
         <StatusHeader
+          board={board}
           status={status}
           collapsed={collapsed}
           setCollapsed={setCollapsed}

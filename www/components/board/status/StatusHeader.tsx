@@ -1,3 +1,4 @@
+import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -5,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useDeleteStatus } from "@/services";
 import {
   ArrowLeftToLineIcon,
   ArrowRightToLineIcon,
@@ -12,22 +14,25 @@ import {
   ChevronsRightLeftIcon,
   Edit3Icon,
   MoreHorizontalIcon,
-  XCircleIcon,
+  Trash2Icon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { Dispatch, SetStateAction } from "react";
 import { Card } from "../../ui/card";
 
 const StatusHeader = ({
+  board,
   status,
   collapsed,
   setCollapsed,
 }: {
+  board: App.Models.Board;
   status: App.Models.Status;
   collapsed: boolean;
   setCollapsed: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { t } = useTranslation("common");
+  const { deleteStatus, isLoading: isDeleting } = useDeleteStatus();
 
   return (
     <Card
@@ -71,10 +76,26 @@ const StatusHeader = ({
               <ArrowLeftToLineIcon size={16} />
               {t("move")}
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2">
-              <XCircleIcon size={16} />
-              {t("delete")}
-            </DropdownMenuItem>
+            <ConfirmationDialog
+              desc={t("delete-invitation-desc")}
+              onConfirm={() =>
+                deleteStatus({
+                  workspaceId: board.workspaceId,
+                  boardId: board.id,
+                  statusId: status.id,
+                })
+              }
+              openTrigger={
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="flex items-center gap-2 hover:!text-destructive"
+                >
+                  <Trash2Icon size={16} />
+                  {t("delete")}
+                </DropdownMenuItem>
+              }
+              disabled={isDeleting}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       )}

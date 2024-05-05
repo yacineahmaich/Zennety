@@ -231,11 +231,13 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
                 items={items || []}
               >
                 {statuses?.map((status) => (
-                  <StatusColumn key={status.id} status={status} />
+                  <StatusColumn key={status.id} board={board} status={status} />
                 ))}
                 {createPortal(
                   <DragOverlay>
-                    {activeStatus && <StatusColumn status={activeStatus} />}
+                    {activeStatus && (
+                      <StatusColumn board={board} status={activeStatus} />
+                    )}
                     {activeCard && <StatusCard card={activeCard} />}
                   </DragOverlay>,
                   document.body
