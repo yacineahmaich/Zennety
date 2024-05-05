@@ -26,7 +26,7 @@ class StoreBoardRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'max:25',
+                'max:100',
                 Rule::unique('boards', 'name')->where('workspace_id', $this->route('workspace'))
             ],
             'description' => [

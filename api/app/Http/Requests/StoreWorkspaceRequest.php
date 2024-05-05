@@ -26,7 +26,7 @@ class StoreWorkspaceRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'max:25'
+                'max:100'
             ],
             'description' => [
                 'max:255'

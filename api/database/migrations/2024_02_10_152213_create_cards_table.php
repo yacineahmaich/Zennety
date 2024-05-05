@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->longText('name');
             $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
