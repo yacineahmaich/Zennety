@@ -26,6 +26,24 @@ const createStatus = async ({
 
   return response.data.data;
 };
+const updateStatus = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  name,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  name: string;
+}): Promise<App.Models.Status> => {
+  const response = await api.put(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}`,
+    { name }
+  );
+
+  return response.data.data;
+};
 
 const deleteStatus = async ({
   workspaceId,
@@ -111,6 +129,31 @@ export const useCreateStatus = () => {
   return {
     createStatus: mutate,
     isLoading: isPending,
+  };
+};
+
+export const useUpdateStatus = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: updateStatus,
+    onSuccess(status, { workspaceId, boardId }) {
+      return queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId.toString(),
+          "boards",
+          boardId.toString(),
+          "statuses",
+        ],
+      });
+    },
+  });
+
+  return {
+    updateStatus: mutate,
+    isLoading: isPending,
+    variables,
   };
 };
 

@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useDeleteStatus } from "@/services";
+import { useDeleteStatus, useUpdateStatus } from "@/services";
 import {
   ArrowLeftToLineIcon,
   ArrowRightToLineIcon,
@@ -17,7 +17,7 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Card } from "../ui/card";
 
 const StatusHeader = ({
@@ -33,6 +33,10 @@ const StatusHeader = ({
 }) => {
   const { t } = useTranslation("common");
   const { deleteStatus, isLoading: isDeleting } = useDeleteStatus();
+  const { updateStatus, isLoading, variables } = useUpdateStatus();
+
+  const [name, setName] = useState(status.name);
+  const [editing, setEditing] = useState(false);
 
   return (
     <Card
@@ -41,9 +45,35 @@ const StatusHeader = ({
         collapsed ? "w-16" : "w-72"
       )}
     >
-      <h4 className="line-clamp-1 break-all text-sm font-semibold uppercase">
-        {status.name}
-      </h4>
+      {editing ? (
+        <input
+          className="m-0 !min-w-0 !max-w-fit bg-transparent p-0 text-sm font-semibold uppercase"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          autoFocus
+          onBlur={() => {
+            setEditing(false);
+            if (name === status.name) return;
+            if (name === "") {
+              setName(status.name);
+              return;
+            }
+            updateStatus({
+              workspaceId: board.workspaceId,
+              boardId: board.id,
+              statusId: status.id,
+              name,
+            });
+          }}
+        />
+      ) : (
+        <h4
+          className="line-clamp-1 break-all text-sm font-semibold uppercase"
+          onClick={() => setEditing(true)}
+        >
+          {isLoading ? variables?.name : status.name}
+        </h4>
+      )}
 
       {collapsed ? (
         <button onClick={() => setCollapsed(false)}>
