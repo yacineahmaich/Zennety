@@ -56,9 +56,13 @@ class StatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStatusRequest $request, Status $status)
+    public function update(UpdateStatusRequest $request,Workspace $workspace, Board $board, Status $status)
     {
-        //
+        $updatedStatus = tap($status)->update([
+            "name" => $request->validated("name")
+        ]);
+
+        return StatusResource::make($updatedStatus);
     }
 
     /**

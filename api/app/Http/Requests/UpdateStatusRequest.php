@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateStatusRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,12 @@ class UpdateStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:statuses,name'],
+            'name' => [
+                'required',
+                Rule::unique('statuses', 'name')
+                    ->where('board_id', request()->route('board'))
+                    ->ignore($this->id)
+            ],
         ];
     }
 }

@@ -43,8 +43,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Status
     Route::get('/workspaces/{workspace}/boards/{board}/statuses', [StatusController::class, 'index']);
     Route::post('/workspaces/{workspace}/boards/{board}/statuses', [StatusController::class, 'store']);
-    Route::delete('/workspaces/{workspace}/boards/{board}/statuses/{status}', [StatusController::class, 'destroy']);
     Route::put('/workspaces/{workspace}/boards/{board}/statuses/reorder', [StatusController::class, 'reorder']);
+    Route::put('/workspaces/{workspace}/boards/{board}/statuses/{status}', [StatusController::class, 'update']);
+    Route::delete('/workspaces/{workspace}/boards/{board}/statuses/{status}', [StatusController::class, 'destroy']);
 
     // Card
     Route::post('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards', [CardController::class, 'store']);
