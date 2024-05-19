@@ -94,7 +94,10 @@ const StatusHeader = ({
               <ChevronsRightLeftIcon size={16} />
               {t("collapse")}
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2">
+            <DropdownMenuItem
+              className="flex items-center gap-2"
+              onClick={() => setEditing(true)}
+            >
               <Edit3Icon size={16} />
               {t("rename")}
             </DropdownMenuItem>
