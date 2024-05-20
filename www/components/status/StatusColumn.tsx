@@ -96,7 +96,12 @@ const StatusColumn = ({
             disabled={collapsed}
           >
             {status?.cards?.map((card) => (
-              <StatusCard key={card.id} card={card} />
+              <StatusCard
+                key={card.id}
+                card={card}
+                status={status}
+                board={board}
+              />
             ))}
           </SortableContext>
         </StatusColumnWrapper>

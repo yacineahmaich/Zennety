@@ -16,6 +16,21 @@ const createCard = async ({
   return response.data.data;
 };
 
+const updateCard = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+  ...card
+}: Partial<CreateCard> & { cardId: number }): Promise<App.Models.Card> => {
+  const response = await api.put(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}`,
+    card
+  );
+
+  return response.data.data;
+};
+
 /**
  * ==========================================
  * ========= MUTATIONS ======================
@@ -42,5 +57,30 @@ export const useCreateCard = () => {
   return {
     createCard: mutate,
     isLoading: isPending,
+  };
+};
+
+export const useUpdateCard = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: updateCard,
+    onSuccess(status, { workspaceId, boardId }) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId?.toString(),
+          "boards",
+          boardId?.toString(),
+          "statuses",
+        ],
+      });
+    },
+  });
+
+  return {
+    updateCard: mutate,
+    isLoading: isPending,
+    variables,
   };
 };

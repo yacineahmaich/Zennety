@@ -7,7 +7,15 @@ import { MessageCircleIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import CardDetails from "./CardDetails";
 
-const StatusCard = ({ card }: { card: App.Models.Card }) => {
+const StatusCard = ({
+  board,
+  status,
+  card,
+}: {
+  board: App.Models.Board;
+  status: App.Models.Status;
+  card: App.Models.Card;
+}) => {
   const {
     setNodeRef,
     attributes,
@@ -65,8 +73,8 @@ const StatusCard = ({ card }: { card: App.Models.Card }) => {
           </footer>
         </Card>
       </DialogTrigger>
-      <DialogContent className="max-h-screen min-h-[90vh] max-w-[900px] overflow-y-auto">
-        <CardDetails card={card} />
+      <DialogContent className="my-5 max-h-screen min-h-[90vh] max-w-[900px] overflow-y-auto">
+        <CardDetails card={card} status={status} board={board} />
       </DialogContent>
     </Dialog>
   );

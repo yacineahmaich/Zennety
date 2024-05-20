@@ -41,6 +41,7 @@ declare namespace App.Models {
   interface Card {
     id: number;
     name: string;
+    description: string;
     statusId: number;
   }
   interface Notification {
