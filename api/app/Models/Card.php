@@ -12,6 +12,7 @@ class Card extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'status_id'
     ];
 

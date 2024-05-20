@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->longText('name');
+            $table->longText('description')->nullable();
             $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

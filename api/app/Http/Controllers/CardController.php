@@ -41,9 +41,11 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCardRequest $request, Card $card)
+    public function update(UpdateCardRequest $request,Workspace $workspace, Board $board, Status $status, Card $card)
     {
-        //
+        $card = tap($card)->update($request->validated());
+
+        return CardResource::make($card);
     }
 
     /**
