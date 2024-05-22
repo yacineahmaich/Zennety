@@ -98,5 +98,7 @@
   "collapse": "Collapse",
   "rename": "Rename",
   "move" : "Move",
-  "delete" : "Delete"
+  "delete" : "Delete",
+  "comments": "Comments",
+  "create-comment": "Create Comment"
 }
