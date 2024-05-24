@@ -100,5 +100,6 @@
   "move" : "Move",
   "delete" : "Delete",
   "comments": "Comments",
-  "create-comment": "Create Comment"
+  "create-comment": "Create Comment",
+  "post": "Post"
 }

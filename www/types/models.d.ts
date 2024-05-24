@@ -43,6 +43,7 @@ declare namespace App.Models {
     name: string;
     description: string;
     statusId: number;
+    comments: Activity<{ type: string; comment: string }>[];
   }
   interface Notification {
     id: number;
@@ -64,5 +65,12 @@ declare namespace App.Models {
     invitedBy?: User;
     invited?: User;
     expiresAt: string;
+  }
+  interface Activity<T extends Record<string, unknown>> {
+    id: number;
+    description: string;
+    created_at: string;
+    properties: T;
+    causer: User;
   }
 }

@@ -7,6 +7,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { useUser } from "@/services";
+import { useCreateCardComment } from "@/services/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageSquareTextIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -14,8 +16,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
+  workspaceId: z.number(),
+  boardId: z.number(),
+  statusId: z.number(),
+  cardId: z.number(),
   comment: z.string(),
 });
+
+type CreateCardComment = z.infer<typeof formSchema>;
 
 const CardComments = ({
   board,
@@ -27,12 +35,26 @@ const CardComments = ({
   card: App.Models.Card;
 }) => {
   const { t } = useTranslation("common");
+  const { createCardComment, isLoading, variables } = useCreateCardComment();
+  const { user } = useUser();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<CreateCardComment>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      workspaceId: board.workspaceId,
+      boardId: board.id,
+      statusId: status.id,
+      cardId: card.id,
+    },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (values: CreateCardComment) => {
+    createCardComment(values, {
+      onSuccess() {
+        form.setValue("comment", "");
+      },
+    });
+  };
 
   return (
     <div className="space-y-4 py-5">
@@ -66,8 +88,8 @@ const CardComments = ({
                     )}
                   />
                   <div className="space-x-2">
-                    <Button variant="secondary" size="sm">
-                      {t("create-comment")}
+                    <Button size="sm" disabled={isLoading}>
+                      {t("post")}
                     </Button>
                   </div>
                 </form>
@@ -75,18 +97,29 @@ const CardComments = ({
             </div>
           </div>
         </div>
-        {Array.from({ length: 4 }, (_, i) => (
-          <div
-            key={i}
-            className="space-y-2 rounded-lg px-5 py-3 text-sm transition-colors hover:bg-accent"
-          >
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-gray-300"></div>
-              <h6>yacine</h6>
+        <div>
+          {isLoading && (
+            <div className="space-y-2 rounded-lg px-5 py-3 text-sm opacity-75 transition-colors hover:bg-accent">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-gray-300"></div>
+                <h6>{user.name}</h6>
+              </div>
+              <p>{variables?.comment}</p>
             </div>
-            <p>Cant go a day without coding. ❤️🟡</p>
-          </div>
-        ))}
+          )}
+          {card.comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="space-y-2 rounded-lg px-5 py-3 text-sm transition-colors hover:bg-accent"
+            >
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-gray-300"></div>
+                <h6>{comment.causer?.name}</h6>
+              </div>
+              <p>{comment.properties?.comment}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

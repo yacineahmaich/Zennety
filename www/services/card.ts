@@ -31,6 +31,29 @@ const updateCard = async ({
   return response.data.data;
 };
 
+const createCardComment = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+  comment,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+  comment: string;
+}): Promise<App.Models.Card> => {
+  const response = await api.post(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}/comments`,
+    {
+      comment,
+    }
+  );
+
+  return response.data.data;
+};
+
 /**
  * ==========================================
  * ========= MUTATIONS ======================
@@ -80,6 +103,31 @@ export const useUpdateCard = () => {
 
   return {
     updateCard: mutate,
+    isLoading: isPending,
+    variables,
+  };
+};
+
+export const useCreateCardComment = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: createCardComment,
+    onSuccess(status, { workspaceId, boardId }) {
+      return queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId?.toString(),
+          "boards",
+          boardId?.toString(),
+          "statuses",
+        ],
+      });
+    },
+  });
+
+  return {
+    createCardComment: mutate,
     isLoading: isPending,
     variables,
   };
