@@ -50,6 +50,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Card
     Route::post('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards', [CardController::class, 'store']);
     Route::put('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards/{card}', [CardController::class, 'update']);
+    Route::post('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards/{card}/comments', [CardController::class, 'comment']);
 
     // Invitation
     Route::get('/invitations/{invitation:token}', [InvitationController::class, 'show']);

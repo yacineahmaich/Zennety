@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCardCommentRequest;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Http\Resources\CardResource;
@@ -28,6 +29,22 @@ class CardController extends Controller
         $card = $status->cards()->create($request->validated());
 
         return CardResource::make($card);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function comment(StoreCardCommentRequest $request,Workspace $workspace, Board $board, Status $status, Card $card)
+    {
+        $user = auth()->user();
+        
+        activity()
+        ->performedOn($card)
+        ->causedBy($user)
+        ->withProperties(['type' => 'comment', 'comment' => $request->validated("comment")])
+        ->log("$user->name added a comment.");
+
+        return response()->noContent();
     }
 
     /**
