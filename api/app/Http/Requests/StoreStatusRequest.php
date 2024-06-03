@@ -26,7 +26,7 @@ class StoreStatusRequest extends FormRequest
             'name' => [
                 'required',
                 'max:100',
-                Rule::unique('statuses', 'name')->where('board_id', request()->route('board'))
+                Rule::unique('statuses', 'name')->where('board_id', request()->route('board')?->id)
             ],
         ];
     }
