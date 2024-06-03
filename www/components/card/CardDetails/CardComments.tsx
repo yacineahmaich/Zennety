@@ -7,11 +7,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { useUser } from "@/services";
 import { useCreateCardComment } from "@/services/card";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { formatDistance } from "date-fns";
 import { MessageSquareTextIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -37,6 +40,7 @@ const CardComments = ({
   const { t } = useTranslation("common");
   const { createCardComment, isLoading, variables } = useCreateCardComment();
   const { user } = useUser();
+  const [activated, setActivated] = useState(false);
 
   const form = useForm<CreateCardComment>({
     resolver: zodResolver(formSchema),
@@ -49,11 +53,8 @@ const CardComments = ({
   });
 
   const onSubmit = (values: CreateCardComment) => {
-    createCardComment(values, {
-      onSuccess() {
-        form.setValue("comment", "");
-      },
-    });
+    createCardComment(values);
+    form.setValue("comment", "");
   };
 
   return (
@@ -65,7 +66,6 @@ const CardComments = ({
       <div className="space-y-2">
         <div className="space-y-2 px-5 py-3 text-sm">
           <div className="flex gap-2">
-            <div className="h-8 w-8 flex-shrink-0 rounded-full bg-gray-300"></div>
             <div className="w-full space-y-2">
               <Form {...form}>
                 <form
@@ -81,23 +81,32 @@ const CardComments = ({
                           <Textarea
                             {...field}
                             placeholder={t("create-comment")}
+                            rows={1}
+                            className={cn(
+                              activated
+                                ? "cursor-auto"
+                                : "cursor-pointer bg-accent focus-visible:ring-0"
+                            )}
+                            onClick={() => setActivated(true)}
                           ></Textarea>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <div className="space-x-2">
-                    <Button size="sm" disabled={isLoading}>
-                      {t("post")}
-                    </Button>
-                  </div>
+                  {activated && (
+                    <div className="space-x-2">
+                      <Button size="sm" disabled={isLoading}>
+                        {t("post")}
+                      </Button>
+                    </div>
+                  )}
                 </form>
               </Form>
             </div>
           </div>
         </div>
-        <div>
+        <div className="space-y-2">
           {isLoading && (
             <div className="space-y-2 rounded-lg px-5 py-3 text-sm opacity-75 transition-colors hover:bg-accent">
               <div className="flex items-center gap-2">
@@ -110,11 +119,19 @@ const CardComments = ({
           {card.comments.map((comment) => (
             <div
               key={comment.id}
-              className="space-y-2 rounded-lg px-5 py-3 text-sm transition-colors hover:bg-accent"
+              className="space-y-2 rounded-lg border px-5 py-3 text-sm transition-colors hover:bg-accent"
             >
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-gray-300"></div>
-                <h6>{comment.causer?.name}</h6>
+              <div className="flex items-center gap-2 border-b pb-2">
+                <img
+                  className="h-10 w-10 rounded-full object-cover"
+                  src="https://avatars.githubusercontent.com/u/9768489?s=64&v=4"
+                />
+                <div>
+                  <h6>{comment.causer?.name}</h6>
+                  <small className="text-accent-foreground">
+                    {formatDistance(new Date(comment?.created_at), new Date())}
+                  </small>
+                </div>
               </div>
               <p>{comment.properties?.comment}</p>
             </div>
