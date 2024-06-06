@@ -10,6 +10,8 @@ use App\Models\Board;
 use App\Models\Card;
 use App\Models\Status;
 use App\Models\Workspace;
+use Illuminate\Http\Request;
+use Spatie\Activitylog\Models\Activity;
 
 class CardController extends Controller
 {
@@ -24,7 +26,7 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCardRequest $request,Workspace $workspace, Board $board, Status $status)
+    public function store(StoreCardRequest $request, Workspace $workspace, Board $board, Status $status)
     {
         $card = $status->cards()->create($request->validated());
 
@@ -34,17 +36,28 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function comment(StoreCardCommentRequest $request,Workspace $workspace, Board $board, Status $status, Card $card)
+    public function comment(StoreCardCommentRequest $request, Workspace $workspace, Board $board, Status $status, Card $card)
     {
         $user = auth()->user();
-        
+
         activity()
-        ->performedOn($card)
-        ->causedBy($user)
-        ->withProperties(['type' => 'comment', 'comment' => $request->validated("comment")])
-        ->log("$user->name added a comment.");
+            ->performedOn($card)
+            ->causedBy($user)
+            ->withProperties(['type' => 'comment', 'comment' => $request->validated("comment")])
+            ->log("$user->name added a comment.");
 
         return response()->noContent();
+    }
+
+    public function comments(Request $request, Workspace $workspace, Board $board, Status $status, Card $card)
+    {
+        $comments = Activity::where('properties->type', 'comment')
+            ->whereMorphedTo('subject', $card)
+            ->with("causer")
+            ->latest()
+            ->get();
+
+        return response()->json($comments);
     }
 
     /**
@@ -58,7 +71,7 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCardRequest $request,Workspace $workspace, Board $board, Status $status, Card $card)
+    public function update(UpdateCardRequest $request, Workspace $workspace, Board $board, Status $status, Card $card)
     {
         $card = tap($card)->update($request->validated());
 
