@@ -47,6 +47,7 @@ const CreateCard = ({
       workspaceId: +workspaceId,
       boardId: +boardId,
       statusId: status.id,
+      description: "",
     },
     resolver: zodResolver(formSchema),
   });

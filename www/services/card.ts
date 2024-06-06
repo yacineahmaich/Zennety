@@ -1,6 +1,6 @@
 import { CreateCard } from "@/components/card/CreateCard";
 import { api } from "@/lib/api";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const createCard = async ({
   workspaceId,
@@ -52,6 +52,70 @@ const createCardComment = async ({
   );
 
   return response.data.data;
+};
+
+const getCardComments = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+}): Promise<App.Models.Activity<{ type: string; comment: string }>[]> => {
+  const response = await api.get(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}/comments`
+  );
+
+  console.log(response.data);
+
+  return response.data;
+};
+
+/**
+ * ==========================================
+ * ========= QUERIES ========================
+ * ==========================================
+ */
+
+export const useCardComments = ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+}) => {
+  const { data: comments, isLoading } = useQuery({
+    queryKey: [
+      "workspaces",
+      workspaceId,
+      "boards",
+      boardId,
+      "statuses",
+      statusId,
+      "cards",
+      cardId,
+      "comments",
+    ],
+    queryFn: () =>
+      getCardComments({
+        workspaceId,
+        boardId,
+        statusId,
+        cardId,
+      }),
+  });
+
+  return {
+    comments,
+    isLoading,
+  };
 };
 
 /**
@@ -113,14 +177,18 @@ export const useCreateCardComment = () => {
 
   const { mutate, isPending, variables } = useMutation({
     mutationFn: createCardComment,
-    onSuccess(status, { workspaceId, boardId }) {
+    onSuccess(status, { workspaceId, boardId, statusId, cardId }) {
       return queryClient.invalidateQueries({
         queryKey: [
           "workspaces",
-          workspaceId?.toString(),
+          workspaceId,
           "boards",
-          boardId?.toString(),
+          boardId,
           "statuses",
+          statusId,
+          "cards",
+          cardId,
+          "comments",
         ],
       });
     },

@@ -9,7 +9,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/services";
-import { useCreateCardComment } from "@/services/card";
+import { useCardComments, useCreateCardComment } from "@/services/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatDistance } from "date-fns";
 import { MessageSquareTextIcon } from "lucide-react";
@@ -38,9 +38,20 @@ const CardComments = ({
   card: App.Models.Card;
 }) => {
   const { t } = useTranslation("common");
-  const { createCardComment, isLoading, variables } = useCreateCardComment();
+  const {
+    createCardComment,
+    isLoading: isCreatingComment,
+    variables,
+  } = useCreateCardComment();
   const { user } = useUser();
   const [activated, setActivated] = useState(false);
+
+  const { comments, isLoading } = useCardComments({
+    workspaceId: board.workspaceId,
+    boardId: board.id,
+    statusId: status.id,
+    cardId: card.id,
+  });
 
   const form = useForm<CreateCardComment>({
     resolver: zodResolver(formSchema),
@@ -64,50 +75,48 @@ const CardComments = ({
         <h2 className="break-all">{t("comments")}</h2>
       </div>
       <div className="space-y-2">
-        <div className="space-y-2 px-5 py-3 text-sm">
-          <div className="flex gap-2">
-            <div className="w-full space-y-2">
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-2"
-                >
-                  <FormField
-                    control={form.control}
-                    name="comment"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Textarea
-                            {...field}
-                            placeholder={t("create-comment")}
-                            rows={1}
-                            className={cn(
-                              activated
-                                ? "cursor-auto"
-                                : "cursor-pointer bg-accent focus-visible:ring-0"
-                            )}
-                            onClick={() => setActivated(true)}
-                          ></Textarea>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {activated && (
-                    <div className="space-x-2">
-                      <Button size="sm" disabled={isLoading}>
-                        {t("post")}
-                      </Button>
-                    </div>
+        <div className="space-y-2 py-3 text-sm">
+          <div className="w-full space-y-2">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-2"
+              >
+                <FormField
+                  control={form.control}
+                  name="comment"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder={t("create-comment")}
+                          rows={1}
+                          className={cn(
+                            activated
+                              ? "cursor-auto"
+                              : "cursor-pointer bg-accent focus-visible:ring-0"
+                          )}
+                          onClick={() => setActivated(true)}
+                        ></Textarea>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </form>
-              </Form>
-            </div>
+                />
+                {activated && (
+                  <div className="space-x-2">
+                    <Button size="sm" disabled={isLoading}>
+                      {t("post")}
+                    </Button>
+                  </div>
+                )}
+              </form>
+            </Form>
           </div>
         </div>
         <div className="space-y-2">
-          {isLoading && (
+          {isCreatingComment && (
             <div className="space-y-2 rounded-lg px-5 py-3 text-sm opacity-75 transition-colors hover:bg-accent">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-full bg-gray-300"></div>
@@ -116,12 +125,12 @@ const CardComments = ({
               <p>{variables?.comment}</p>
             </div>
           )}
-          {card.comments.map((comment) => (
+          {comments?.map((comment) => (
             <div
               key={comment.id}
-              className="space-y-2 rounded-lg border px-5 py-3 text-sm transition-colors hover:bg-accent"
+              className="space-y-2 rounded-lg py-3 text-sm transition-colors hover:bg-accent"
             >
-              <div className="flex items-center gap-2 border-b pb-2">
+              <div className="flex items-center gap-2 pb-2">
                 <img
                   className="h-10 w-10 rounded-full object-cover"
                   src="https://avatars.githubusercontent.com/u/9768489?s=64&v=4"
@@ -129,7 +138,9 @@ const CardComments = ({
                 <div>
                   <h6>{comment.causer?.name}</h6>
                   <small className="text-accent-foreground">
-                    {formatDistance(new Date(comment?.created_at), new Date())}
+                    {formatDistance(new Date(comment?.created_at), new Date(), {
+                      addSuffix: true,
+                    })}
                   </small>
                 </div>
               </div>
