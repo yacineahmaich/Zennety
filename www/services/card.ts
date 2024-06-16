@@ -2,6 +2,24 @@ import { CreateCard } from "@/components/card/CreateCard";
 import { api } from "@/lib/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+const getCard = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+}): Promise<App.Models.Card> => {
+  const response = await api.get(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}`
+  );
+
+  return response.data.data;
+};
+
 const createCard = async ({
   workspaceId,
   boardId,
@@ -79,6 +97,42 @@ const getCardComments = async ({
  * ========= QUERIES ========================
  * ==========================================
  */
+export const useCard = ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+}) => {
+  const { data: card, isLoading } = useQuery({
+    queryKey: [
+      "workspaces",
+      workspaceId,
+      "boards",
+      boardId,
+      "statuses",
+      statusId,
+      "cards",
+      cardId,
+    ],
+    queryFn: () =>
+      getCard({
+        workspaceId,
+        boardId,
+        statusId,
+        cardId,
+      }),
+  });
+
+  return {
+    card,
+    isLoading,
+  };
+};
 
 export const useCardComments = ({
   workspaceId,
@@ -152,7 +206,7 @@ export const useUpdateCard = () => {
 
   const { mutate, isPending, variables } = useMutation({
     mutationFn: updateCard,
-    onSuccess(status, { workspaceId, boardId }) {
+    onSuccess(status, { workspaceId, boardId, statusId, cardId }) {
       queryClient.invalidateQueries({
         queryKey: [
           "workspaces",
@@ -160,6 +214,9 @@ export const useUpdateCard = () => {
           "boards",
           boardId?.toString(),
           "statuses",
+          statusId?.toString(),
+          "cards",
+          cardId?.toString(),
         ],
       });
     },

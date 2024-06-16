@@ -43,7 +43,7 @@ declare namespace App.Models {
     name: string;
     description: string;
     statusId: number;
-    comments: Activity<{ type: string; comment: string }>[];
+    activities: Activity[];
   }
   interface Notification {
     id: number;

@@ -128,7 +128,7 @@ const CardComments = ({
           {comments?.map((comment) => (
             <div
               key={comment.id}
-              className="space-y-2 rounded-lg py-3 text-sm transition-colors hover:bg-accent"
+              className="space-y-2 rounded-lg bg-accent px-5 py-3 text-sm transition-colors"
             >
               <div className="flex items-center gap-2 pb-2">
                 <img

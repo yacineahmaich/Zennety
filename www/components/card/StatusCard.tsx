@@ -77,7 +77,7 @@ const StatusCard = ({
         className="my-5 max-h-screen min-h-[90vh] max-w-[900px] overflow-y-auto"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
-        <CardDetails card={card} status={status} board={board} />
+        <CardDetails cardId={card.id} status={status} board={board} />
       </DialogContent>
     </Dialog>
   );
