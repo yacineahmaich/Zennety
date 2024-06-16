@@ -20,12 +20,10 @@ class CardResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'statusId' => $this->status_id,
-            'comments' => Activity::where('causer_type', 'App\Models\User')
-                ->where('causer_id', auth()->id())
-                ->where('properties->type', 'comment')
+            'activities' => Activity::whereMorphedTo('subject', $this)
                 ->with("causer")
                 ->latest()
-                ->get(),
+                ->get()
         ];
     }
 }

@@ -28,7 +28,14 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request, Workspace $workspace, Board $board, Status $status)
     {
+        $user = auth()->user();
+
         $card = $status->cards()->create($request->validated());
+
+        activity()
+            ->performedOn($card)
+            ->causedBy($user)
+            ->log("$user->name created - $card->name.");
 
         return CardResource::make($card);
     }
@@ -63,9 +70,9 @@ class CardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Card $card)
+    public function show(Workspace $workspace, Board $board, Status $status, Card $card)
     {
-        //
+        return CardResource::make($card);
     }
 
     /**
@@ -73,7 +80,16 @@ class CardController extends Controller
      */
     public function update(UpdateCardRequest $request, Workspace $workspace, Board $board, Status $status, Card $card)
     {
-        $card = tap($card)->update($request->validated());
+        $user = auth()->user();
+
+        $updatedCard = tap($card)->update($request->validated());
+
+        if ($card->name !== $updatedCard->name) {
+            activity()
+                ->performedOn($card)
+                ->causedBy($user)
+                ->log("$user->name renamed - $card->name to $updatedCard->name.");
+        }
 
         return CardResource::make($card);
     }
