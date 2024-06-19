@@ -55,6 +55,7 @@ class InvitationController extends Controller
 
 
         $this->service->send(
+            $type,
             $invitable,
             InvitationDTO::fromRequest($request)
         );

@@ -98,8 +98,8 @@ export const useAcceptInvitation = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: acceptInvitation,
     onSuccess() {
-      queryClient.removeQueries({
-        queryKey: ["invitations"],
+      queryClient.invalidateQueries({
+        queryKey: ["notifications"],
       });
     },
   });
@@ -116,8 +116,8 @@ export const useRejectInvitation = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: rejectInvitation,
     onSuccess() {
-      queryClient.removeQueries({
-        queryKey: ["invitations"],
+      queryClient.invalidateQueries({
+        queryKey: ["notifications"],
       });
     },
   });

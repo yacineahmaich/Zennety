@@ -12,20 +12,20 @@ use Illuminate\Support\Facades\DB;
 class InvitationService
 {
 
-    public function send($inviteable, InvitationDTO $invitationDTO)
+    public function send($type, $inviteable, InvitationDTO $invitationDTO)
     {
-        DB::transaction(function () use ($inviteable, $invitationDTO) {
+        DB::transaction(function () use ($type, $inviteable, $invitationDTO) {
             $users = User::whereIn('id', $invitationDTO->users)->get();
 
             $invitations = [];
 
             foreach ($users as $user) {
                 $invitation_token = Str::uuid();
-
+                
                 // Create notification for invitation
                 $notification = $user->notifications()->create([
                     'type' => NotificationType::NORMAL,
-                    'title' => 'Invited to join w/' . $inviteable->name,
+                    'title' => 'Invited to join ' . $type === "workspace" ? "w/" : "b/" . $inviteable->name,
                     'description' => $invitationDTO->message,
                     'link' => '/app/invitations/' . $invitation_token,
                 ]);
@@ -65,8 +65,8 @@ class InvitationService
 
             $member->assignRole($invitation->role);
 
-            $invitation->notification()->delete();
             $invitation->delete();
+            $invitation->notification()->delete();
 
         });
     }
