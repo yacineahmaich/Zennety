@@ -1,8 +1,18 @@
 import { MessageSquareWarningIcon } from "lucide-react";
+import { TFunction, withTranslation } from "next-i18next";
 import React from "react";
 import { Button } from "../ui/button";
 
-class ErrorBoundary extends React.Component {
+type Props = {
+  t: TFunction;
+  children: React.ReactNode;
+};
+
+type State = {
+  hasError: boolean;
+};
+
+class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
 
@@ -13,22 +23,22 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    // @ts-ignore
     if (this.state.hasError) {
       return (
         <div className="mx-auto flex w-fit flex-col items-center gap-2 pt-10">
           <MessageSquareWarningIcon />
-          <h2 className="text-xl font-semibold">Oops Something went wrong!</h2>
+          <h2 className="text-xl font-semibold">
+            {this.props.t("something-went-wrong")}
+          </h2>
           <Button size="sm" onClick={() => window.location.reload()}>
-            Reload
+            {this.props.t("reload")}
           </Button>
         </div>
       );
     }
 
-    // @ts-ignore
     return this.props.children;
   }
 }
 
-export default ErrorBoundary;
+export default withTranslation("common")(ErrorBoundary);

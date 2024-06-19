@@ -101,5 +101,6 @@
   "delete" : "Delete",
   "comments": "Comments",
   "create-comment": "Create Comment",
-  "post": "Post"
+  "post": "Post",
+  "reload": "Reload"
 }

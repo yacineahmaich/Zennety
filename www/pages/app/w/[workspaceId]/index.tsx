@@ -1,7 +1,6 @@
 import BoardCard from "@/components/board/BoardCard";
 import CreateBoard from "@/components/board/CreateBoard";
 import { AppLayout } from "@/components/layouts";
-import Error from "@/components/shared/Error";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
@@ -19,11 +18,7 @@ const Workspace: NextPageWithLayout = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace, isLoading, isError, error } = useWorkspace(workspaceId);
-
-  if (isError) {
-    return <Error message={error?.message} />;
-  }
+  const { workspace, isLoading } = useWorkspace(workspaceId);
 
   if (isLoading) {
     return <WorkspaceLoading />;

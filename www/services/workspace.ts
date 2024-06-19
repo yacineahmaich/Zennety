@@ -28,11 +28,12 @@ const getMyWorkspaces = async (): Promise<App.Models.Workspace[]> => {
  * ==========================================
  */
 
-export const useWorkspace = (id: string) => {
+export const useWorkspace = (id: string, sidebar = false) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["workspaces", id],
     queryFn: () => getWorkspaceById(id),
-    enabled: !!id
+    enabled: !!id,
+    throwOnError: !sidebar,
   });
 
   return {

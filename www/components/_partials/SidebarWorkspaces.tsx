@@ -8,7 +8,7 @@ const SidebarWorkspaces = () => {
   const router = useRouter();
   const { workspaces, isLoading } = useMyWorkspaces();
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace } = useWorkspace(workspaceId);
+  const { workspace } = useWorkspace(workspaceId, true);
 
   if (!isMatch(router.pathname, ["/app", "/app/w/**"])) {
     return <div className="flex-1" />;
