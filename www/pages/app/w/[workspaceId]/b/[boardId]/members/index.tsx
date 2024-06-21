@@ -3,6 +3,7 @@ import { AppLayout } from "@/components/layouts";
 import Invitations from "@/components/shared/Invitations";
 import Loader from "@/components/shared/Loader";
 import Members from "@/components/shared/Members";
+import { useCan } from "@/hooks/useCan";
 import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
@@ -15,16 +16,21 @@ const BoardMembers: NextPageWithLayout = () => {
     workspaceId: string;
     boardId: string;
   };
+
+  const canViewInvitations = useCan("update", "board", +boardId);
+
   const { board, isLoading } = useBoard(workspaceId, boardId);
 
-  if(isLoading) return <Loader />
+  if (isLoading) return <Loader />;
   if (!board) return;
 
   return (
     <div>
       <BoardBanner board={board} />
       <Members resourceType="board" resourceId={board.id} />
-      <Invitations resourceType="board" resourceId={board.id} />
+      {canViewInvitations && (
+        <Invitations resourceType="board" resourceId={board.id} />
+      )}
     </div>
   );
 };

@@ -24,11 +24,7 @@ const WorkspaceAccordion = ({
   workspace?: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
-  const canViewMembersAndSeetings = useCan(
-    "update",
-    "workspace",
-    workspace?.id
-  );
+  const canViewSettings = useCan("update", "workspace", workspace?.id);
 
   if (!workspace) return null;
 
@@ -69,19 +65,17 @@ const WorkspaceAccordion = ({
           <KanbanSquareIcon size={16} className="mr-2" />
           {t("boards")}
         </Link>
-        {canViewMembersAndSeetings && (
-          <Link
-            href={route("workspace/members", workspace.id)}
-            className={cn(
-              buttonVariants({ size: "sm", variant: "ghost" }),
-              "w-full justify-start"
-            )}
-          >
-            <UserIcon size={16} className="mr-2" />
-            {t("members")}
-          </Link>
-        )}
-        {canViewMembersAndSeetings && (
+        <Link
+          href={route("workspace/members", workspace.id)}
+          className={cn(
+            buttonVariants({ size: "sm", variant: "ghost" }),
+            "w-full justify-start"
+          )}
+        >
+          <UserIcon size={16} className="mr-2" />
+          {t("members")}
+        </Link>
+        {canViewSettings && (
           <Link
             href=""
             className={cn(

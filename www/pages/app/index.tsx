@@ -77,7 +77,7 @@ const WorkspaceSection = ({
   workspace: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
-  const canViewMembersAndSeetings = useCan("update", "workspace", workspace.id);
+  const canViewSettings = useCan("update", "workspace", workspace.id);
 
   return (
     <div key={workspace.id} className="p-4">
@@ -95,16 +95,14 @@ const WorkspaceSection = ({
             <KanbanSquareIcon size={16} className="mr-2" />
             {t("boards")} ({workspace.boards?.length})
           </Link>
-          {canViewMembersAndSeetings && (
-            <Link
-              href={route("workspace/members", workspace.id)}
-              className={buttonVariants({ size: "sm", variant: "ghost" })}
-            >
-              <UserIcon size={16} className="mr-2" />
-              {t("members")} ({workspace.members?.length})
-            </Link>
-          )}
-          {canViewMembersAndSeetings && (
+          <Link
+            href={route("workspace/members", workspace.id)}
+            className={buttonVariants({ size: "sm", variant: "ghost" })}
+          >
+            <UserIcon size={16} className="mr-2" />
+            {t("members")} ({workspace.members?.length})
+          </Link>
+          {canViewSettings && (
             <Link
               href=""
               className={buttonVariants({ size: "sm", variant: "ghost" })}

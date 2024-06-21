@@ -3,6 +3,7 @@ import Invitations from "@/components/shared/Invitations";
 import Loader from "@/components/shared/Loader";
 import Members from "@/components/shared/Members";
 import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
+import { useCan } from "@/hooks/useCan";
 import { useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
@@ -14,14 +15,18 @@ const WorkspaceMembers: NextPageWithLayout = () => {
   const { workspaceId } = router.query as { workspaceId: string };
   const { workspace, isLoading } = useWorkspace(workspaceId);
 
-  if(isLoading) return <Loader />
+  const canViewInvitations = useCan("update", "workspace", +workspaceId);
+
+  if (isLoading) return <Loader />;
   if (!workspace) return;
 
   return (
     <div>
       <WorkspaceBanner workspace={workspace} />
       <Members resourceType="workspace" resourceId={workspace.id} />
-      <Invitations resourceType="workspace" resourceId={workspace.id} />
+      {canViewInvitations && (
+        <Invitations resourceType="workspace" resourceId={workspace.id} />
+      )}
     </div>
   );
 };
