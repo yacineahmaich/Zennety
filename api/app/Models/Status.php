@@ -23,6 +23,6 @@ class Status extends Model
     }
 
     public function cards(): HasMany {
-        return $this->hasMany(Card::class);
+        return $this->hasMany(Card::class)->orderBy('pos');
     }
 }

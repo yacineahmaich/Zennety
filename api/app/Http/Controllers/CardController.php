@@ -10,11 +10,17 @@ use App\Models\Board;
 use App\Models\Card;
 use App\Models\Status;
 use App\Models\Workspace;
+use App\Services\CardService;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 
 class CardController extends Controller
 {
+    public function __construct(
+        public CardService $service
+    ) {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +36,12 @@ class CardController extends Controller
     {
         $user = auth()->user();
 
-        $card = $status->cards()->create($request->validated());
+        $pos = $status->cards()->max('pos');
+
+        $card = $status->cards()->create([
+            'name' => $request->validated('name'),
+            'pos' => $pos
+        ]);
 
         activity()
             ->performedOn($card)
@@ -100,5 +111,22 @@ class CardController extends Controller
     public function destroy(Card $card)
     {
         //
+    }
+
+    public function reorder(Request $request, Workspace $workspace, Board $board)
+    {
+        // get moved card
+        $card = Card::findOrFail($request->get('card_id'));
+
+        // get target status
+        $status = Status::with('cards')->findOrFail($request->get('status_id'));
+
+        $this->service->reorder(
+            $card,
+            $status,
+            $request->get('cards_order', [])
+        );
+
+        return response()->noContent();
     }
 }
