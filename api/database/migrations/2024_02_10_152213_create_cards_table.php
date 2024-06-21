@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->longText('name');
             $table->longText('description')->nullable();
+            $table->integer('pos')->default(0);
             $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
