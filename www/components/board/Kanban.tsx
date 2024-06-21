@@ -1,4 +1,5 @@
 import { useReorderStatuses, useStatuses } from "@/services";
+import { useReorderCards } from "@/services/card";
 import {
   DndContext,
   DragEndEvent,
@@ -38,6 +39,8 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
   const { statuses, isLoading } = useStatuses(workspaceId, boardId);
   const { reorderStatuses, optimistacallyReorderStatuses } =
     useReorderStatuses();
+
+  const { reorderCards, optimistacallyReorderCards } = useReorderCards();
 
   const handleDragStart = (e: DragStartEvent) => {
     if (e.active.data.current?.type === "status") {
@@ -126,7 +129,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
 
       if (activeCard.id === overCard.id) return;
 
-      queryClient.setQueryData<App.Models.Status[]>(
+      const reorderedStatuses = queryClient.setQueryData<App.Models.Status[]>(
         ["workspaces", workspaceId, "boards", boardId, "statuses"],
         (statuses = []) => {
           // find the index of the active card status
@@ -166,36 +169,67 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
           return statuses;
         }
       );
+
+      console.log(reorderedStatuses);
+
+      const cardsOrder = reorderedStatuses
+        ?.find((status) => status.id === overCard.statusId)
+        ?.cards?.reduce((acc, card, idx) => ({ ...acc, [card.id]: idx }), {});
+
+      console.log(cardsOrder);
+
+      reorderCards({
+        workspaceId,
+        boardId,
+        statusId: overCard.statusId.toString(),
+        cardId: activeCard.id.toString(),
+        cardsOrder: cardsOrder || {},
+      });
     } else if (over?.data.current?.type === "status") {
       const overStatus = over?.data.current?.status as App.Models.Status;
 
       if (activeCard.statusId === overStatus.id) return;
 
-      queryClient.setQueryData<App.Models.Status[]>(
-        ["workspaces", workspaceId, "boards", boardId, "statuses"],
-        (statuses = []) => {
-          // find the index of the active card status
-          const activeCardStatusIndex = statuses.findIndex(
-            (status) => status.id === activeCard.statusId
-          );
+      const cardsOrder = optimistacallyReorderCards({
+        workspaceId,
+        boardId,
+        activeCard,
+        overStatusId: overStatus.id,
+      });
 
-          // find the index of the over status
-          const overStatusIndex = statuses.findIndex(
-            (status) => status.id === overStatus.id
-          );
+      reorderCards({
+        workspaceId,
+        boardId,
+        statusId: overStatus.id.toString(),
+        cardId: activeCard.id.toString(),
+        cardsOrder: cardsOrder || {},
+      });
 
-          // remove active card from old status
-          statuses[activeCardStatusIndex].cards = statuses[
-            activeCardStatusIndex
-          ].cards?.filter((card) => card.id !== activeCard.id);
+      // queryClient.setQueryData<App.Models.Status[]>(
+      //   ["workspaces", workspaceId, "boards", boardId, "statuses"],
+      //   (statuses = []) => {
+      //     // find the index of the active card status
+      //     const activeCardStatusIndex = statuses.findIndex(
+      //       (status) => status.id === activeCard.statusId
+      //     );
 
-          // add card to over card status
-          activeCard.statusId = overStatus.id;
-          statuses[overStatusIndex].cards?.unshift(activeCard);
+      //     // find the index of the over status
+      //     const overStatusIndex = statuses.findIndex(
+      //       (status) => status.id === overStatus.id
+      //     );
 
-          return statuses;
-        }
-      );
+      //     // remove active card from old status
+      //     statuses[activeCardStatusIndex].cards = statuses[
+      //       activeCardStatusIndex
+      //     ].cards?.filter((card) => card.id !== activeCard.id);
+
+      //     // add card to over card status
+      //     activeCard.statusId = overStatus.id;
+      //     statuses[overStatusIndex].cards?.unshift(activeCard);
+
+      //     return statuses;
+      //   }
+      // );
     }
   };
 

@@ -5,10 +5,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const getStatuses = async (
   workspaceId: string,
-  boardId: string
+  boardId: string,
+  signal: AbortSignal
 ): Promise<App.Models.Status[]> => {
   const response = await api.get(
-    `/workspaces/${workspaceId}/boards/${boardId}/statuses`
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses`,
+    {
+      signal,
+    }
   );
 
   return response.data.data;
@@ -92,7 +96,7 @@ export const useStatuses = (workspaceId: string, boardId: string) => {
     error,
   } = useQuery({
     queryKey: ["workspaces", workspaceId, "boards", boardId, "statuses"],
-    queryFn: () => getStatuses(workspaceId, boardId),
+    queryFn: ({ signal }) => getStatuses(workspaceId, boardId, signal),
   });
 
   return {

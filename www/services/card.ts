@@ -92,6 +92,31 @@ const getCardComments = async ({
   return response.data;
 };
 
+const reorderCards = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+  cardsOrder,
+}: {
+  workspaceId: string;
+  boardId: string;
+  statusId: string;
+  cardId: string;
+  cardsOrder: Record<number, number>;
+}): Promise<App.Models.Status> => {
+  const response = await api.put(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/cards/reorder`,
+    {
+      card_id: cardId,
+      status_id: statusId,
+      cards_order: cardsOrder,
+    }
+  );
+
+  return response.data.data;
+};
+
 /**
  * ==========================================
  * ========= QUERIES ========================
@@ -255,5 +280,80 @@ export const useCreateCardComment = () => {
     createCardComment: mutate,
     isLoading: isPending,
     variables,
+  };
+};
+
+export const useReorderCards = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: reorderCards,
+    onMutate({ workspaceId, boardId }) {
+      queryClient.cancelQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId.toString(),
+          "boards",
+          boardId.toString(),
+        ],
+      });
+    },
+    onSuccess(status, { workspaceId, boardId }) {
+      // queryClient.invalidateQueries({
+      //   queryKey: [
+      //     "workspaces",
+      //     workspaceId.toString(),
+      //     "boards",
+      //     boardId.toString(),
+      //   ],
+      // });
+    },
+  });
+
+  const optimistacallyReorderCards = ({
+    workspaceId,
+    boardId,
+    overStatusId,
+    activeCard,
+  }: {
+    workspaceId: string;
+    boardId: string;
+    overStatusId: number;
+    activeCard: App.Models.Card;
+  }) => {
+    const reorderedStatuses = queryClient.setQueryData<App.Models.Status[]>(
+      ["workspaces", workspaceId, "boards", boardId, "statuses"],
+      (statuses = []) => {
+        // find the index of the active card status
+        const activeCardStatusIndex = statuses.findIndex(
+          (status) => status.id === activeCard.statusId
+        );
+
+        // find the index of the over status
+        const overStatusIndex = statuses.findIndex(
+          (status) => status.id === overStatusId
+        );
+
+        // remove active card from old status
+        statuses[activeCardStatusIndex].cards = statuses[
+          activeCardStatusIndex
+        ].cards?.filter((card) => card.id !== activeCard.id);
+
+        // add card to over card status
+        activeCard.statusId = overStatusId;
+        statuses[overStatusIndex].cards?.unshift(activeCard);
+
+        return statuses;
+      }
+    );
+    return reorderedStatuses
+      ?.find((status) => status.id === overStatusId)
+      ?.cards?.reduce((acc, card, idx) => ({ ...acc, [card.id]: idx }), {});
+  };
+
+  return {
+    reorderCards: mutate,
+    optimistacallyReorderCards,
+    isLoading: isPending,
   };
 };

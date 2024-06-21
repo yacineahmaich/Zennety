@@ -14,7 +14,7 @@ const WorkspaceBanner = ({
   const canInvite = useCan("update", "workspace", workspace?.id);
 
   return (
-    <div className="w-full border-b p-8">
+    <div className="-ml-4 w-full border-b p-4">
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
