@@ -40,7 +40,7 @@ class CardController extends Controller
 
         $card = $status->cards()->create([
             'name' => $request->validated('name'),
-            'pos' => $pos
+            'pos' => is_numeric($pos) ? $pos + 1 : 0
         ]);
 
         activity()

@@ -11,11 +11,11 @@ class MembershipController extends Controller
 {
     public function index(Request $request)
     {
-        $membership = Membership::fromRequest($request)
-            ->where('user_id', auth()->id())
-            ->first();
+        // $membership = Membership::fromRequest($request)
+        //     ->where('user_id', auth()->id())
+        //     ->first();
             
-        $this->authorize('viewAny', [Membership::class, $membership->membershipable]);
+        // $this->authorize('viewAny', [Membership::class, $membership->membershipable]);
 
         $role = $request->get('role');
         $search = $request->get('search');
