@@ -256,7 +256,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
       onDragOver={handleDragOver}
       collisionDetection={pointerWithin}
     >
-      <main className="flex-1 overflow-x-auto p-3">
+      <main className="flex-1 overflow-x-auto py-4">
         <div className="flex h-full items-start gap-4">
           {(statuses || []).length > 0 && (
             <>

@@ -9,8 +9,8 @@ const SideNav = () => {
   const { t } = useTranslation("common");
 
   return (
-    <nav className="overflow-x-hidden">
-      <ul className="space-y-2 border-b border-accent pb-2">
+    <nav className="-mx-4 overflow-x-hidden">
+      <ul className="space-y-2 border-b border-accent px-2 pb-2">
         <li>
           <Link
             href={route("app")}

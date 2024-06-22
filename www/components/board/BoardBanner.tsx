@@ -23,7 +23,7 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
   const members = board?.members || [];
 
   return (
-    <header className="-ml-4 flex items-center justify-between border-b p-4">
+    <header className="-mx-4 flex items-center justify-between border-b p-4">
       <div className="flex items-center gap-2">
         <h2 className="text-xl font-semibold">{board.name}</h2>
         <button className="border-r pr-2">

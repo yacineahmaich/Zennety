@@ -27,13 +27,13 @@ const Workspace: NextPageWithLayout = () => {
   return (
     <div>
       <WorkspaceBanner workspace={workspace} />
-      <div className="p-8">
+      <div className="py-4">
         <span className="mb-4 flex items-center">
           <KanbanSquareIcon size={20} className="mr-2" />
           <h2 className="text-lg font-semibold">{t("boards")}</h2>
         </span>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-4">
           {workspace?.boards?.map((board) => (
             <BoardCard key={board.id} board={board} />
           ))}
