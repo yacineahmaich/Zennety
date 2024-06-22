@@ -25,7 +25,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { ConfirmationDialog } from "./ConfirmationDialog";
-import Loader from "./Loader";
 
 const Invitations = ({
   resourceType,
@@ -39,14 +38,12 @@ const Invitations = ({
   const [_search, setSearch] = useState("");
   const search = useDebounce(_search, 0.3);
 
-  const { invitations, pagination, isLoading } = useInvitations(
-    resourceType,
-    resourceId,
-    {
-      search,
-      role: role === "all" ? "" : role,
-    }
-  );
+  const { invitations, pagination } = useInvitations(resourceType, resourceId, {
+    search,
+    role: role === "all" ? "" : role,
+  });
+
+  if ((invitations?.length ?? 0) === 0) return null;
 
   return (
     <div className="p-8">
@@ -57,52 +54,46 @@ const Invitations = ({
         </h2>
       </span>
       <div>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <>
-            <div className="flex justify-between gap-4">
-              <Input
-                placeholder={t("search-by-username-or-email")}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-              />
-              <Select onValueChange={setRole}>
-                <SelectTrigger className="w-[250px]">
-                  <div className="flex items-center gap-2">
-                    <ListFilterIcon size={16} />
-                    <SelectValue placeholder="Filter by Role" />
+        <div className="flex justify-between gap-4">
+          <Input
+            placeholder={t("search-by-username-or-email")}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
+          <Select onValueChange={setRole}>
+            <SelectTrigger className="w-[250px]">
+              <div className="flex items-center gap-2">
+                <ListFilterIcon size={16} />
+                <SelectValue placeholder="Filter by Role" />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">
+                <div className="flex items-center gap-1 text-sm">
+                  <span>{t("all")}</span>
+                </div>
+              </SelectItem>
+              {roles.map((role) => (
+                <SelectItem key={role} value={role}>
+                  <div className="flex items-center gap-1 text-sm">
+                    <span>{t(role.toLowerCase())}</span>
                   </div>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">
-                    <div className="flex items-center gap-1 text-sm">
-                      <span>{t("all")}</span>
-                    </div>
-                  </SelectItem>
-                  {roles.map((role) => (
-                    <SelectItem key={role} value={role}>
-                      <div className="flex items-center gap-1 text-sm">
-                        <span>{t(role.toLowerCase())}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
-              {invitations?.map((invitation) => (
-                <Invitation
-                  key={invitation.id}
-                  invitation={invitation}
-                  resourceId={resourceId}
-                  resourceType={resourceType}
-                />
+                </SelectItem>
               ))}
-            </div>
-          </>
-        )}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
+          {invitations?.map((invitation) => (
+            <Invitation
+              key={invitation.id}
+              invitation={invitation}
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
