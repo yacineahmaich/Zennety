@@ -75,6 +75,7 @@ const WorkspacesDropdown = () => {
                     href={route("workspace", workspace.id)}
                     className="cursor-pointer"
                   >
+                    <KanbanSquareIcon size={16} className="mr-2" />
                     <span>{workspace.name}</span>
                   </Link>
                 </DropdownMenuItem>
