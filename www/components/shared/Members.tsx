@@ -49,7 +49,7 @@ const Members = ({
   );
 
   return (
-    <div className="p-8">
+    <div>
       <span className="mb-4 flex items-center">
         <UserIcon size={20} className="mr-2" />
         <h2 className="text-lg font-semibold">

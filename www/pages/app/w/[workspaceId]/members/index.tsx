@@ -23,10 +23,12 @@ const WorkspaceMembers: NextPageWithLayout = () => {
   return (
     <div>
       <WorkspaceBanner workspace={workspace} />
-      <Members resourceType="workspace" resourceId={workspace.id} />
-      {canViewInvitations && (
-        <Invitations resourceType="workspace" resourceId={workspace.id} />
-      )}
+      <div className="space-y-8 py-4">
+        <Members resourceType="workspace" resourceId={workspace.id} />
+        {canViewInvitations && (
+          <Invitations resourceType="workspace" resourceId={workspace.id} />
+        )}
+      </div>
     </div>
   );
 };

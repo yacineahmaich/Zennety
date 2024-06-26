@@ -46,7 +46,7 @@ const Invitations = ({
   if ((invitations?.length ?? 0) === 0) return null;
 
   return (
-    <div className="p-8">
+    <div>
       <span className="mb-4 flex items-center">
         <MailOpenIcon size={20} className="mr-2" />
         <h2 className="text-lg font-semibold">

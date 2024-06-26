@@ -27,10 +27,12 @@ const BoardMembers: NextPageWithLayout = () => {
   return (
     <div>
       <BoardBanner board={board} />
-      <Members resourceType="board" resourceId={board.id} />
-      {canViewInvitations && (
-        <Invitations resourceType="board" resourceId={board.id} />
-      )}
+      <div className="space-y-8 py-4">
+        <Members resourceType="board" resourceId={board.id} />
+        {canViewInvitations && (
+          <Invitations resourceType="board" resourceId={board.id} />
+        )}
+      </div>
     </div>
   );
 };
