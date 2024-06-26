@@ -24,7 +24,7 @@ class UpdateStatusRequest extends FormRequest
     {
         return [
             'name' => [
-                'required',
+                'sometimes',
                 Rule::unique('statuses', 'name')
                     ->where('board_id', request()->route('board'))
                     ->ignore($this->id)

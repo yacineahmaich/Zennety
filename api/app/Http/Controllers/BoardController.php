@@ -55,9 +55,11 @@ class BoardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBoardRequest $request, Board $board)
+    public function update(UpdateBoardRequest $request,Workspace $workspace, Board $board)
     {
-        //
+        $updatedBoard = tap($board)->update($request->validated());
+
+        return BoardResource::make($updatedBoard);
     }
 
     /**

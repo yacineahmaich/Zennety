@@ -58,9 +58,7 @@ class StatusController extends Controller
      */
     public function update(UpdateStatusRequest $request,Workspace $workspace, Board $board, Status $status)
     {
-        $updatedStatus = tap($status)->update([
-            "name" => $request->validated("name")
-        ]);
+        $updatedStatus = tap($status)->update($request->validated());
 
         return StatusResource::make($updatedStatus);
     }

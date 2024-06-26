@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Visibility;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBoardRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateBoardRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,15 @@ class UpdateBoardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => [
+                "sometimes",
+                "max:100",
+                Rule::unique('boards', 'name')
+                    ->ignore($this->id)
+                    ->where('workspace_id', $this->route('workspace')),
+            ],
+            "description" => ["sometimes", "max:255"],
+            "visibility" => ["sometimes", 'in:' . implode(',', Visibility::values())],
         ];
     }
 }
