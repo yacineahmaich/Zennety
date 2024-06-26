@@ -1,6 +1,7 @@
 import { useCan } from "@/hooks/useCan";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { useUpdateBoard } from "@/services";
 import {
   CalendarSearchIcon,
   ChevronsRightIcon,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
+import { useState } from "react";
 import InviteMembers from "../shared/InviteMembers";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button, buttonVariants } from "../ui/button";
@@ -19,13 +21,48 @@ import { Button, buttonVariants } from "../ui/button";
 const BoardBanner = ({ board }: { board: App.Models.Board }) => {
   const { t } = useTranslation("common");
   const canInvite = useCan("update", "board", board.id);
+  const { updateBoard, isLoading, variables } = useUpdateBoard();
+
+  const [name, setName] = useState(board.name);
+  const [editing, setEditing] = useState(false);
 
   const members = board?.members || [];
 
   return (
     <header className="-mx-4 flex items-center justify-between border-b p-4">
       <div className="flex items-center gap-2">
-        <h2 className="text-xl font-semibold">{board.name}</h2>
+        {editing ? (
+          <input
+            className="m-0 text-xl font-semibold"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoFocus
+            onBlur={() => {
+              setEditing(false);
+              if (name === board?.name) return;
+              if (name === "") {
+                setName(board?.name);
+                return;
+              }
+              updateBoard({
+                workspaceId: board.workspaceId,
+                boardId: board.id,
+                data: {
+                  name,
+                },
+              });
+            }}
+          />
+        ) : (
+          <h2
+            className="text-xl font-semibold"
+            onClick={() => setEditing(true)}
+          >
+            {/* @ts-ignore */}
+            {isLoading ? variables?.data?.name : board?.name}
+          </h2>
+        )}
+
         <button className="border-r pr-2">
           <StarIcon size={16} />
         </button>

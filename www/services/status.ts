@@ -34,16 +34,16 @@ const updateStatus = async ({
   workspaceId,
   boardId,
   statusId,
-  name,
+  data,
 }: {
   workspaceId: number;
   boardId: number;
   statusId: number;
-  name: string;
+  data: Record<string, unknown>;
 }): Promise<App.Models.Status> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}`,
-    { name }
+    data
   );
 
   return response.data.data;

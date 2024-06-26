@@ -1,6 +1,6 @@
 import { CreateBoard } from "@/components/board/CreateBoard";
 import { api } from "@/lib/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const createBoard = async ({
   workspaceId,
@@ -17,6 +17,23 @@ const getBoardById = async (
 ): Promise<App.Models.Board> => {
   const response = await api.get(
     `/workspaces/${workspaceId}/boards/${boardId}`
+  );
+
+  return response.data.data;
+};
+
+const updateBoard = async ({
+  workspaceId,
+  boardId,
+  data,
+}: {
+  workspaceId: number;
+  boardId: number;
+  data: Record<string, unknown>;
+}): Promise<App.Models.Board> => {
+  const response = await api.put(
+    `/workspaces/${workspaceId}/boards/${boardId}`,
+    data
   );
 
   return response.data.data;
@@ -57,5 +74,29 @@ export const useBoard = (workspaceId: string, boardId: string) => {
     isLoading,
     isError,
     error,
+  };
+};
+
+export const useUpdateBoard = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: updateBoard,
+    onSuccess(board, { workspaceId, boardId }) {
+      return queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId.toString(),
+          "boards",
+          boardId.toString(),
+        ],
+      });
+    },
+  });
+
+  return {
+    updateBoard: mutate,
+    isLoading: isPending,
+    variables,
   };
 };

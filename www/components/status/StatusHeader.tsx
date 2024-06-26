@@ -62,7 +62,9 @@ const StatusHeader = ({
               workspaceId: board.workspaceId,
               boardId: board.id,
               statusId: status.id,
-              name,
+              data: {
+                name,
+              },
             });
           }}
         />
@@ -71,7 +73,8 @@ const StatusHeader = ({
           className="line-clamp-1 break-all text-sm font-semibold uppercase"
           onClick={() => setEditing(true)}
         >
-          {isLoading ? variables?.name : status.name}
+          {/* @ts-ignore */}
+          {isLoading ? variables?.data?.name : status.name}
         </h4>
       )}
 
