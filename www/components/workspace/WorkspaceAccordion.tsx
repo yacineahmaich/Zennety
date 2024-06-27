@@ -77,7 +77,7 @@ const WorkspaceAccordion = ({
         </Link>
         {canViewSettings && (
           <Link
-            href=""
+            href={route("workspace/settings", workspace.id)}
             className={cn(
               buttonVariants({ size: "sm", variant: "ghost" }),
               "w-full justify-start"

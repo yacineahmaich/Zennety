@@ -104,7 +104,7 @@ const WorkspaceSection = ({
           </Link>
           {canViewSettings && (
             <Link
-              href=""
+              href={route("workspace/settings", workspace.id)}
               className={buttonVariants({ size: "sm", variant: "ghost" })}
             >
               <SettingsIcon size={16} className="mr-2" /> {t("settings")}
