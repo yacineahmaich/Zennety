@@ -58,12 +58,9 @@ class WorkspaceController extends Controller
     {
         $this->authorize('update', $workspace);
 
-        $workspace = $this->service->update(
-            WorkspaceDTO::fromRequest($request),
-            $workspace
-        );
+        $updatedWorkspace = tap($workspace)->update($request->validated());
 
-        return WorkspaceResource::make($workspace);
+        return WorkspaceResource::make($updatedWorkspace);
     }
 
     /**

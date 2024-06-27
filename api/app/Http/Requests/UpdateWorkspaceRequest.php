@@ -25,17 +25,18 @@ class UpdateWorkspaceRequest extends FormRequest
     {
         return [
             'name' => [
-                'required',
+                'sometimes',
                 'min:4',
                 'max:25',
                 Rule::unique('workspaces', 'name')
                     ->ignore($this->id)
             ],
             'description' => [
-                'required',
+                'sometimes',
                 'max:255'
             ],
             'visibility' => [
+                'sometimes',
                 'in:' . implode(',', Visibility::values())
             ],
         ];
