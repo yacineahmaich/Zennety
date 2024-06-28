@@ -1,7 +1,8 @@
 import { useCan } from "@/hooks/useCan";
+import { useHasRole } from "@/hooks/useHasRole";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { Visibility } from "@/types/enums";
+import { Role, Visibility } from "@/types/enums";
 import {
   Globe2Icon,
   KanbanSquareIcon,
@@ -24,7 +25,11 @@ const WorkspaceAccordion = ({
   workspace?: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
-  const canViewSettings = useCan("update", "workspace", workspace?.id);
+
+  const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);
+  const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
+
+  const canViewSettings = isOwner || canUpdateWorkspace;
 
   if (!workspace) return null;
 

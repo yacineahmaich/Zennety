@@ -1,6 +1,7 @@
 import { CreateWorkspace } from "@/components/workspace/CreateWorkspace";
 import { api } from "@/lib/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { route } from "@/lib/routes";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const createWorkspace = async (
   workspace: CreateWorkspace
@@ -18,6 +19,39 @@ const getWorkspaceById = async (id: string): Promise<App.Models.Workspace> => {
 
 const getMyWorkspaces = async (): Promise<App.Models.Workspace[]> => {
   const response = await api.get(`/workspaces`);
+
+  return response.data.data;
+};
+
+const updateWorkspace = async ({
+  workspaceId,
+  data,
+}: {
+  workspaceId: number;
+  data: Record<string, unknown>;
+}): Promise<App.Models.Board> => {
+  const response = await api.put(`/workspaces/${workspaceId}`, data);
+
+  return response.data.data;
+};
+
+const deleteWorkspace = async ({ workspaceId }: { workspaceId: number }) => {
+  await api.delete(`/workspaces/${workspaceId}`);
+};
+
+const transferWorkspaceOwnership = async ({
+  workspaceId,
+  newOwner,
+}: {
+  workspaceId: number;
+  newOwner: string;
+}): Promise<App.Models.Board> => {
+  const response = await api.put(
+    `/workspaces/${workspaceId}/transfer-ownership`,
+    {
+      newOwner,
+    }
+  );
 
   return response.data.data;
 };
@@ -78,5 +112,57 @@ export const useCreateWorkspace = () => {
   return {
     createWorkspace: mutate,
     isLoading: isPending,
+  };
+};
+
+export const useUpdateWorkspace = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: updateWorkspace,
+    onSuccess(workspace, { workspaceId }) {
+      return queryClient.invalidateQueries({
+        queryKey: ["workspaces", workspaceId.toString()],
+      });
+    },
+  });
+
+  return {
+    updateWorkspace: mutate,
+    isLoading: isPending,
+    variables,
+  };
+};
+
+export const useDeleteWorkspace = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteWorkspace,
+    onSuccess() {
+      window.location.href = route("app");
+    },
+  });
+
+  return {
+    deleteWorkspace: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useTransferWorkspaceOwnership = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: transferWorkspaceOwnership,
+    onSuccess(workspace, { workspaceId }) {
+      return queryClient.invalidateQueries({
+        queryKey: ["workspaces", workspaceId.toString()],
+      });
+    },
+  });
+
+  return {
+    transferWorkspaceOwnership: mutate,
+    isLoading: isPending,
+    variables,
   };
 };

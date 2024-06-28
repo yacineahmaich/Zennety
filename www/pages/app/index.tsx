@@ -4,9 +4,11 @@ import Loader from "@/components/shared/Loader";
 import { buttonVariants } from "@/components/ui/button";
 import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
 import { useCan } from "@/hooks/useCan";
+import { useHasRole } from "@/hooks/useHasRole";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
+import { Role } from "@/types/enums";
 import { NextPageWithLayout } from "@/types/next";
 import {
   FolderKanbanIcon,
@@ -77,7 +79,11 @@ const WorkspaceSection = ({
   workspace: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
-  const canViewSettings = useCan("update", "workspace", workspace.id);
+
+  const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);
+  const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
+
+  const canViewSettings = isOwner || canUpdateWorkspace;
 
   return (
     <div key={workspace.id} className="p-4">
