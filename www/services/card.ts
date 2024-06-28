@@ -39,11 +39,17 @@ const updateCard = async ({
   boardId,
   statusId,
   cardId,
-  ...card
-}: Partial<CreateCard> & { cardId: number }): Promise<App.Models.Card> => {
+  data,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+  data: Record<string, unknown>;
+}): Promise<App.Models.Card> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}`,
-    card
+    data
   );
 
   return response.data.data;
@@ -232,16 +238,16 @@ export const useUpdateCard = () => {
   const { mutate, isPending, variables } = useMutation({
     mutationFn: updateCard,
     onSuccess(status, { workspaceId, boardId, statusId, cardId }) {
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [
           "workspaces",
-          workspaceId?.toString(),
+          workspaceId,
           "boards",
-          boardId?.toString(),
+          boardId,
           "statuses",
-          statusId?.toString(),
+          statusId,
           "cards",
-          cardId?.toString(),
+          cardId,
         ],
       });
     },

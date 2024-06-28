@@ -14,22 +14,22 @@ const CardTitle = ({
   const [name, setName] = useState(card.name);
   const [editingName, setEditingName] = useState(false);
 
-  const { updateCard, isLoading } = useUpdateCard();
+  const { updateCard, variables, isLoading } = useUpdateCard();
 
   return (
     <div className="flex gap-2 py-5">
       <FolderOpenIcon size={20} className="flex-shrink-0" />
       {editingName ? (
         <input
-          className="m-0 !min-w-0 !max-w-fit bg-transparent p-0 text-sm font-semibold uppercase"
+          className="-translate-y-2 bg-transparent text-2xl font-medium"
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoFocus
           onBlur={() => {
             setEditingName(false);
-            if (name === status.name) return;
+            if (name === card.name) return;
             if (name === "") {
-              setName(status.name);
+              setName(card.name);
               return;
             }
             updateCard({
@@ -37,7 +37,9 @@ const CardTitle = ({
               boardId: board.id,
               statusId: status.id,
               cardId: card.id,
-              name,
+              data: {
+                name,
+              },
             });
           }}
         />
@@ -46,7 +48,8 @@ const CardTitle = ({
           className="-translate-y-2 break-all text-2xl font-medium"
           onClick={() => setEditingName(true)}
         >
-          {card.name}
+          {/* @ts-ignore */}
+          {isLoading ? variables?.data?.name : card?.name}
         </h2>
       )}
     </div>
