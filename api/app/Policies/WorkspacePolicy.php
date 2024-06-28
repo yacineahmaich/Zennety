@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Role;
 use App\Enums\Visibility;
 use App\Models\User;
 use App\Models\Workspace;
@@ -82,5 +83,16 @@ class WorkspacePolicy
     public function forceDelete(User $user, Workspace $workspace): bool
     {
         //
+    }
+
+    /**
+     * Determine whether the user can tranfer workspace ownership
+     */
+    public function transferOwnership(User $user, Workspace $workspace): bool
+    {
+        if (!$member = $user->memberFor($workspace)) {
+            return false;
+        }
+        return $member->hasRole(Role::OWNER);        
     }
 }

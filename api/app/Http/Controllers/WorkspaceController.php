@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\DTO\WorkspaceDTO;
+use App\Enums\Role;
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
 use App\Models\Workspace;
 use App\Services\InvitationService;
 use App\Services\WorkspaceService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class WorkspaceController extends Controller
 {
@@ -71,6 +74,31 @@ class WorkspaceController extends Controller
         $this->authorize('delete', $workspace);
 
         $workspace->delete();
+
+        return response()->noContent();
+    }
+
+    /**
+     * Transfer workspace ownership to an admin
+     */
+    public function tranferOwnership(Request $request, Workspace $workspace): Response
+    {
+        $this->authorize('transferOwnership', $workspace);
+
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = auth()->user();
+
+        DB::transaction(function () use ($request, $workspace, $user) {
+            $newOwnerMembership = $workspace->members()->where('user_id', $request->newOwner)->firstOrFail();
+
+            $currentOwnerMembership = $user->memberFor($workspace);
+
+            $currentOwnerMembership->syncRoles([Role::ADMIN]);
+
+            $newOwnerMembership->syncRoles([Role::OWNER]);
+        });
 
         return response()->noContent();
     }
