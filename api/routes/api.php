@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post("/workspaces/{workspace}/boards", [BoardController::class, 'store']);
     Route::get("/workspaces/{workspace}/boards/{board}", [BoardController::class, 'show']);
     Route::put('/workspaces/{workspace}/boards/{board}', [BoardController::class, 'update']);
+    Route::delete('/workspaces/{workspace}/boards/{board}', [BoardController::class, 'destroy']);
 
 
     // Status

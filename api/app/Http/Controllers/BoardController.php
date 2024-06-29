@@ -55,7 +55,7 @@ class BoardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBoardRequest $request,Workspace $workspace, Board $board)
+    public function update(UpdateBoardRequest $request, Workspace $workspace, Board $board)
     {
         $updatedBoard = tap($board)->update($request->validated());
 
@@ -65,8 +65,12 @@ class BoardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Board $board)
+    public function destroy(Workspace $workspace, Board $board)
     {
-        //
+        $this->authorize("delete", $board);
+
+        $board->delete();
+
+        return response()->noContent();
     }
 }
