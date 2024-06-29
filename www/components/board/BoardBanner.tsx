@@ -111,7 +111,7 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
             <KanbanIcon size={16} className="mr-1" /> {t("kanban")}
           </Link>
           <Link
-            href="#"
+            href={route("board/settings", board.workspaceId, board.id)}
             className={cn(
               buttonVariants({ size: "sm", variant: "link" }),
               "text-xs"

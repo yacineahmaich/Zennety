@@ -104,6 +104,13 @@
   "post": "Post",
   "reload": "Reload",
   "workspace-visibility": "Workspace Visibility",
+  "board-visibility": "Board Visibility",
   "workspace-ownership": "Workspace Ownership",
-  "danger-zone": "Danger Zone"
+  "danger-zone": "Danger Zone",
+  "private-workspace-description" : "This Workspace is private. It's not indexed or visible to those outside the Workspace.",
+  "public-workspace-description" : "This Workspace is public. Its visibile publicly to everyone.",
+  "private-board-description" : "This board is private. It's not indexed or visible to those outside the Workspace.",
+  "public-board-description" : "This board is public. Its visibile to all workspace members.",
+  "workspace-settings": "Workspace Settings",
+  "board-settings": "Board Settings"
 }

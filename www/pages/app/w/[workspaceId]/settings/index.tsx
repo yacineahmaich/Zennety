@@ -56,7 +56,7 @@ const WorkspaceSettings: NextPageWithLayout = () => {
       <div className="py-4">
         <span className="mb-4 flex items-center">
           <SettingsIcon size={20} className="mr-2" />
-          <h2 className="text-lg font-semibold">{t("Workspace Settings")}</h2>
+          <h2 className="text-lg font-semibold">{t("workspace-settings")}</h2>
         </span>
         <div className="space-y-8 pl-4">
           {canUpdateWorkspace && <WorkspaceVisibility workspace={workspace} />}
@@ -90,8 +90,10 @@ const WorkspaceVisibility = ({
       <h4 className="text-sm font-semibold">{t("workspace-visibility")}</h4>
       <div className="mb-4 mt-1 flex items-center gap-2">
         <p className="text-xs">
-          This Workspace is private. It&apos;s not indexed or visible to those
-          outside the Workspace.
+          {workspace.visibility === Visibility.PRIVATE &&
+            t("private-workspace-description")}
+          {workspace.visibility === Visibility.PUBLIC &&
+            t("public-workspace-description")}
         </p>
       </div>
       <Select
