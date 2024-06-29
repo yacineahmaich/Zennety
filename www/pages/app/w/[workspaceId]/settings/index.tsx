@@ -1,7 +1,18 @@
 import { AppLayout } from "@/components/layouts";
 import Loader from "@/components/shared/Loader";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -136,7 +147,7 @@ const WorkspaceOwnershipTransfer = ({
   };
 
   return (
-    <div className="-ml-4 rounded-lg border border-orange-400 bg-orange-100 p-4">
+    <div className="-ml-4 rounded-lg border border-orange-400 bg-orange-100 p-4 dark:bg-transparent">
       <h4 className="text-sm font-semibold">{t("workspace-ownership")}</h4>
       <div className="mb-4 mt-1 flex items-center gap-2">
         <p className="text-xs">
@@ -187,8 +198,23 @@ const DeleteWorkspace = ({
   workspace: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
+  const [confirmText, setConfirmationText] = useState("");
+  const [open, setOpen] = useState(false);
 
   const { deleteWorkspace, isLoading } = useDeleteWorkspace();
+
+  const confirmationWord = `w/${workspace.name}`;
+
+  const handleConfirmDelete = () => {
+    deleteWorkspace(
+      { workspaceId: workspace.id },
+      {
+        onSuccess() {
+          setOpen(false);
+        },
+      }
+    );
+  };
 
   return (
     <div className="-ml-4 flex flex-col rounded-lg border border-destructive bg-destructive/10 p-4">
@@ -198,13 +224,55 @@ const DeleteWorkspace = ({
           This is permanent and can&apos;t be undone.
         </p>
       </div>
-      <Button
-        variant="destructive-outline"
-        className="w-fit"
-        onClick={() => deleteWorkspace({ workspaceId: workspace.id })}
-      >
-        {isLoading ? "Deleting..." : "Delete workspace"}
-      </Button>
+
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger asChild>
+          <Button variant="destructive-outline" className="w-fit">
+            Delete workspace
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("confirmation")}</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4">
+              <div>
+                This will permanently delete the
+                <span className="mx-2 rounded bg-accent px-1 font-semibold">
+                  {confirmationWord}
+                </span>
+                and its boards, statuses, cards, activities and remove all
+                collaborator associations.
+              </div>
+              <div className="space-y-2">
+                <div>
+                  To confirm, type
+                  <span className="mx-2 rounded bg-accent px-1 font-semibold">
+                    {confirmationWord}
+                  </span>
+                  in the box below
+                </div>
+                <Input
+                  value={confirmText}
+                  onChange={(e) => setConfirmationText(e.target.value)}
+                />
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex items-center">
+            <AlertDialogCancel className="w-1/3" disabled={isLoading}>
+              {t("cancel")}
+            </AlertDialogCancel>
+            <Button
+              variant="destructive"
+              className="w-2/3"
+              disabled={confirmText !== confirmationWord || isLoading}
+              onClick={handleConfirmDelete}
+            >
+              {isLoading ? "Deleting..." : "Delete workspace"}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
