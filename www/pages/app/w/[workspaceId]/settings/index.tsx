@@ -222,15 +222,13 @@ const DeleteWorkspace = ({
     <div className="-ml-4 flex flex-col rounded-lg border border-destructive bg-destructive/10 p-4">
       <div>
         <h4 className="text-sm font-semibold">{t("danger-zone")}</h4>
-        <p className="mb-4 mt-1 text-xs">
-          This is permanent and can&apos;t be undone.
-        </p>
+        <p className="mb-4 mt-1 text-xs">{t("permanent-action")}</p>
       </div>
 
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger asChild>
           <Button variant="destructive-outline" className="w-fit">
-            Delete workspace
+            {t("delete-workspace")}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
@@ -270,7 +268,7 @@ const DeleteWorkspace = ({
               disabled={confirmText !== confirmationWord || isLoading}
               onClick={handleConfirmDelete}
             >
-              {isLoading ? "Deleting..." : "Delete workspace"}
+              {isLoading ? t("delelting") : t("delete-workspace")}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

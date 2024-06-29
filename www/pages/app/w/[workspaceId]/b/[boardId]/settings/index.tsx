@@ -2,13 +2,25 @@ import BoardBanner from "@/components/board/BoardBanner";
 import { AppLayout } from "@/components/layouts";
 import Loader from "@/components/shared/Loader";
 import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useBoard, useUpdateBoard } from "@/services";
+import { useBoard, useDeleteBoard, useUpdateBoard } from "@/services";
 import { Visibility } from "@/types/enums";
 import { NextPageWithLayout } from "@/types/next";
 import { Globe2Icon, LoaderIcon, LockIcon, SettingsIcon } from "lucide-react";
@@ -16,6 +28,7 @@ import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const WorkspaceSettings: NextPageWithLayout = () => {
   const router = useRouter();
@@ -40,6 +53,7 @@ const WorkspaceSettings: NextPageWithLayout = () => {
         </span>
         <div className="space-y-8 pl-4">
           <BoardVisibility board={board} />
+          <DeleteBoard board={board} />
         </div>
       </div>
     </div>
@@ -92,6 +106,85 @@ const BoardVisibility = ({ board }: { board: App.Models.Board }) => {
           </SelectItem>
         </SelectContent>
       </Select>
+    </div>
+  );
+};
+
+const DeleteBoard = ({ board }: { board: App.Models.Board }) => {
+  const { t } = useTranslation("common");
+  const [confirmText, setConfirmationText] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const { deleteBoard, isLoading } = useDeleteBoard();
+
+  const confirmationWord = `w/${board.name}`;
+
+  const handleConfirmDelete = () => {
+    deleteBoard(
+      { workspaceId: board.workspaceId, boardId: board.id },
+      {
+        onSuccess() {
+          setOpen(false);
+        },
+      }
+    );
+  };
+
+  return (
+    <div className="-ml-4 flex flex-col rounded-lg border border-destructive bg-destructive/10 p-4">
+      <div>
+        <h4 className="text-sm font-semibold">{t("danger-zone")}</h4>
+        <p className="mb-4 mt-1 text-xs">{t("permanent-action")}</p>
+      </div>
+
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogTrigger asChild>
+          <Button variant="destructive-outline" className="w-fit">
+            {t("delete-board")}
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("confirmation")}</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4">
+              <div>
+                This will permanently delete the
+                <span className="mx-2 rounded bg-accent px-1 font-semibold">
+                  {confirmationWord}
+                </span>
+                and its boards, statuses, cards, activities and remove all
+                collaborator associations.
+              </div>
+              <div className="space-y-2">
+                <div>
+                  To confirm, type
+                  <span className="mx-2 rounded bg-accent px-1 font-semibold">
+                    {confirmationWord}
+                  </span>
+                  in the box below
+                </div>
+                <Input
+                  value={confirmText}
+                  onChange={(e) => setConfirmationText(e.target.value)}
+                />
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex items-center">
+            <AlertDialogCancel className="w-1/3" disabled={isLoading}>
+              {t("cancel")}
+            </AlertDialogCancel>
+            <Button
+              variant="destructive"
+              className="w-2/3"
+              disabled={confirmText !== confirmationWord || isLoading}
+              onClick={handleConfirmDelete}
+            >
+              {isLoading ? t("delelting") : t("delete-board")}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

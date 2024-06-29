@@ -1,5 +1,6 @@
 import { CreateBoard } from "@/components/board/CreateBoard";
 import { api } from "@/lib/api";
+import { route } from "@/lib/routes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const createBoard = async ({
@@ -37,6 +38,16 @@ const updateBoard = async ({
   );
 
   return response.data.data;
+};
+
+const deleteBoard = async ({
+  workspaceId,
+  boardId,
+}: {
+  workspaceId: number;
+  boardId: number;
+}) => {
+  await api.delete(`/workspaces/${workspaceId}/boards/${boardId}`);
 };
 
 /**
@@ -98,5 +109,19 @@ export const useUpdateBoard = () => {
     updateBoard: mutate,
     isLoading: isPending,
     variables,
+  };
+};
+
+export const useDeleteBoard = () => {
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteBoard,
+    onSuccess(_, { workspaceId }) {
+      window.location.href = route("workspace", workspaceId);
+    },
+  });
+
+  return {
+    deleteBoard: mutate,
+    isLoading: isPending,
   };
 };

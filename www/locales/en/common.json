@@ -112,5 +112,9 @@
   "private-board-description" : "This board is private. It's not indexed or visible to those outside the Workspace.",
   "public-board-description" : "This board is public. Its visibile to all workspace members.",
   "workspace-settings": "Workspace Settings",
-  "board-settings": "Board Settings"
+  "board-settings": "Board Settings",
+  "permanent-action": "This is permanent and can&apos;t be undone.",
+  "delete-workspace": "Delete workspace",
+  "delete-board": "Delete board",
+  "delelting": "Deleting..."
 }
