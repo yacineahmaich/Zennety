@@ -22,7 +22,6 @@ class CardResource extends JsonResource
             'statusId' => $this->status_id,
             'activities' => Activity::whereMorphedTo('subject', $this)
                 ->with("causer")
-                ->latest()
                 ->get()
         ];
     }

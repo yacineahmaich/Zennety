@@ -61,8 +61,8 @@ class CardController extends Controller
         activity()
             ->performedOn($card)
             ->causedBy($user)
-            ->withProperties(['type' => 'comment', 'comment' => $request->validated("comment")])
-            ->log("$user->name added a comment.");
+            ->withProperties(['type' => 'comment', 'comment' => $request->comment])
+            ->log("$user->name added a comment - '$request->comment'");
 
         return response()->noContent();
     }
@@ -93,13 +93,14 @@ class CardController extends Controller
     {
         $user = auth()->user();
 
+        $oldCardName = $card->name;
         $updatedCard = tap($card)->update($request->validated());
 
-        if ($card->name !== $updatedCard->name) {
+        if ($oldCardName !== $updatedCard->name) {
             activity()
                 ->performedOn($card)
                 ->causedBy($user)
-                ->log("$user->name renamed - $card->name to $updatedCard->name.");
+                ->log("$user->name renamed this card from '$oldCardName' to '$updatedCard->name'");
         }
 
         return CardResource::make($card);
