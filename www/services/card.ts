@@ -237,17 +237,14 @@ export const useUpdateCard = () => {
 
   const { mutate, isPending, variables } = useMutation({
     mutationFn: updateCard,
-    onSuccess(status, { workspaceId, boardId, statusId, cardId }) {
+    onSuccess(status, { workspaceId, boardId }) {
       return queryClient.invalidateQueries({
         queryKey: [
           "workspaces",
-          workspaceId,
+          workspaceId?.toString(),
           "boards",
-          boardId,
+          boardId?.toString(),
           "statuses",
-          statusId,
-          "cards",
-          cardId,
         ],
       });
     },
@@ -276,7 +273,6 @@ export const useCreateCardComment = () => {
           statusId,
           "cards",
           cardId,
-          "comments",
         ],
       });
     },

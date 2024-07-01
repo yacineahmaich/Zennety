@@ -170,8 +170,6 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
         }
       );
 
-      console.log(reorderedStatuses);
-
       const cardsOrder = reorderedStatuses
         ?.find((status) => status.id === overCard.statusId)
         ?.cards?.reduce((acc, card, idx) => ({ ...acc, [card.id]: idx }), {});
@@ -204,32 +202,6 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
         cardId: activeCard.id.toString(),
         cardsOrder: cardsOrder || {},
       });
-
-      // queryClient.setQueryData<App.Models.Status[]>(
-      //   ["workspaces", workspaceId, "boards", boardId, "statuses"],
-      //   (statuses = []) => {
-      //     // find the index of the active card status
-      //     const activeCardStatusIndex = statuses.findIndex(
-      //       (status) => status.id === activeCard.statusId
-      //     );
-
-      //     // find the index of the over status
-      //     const overStatusIndex = statuses.findIndex(
-      //       (status) => status.id === overStatus.id
-      //     );
-
-      //     // remove active card from old status
-      //     statuses[activeCardStatusIndex].cards = statuses[
-      //       activeCardStatusIndex
-      //     ].cards?.filter((card) => card.id !== activeCard.id);
-
-      //     // add card to over card status
-      //     activeCard.statusId = overStatus.id;
-      //     statuses[overStatusIndex].cards?.unshift(activeCard);
-
-      //     return statuses;
-      //   }
-      // );
     }
   };
 

@@ -16,7 +16,7 @@ const CardActivity = ({ card }: { card: App.Models.Card }) => {
           {card?.activities.map((activity) => (
             <li key={activity.id}>
               <small className="text-xs">
-                {format(new Date(activity?.created_at), "dd MM yyyy")}
+                {format(new Date(activity?.created_at), "dd MM yyyy H:mm")}
               </small>
               <div className="flex items-center gap-1">
                 <CornerDownRightIcon size={12} />

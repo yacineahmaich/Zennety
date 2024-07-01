@@ -117,7 +117,7 @@ const DeleteBoard = ({ board }: { board: App.Models.Board }) => {
 
   const { deleteBoard, isLoading } = useDeleteBoard();
 
-  const confirmationWord = `w/${board.name}`;
+  const confirmationWord = `b/${board.name}`;
 
   const handleConfirmDelete = () => {
     deleteBoard(
