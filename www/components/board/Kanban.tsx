@@ -236,8 +236,14 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
                 strategy={horizontalListSortingStrategy}
                 items={items || []}
               >
-                {statuses?.map((status) => (
-                  <StatusColumn key={status.id} board={board} status={status} />
+                {statuses?.map((status, idx) => (
+                  <StatusColumn
+                    key={status.id}
+                    board={board}
+                    status={status}
+                    prevStatus={statuses[idx - 1]}
+                    nextStatus={statuses[idx + 1]}
+                  />
                 ))}
                 {createPortal(
                   <DragOverlay>

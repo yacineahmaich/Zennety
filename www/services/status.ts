@@ -119,12 +119,13 @@ export const useCreateStatus = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: createStatus,
     onSuccess(status, { workspaceId, boardId }) {
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [
           "workspaces",
           workspaceId.toString(),
           "boards",
           boardId.toString(),
+          "statuses",
         ],
       });
     },

@@ -6,7 +6,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useDeleteStatus, useUpdateStatus } from "@/services";
+import {
+  useDeleteStatus,
+  useReorderStatuses,
+  useUpdateStatus,
+} from "@/services";
 import {
   ArrowLeftToLineIcon,
   ArrowRightToLineIcon,
@@ -23,11 +27,15 @@ import { Card } from "../ui/card";
 const StatusHeader = ({
   board,
   status,
+  prevStatus,
+  nextStatus,
   collapsed,
   setCollapsed,
 }: {
   board: App.Models.Board;
   status: App.Models.Status;
+  nextStatus?: App.Models.Status;
+  prevStatus?: App.Models.Status;
   collapsed: boolean;
   setCollapsed: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -35,8 +43,32 @@ const StatusHeader = ({
   const { deleteStatus, isLoading: isDeleting } = useDeleteStatus();
   const { updateStatus, isLoading, variables } = useUpdateStatus();
 
+  const { reorderStatuses, optimistacallyReorderStatuses } =
+    useReorderStatuses();
+
   const [name, setName] = useState(status.name);
   const [editing, setEditing] = useState(false);
+
+  const handleReorderStatus = (dir: -1 | 1) => {
+    if (dir === -1) if (!prevStatus) return;
+    if (dir === 1 && !nextStatus) return;
+
+    const statusesOrder = optimistacallyReorderStatuses({
+      workspaceId: board.workspaceId?.toString(),
+      boardId: board.id?.toString(),
+      activeStatusId: status.id,
+      // @ts-ignore
+      overStatusId: dir === -1 ? prevStatus.id : nextStatus.id,
+    });
+
+    if (!statusesOrder) return;
+
+    reorderStatuses({
+      workspaceId: board.workspaceId?.toString(),
+      boardId: board.id?.toString(),
+      statusesOrder,
+    });
+  };
 
   return (
     <Card
@@ -104,11 +136,19 @@ const StatusHeader = ({
               <Edit3Icon size={16} />
               {t("rename")}
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2">
+            <DropdownMenuItem
+              className="flex items-center gap-2"
+              onClick={() => handleReorderStatus(1)}
+              disabled={!nextStatus}
+            >
               <ArrowRightToLineIcon size={16} />
               {t("move")}
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2">
+            <DropdownMenuItem
+              className="flex items-center gap-2"
+              onClick={() => handleReorderStatus(-1)}
+              disabled={!prevStatus}
+            >
               <ArrowLeftToLineIcon size={16} />
               {t("move")}
             </DropdownMenuItem>

@@ -14,9 +14,13 @@ import StatusHeader from "./StatusHeader";
 const StatusColumn = ({
   board,
   status,
+  prevStatus,
+  nextStatus,
 }: {
   board: App.Models.Board;
   status: App.Models.Status;
+  nextStatus?: App.Models.Status;
+  prevStatus?: App.Models.Status;
 }) => {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -71,6 +75,8 @@ const StatusColumn = ({
         <StatusHeader
           board={board}
           status={status}
+          prevStatus={prevStatus}
+          nextStatus={nextStatus}
           collapsed={collapsed}
           setCollapsed={setCollapsed}
         />
