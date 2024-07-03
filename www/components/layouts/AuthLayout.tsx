@@ -14,7 +14,7 @@ const AuthLayout = ({
   const { t } = useTranslation("common");
 
   return (
-    <div className="flex flex-col items-center gap-2 py-20">
+    <div className="flex flex-col items-center gap-2 py-10">
       <div>
         <img
           src={app.logoUrl}

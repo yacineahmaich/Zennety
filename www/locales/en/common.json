@@ -113,8 +113,12 @@
   "public-board-description" : "This board is public. Its visibile to all workspace members.",
   "workspace-settings": "Workspace Settings",
   "board-settings": "Board Settings",
-  "permanent-action": "This is permanent and can&apos;t be undone.",
+  "permanent-action": "This is permanent and can't be undone.",
   "delete-workspace": "Delete workspace",
   "delete-board": "Delete board",
-  "delelting": "Deleting..."
+  "delelting": "Deleting...",
+  "transfer-ownership": "Transfer ownership",
+  "transfering": "Transfering...",
+  "transform-workspace-to-an-admin": "Transfer workspace ownership to one of its admins.",
+  "delete-workspace-warning-message": "This will permanently delete the hmm {{word}} and its boards, statuses, cards, activities and remove all collaborator associations."
 }

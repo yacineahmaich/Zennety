@@ -51,7 +51,7 @@ const GuestLayout = ({ children }: { children: ReactNode }) => {
           <ThemeSwitcher />
         </div>
       </header>
-      <div className="pt-20">
+      <div>
         <ErrorBoundary>{children}</ErrorBoundary>
       </div>
     </div>
