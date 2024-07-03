@@ -107,10 +107,10 @@
   "board-visibility": "Board Visibility",
   "workspace-ownership": "Workspace Ownership",
   "danger-zone": "Danger Zone",
-  "private-workspace-description" : "This Workspace is private. It's not indexed or visible to those outside the Workspace.",
-  "public-workspace-description" : "This Workspace is public. Its visibile publicly to everyone.",
-  "private-board-description" : "This board is private. It's not indexed or visible to those outside the Workspace.",
-  "public-board-description" : "This board is public. Its visibile to all workspace members.",
+  "private-workspace-description": "This Workspace is private. It's not indexed or visible to those outside the Workspace.",
+  "public-workspace-description": "This Workspace is public. Its visibile publicly to everyone.",
+  "private-board-description": "This board is private. It's not indexed or visible to those outside the Workspace.",
+  "public-board-description": "This board is public. Its visibile to all workspace members.",
   "workspace-settings": "Workspace Settings",
   "board-settings": "Board Settings",
   "permanent-action": "This is permanent and can't be undone.",
@@ -120,5 +120,8 @@
   "transfer-ownership": "Transfer ownership",
   "transfering": "Transfering...",
   "transform-workspace-to-an-admin": "Transfer workspace ownership to one of its admins.",
-  "delete-workspace-warning-message": "This will permanently delete the hmm {{word}} and its boards, statuses, cards, activities and remove all collaborator associations."
+  "delete-workspace-warning-message": "This will permanently delete the hmm {{word}} and its boards, statuses, cards, activities and remove all collaborator associations.",
+  "star-on-github": "Star on github",
+  "get-started": "Get Started",
+  "hero-subtitle": "Seamless collaboration and organization at your fingertips."
 }
