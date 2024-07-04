@@ -1,12 +1,15 @@
+import app from "@/lib/app";
+import { route } from "@/lib/routes";
 import { GithubIcon, StepForwardIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 import { Button } from "../ui/button";
 
 const Hero = () => {
   const { t } = useTranslation("common");
 
   return (
-    <main className="flex flex-col items-center gap-4 py-10 sm:py-24 lg:py-32">
+    <main className="flex flex-col items-center gap-4 py-10 sm:py-24">
       <div>
         <div className="flex justify-between">
           <svg width="40" height="40" viewBox="0 0 200 200">
@@ -68,14 +71,21 @@ const Hero = () => {
           {t("hero-subtitle")}
         </p>
         <div className="flex justify-center gap-4">
-          <Button className="flex items-center gap-2 bg-gradient-to-tr from-pink-400 via-pink-600 to-gray-400">
-            {/* <CornerDownRightIcon size={14} /> */}
-            <StepForwardIcon size={14} />
-            <span>{t("get-started")}</span>
+          <Button
+            asChild
+            className="flex items-center gap-2 bg-gradient-to-tr from-pink-400 via-pink-600 to-gray-400"
+          >
+            <Link href={route("login")}>
+              {/* <CornerDownRightIcon size={14} /> */}
+              <StepForwardIcon size={14} />
+              <span>{t("get-started")}</span>
+            </Link>
           </Button>
-          <Button variant="outline" className="flex items-center gap-2">
-            <GithubIcon size={14} />
-            <span>{t("star-on-github")}</span>
+          <Button asChild variant="outline" className="flex items-center gap-2">
+            <a href={app.repositoryUrl} target="_blank">
+              <GithubIcon size={14} />
+              <span>{t("star-on-github")}</span>
+            </a>
           </Button>
         </div>
       </div>
