@@ -1,6 +1,6 @@
-import app from "@/lib/app";
 import { useTranslation } from "next-i18next";
 import { ReactNode } from "react";
+import Logo from "../shared/Logo";
 
 const AuthLayout = ({
   children,
@@ -16,13 +16,7 @@ const AuthLayout = ({
   return (
     <div className="flex flex-col items-center gap-2 py-28">
       <div>
-        <img
-          src={app.logoUrl}
-          alt={app.name}
-          height={48}
-          width={48}
-          className="mx-auto"
-        />
+        <Logo className="mx-auto" width={60} height={60} />
         {heading && (
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             {t(heading)}

@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().max(100),
@@ -41,7 +40,6 @@ const CreateStatus = ({ board }: { board: App.Models.Board }) => {
   const onSubmit = (values: CreateStatus) => {
     createStatus(values, {
       onSuccess(data) {
-        toast({ title: `Status ${data.name} created` });
         setShowForm(false);
         form.unregister();
       },

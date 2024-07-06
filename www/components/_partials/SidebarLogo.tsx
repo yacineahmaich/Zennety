@@ -3,6 +3,7 @@ import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { ChevronLeftSquareIcon, ChevronRightSquareIcon } from "lucide-react";
 import Link from "next/link";
+import Logo from "../shared/Logo";
 import { Button } from "../ui/button";
 
 const SidebarLogo = ({
@@ -22,7 +23,7 @@ const SidebarLogo = ({
       {!collapsed && (
         <Link href={route("app")}>
           <div className="flex items-center gap-2">
-            <img src={app.logoUrl} alt={app.name} className="h-10" />
+            <Logo />
             <span className="text-xl font-bold">{app.name}</span>
           </div>
         </Link>

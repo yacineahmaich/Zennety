@@ -25,7 +25,11 @@ const UserDropdown = () => {
           className="h-auto select-none overflow-hidden p-2"
         >
           <div className="mt-auto flex items-center gap-4 py-2">
-            <img src={app.logoUrl} alt={app.name} className="h-7" />
+            <img
+              src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+              alt={app.name}
+              className="h-7"
+            />
             <div className="line-clamp-1 flex flex-col items-start">
               <span>{user?.name}</span>
               <small className="text-xs">{user?.email}</small>
