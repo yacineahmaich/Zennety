@@ -1,5 +1,8 @@
+import app from "@/lib/app";
+import { route } from "@/lib/routes";
 import { GithubIcon, StepForwardIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 import { Button } from "../ui/button";
 
 const Hero = () => {
@@ -23,13 +26,21 @@ const Hero = () => {
         </p>
 
         <div className="flex justify-center gap-4">
-          <Button className="flex items-center gap-2 bg-gradient-to-tr from-pink-500 via-pink-600 to-gray-400">
-            <StepForwardIcon size={14} />
-            <span>{t("get-started")}</span>
+          <Button
+            asChild
+            className="flex items-center gap-2 bg-gradient-to-tr from-pink-400 via-pink-600 to-gray-400"
+          >
+            <Link href={route("login")}>
+              {/* <CornerDownRightIcon size={14} /> */}
+              <StepForwardIcon size={14} />
+              <span>{t("get-started")}</span>
+            </Link>
           </Button>
-          <Button variant="outline" className="flex items-center gap-2">
-            <GithubIcon size={14} />
-            <span>{t("star-on-github")}</span>
+          <Button asChild variant="outline" className="flex items-center gap-2">
+            <a href={app.repositoryUrl} target="_blank">
+              <GithubIcon size={14} />
+              <span>{t("star-on-github")}</span>
+            </a>
           </Button>
         </div>
       </div>
