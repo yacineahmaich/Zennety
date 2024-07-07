@@ -66,8 +66,8 @@ const CreateWorkspace = () => {
           <PlusCircleIcon size={20} className="mr-2" /> {t("create")}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-screen overflow-y-auto lg:min-w-[85vw]">
-        <div className="flex gap-8 pt-6">
+      <DialogContent className="max-h-screen overflow-y-auto">
+        <div className="flex gap-8">
           <div className="flex-1">
             <Form {...form}>
               <form
@@ -198,7 +198,6 @@ const CreateWorkspace = () => {
               </form>
             </Form>
           </div>
-          <div className="hidden flex-1 rounded-lg bg-foreground lg:block"></div>
         </div>
       </DialogContent>
     </Dialog>
