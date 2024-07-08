@@ -9,17 +9,26 @@ const Hero = () => {
   const { t } = useTranslation("common");
 
   return (
-    <main className="flex flex-col items-center gap-4 py-10 sm:py-24 lg:py-32">
+    <main className="flex flex-col items-center gap-4 py-24 lg:py-36">
       <div>
-        <div className="flex justify-between">
+        <div className="hidden justify-between sm:flex">
           <ShinyStar />
           <ShinyStar />
         </div>
 
-        <h1 className="mx-auto max-w-4xl text-center text-3xl font-bold leading-[2rem] sm:text-5xl sm:leading-[3.5rem]">
-          <span className="text-pink-500">Simplify</span> your tasks.{" "}
-          <span className="text-pink-500">Enhance</span> your efficiency.{" "}
-          <span className="text-pink-500">Reach</span> new heights.
+        <h1 className="mx-auto max-w-4xl text-center text-4xl font-bold leading-[2.5rem] sm:text-5xl sm:leading-[3.5rem]">
+          <span className="bg-gradient-to-t from-gray-600 to-gray-400 bg-clip-text text-transparent">
+            Simplify
+          </span>{" "}
+          your tasks.{" "}
+          <span className="bg-gradient-to-t from-gray-600 to-gray-400 bg-clip-text text-transparent">
+            Enhance
+          </span>{" "}
+          your efficiency.{" "}
+          <span className="bg-gradient-to-t from-gray-600 to-gray-400 bg-clip-text text-transparent">
+            Reach
+          </span>{" "}
+          new heights.
         </h1>
         <p className="pb-4 pt-2 text-center text-gray-500 dark:text-gray-300">
           {t("hero-subtitle")}
@@ -28,10 +37,9 @@ const Hero = () => {
         <div className="flex justify-center gap-4">
           <Button
             asChild
-            className="flex items-center gap-2 bg-gradient-to-tr from-pink-400 via-pink-600 to-gray-400"
+            className="flex items-center gap-2 bg-gradient-to-tr from-gray-700 via-gray-500 to-gray-600"
           >
             <Link href={route("login")}>
-              {/* <CornerDownRightIcon size={14} /> */}
               <StepForwardIcon size={14} />
               <span>{t("get-started")}</span>
             </Link>
@@ -65,8 +73,8 @@ const ShinyStar = () => (
         y2="179.5"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#E9B8FF" />
-        <stop offset="1" stop-color="#F9ECFF" />
+        <stop stop-color="gray" />
+        <stop offset="1" stop-color="gray" />
       </linearGradient>
       <clipPath id="clip0_118_208">
         <rect width="200" height="200" fill="white" />
