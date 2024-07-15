@@ -33,7 +33,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className={fontSans.className}>
-      {isLoading ? (
+      {isLoading && !isMatch(router.asPath, unauthenticatedRoutes) ? (
         <div className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-background">
           <Logo width={50} height={50} />
         </div>
