@@ -21,7 +21,15 @@ class InvitationService
 
             foreach ($users as $user) {
                 $invitation_token = Str::uuid();
-                
+
+                // If there's already an invitation for the user -> Then we delete the old one
+                $inviationExists = $inviteable
+                    ->invitations()
+                    ->where('invited_email', $user->email)
+                    ->first();
+
+                if (!is_null($inviationExists)) $inviationExists->delete();
+
                 // Create notification for invitation
                 $notification = $user->notifications()->create([
                     'type' => NotificationType::NORMAL,
@@ -67,7 +75,6 @@ class InvitationService
 
             $invitation->delete();
             $invitation->notification()->delete();
-
         });
     }
 
