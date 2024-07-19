@@ -28,7 +28,10 @@ class InvitationService
                     ->where('invited_email', $user->email)
                     ->first();
 
-                if (!is_null($inviationExists)) $inviationExists->delete();
+                if (!is_null($inviationExists)) {
+                    $inviationExists->notification()->delete();
+                    $inviationExists->delete();
+                }
 
                 // Create notification for invitation
                 $notification = $user->notifications()->create([
