@@ -23,6 +23,7 @@ const WorkspaceSettings: NextPageWithLayout = () => {
 
   const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);
   const canUpdateWorkspace = useCan("update", "workspace", workspace?.id);
+  const canDeleteWorkspace = useCan("delete", "workspace", workspace?.id);
 
   if (isLoading) return <Loader />;
   if (!workspace) return;
@@ -38,7 +39,7 @@ const WorkspaceSettings: NextPageWithLayout = () => {
         <div className="space-y-8 pl-4">
           {canUpdateWorkspace && <WorkspaceVisibility workspace={workspace} />}
           {isOwner && <WorkspaceOwnershipTransfer workspace={workspace} />}
-          {isOwner && <DeleteWorkspace workspace={workspace} />}
+          {canDeleteWorkspace && <DeleteWorkspace workspace={workspace} />}
         </div>
       </div>
     </div>

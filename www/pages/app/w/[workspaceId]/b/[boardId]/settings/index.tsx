@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCan } from "@/hooks/useCan";
 import { useBoard, useDeleteBoard, useUpdateBoard } from "@/services";
 import { Visibility } from "@/types/enums";
 import { NextPageWithLayout } from "@/types/next";
@@ -40,6 +41,9 @@ const WorkspaceSettings: NextPageWithLayout = () => {
 
   const { board, isLoading } = useBoard(workspaceId, boardId);
 
+  const canUpdateBoard = useCan("update", "board", board?.id);
+  const canDeleteBoard = useCan("delete", "board", board?.id);
+
   if (isLoading) return <Loader />;
   if (!board) return;
 
@@ -52,8 +56,8 @@ const WorkspaceSettings: NextPageWithLayout = () => {
           <h2 className="text-lg font-semibold">{t("board-settings")}</h2>
         </span>
         <div className="space-y-8 pl-4">
-          <BoardVisibility board={board} />
-          <DeleteBoard board={board} />
+          {canUpdateBoard && <BoardVisibility board={board} />}
+          {canDeleteBoard && <DeleteBoard board={board} />}
         </div>
       </div>
     </div>
