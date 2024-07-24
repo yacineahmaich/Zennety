@@ -1,7 +1,7 @@
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { useUpdateCard } from "@/services/card";
-import { MessageCircleWarningIcon } from "lucide-react";
+import { PenIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
@@ -26,7 +26,9 @@ const CardDescription = ({
         boardId: board.id,
         statusId: status.id,
         cardId: card.id,
-        description,
+        data: {
+          description,
+        },
       },
       {
         onSuccess() {
@@ -37,32 +39,30 @@ const CardDescription = ({
   };
 
   return (
-    <div className="group space-y-4 py-5">
-      <div className="relative">
-        <div className="flex items-center gap-2">
-          <MessageCircleWarningIcon size={20} className="flex-shrink-0" />
-          <h2 className="break-all">Description</h2>
-        </div>
+    <div className="space-y-4">
+      <div className="group relative">
         {!editingDescription && (
-          <Button
-            size="sm"
-            variant="secondary"
-            className="absolute right-0 top-0 hidden group-hover:block"
+          <button
+            title={t("edit")}
+            className="absolute right-0 top-0 hidden hover:slide-in-from-bottom-2 group-hover:block"
             onClick={() => setEditingDescription(true)}
           >
-            {t("edit")}
-          </Button>
+            <PenIcon size={12} />
+          </button>
+        )}
+
+        {editingDescription ? (
+          <RichTextEditor
+            content={description}
+            onContentChange={(content) => setDescription(content)}
+            placeholder="Write a description here."
+          />
+        ) : description ? (
+          <div dangerouslySetInnerHTML={{ __html: description }} />
+        ) : (
+          <p>There&apos;s no description yet here!</p>
         )}
       </div>
-      {editingDescription ? (
-        <RichTextEditor
-          content={description}
-          onContentChange={(content) => setDescription(content)}
-          placeholder="Write a description here."
-        />
-      ) : (
-        <div dangerouslySetInnerHTML={{ __html: description }} />
-      )}
       {editingDescription && (
         <div className="space-x-2">
           <Button

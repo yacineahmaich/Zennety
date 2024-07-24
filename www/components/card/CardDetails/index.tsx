@@ -33,10 +33,13 @@ const CardDetails = ({
   return (
     <div className="grid grid-cols-5 divide-x">
       <div className="col-span-3 divide-y pr-5">
-        <CardTitle board={board} status={status} card={card} />
-        <CardDescription board={board} status={status} card={card} />
-
-        <CardComments board={board} status={status} card={card} />
+        <div className="space-y-6 pb-5">
+          <CardTitle board={board} status={status} card={card} />
+          <CardDescription board={board} status={status} card={card} />
+        </div>
+        <div>
+          <CardComments board={board} status={status} card={card} />
+        </div>
       </div>
       <div className="col-span-2 pl-5">
         <CardActivity card={card} />
