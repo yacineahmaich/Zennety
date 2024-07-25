@@ -123,6 +123,22 @@ const reorderCards = async ({
   return response.data.data;
 };
 
+const deleteCard = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+}) => {
+  await api.delete(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}`
+  );
+};
+
 /**
  * ==========================================
  * ========= QUERIES ========================
@@ -357,6 +373,30 @@ export const useReorderCards = () => {
   return {
     reorderCards: mutate,
     optimistacallyReorderCards,
+    isLoading: isPending,
+  };
+};
+
+export const useDeleteCard = () => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: deleteCard,
+    onSuccess(_, { workspaceId, boardId }) {
+      return queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId?.toString(),
+          "boards",
+          boardId?.toString(),
+          "statuses",
+        ],
+      });
+    },
+  });
+
+  return {
+    deleteCard: mutateAsync,
     isLoading: isPending,
   };
 };
