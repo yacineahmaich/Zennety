@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Board;
 use App\Models\Card;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -43,9 +44,13 @@ class CardPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Card $card): bool
+    public function delete(User $user, Board $board, Card $card): bool
     {
-        //
+        if (!$member = $user->memberFor($board)) {
+            return false;
+        }
+
+        return $member->checkPermissionTo('delete');
     }
 
     /**

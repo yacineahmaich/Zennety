@@ -109,9 +109,13 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Card $card)
+    public function destroy(Workspace $workspace, Board $board, Status $status, Card $card)
     {
-        //
+        $this->authorize("delete", [$board, $card]);
+        
+        $card->delete();
+
+        return response()->noContent();
     }
 
     public function reorder(Request $request, Workspace $workspace, Board $board)
