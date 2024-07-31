@@ -218,6 +218,8 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
     [statuses]
   );
 
+  const [collapsedColumns, setCollapsedColumns] = useState<Array<number>>([]);
+
   if (isLoading) return <Loader />;
 
   return (
@@ -243,13 +245,27 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
                     status={status}
                     prevStatus={statuses[idx - 1]}
                     nextStatus={statuses[idx + 1]}
+                    collapsed={collapsedColumns.includes(status.id)}
+                    toggleCollapsed={() =>
+                      setCollapsedColumns((cc) =>
+                        cc.includes(status.id)
+                          ? cc.filter((c) => c !== status.id)
+                          : [...cc, status.id]
+                      )
+                    }
                   />
                 ))}
                 {createPortal(
                   <DragOverlay>
                     {activeStatus && (
-                      <StatusColumn board={board} status={activeStatus} />
+                      <StatusColumn
+                        board={board}
+                        status={activeStatus}
+                        collapsed={collapsedColumns.includes(activeStatus.id)}
+                        toggleCollapsed={() => null}
+                      />
                     )}
+                    {/* @ts-ignore */}
                     {activeCard && <StatusCard card={activeCard} />}
                   </DragOverlay>,
                   document.body

@@ -6,7 +6,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import StatusCard from "../card/StatusCard";
 import StatusColumnWrapper from "./StatusColumnWrapper";
 import StatusHeader from "./StatusHeader";
@@ -16,14 +16,16 @@ const StatusColumn = ({
   status,
   prevStatus,
   nextStatus,
+  collapsed,
+  toggleCollapsed,
 }: {
   board: App.Models.Board;
   status: App.Models.Status;
   nextStatus?: App.Models.Status;
   prevStatus?: App.Models.Status;
+  collapsed: boolean;
+  toggleCollapsed: () => void;
 }) => {
-  const [collapsed, setCollapsed] = useState(false);
-
   const {
     setNodeRef,
     attributes,
@@ -54,7 +56,10 @@ const StatusColumn = ({
       <div
         ref={setNodeRef}
         style={style}
-        className="flex h-full w-72 flex-shrink-0 flex-col space-y-4"
+        className={cn(
+          "flex h-full flex-shrink-0 flex-col space-y-4",
+          collapsed ? "w-16" : "w-72"
+        )}
       >
         <div className="h-9 rounded-lg bg-accent"></div>
         <div className="h-full rounded-lg bg-accent"></div>
@@ -71,21 +76,21 @@ const StatusColumn = ({
         collapsed ? "w-auto" : "w-72"
       )}
     >
-      <button {...attributes} {...listeners}>
+      <div {...attributes} {...listeners}>
         <StatusHeader
           board={board}
           status={status}
           prevStatus={prevStatus}
           nextStatus={nextStatus}
           collapsed={collapsed}
-          setCollapsed={setCollapsed}
+          toggleCollapsed={toggleCollapsed}
         />
-      </button>
+      </div>
       {collapsed ? (
         <Button
           variant="secondary"
           className="grid h-full w-16 place-items-center rounded-lg bg-secondary"
-          onClick={() => setCollapsed(false)}
+          onClick={toggleCollapsed}
         >
           <p
             className="rotate-180 text-sm uppercase"

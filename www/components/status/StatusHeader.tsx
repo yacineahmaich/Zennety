@@ -21,7 +21,7 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Card } from "../ui/card";
 
 const StatusHeader = ({
@@ -30,14 +30,14 @@ const StatusHeader = ({
   prevStatus,
   nextStatus,
   collapsed,
-  setCollapsed,
+  toggleCollapsed,
 }: {
   board: App.Models.Board;
   status: App.Models.Status;
   nextStatus?: App.Models.Status;
   prevStatus?: App.Models.Status;
   collapsed: boolean;
-  setCollapsed: Dispatch<SetStateAction<boolean>>;
+  toggleCollapsed: () => void;
 }) => {
   const { t } = useTranslation("common");
   const { deleteStatus, isLoading: isDeleting } = useDeleteStatus();
@@ -73,8 +73,8 @@ const StatusHeader = ({
   return (
     <Card
       className={cn(
-        "flex h-fit shrink-0 items-center justify-between gap-6 bg-primary px-4 py-2 text-background transition-[width]",
-        collapsed ? "w-16" : "w-72"
+        "flex h-fit shrink-0 cursor-grab items-center justify-between gap-6 bg-primary px-4 py-2 text-background transition-[width]",
+        collapsed ? "w-16 cursor-grab" : "w-72"
       )}
     >
       {editing ? (
@@ -111,7 +111,7 @@ const StatusHeader = ({
       )}
 
       {collapsed ? (
-        <button onClick={() => setCollapsed(false)}>
+        <button onClick={toggleCollapsed}>
           <ChevronLastIcon size={16} />
         </button>
       ) : (
@@ -124,7 +124,7 @@ const StatusHeader = ({
           <DropdownMenuContent>
             <DropdownMenuItem
               className="flex items-center gap-2"
-              onClick={() => setCollapsed(true)}
+              onClick={toggleCollapsed}
             >
               <ChevronsRightLeftIcon size={16} />
               {t("collapse")}
