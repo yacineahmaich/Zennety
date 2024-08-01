@@ -44,6 +44,8 @@ declare namespace App.Models {
     description: string;
     statusId: number;
     activities: Activity[];
+    participants: User[];
+    updatedAt: string;
   }
   interface Notification {
     id: number;

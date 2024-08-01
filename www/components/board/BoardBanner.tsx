@@ -71,9 +71,13 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
             {members?.slice(0, 3).map((member) => (
               <Avatar
                 key={member.id}
+                title={member.profile.name}
                 className="h-8 w-8 transition-all hover:shadow-xl"
               >
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt={member.profile.name}
+                />
                 <AvatarFallback>{member.profile.name}</AvatarFallback>
               </Avatar>
             ))}

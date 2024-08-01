@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { formatDistance } from "date-fns";
 import { MessageCircleIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import CardDetails from "./CardDetails";
@@ -54,21 +55,27 @@ const StatusCard = ({
             <div className="flex items-center gap-1">
               <MessageCircleIcon size={14} />
               <div className="h-4 w-px bg-border"></div>
-              <span className="text-xs">updated 3 hours ago</span>
+              <span className="text-xs">
+                updated{" "}
+                {formatDistance(new Date(card?.updatedAt), new Date(), {
+                  addSuffix: true,
+                })}
+              </span>
             </div>
             <div className="flex items-center -space-x-1">
-              <Avatar className="h-6 w-6 transition-all hover:z-10 hover:shadow-xl">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>Y</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-6 w-6 transition-all hover:z-10 hover:shadow-xl">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>Y</AvatarFallback>
-              </Avatar>
-              <Avatar className="h-6 w-6 transition-all hover:z-10 hover:shadow-xl">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>Y</AvatarFallback>
-              </Avatar>
+              {card?.participants?.map((participant) => (
+                <Avatar
+                  key={participant.id}
+                  title={participant.name}
+                  className="h-6 w-6 transition-all hover:z-10 hover:shadow-xl"
+                >
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt={participant.name}
+                  />
+                  <AvatarFallback>{participant.name}</AvatarFallback>
+                </Avatar>
+              ))}
             </div>
           </footer>
         </Card>
