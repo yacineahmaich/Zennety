@@ -255,6 +255,9 @@ export const useUpdateCard = () => {
   const { mutate, isPending, variables } = useMutation({
     mutationFn: updateCard,
     onSuccess(status, { workspaceId, boardId }) {
+      queryClient.invalidateQueries({
+        queryKey: ["workspaces", workspaceId, "boards", boardId, "statuses"],
+      });
       return queryClient.invalidateQueries({
         queryKey: [
           "workspaces",

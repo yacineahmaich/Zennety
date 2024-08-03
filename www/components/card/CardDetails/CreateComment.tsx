@@ -55,8 +55,12 @@ const CreateComment = ({
   });
 
   const onSubmit = (values: CreateCardComment) => {
-    createCardComment(values);
-    form.setValue("comment", "");
+    createCardComment(values, {
+      onSuccess() {
+        form.setValue("comment", "");
+        onCancel();
+      },
+    });
   };
   return (
     <Form {...form}>
