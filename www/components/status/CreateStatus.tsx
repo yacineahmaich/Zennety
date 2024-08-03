@@ -41,7 +41,11 @@ const CreateStatus = ({ board }: { board: App.Models.Board }) => {
     createStatus(values, {
       onSuccess(data) {
         setShowForm(false);
-        form.unregister();
+        form.reset({
+          name: "",
+          boardId: values.boardId,
+          workspaceId: values.workspaceId,
+        });
       },
     });
   };

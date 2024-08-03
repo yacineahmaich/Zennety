@@ -168,7 +168,7 @@ export const useDeleteStatus = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: deleteStatus,
     onSuccess(_, { workspaceId, boardId }) {
-      queryClient.invalidateQueries({
+      return queryClient.invalidateQueries({
         queryKey: [
           "workspaces",
           workspaceId.toString(),
