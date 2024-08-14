@@ -64,6 +64,9 @@ class CardController extends Controller
             ->withProperties(['type' => 'comment', 'comment' => $request->comment])
             ->log("$user->name added a comment - '$request->comment'");
 
+        $card->updated_at = now();
+        $card->save();
+
         return response()->noContent();
     }
 
@@ -112,7 +115,7 @@ class CardController extends Controller
     public function destroy(Workspace $workspace, Board $board, Status $status, Card $card)
     {
         $this->authorize("delete", [$board, $card]);
-        
+
         $card->delete();
 
         return response()->noContent();
