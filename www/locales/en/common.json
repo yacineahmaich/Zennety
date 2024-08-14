@@ -28,6 +28,8 @@
   "create": "Create",
   "create-workspace-title": "Create Workspace",
   "create-workspace-subtitle": "Enhance your efficiency by streamlining access to boards, making them conveniently accessible from a centralized location for everyone.",
+  "update-workspace-title": "Update Workspace Details",
+  "update-workspace-subtitle": "Make changes to keep your workspace up to date and aligned with your needs.",
   "workspace-name-placeholder": "e.g Ecommerce",
   "workspace-name-text": "This is the name of your company, team or organization.",
   "description": "Description",
@@ -39,6 +41,7 @@
   "public-workspace-text": "Visible to every users including guests.",
   "private-workspace-text": "Visible only to workpace memebers.",
   "create-workspace": "Create workspace",
+  "update-workspace": "Update workspace",
   "create-board": "Create board",
   "create-board-title": "Create board",
   "create-board-subtitle": "Centralized board hub for streamlined collaboration.",
@@ -123,5 +126,6 @@
   "delete-workspace-warning-message": "This will permanently delete the hmm {{word}} and its boards, statuses, cards, activities and remove all collaborator associations.",
   "star-on-github": "Star on github",
   "get-started": "Get Started",
-  "hero-subtitle": "Seamless collaboration and organization at your fingertips."
+  "hero-subtitle": "Seamless collaboration and organization at your fingertips.",
+  "update-workspace-informations": "Update Workspace Informations"
 }

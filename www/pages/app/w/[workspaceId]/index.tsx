@@ -20,9 +20,8 @@ const Workspace: NextPageWithLayout = () => {
   const { workspaceId } = router.query as { workspaceId: string };
   const { workspace, isLoading } = useWorkspace(workspaceId);
 
-  if (isLoading) {
-    return <WorkspaceLoading />;
-  }
+  if (isLoading) return <WorkspaceLoading />;
+  if (!workspace) return;
 
   return (
     <div>

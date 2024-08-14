@@ -4,11 +4,12 @@ import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import InviteMembers from "../shared/InviteMembers";
 import { Button } from "../ui/button";
+import UpdateWorkspace from "./UpdateWorkspace";
 
 const WorkspaceBanner = ({
   workspace,
 }: {
-  workspace?: App.Models.Workspace;
+  workspace: App.Models.Workspace;
 }) => {
   const { t } = useTranslation("common");
   const canInvite = useCan("update", "workspace", workspace?.id);
@@ -42,20 +43,23 @@ const WorkspaceBanner = ({
             </div>
           </div>
         </div>
-        {canInvite && (
-          <InviteMembers
-            resourceType="workspace"
-            resourceId={workspace?.id}
-            title={t("invite-to-workspace-title")}
-            subtitle={t("invite-to-workspace-subtitle")}
-            openTrigger={
-              <Button size="sm" variant="secondary">
-                <UserPlusIcon size={20} className="mr-2" />
-                {t("invite-workspace-members")}
-              </Button>
-            }
-          />
-        )}
+        <div className="flex items-center gap-2">
+          {canInvite && (
+            <InviteMembers
+              resourceType="workspace"
+              resourceId={workspace?.id}
+              title={t("invite-to-workspace-title")}
+              subtitle={t("invite-to-workspace-subtitle")}
+              openTrigger={
+                <Button size="sm" variant="secondary">
+                  <UserPlusIcon size={20} className="mr-2" />
+                  {t("invite-workspace-members")}
+                </Button>
+              }
+            />
+          )}
+          {canInvite && <UpdateWorkspace workspace={workspace} />}
+        </div>
       </div>
       {workspace?.description && (
         <p className="mt-2 max-w-2xl break-all text-sm text-muted-foreground">
