@@ -29,7 +29,7 @@ class UpdateWorkspaceRequest extends FormRequest
                 'min:4',
                 'max:25',
                 Rule::unique('workspaces', 'name')
-                    ->ignore($this->id)
+                    ->ignore($this->workspace)
             ],
             'description' => [
                 'sometimes',

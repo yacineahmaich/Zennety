@@ -28,8 +28,7 @@ class UpdateBoardRequest extends FormRequest
                 "sometimes",
                 "max:100",
                 Rule::unique('boards', 'name')
-                    ->ignore($this->id)
-                    ->where('workspace_id', $this->route('workspace')),
+                    ->ignore($this->board),
             ],
             "description" => ["sometimes", "max:255"],
             "visibility" => ["sometimes", 'in:' . implode(',', Visibility::values())],
