@@ -14,6 +14,13 @@ class BoardResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        /**
+         * @var \App\Models\User
+         */
+        $user = auth()->user();
+
+        $pinned = in_array("board_{$this->id}", array_keys($user->pins ?? []));
+
         return [
             'id' => $this->id,
             'workspaceId' => $this->workspace_id,
@@ -22,6 +29,7 @@ class BoardResource extends JsonResource
             'visibility' => $this->visibility,
             'members' => MembershipResource::collection($this->whenLoaded('members')),
             'statuses' => StatusResource::collection($this->whenLoaded('statuses')),
+            'pinned' => $pinned
         ];
     }
 }

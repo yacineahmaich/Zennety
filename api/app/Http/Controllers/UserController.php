@@ -27,4 +27,25 @@ class UserController extends Controller
 
         return UserResource::collection($users);
     }
+
+    public function pin(Request $request, $type, $id)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = auth()->user();
+
+        $pins = $user->pins;
+        $key = "{$type}_{$id}";
+
+        if (isset($pins[$key])) {
+            unset($pins[$key]);
+        } else {
+            $pins[$key] = ["type" => $type, "id" => $id];
+        }
+
+        $user->update(["pins" => $pins]);
+
+        return response()->noContent();
+    }
 }

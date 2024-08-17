@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // User
     Route::get('/user', [UserController::class, 'me']);
     Route::get('/users/{search}', [UserController::class, 'search']);
+    Route::put('/pins/{type}/{id}', [UserController::class, 'pin']);
 
     // Workspace
     Route::get("/workspaces", [WorkspaceController::class, 'index']);
