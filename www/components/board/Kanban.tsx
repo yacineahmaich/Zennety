@@ -52,11 +52,11 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    if (!over || active.id === over.id) return;
-
     // this is neccessary to avoid delayed optimistic update :(
     setActiveStatus(null);
     setActiveCard(null);
+
+    if (!over || active.id === over.id) return;
 
     if (
       active.data.current?.type === "status" &&
