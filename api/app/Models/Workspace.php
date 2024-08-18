@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use App\Enums\Visibility;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Workspace extends Model
+class Workspace extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -59,5 +61,12 @@ class Workspace extends Model
     public function invitations(): MorphMany
     {
         return $this->morphMany(Invitation::class, 'inviteable');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            ->useFallbackUrl("https://eu.ui-avatars.com/api/?name={$this->name}")
+            ->singleFile();
     }
 }

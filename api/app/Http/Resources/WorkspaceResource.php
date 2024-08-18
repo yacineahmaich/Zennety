@@ -21,6 +21,7 @@ class WorkspaceResource extends JsonResource
             'visibility' => $this->visibility,
             'members' => MembershipResource::collection($this->whenLoaded('members')),
             'boards' => BoardResource::collection($this->whenLoaded('boards')),
+            'avatar' => $this->getFirstMediaUrl('avatar'),
         ];
     }
 }

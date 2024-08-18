@@ -19,8 +19,7 @@ class WorkspaceController extends Controller
     public function __construct(
         public WorkspaceService $service,
         public InvitationService $invitationService
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -101,5 +100,15 @@ class WorkspaceController extends Controller
         });
 
         return response()->noContent();
+    }
+
+    public function setAvatar(Request $request, Workspace $workspace)
+    {
+        $request->validate([
+            "avatar" => ["required", "image", "max:1024"]
+        ]);
+
+        $workspace->addMediaFromRequest('avatar')
+            ->toMediaCollection('avatar');
     }
 }
