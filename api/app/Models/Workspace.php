@@ -66,7 +66,7 @@ class Workspace extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
-            ->useFallbackUrl("https://eu.ui-avatars.com/api/?name={$this->name}")
+            ->useFallbackUrl("https://ui-avatars.com/api/?background=000&color=fff&font-size=0.3&bold=true&name={$this->name}")
             ->singleFile();
     }
 }

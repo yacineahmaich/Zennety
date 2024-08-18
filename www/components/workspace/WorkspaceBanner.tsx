@@ -24,7 +24,7 @@ const WorkspaceBanner = ({
                 // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
                 src={workspace.avatar}
                 alt={workspace.name}
-                className="h-full w-full rounded-[inherit]"
+                className="h-full w-full rounded-[inherit] object-cover"
               />
             </div>
             <div className="flex flex-col">
