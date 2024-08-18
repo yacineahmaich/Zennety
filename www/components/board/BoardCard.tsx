@@ -1,7 +1,8 @@
-import { Globe2Icon, LockIcon, StarIcon, UserIcon } from "lucide-react";
+import { Globe2Icon, LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { route } from "www/lib/routes";
 import { Visibility } from "www/types/enums";
+import PinButton from "../shared/PinButton";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 
@@ -37,9 +38,11 @@ const BoardCard = ({ board }: Props) => {
             Updated 2 hours ago
           </p>
         </div>
-        <button>
-          <StarIcon size={16} />
-        </button>
+        <PinButton
+          resourceType="board"
+          resourceId={board?.id}
+          pinned={board?.pinned}
+        />
       </footer>
     </Card>
   );

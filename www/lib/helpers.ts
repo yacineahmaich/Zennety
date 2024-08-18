@@ -50,3 +50,9 @@ export function groupWorkspacesByOwnership(
 
   return groupedWorkspaces;
 }
+
+export function getPinnedBoard(workspaces: App.Models.Workspace[] = []) {
+  return workspaces.flatMap(
+    (workspace) => (workspace.boards || [])?.filter((b) => b.pinned)
+  );
+}

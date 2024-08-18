@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
 import { useCan } from "@/hooks/useCan";
 import { useHasRole } from "@/hooks/useHasRole";
-import { groupWorkspacesByOwnership } from "@/lib/helpers";
+import { getPinnedBoard, groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
 import { Role } from "@/types/enums";
@@ -15,6 +15,7 @@ import {
   GripHorizontalIcon,
   KanbanSquareIcon,
   SettingsIcon,
+  StarIcon,
   UserIcon,
 } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
@@ -23,6 +24,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 
 const AppPage: NextPageWithLayout = () => {
+  const { t } = useTranslation("common");
   const { workspaces, isLoading } = useMyWorkspaces();
   const { user } = useUser();
 
@@ -31,9 +33,26 @@ const AppPage: NextPageWithLayout = () => {
   }
 
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
+  const pinnedBoards = getPinnedBoard(workspaces || []);
 
   return (
     <div>
+      {pinnedBoards?.length > 0 && (
+        <section>
+          <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">
+            <StarIcon className="mr-2 w-6 stroke-yellow-300" />
+            <span className="text-yellow-300">{t("pinned")}</span>
+          </h2>
+
+          <div className="ml-3 border-l border-accent p-4 pb-5">
+            <div className="grid grid-cols-3 gap-4">
+              {pinnedBoards?.map((board) => (
+                <BoardCard key={board.id} board={board} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       <WorkspaceGroup
         title="my-workspaces"
         workspaces={groupedWorkspaces.owner}

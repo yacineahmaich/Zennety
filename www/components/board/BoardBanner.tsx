@@ -7,7 +7,6 @@ import {
   ChevronsRightIcon,
   KanbanIcon,
   SettingsIcon,
-  StarIcon,
   UserIcon,
   UserPlusIcon,
 } from "lucide-react";
@@ -15,6 +14,7 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useState } from "react";
 import InviteMembers from "../shared/InviteMembers";
+import PinButton from "../shared/PinButton";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button, buttonVariants } from "../ui/button";
 
@@ -63,9 +63,14 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
           </h2>
         )}
 
-        <button className="border-r pr-2">
-          <StarIcon size={16} />
-        </button>
+        <div className="border-r pr-2">
+          <PinButton
+            resourceType="board"
+            resourceId={board?.id}
+            pinned={board?.pinned}
+          />
+        </div>
+
         <div className="flex items-center">
           <div className="flex select-none items-center -space-x-2 hover:space-x-0">
             {members?.slice(0, 3).map((member) => (

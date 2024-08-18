@@ -21,6 +21,7 @@ declare namespace App.Models {
     visibility: "Public" | "Private";
     members?: Member[];
     statuses?: Status[];
+    pinned: boolean;
   }
   interface Member {
     id: number;
