@@ -110,5 +110,14 @@ class WorkspaceController extends Controller
 
         $workspace->addMediaFromRequest('avatar')
             ->toMediaCollection('avatar');
+
+        return response()->noContent();
+    }
+
+    public function deleteAvatar(Request $request, Workspace $workspace)
+    {
+        $workspace->getFirstMedia('avatar')->deleteOrFail();
+
+        return response()->noContent();
     }
 }
