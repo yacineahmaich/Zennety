@@ -128,5 +128,7 @@
   "get-started": "Get Started",
   "hero-subtitle": "Seamless collaboration and organization at your fingertips.",
   "update-workspace-informations": "Update Workspace Informations",
-  "pinned": "Pinned"
+  "pinned": "Pinned",
+  "upload-photo": "Upload a photo...",
+  "remove-photo": "Remove photo"
 }

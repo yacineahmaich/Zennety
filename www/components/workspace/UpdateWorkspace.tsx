@@ -25,9 +25,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useUpdateWorkspace } from "@/services/workspace";
+import {
+  useDeleteWorkspaceAvatar,
+  useSetWorkspaceAvatar,
+  useUpdateWorkspace,
+} from "@/services/workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PenLineIcon } from "lucide-react";
+import { PenLineIcon, UploadIcon, XSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -49,12 +53,14 @@ const UpdateWorkspace = ({
   const [open, setOpen] = useState(false);
 
   const { updateWorkspace, isLoading } = useUpdateWorkspace();
+  const { setWorkspaceAvatar } = useSetWorkspaceAvatar();
+  const { deleteWorkspaceAvatar } = useDeleteWorkspaceAvatar();
 
   const form = useForm<UpdateWorkspace>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: workspace?.name,
-      description: workspace?.description,
+      description: workspace?.description ?? "",
     },
   });
 
@@ -95,13 +101,27 @@ const UpdateWorkspace = ({
                 </DialogHeader>
 
                 <div className="flex flex-col items-center gap-2">
-                  <label htmlFor="workspace-logo" className="relative">
-                    <input id="workspace-logo" type="file" hidden />
+                  <div className="relative">
+                    <input
+                      id="workspace-logo"
+                      type="file"
+                      hidden
+                      onChange={(e) => {
+                        const avatar = e.target.files?.[0];
+                        if (avatar) {
+                          setWorkspaceAvatar({
+                            workspaceId: workspace.id,
+                            avatar,
+                          });
+                        }
+                      }}
+                    />
                     <div className="h-24 w-24 rounded-xl bg-accent shadow-xl">
                       <img
-                        src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
-                        alt="logo"
-                        className="h-full w-full rounded-[inherit]"
+                        // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+                        src={workspace.avatar}
+                        alt={workspace.name}
+                        className="h-full w-full rounded-[inherit] object-cover"
                       />
                     </div>
                     <DropdownMenu modal={false}>
@@ -113,23 +133,25 @@ const UpdateWorkspace = ({
                       <DropdownMenuContent>
                         <DropdownMenuItem
                           className="flex items-center gap-2"
-                          // onClick={toggleCollapsed}
+                          asChild
                         >
-                          {/* <ChevronsRightLeftIcon size={16} /> */}
-                          {/* {t("collapse")} */}
-                          Upload a logo..
+                          <label htmlFor="workspace-logo">
+                            <UploadIcon size={14} />
+                            {t("upload-photot")}
+                          </label>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2"
-                          // onClick={() => setEditing(true)}
+                          onClick={() =>
+                            deleteWorkspaceAvatar({ workspaceId: workspace.id })
+                          }
                         >
-                          {/* <Edit3Icon size={16} />
-                          {t("rename")} */}
-                          Remove logo
+                          <XSquareIcon size={14} />
+                          {t("remove-photot")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </label>
+                  </div>
                   <FormDescription>
                     This is the visual identity that represents your workspace.
                   </FormDescription>

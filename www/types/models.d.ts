@@ -12,6 +12,7 @@ declare namespace App.Models {
     visibility: "Public" | "Private";
     members?: Member[];
     boards?: Board[];
+    avatar: string;
   }
   interface Board {
     id: number;

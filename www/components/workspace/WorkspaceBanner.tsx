@@ -21,8 +21,9 @@ const WorkspaceBanner = ({
           <div className="flex items-center gap-2">
             <div className="h-20 w-20 rounded-xl bg-accent shadow-xl">
               <img
-                src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
-                alt="logo"
+                // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+                src={workspace.avatar}
+                alt={workspace.name}
                 className="h-full w-full rounded-[inherit]"
               />
             </div>
