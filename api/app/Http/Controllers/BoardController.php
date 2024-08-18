@@ -57,6 +57,8 @@ class BoardController extends Controller
      */
     public function update(UpdateBoardRequest $request, Workspace $workspace, Board $board)
     {
+        $this->authorize('update', $board);
+
         $updatedBoard = tap($board)->update($request->validated());
 
         return BoardResource::make($updatedBoard);

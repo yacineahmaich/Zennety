@@ -58,7 +58,7 @@ const Hero = () => {
 
 const ShinyStar = () => (
   <svg width="40" height="40" viewBox="0 0 200 200">
-    <g clip-path="url(#clip0_118_208)">
+    <g clipPath="url(#clip0_118_208)">
       <path
         d="M100 200C97.1048 105.262 94.738 102.91 0 100C94.738 97.1048 97.0903 94.738 100 0C102.895 94.738 105.262 97.0903 200 100C105.262 102.91 102.91 105.233 100 200Z"
         fill="url(#paint0_linear_118_208)"
@@ -73,8 +73,8 @@ const ShinyStar = () => (
         y2="179.5"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="gray" />
-        <stop offset="1" stop-color="gray" />
+        <stop stopColor="gray" />
+        <stop offset="1" stopColor="gray" />
       </linearGradient>
       <clipPath id="clip0_118_208">
         <rect width="200" height="200" fill="white" />
