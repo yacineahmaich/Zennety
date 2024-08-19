@@ -130,5 +130,15 @@
   "update-workspace-informations": "Update Workspace Informations",
   "pinned": "Pinned",
   "upload-photo": "Upload a photo...",
-  "remove-photo": "Remove photo"
+  "remove-photo": "Remove photo",
+  "profile-infomations": "Profile informations",
+  "profile-name-desc": "As you'd like it to appear on your profile.",
+  "profile-email-desc": "This will be used for account-related notifications and password recovery.",
+  "profile-bio-desc": "Feel free to include your interests, professional background, or anything you'd like others to know.",
+  "update-profile": "Update profile",
+  "profile-picture": "Profile picture",
+  "update-password": "Update password",
+  "old-password": "Old Password",
+  "new-password": "New password",
+  "confirm-new-password": "Confirm new password"
 }

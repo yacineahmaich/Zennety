@@ -137,7 +137,7 @@ const UpdateWorkspace = ({
                         >
                           <label htmlFor="workspace-logo">
                             <UploadIcon size={14} />
-                            {t("upload-photot")}
+                            {t("upload-photo")}
                           </label>
                         </DropdownMenuItem>
                         <DropdownMenuItem
@@ -147,7 +147,7 @@ const UpdateWorkspace = ({
                           }
                         >
                           <XSquareIcon size={14} />
-                          {t("remove-photot")}
+                          {t("remove-photo")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

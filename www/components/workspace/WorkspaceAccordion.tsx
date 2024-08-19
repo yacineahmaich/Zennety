@@ -27,7 +27,7 @@ const WorkspaceAccordion = ({
   const { t } = useTranslation("common");
 
   const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);
-  const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
+  const canUpdateWorkspace = useCan("update", "workspace", workspace?.id);
 
   const canViewSettings = isOwner || canUpdateWorkspace;
 
@@ -39,9 +39,10 @@ const WorkspaceAccordion = ({
         <div className="flex items-center gap-2">
           <div className="h-7 w-7 rounded bg-accent shadow-xl">
             <img
-              src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+              // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+              src={workspace.avatar}
               alt={workspace.name}
-              className="h-full w-full rounded-[inherit]"
+              className="h-full w-full rounded-[inherit] object-cover"
             />
           </div>
           <div className="text-xs">

@@ -1,15 +1,19 @@
 import { AppLayout } from "@/components/layouts";
+// import UpdatePasswordForm from "@/components/profile/UpdatePasswordForm";
+import UpdateProfileInfo from "@/components/profile/UpdateProfileInfo";
+// import UpdateProfilePicture from "@/components/profile/UpdateProfilePicture";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
-import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ProfilePage: NextPageWithLayout = () => {
-  const { t } = useTranslation("common");
-
   return (
-    <div className="min-h-screen">
-      <h1 className="text-xl font-semibold">Profile / Yacine Ahmaich</h1>
+    <div className="flex gap-10">
+      <div className="w-[450px] space-y-8">
+        <UpdateProfileInfo />
+        {/* <UpdatePasswordForm /> */}
+      </div>
+      <div>{/* <UpdateProfilePicture /> */}</div>
     </div>
   );
 };
