@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'bio' => $this->bio,
             'memberships' => MembershipResource::collection($this->whenLoaded('memberships'))
         ];
     }
