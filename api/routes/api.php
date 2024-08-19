@@ -27,6 +27,7 @@ require __DIR__ . '/auth.php';
 Route::middleware(['auth:sanctum'])->group(function () {
     // User
     Route::get('/user', [UserController::class, 'me']);
+    Route::put('/user', [UserController::class, 'update']);
     Route::get('/users/{search}', [UserController::class, 'search']);
     Route::put('/pins/{type}/{id}', [UserController::class, 'pin']);
 

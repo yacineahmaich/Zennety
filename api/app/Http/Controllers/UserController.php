@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class UserController extends Controller
 
         return UserResource::make($user->load(['memberships']));
     }
+
     public function search($search)
     {
         $users = User::query()
@@ -26,6 +28,17 @@ class UserController extends Controller
             ->get();
 
         return UserResource::collection($users);
+    }
+
+    public function update(UpdateProfileRequest $request) {
+        /**
+         * @var \App\Models\User
+         */
+        $user = auth()->user();
+
+        $user->update($request->validated());
+
+        return response()->noContent();
     }
 
     public function pin(Request $request, $type, $id)
