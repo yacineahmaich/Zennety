@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form";
 import { components } from "react-select";
 import SelectAsync from "react-select/async";
 import { z } from "zod";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -36,6 +35,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import UserAvatar from "./UserAvatar";
 
 const formSchema = z.object({
   users: z
@@ -164,23 +164,24 @@ const InviteMembers = ({
                         Option: (props) => {
                           //@ts-ignore
                           const value = props.value;
-                          const { name, email } = value.user as App.Models.User;
+                          const user = value.user as App.Models.User;
+
+                          if (!user) return;
+
                           return (
                             <div
                               className="flex cursor-pointer items-center gap-2 p-2 text-xs font-medium transition-colors hover:bg-accent focus:bg-accent"
                               {...props}
                               onClick={() => props.selectOption(value)}
                             >
-                              <Avatar className="h-8 w-8 object-cover">
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>
-                                  {name.slice(0, 2).toUpperCase()}
-                                </AvatarFallback>
-                              </Avatar>
+                              <UserAvatar user={value.user} />
+
                               <div className="divide-x">
-                                <span className="pr-2 uppercase">{name}</span>
+                                <span className="pr-2 uppercase">
+                                  {user.name}
+                                </span>
                                 <span className="pl-2 text-muted-foreground">
-                                  {email}
+                                  {user.email}
                                 </span>
                               </div>
                             </div>

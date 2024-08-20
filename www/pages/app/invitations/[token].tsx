@@ -1,5 +1,5 @@
 import { AppLayout } from "@/components/layouts";
-import { Avatar } from "@/components/ui/avatar";
+import UserAvatar from "@/components/shared/UserAvatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { route } from "@/lib/routes";
@@ -9,7 +9,6 @@ import {
   useRejectInvitation,
 } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { CheckIcon, XIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
@@ -70,10 +69,11 @@ const AcceptInvitation: NextPageWithLayout = () => {
     <div className="flex justify-center">
       <Card className="space-y-4 p-8">
         <div className="flex items-center gap-4">
-          <Avatar className="h-9 w-9 ring-2 ring-foreground ring-offset-2 ring-offset-background transition-all hover:shadow-xl">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>{invitation?.invitedBy?.name}</AvatarFallback>
-          </Avatar>
+          <UserAvatar
+            user={invitation.invitedBy}
+            className="h-9 w-9 ring-foreground ring-offset-2 ring-offset-background"
+          />
+
           <h2 className="text-sm">
             {invitation?.invitedBy?.name} {t("invited-you-to-join")}
             <span className="ml-1 rounded-lg bg-accent p-1 font-medium">

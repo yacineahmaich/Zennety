@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Input } from "../ui/input";
@@ -26,6 +25,7 @@ import {
 } from "../ui/select";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import Loader from "./Loader";
+import UserAvatar from "./UserAvatar";
 
 const Members = ({
   resourceType,
@@ -125,10 +125,7 @@ const Member = ({
   return (
     <Card className="flex items-center justify-between gap-2 p-2">
       <div className="flex items-center gap-2">
-        <Avatar>
-          <AvatarImage src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png" />
-          <AvatarFallback>{member.profile.name}</AvatarFallback>
-        </Avatar>
+        <UserAvatar user={member.profile} className="h-10 w-10" />
         <div className="text-xs">
           <h2 className="font-semibold">{member.profile.name}</h2>
           <p>{member.profile.email}</p>

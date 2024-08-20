@@ -68,8 +68,8 @@ declare namespace App.Models {
     invitedEmail: string;
     role: string;
     message: string;
-    invitedBy?: User;
-    invited?: User;
+    invitedBy: User;
+    invited: User;
     expiresAt: string;
   }
   interface Activity<T extends Record<string, unknown>> {

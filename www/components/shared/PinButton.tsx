@@ -15,7 +15,7 @@ const PinButton = ({
   return (
     <button
       onClick={() => pin({ resourceType, resourceId })}
-      className="transition-transform active:scale-90"
+      className="flex items-center justify-center transition-transform active:scale-90"
     >
       <StarIcon
         size={16}

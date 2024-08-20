@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useState } from "react";
 import InviteMembers from "../shared/InviteMembers";
 import PinButton from "../shared/PinButton";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import UserAvatar from "../shared/UserAvatar";
 import { Button, buttonVariants } from "../ui/button";
 
 const BoardBanner = ({ board }: { board: App.Models.Board }) => {
@@ -72,20 +72,12 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
         </div>
 
         <div className="flex items-center">
-          <div className="flex select-none items-center -space-x-2 hover:space-x-0">
-            {members?.slice(0, 3).map((member) => (
-              <Avatar
-                key={member.id}
-                title={member.profile.name}
-                className="h-8 w-8 transition-all hover:shadow-xl"
-              >
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt={member.profile.name}
-                />
-                <AvatarFallback>{member.profile.name}</AvatarFallback>
-              </Avatar>
-            ))}
+          <div className="flex select-none items-center -space-x-2">
+            {members
+              ?.slice(0, 3)
+              .map((member) => (
+                <UserAvatar key={member.id} user={member.profile} />
+              ))}
           </div>
           {members.length > 3 && (
             <Link href={route("board/members", board.workspaceId, board.id)}>
