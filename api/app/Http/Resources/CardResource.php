@@ -23,7 +23,7 @@ class CardResource extends JsonResource
 
         foreach($activities as $activity) {
             if(!in_array($activity->causer->id, array_keys($participants))) {
-                $participants[$activity->causer->id] = $activity->causer;
+                $participants[$activity->causer->id] = new UserResource($activity->causer);
             }
         }
 
