@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -72,5 +74,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $query->where('name', 'like', '%' . $search . '%')
             ->orWhere('email', 'like', '%' . $search . '%');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            ->useFallbackUrl("https://ui-avatars.com/api/?background=000&color=fff&font-size=0.3&bold=true&name={$this->name}")
+            ->singleFile();
     }
 }

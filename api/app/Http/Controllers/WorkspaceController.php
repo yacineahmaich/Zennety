@@ -116,7 +116,7 @@ class WorkspaceController extends Controller
 
     public function deleteAvatar(Request $request, Workspace $workspace)
     {
-        $workspace->getFirstMedia('avatar')->deleteOrFail();
+        $workspace->getFirstMedia('avatar')?->delete();
 
         return response()->noContent();
     }

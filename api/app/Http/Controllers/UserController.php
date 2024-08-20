@@ -82,4 +82,33 @@ class UserController extends Controller
 
         return response()->noContent();
     }
+
+    public function setAvatar(Request $request)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = auth()->user();
+
+        $request->validate([
+            "avatar" => ["required", "image", "max:1024"]
+        ]);
+
+        $user->addMediaFromRequest('avatar')
+            ->toMediaCollection('avatar');
+
+        return response()->noContent();
+    }
+
+    public function deleteAvatar()
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = auth()->user();
+
+        $user->getFirstMedia('avatar')?->deleteOrFail();
+
+        return response()->noContent();
+    }
 }
