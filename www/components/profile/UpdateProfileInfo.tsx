@@ -20,7 +20,7 @@ import { toast } from "../ui/use-toast";
 const formSchema = z.object({
   name: z.string().max(100),
   email: z.string().email(),
-  bio: z.string().max(255).optional(),
+  bio: z.string().max(100).optional(),
 });
 
 export type UpdateWorkspace = z.infer<typeof formSchema>;

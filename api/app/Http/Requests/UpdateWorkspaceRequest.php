@@ -26,8 +26,7 @@ class UpdateWorkspaceRequest extends FormRequest
         return [
             'name' => [
                 'sometimes',
-                'min:4',
-                'max:25',
+                'max:100',
                 Rule::unique('workspaces', 'name')
                     ->ignore($this->workspace)
             ],

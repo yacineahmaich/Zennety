@@ -11,6 +11,8 @@ import { ThemeProvider } from "next-themes";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
+import NextTopLoader from "nextjs-toploader";
+
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // prevent creating new query client on re-renders
   const [_queryClient] = useState(queryClient);
@@ -19,6 +21,12 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return (
     <ErrorBoundary>
+      <NextTopLoader
+        showSpinner={false}
+        color="#000"
+        shadow={false}
+        speed={600}
+      />
       <QueryClientProvider client={_queryClient}>
         <ThemeProvider
           attribute="class"
