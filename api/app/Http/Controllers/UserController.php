@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -30,13 +32,32 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function update(UpdateProfileRequest $request) {
+    public function update(UpdateProfileRequest $request)
+    {
         /**
          * @var \App\Models\User
          */
         $user = auth()->user();
 
         $user->update($request->validated());
+
+        return response()->noContent();
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        /**
+         * @var \App\Models\User
+         */
+        $user = auth()->user();
+
+        $oldPassword = $request->validated('old_password');
+
+        if (!Hash::check($oldPassword, $user->password)) {
+            return response()->json(["message" => "Old password incorrect"], 402);
+        }
+
+        $user->update(["password" => Hash::make($request->new_password)]);
 
         return response()->noContent();
     }
