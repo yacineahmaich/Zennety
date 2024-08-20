@@ -3,9 +3,11 @@ import { ResourceType } from "@/types/helpers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const updateProfile = async (data: Record<string, unknown>) => {
-  const response = await api.put(`/user`, data);
+  await api.put("/user", data);
+};
 
-  return response.data.data;
+const updatePassword = async (data: Record<string, unknown>) => {
+  await api.put("/user/password", data);
 };
 
 const pin = async ({
@@ -37,6 +39,24 @@ export const useUpdateProfile = () => {
 
   return {
     updateProfile: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useUpdatePassword = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updatePassword,
+    onSuccess() {
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+
+  return {
+    updatePassword: mutate,
     isLoading: isPending,
   };
 };
