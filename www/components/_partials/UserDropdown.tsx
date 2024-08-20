@@ -1,4 +1,3 @@
-import app from "@/lib/app";
 import { useLogout, useUser } from "@/services";
 import { SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
@@ -25,11 +24,14 @@ const UserDropdown = () => {
           className="h-auto select-none overflow-hidden p-2"
         >
           <div className="mt-auto flex items-center gap-4 py-2">
-            <img
-              src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
-              alt={app.name}
-              className="h-7"
-            />
+            <div className="h-8 w-8 rounded  bg-accent shadow-xl">
+              <img
+                // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
+                src={user.avatar}
+                alt={user.name}
+                className="h-full w-full rounded-[inherit] object-cover"
+              />
+            </div>
             <div className="line-clamp-1 flex flex-col items-start">
               <span>{user?.name}</span>
               <small className="text-xs">{user?.email}</small>

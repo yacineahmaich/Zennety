@@ -4,6 +4,7 @@ declare namespace App.Models {
     name: string;
     email: string;
     bio: string;
+    avatar: string;
     memberships: Member[];
   }
   interface Workspace {

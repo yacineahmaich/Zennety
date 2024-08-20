@@ -20,6 +20,22 @@ const pin = async ({
   await api.put(`/pins/${resourceType}/${resourceId}`);
 };
 
+const setProfileAvatar = async ({ avatar }: { avatar: File }) => {
+  await api.post(
+    "/user/avatar",
+    { avatar },
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+};
+
+const deleteProfileAvatar = async () => {
+  await api.delete("/user/avatar");
+};
+
 /**
  * ==========================================
  * ========= MUTATIONS ======================
@@ -80,5 +96,43 @@ export const usePin = () => {
   return {
     pin: mutate,
     isLoading: isPending,
+  };
+};
+
+export const useSetProfileAvatar = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: setProfileAvatar,
+    onSuccess() {
+      return queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+
+  return {
+    setProfileAvatar: mutate,
+    isLoading: isPending,
+    variables,
+  };
+};
+
+export const useDeleteProfileAvatar = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, variables } = useMutation({
+    mutationFn: deleteProfileAvatar,
+    onSuccess() {
+      return queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
+    },
+  });
+
+  return {
+    deleteProfileAvatar: mutate,
+    isLoading: isPending,
+    variables,
   };
 };
