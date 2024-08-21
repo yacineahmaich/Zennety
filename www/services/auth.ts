@@ -1,19 +1,28 @@
-import { api, csrf } from "@/lib/api";
+import { api } from "@/lib/api";
+import app from "@/lib/app";
 import { route } from "@/lib/routes";
 import { UserLogin } from "@/pages/auth/login";
 import { UserRegister } from "@/pages/auth/register";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
-const register = async (data: UserRegister): Promise<App.Models.User> => {
-  await csrf();
+const register = async (
+  data: UserRegister
+): Promise<{
+  user: App.Models.User;
+  token: string;
+}> => {
   const response = await api.post("/register", data);
 
   return response.data;
 };
 
-const login = async (data: UserLogin): Promise<App.Models.User> => {
-  await csrf();
+const login = async (
+  data: UserLogin
+): Promise<{
+  user: App.Models.User;
+  token: string;
+}> => {
   const response = await api.post("/login", data);
 
   return response.data;
@@ -47,7 +56,7 @@ export const useUser = () => {
     queryFn: () => getUser(),
     retry: false,
     staleTime: Infinity,
-    throwOnError: false
+    throwOnError: false,
   });
 
   return {
@@ -67,7 +76,8 @@ export const useRegister = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: register,
-    onSuccess(user) {
+    onSuccess({ user, token }) {
+      localStorage.setItem(app.tokenName, token);
       queryClient.setQueryData(["user"], user);
       router.replace(route("app"));
     },
@@ -84,7 +94,8 @@ export const useLogin = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: login,
-    onSuccess() {
+    onSuccess({ user, token }) {
+      localStorage.setItem(app.tokenName, token);
       window.location.replace(
         (router.query.callback as string) || route("app")
       );
@@ -101,6 +112,7 @@ export const useLogout = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: logout,
     onSuccess() {
+      localStorage.removeItem(app.tokenName);
       window.location.replace(route("login"));
     },
   });

@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import app from "./app";
 
 export const api = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`,
@@ -6,13 +7,15 @@ export const api = axios.create({
     "X-Requested-With": "XMLHttpRequest",
     Accept: "application/json",
   },
-  withCredentials: true,
+  // withCredentials: true,
 });
 
-export const csrf = () =>
-  api.get("/sanctum/csrf-cookie", {
-    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
-  });
+api.interceptors.request.use((request) => {
+  const token = localStorage.getItem(app.tokenName);
+  if (token) request.headers.Authorization = `Bearer ${token}`;
+
+  return request;
+});
 
 api.interceptors.response.use(
   (response) => response,
