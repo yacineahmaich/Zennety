@@ -19,7 +19,7 @@ class CommentResource extends JsonResource
             'content' => $this->properties["comment"],
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
-            'causer' => new UserResource($this->causer)
+            'causer' => UserResource::make($this->causer)
         ];
     }
 }
