@@ -35,6 +35,7 @@ import { PenLineIcon, UploadIcon, XSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -72,6 +73,11 @@ const UpdateWorkspace = ({
       },
       {
         onSuccess() {
+          toast.success(t("success"), {
+            description: t("updated", {
+              resource: t("workspace"),
+            }),
+          });
           setOpen(false);
         },
       }
@@ -118,7 +124,6 @@ const UpdateWorkspace = ({
                     />
                     <div className="h-24 w-24 rounded-xl bg-accent shadow-xl">
                       <img
-                        // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
                         src={workspace.avatar}
                         alt={workspace.name}
                         className="h-full w-full rounded-[inherit] object-cover"

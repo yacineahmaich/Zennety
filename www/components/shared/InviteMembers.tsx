@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { components } from "react-select";
 import SelectAsync from "react-select/async";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import {
@@ -86,6 +87,9 @@ const InviteMembers = ({
       },
       {
         onSuccess() {
+          toast.success(t("success"), {
+            description: t("invitation-sent"),
+          });
           setOpen(false);
         },
       }

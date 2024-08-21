@@ -140,5 +140,13 @@
   "update-password": "Update password",
   "old-password": "Old Password",
   "new-password": "New password",
-  "confirm-new-password": "Confirm new password"
+  "confirm-new-password": "Confirm new password",
+  "status": "Status",
+  "card": "Card",
+  "invitation": "Invitation",
+  "invitation-sent": "Invitation sent",
+  "success": "Success",
+  "created": "{{resource}} created",
+  "updated": "{{resource}} updated",
+  "deleted": "{{resource}} deleted"
 }

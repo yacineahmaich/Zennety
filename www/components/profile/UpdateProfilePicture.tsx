@@ -4,6 +4,7 @@ import {
   useUser,
 } from "@/services";
 import { useTranslation } from "next-i18next";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 
 const UpdateProfilePicture = () => {
@@ -33,9 +34,20 @@ const UpdateProfilePicture = () => {
         onChange={(e) => {
           const avatar = e.target.files?.[0];
           if (avatar) {
-            setProfileAvatar({
-              avatar,
-            });
+            setProfileAvatar(
+              {
+                avatar,
+              },
+              {
+                onSuccess() {
+                  toast.success(t("success"), {
+                    description: t("updated", {
+                      resource: t("profile-picture"),
+                    }),
+                  });
+                },
+              }
+            );
           }
         }}
       />
@@ -43,7 +55,19 @@ const UpdateProfilePicture = () => {
         <Button size="sm" variant="link">
           <label htmlFor="profile-avatar">{t("upload-photo")}</label>
         </Button>
-        <Button size="sm" variant="link" onClick={() => deleteProfileAvatar()}>
+        <Button
+          size="sm"
+          variant="link"
+          onClick={() =>
+            deleteProfileAvatar(undefined, {
+              onSuccess() {
+                toast.success(t("success"), {
+                  description: t("updated", { resource: t("profile-picture") }),
+                });
+              },
+            })
+          }
+        >
           {t("remove-photo")}
         </Button>
       </div>

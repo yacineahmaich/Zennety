@@ -1,6 +1,5 @@
 import { Layout } from "@/components/layouts";
 import ErrorBoundary from "@/components/shared/ErrorBoundary";
-import { Toaster } from "@/components/ui/toaster";
 import { queryClient } from "@/lib/react-query";
 import "@/styles/globals.css";
 import { AppPropsWithLayout } from "@/types/next";
@@ -11,6 +10,7 @@ import { ThemeProvider } from "next-themes";
 import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
+import { Toaster } from "@/components/ui/sonner";
 import NextTopLoader from "nextjs-toploader";
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {

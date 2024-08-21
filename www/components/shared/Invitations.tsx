@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Input } from "../ui/input";
@@ -142,7 +143,20 @@ const Invitation = ({
         {canUpdate && (
           <ConfirmationDialog
             desc={t("delete-invitation-desc")}
-            onConfirm={() => deleteInvitation({ token: invitation.token })}
+            onConfirm={() =>
+              deleteInvitation(
+                { token: invitation.token },
+                {
+                  onSuccess() {
+                    toast.success(t("success"), {
+                      description: t("deleted", {
+                        resource: t("invitation"),
+                      }),
+                    });
+                  },
+                }
+              )
+            }
             openTrigger={
               <Button size="sm" variant="destructive" className="p-2">
                 <TrashIcon size={16} />

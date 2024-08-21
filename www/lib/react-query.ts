@@ -1,20 +1,18 @@
-import { toast } from "@/components/ui/use-toast";
 import { QueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { getFirstApiErrorMsg } from "./helpers";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: process.env.NEXT_PUBLIC_ENV === "production",
-      throwOnError: true
+      throwOnError: true,
     },
     mutations: {
       retry: false,
       onError(error: ApiError) {
         const errMsg = getFirstApiErrorMsg(error);
-        toast({
-          variant: "destructive",
-          title: "Ooops! Something went wrong.",
+        toast.error("Ooops! Something went wrong.", {
           description: errMsg,
         });
       },

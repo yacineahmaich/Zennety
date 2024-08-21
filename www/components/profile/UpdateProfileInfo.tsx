@@ -2,6 +2,7 @@ import { useUpdateProfile, useUser } from "@/services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import {
@@ -15,7 +16,6 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().max(100),
@@ -43,7 +43,9 @@ const UpdateProfileInfo = () => {
   const onSubmit = (data: UpdateWorkspace) => {
     updateProfile(data, {
       onSuccess() {
-        toast({ title: "Updated" });
+        toast.success(t("success"), {
+          description: t("updated", { resource: t("profile-infomations") }),
+        });
       },
     });
   };
