@@ -24,7 +24,7 @@ class UpdatePasswordRequest extends FormRequest
     {
         return [
             'old_password' => ['required', 'string'],
-            'new_password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'new_password' => ['required', 'confirmed', 'different:old_password', Rules\Password::defaults()],
         ];
     }
 }
