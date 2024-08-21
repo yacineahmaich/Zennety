@@ -1,12 +1,10 @@
+import UserAvatar from "@/components/shared/UserAvatar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
 interface CommentItemProps {
   pending?: boolean;
-  comment: App.Models.Activity<{
-    type: string;
-    comment: string;
-  }>;
+  comment: App.Models.Comment;
 }
 
 const CommentItem = ({ comment, pending }: CommentItemProps) => {
@@ -19,19 +17,16 @@ const CommentItem = ({ comment, pending }: CommentItemProps) => {
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img
-            className="h-8 w-8 rounded object-cover"
-            src="https://avatars.githubusercontent.com/u/9768489?s=64&v=4"
-          />
+          <UserAvatar user={comment.causer} className="rounded" />
           <div className="flex flex-col">
             <h6>{comment.causer?.name}</h6>
             <small className="text-accent-foreground">
-              {format(new Date(comment?.created_at), "d MMMM yyyy H:mm")}
+              {format(new Date(comment?.createdAt), "d MMMM yyyy H:mm")}
             </small>
           </div>
         </div>
       </div>
-      <p>{comment.properties?.comment}</p>
+      <p>{comment.content}</p>
     </div>
   );
 };

@@ -3,10 +3,10 @@ import { useUser } from "@/services";
 import { LogInIcon, UserRoundIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import Logo from "./Logo";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import UserAvatar from "./UserAvatar";
 
 const Header = () => {
   const { user, isLoading } = useUser();
@@ -27,10 +27,11 @@ const Header = () => {
               {user ? (
                 <Button asChild variant="outline" size="sm">
                   <Link href={route("app")}>
-                    <Avatar className="h-6 w-6 transition-all hover:shadow-xl">
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>{user.name}</AvatarFallback>
-                    </Avatar>
+                    <UserAvatar
+                      user={user}
+                      showCard={false}
+                      className="h-6 w-6"
+                    />
                     <span className="ml-2">{user.name}</span>
                   </Link>
                 </Button>

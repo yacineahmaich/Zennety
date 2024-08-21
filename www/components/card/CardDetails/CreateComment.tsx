@@ -1,3 +1,4 @@
+import UserAvatar from "@/components/shared/UserAvatar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -7,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { useUser } from "@/services";
 import { useCreateCardComment } from "@/services/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -36,6 +38,7 @@ const CreateComment = ({
   card,
   onCancel,
 }: CreateCommentProps) => {
+  const { user } = useUser();
   const { t } = useTranslation("common");
 
   const {
@@ -73,10 +76,7 @@ const CreateComment = ({
               <FormControl>
                 <div className="mb-2 space-y-2 border-b p-3 text-sm">
                   <div className="flex gap-2">
-                    <img
-                      className="h-8 w-8 rounded object-cover"
-                      src="https://avatars.githubusercontent.com/u/9768489?s=64&v=4"
-                    />
+                    <UserAvatar user={user} className="rounded" />
                     <div className="flex flex-col">
                       <h6>Yacine</h6>
                       <small className="text-accent-foreground">

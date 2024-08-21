@@ -88,14 +88,12 @@ const getCardComments = async ({
   boardId: number;
   statusId: number;
   cardId: number;
-}): Promise<App.Models.Activity<{ type: string; comment: string }>[]> => {
+}): Promise<App.Models.Comment[]> => {
   const response = await api.get(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}/comments`
   );
 
-  console.log(response.data);
-
-  return response.data;
+  return response.data.data;
 };
 
 const reorderCards = async ({

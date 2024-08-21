@@ -79,4 +79,10 @@ declare namespace App.Models {
     properties: T;
     causer: User;
   }
+  interface Comment {
+    id: number;
+    content: string;
+    causer: User;
+    createdAt: string;
+  }
 }

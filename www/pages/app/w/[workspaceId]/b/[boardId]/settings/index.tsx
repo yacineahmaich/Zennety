@@ -150,7 +150,7 @@ const DeleteBoard = ({ board }: { board: App.Models.Board }) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t("confirmation")}</AlertDialogTitle>
-            <AlertDialogDescription className="space-y-4">
+            <AlertDialogDescription className="space-y-4 text-foreground">
               <div>
                 This will permanently delete the
                 <span className="mx-2 rounded bg-accent px-1 font-semibold">
