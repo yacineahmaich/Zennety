@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCardCommentRequest;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
 use App\Http\Resources\CardResource;
+use App\Http\Resources\CommentResource;
 use App\Models\Board;
 use App\Models\Card;
 use App\Models\Status;
@@ -78,7 +79,7 @@ class CardController extends Controller
             ->latest()
             ->get();
 
-        return response()->json($comments);
+        return CommentResource::collection($comments);
     }
 
     /**
