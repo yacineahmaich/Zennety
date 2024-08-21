@@ -84,8 +84,8 @@ ForgotPassword.getLayout = (page) => {
   return (
     <GuestLayout>
       <AuthLayout
-        heading={"reset-password"}
-        description={"reset-password-message"}
+        heading={"forgot-password"}
+        description={"forgot-password-message"}
       >
         {page}
       </AuthLayout>

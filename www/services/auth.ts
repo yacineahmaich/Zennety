@@ -2,6 +2,7 @@ import { api } from "@/lib/api";
 import app from "@/lib/app";
 import { route } from "@/lib/routes";
 import { UserLogin } from "@/pages/auth/login";
+import { ResetPassword } from "@/pages/auth/password-reset/[token]";
 import { UserRegister } from "@/pages/auth/register";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -43,6 +44,10 @@ const resendVerificationEmail = async () => {
 
 const sendResetPasswordEmail = async ({ email }: { email: string }) => {
   await api.post("/forgot-password", { email });
+};
+
+const resetPassword = async (data: ResetPassword) => {
+  await api.post("/reset-password", data);
 };
 
 /**
@@ -141,6 +146,24 @@ export const useSendResetPasswordEmail = () => {
 
   return {
     sendResetPasswordEmail: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useResetPassword = () => {
+  const router = useRouter();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: resetPassword,
+    onSuccess(_, { email }) {
+      window.location.replace(
+        (router.query.callback as string) || route("login", `&email=${email}`)
+      );
+    },
+  });
+
+  return {
+    resetPassword: mutate,
     isLoading: isPending,
   };
 };

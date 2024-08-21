@@ -18,6 +18,7 @@ import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -30,11 +31,17 @@ const formSchema = z.object({
 export type UserLogin = z.infer<typeof formSchema>;
 
 const Login: NextPageWithLayout = () => {
+  const router = useRouter();
   const { t } = useTranslation();
   const { login, isLoading } = useLogin();
 
+  const { email } = router.query as { email: string };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      email,
+    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
