@@ -16,8 +16,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
+import { route } from "@/lib/routes";
 import { useSendResetPasswordEmail } from "@/services";
-import { Loader2Icon, SendIcon } from "lucide-react";
+import { Loader2Icon, LogInIcon, SendIcon } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -28,13 +32,51 @@ const ForgotPassword: NextPageWithLayout = () => {
   const { sendResetPasswordEmail, isLoading } = useSendResetPasswordEmail();
   const { t } = useTranslation("common");
 
+  const [sent, setSent] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   function onSubmit({ email }: z.infer<typeof formSchema>) {
-    sendResetPasswordEmail({ email });
+    sendResetPasswordEmail(
+      { email },
+      {
+        onSuccess() {
+          setSent(true);
+          toast.success(t("success"), {
+            description: t("reset-password-email-sent", { email }),
+          });
+        },
+      }
+    );
   }
+
+  if (sent) {
+    return (
+      <div className="mt-4 flex justify-center">
+        <Button
+          size="sm"
+          variant="secondary"
+          asChild
+          className="flex items-center gap-2"
+        >
+          <Link href={route("login")}>
+            <LogInIcon size={18} />
+            <span>{t("back-to-login")}</span>
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
+  // if (sent) {
+  //   return (
+  //     <div className="text-sm p-3 bg-accent rounded whitespace-nowrap font-semibold w-fit">
+  //       <p>We've sent a password reset link to your email address.</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <Form {...form}>

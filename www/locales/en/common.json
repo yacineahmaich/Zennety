@@ -20,7 +20,7 @@
   "verify-email-message": "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
   "resend-verification-email": "Resend Verification Email",
   "login-with-diffrent-account": "Log in with diffrent account",
-  "reset-password": "Reset your password",
+  "reset-password": "Reset password",
   "forgot-password-message": "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
   "reset-password-message": "You're almost there! Enter your new password below to complete the reset process. Make sure it's strong and unique to keep your account secure.",
   "light": "Light",
@@ -149,5 +149,7 @@
   "success": "Success",
   "created": "{{resource}} created",
   "updated": "{{resource}} updated",
-  "deleted": "{{resource}} deleted"
+  "deleted": "{{resource}} deleted",
+  "reset-password-email-sent": "Reset password email sent at {{email}}",
+  "back-to-login": "Back to login page"
 }
