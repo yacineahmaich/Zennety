@@ -83,7 +83,7 @@ const WorkspaceGroup = ({
         <span>{t(title)}</span>
       </h2>
 
-      <div className="ml-3 border-l border-accent pb-5">
+      <div className="border-accent pb-5 sm:ml-3 sm:border-l">
         {workspaces.map((workspace) => (
           <WorkspaceSection key={workspace.id} workspace={workspace} />
         ))}
@@ -105,10 +105,10 @@ const WorkspaceSection = ({
   const canViewSettings = isOwner || canUpdateWorkspace;
 
   return (
-    <div key={workspace.id} className="p-4">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="-ml-4 flex items-center gap-1 text-sm font-semibold tracking-tight text-muted-foreground">
-          <span className="h-px w-4 bg-accent"></span>
+    <div key={workspace.id} className="pt-2 sm:p-4">
+      <div className="mb-2 flex items-center justify-between sm:mb-4">
+        <h3 className="flex items-center gap-1 text-sm font-semibold tracking-tight text-muted-foreground sm:-ml-4">
+          <span className="hidden h-px w-4 bg-accent sm:block"></span>
           <GripHorizontalIcon size={20} />
           {workspace.name}
         </h3>
@@ -117,27 +117,32 @@ const WorkspaceSection = ({
             href={route("workspace", workspace.id)}
             className={buttonVariants({ size: "sm", variant: "ghost" })}
           >
-            <KanbanSquareIcon size={16} className="mr-2" />
-            {t("boards")} ({workspace.boards?.length})
+            <KanbanSquareIcon size={16} />
+            <span className="ml-2 hidden md:block">
+              {t("boards")} ({workspace.boards?.length})
+            </span>
           </Link>
           <Link
             href={route("workspace/members", workspace.id)}
             className={buttonVariants({ size: "sm", variant: "ghost" })}
           >
-            <UserIcon size={16} className="mr-2" />
-            {t("members")} ({workspace.members?.length})
+            <UserIcon size={16} />
+            <span className="ml-2 hidden md:block">
+              {t("members")} ({workspace.members?.length})
+            </span>
           </Link>
           {canViewSettings && (
             <Link
               href={route("workspace/settings", workspace.id)}
               className={buttonVariants({ size: "sm", variant: "ghost" })}
             >
-              <SettingsIcon size={16} className="mr-2" /> {t("settings")}
+              <SettingsIcon size={16} />
+              <span className="ml-2 hidden md:block">{t("settings")}</span>
             </Link>
           )}
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {workspace?.boards?.map((board) => (
           <BoardCard key={board.id} board={board} />
         ))}

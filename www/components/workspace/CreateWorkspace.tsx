@@ -63,7 +63,8 @@ const CreateWorkspace = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button size="sm">
-          <PlusCircleIcon size={20} className="mr-2" /> {t("create")}
+          <PlusCircleIcon size={20} />
+          <span className="ml-2 hidden sm:block">{t("create")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-auto">
