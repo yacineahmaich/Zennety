@@ -72,17 +72,11 @@ declare namespace App.Models {
     invited: User;
     expiresAt: string;
   }
-  interface Activity<T extends Record<string, unknown>> {
+  interface Activity {
     id: number;
+    type: string;
     description: string;
-    created_at: string;
-    properties: T;
-    causer: User;
-  }
-  interface Comment {
-    id: number;
-    content: string;
-    causer: User;
     createdAt: string;
+    causer: User;
   }
 }

@@ -151,5 +151,6 @@
   "updated": "{{resource}} updated",
   "deleted": "{{resource}} deleted",
   "reset-password-email-sent": "Reset password email sent at {{email}}",
-  "back-to-login": "Back to login page"
+  "back-to-login": "Back to login page",
+  "share-thoughts": "Share your thoughts here..."
 }

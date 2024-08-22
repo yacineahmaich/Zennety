@@ -1,9 +1,11 @@
 import Loader from "@/components/shared/Loader";
 import { useCard } from "@/services/card";
-import CardActivity from "./CardActivity";
-import CardComments from "./CardComments";
+import { CalendarSearchIcon } from "lucide-react";
+import { useTranslation } from "next-i18next";
+import ActivityList from "./ActivityList";
 import CardDescription from "./CardDescription";
 import CardTitle from "./CardTitle";
+import CreateComment from "./CreateComment";
 
 const CardDetails = ({
   board,
@@ -14,6 +16,8 @@ const CardDetails = ({
   status: App.Models.Status;
   cardId: number;
 }) => {
+  const { t } = useTranslation("common");
+
   const { card, isLoading } = useCard({
     workspaceId: board.workspaceId,
     boardId: board.id,
@@ -37,12 +41,17 @@ const CardDetails = ({
           <CardTitle board={board} status={status} card={card} />
           <CardDescription board={board} status={status} card={card} />
         </div>
-        <div>
-          <CardComments board={board} status={status} card={card} />
-        </div>
+        <div></div>
       </div>
       <div className="col-span-2 pl-5">
-        <CardActivity card={card} />
+        <div className="flex h-full flex-col">
+          <div className="flex items-center gap-2">
+            <CalendarSearchIcon size={18} className="flex-shrink-0" />
+            <h2 className="break-all">{t("activity")}</h2>
+          </div>
+          <ActivityList activities={card.activities ?? []} />
+          <CreateComment board={board} status={status} card={card} />
+        </div>
       </div>
     </div>
   );
