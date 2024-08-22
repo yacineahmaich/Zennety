@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -65,11 +66,16 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
             ->first();
     }
 
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'causer');
+    }
+
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
     }
-    
+
     public function scopeSearch(Builder $query, $search = ""): void
     {
         $query->where('name', 'like', '%' . $search . '%')
