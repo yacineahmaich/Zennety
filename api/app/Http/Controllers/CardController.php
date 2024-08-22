@@ -87,7 +87,7 @@ class CardController extends Controller
      */
     public function show(Workspace $workspace, Board $board, Status $status, Card $card)
     {
-        return CardResource::make($card);
+        return CardResource::make($card->load("activities"));
     }
 
     /**
