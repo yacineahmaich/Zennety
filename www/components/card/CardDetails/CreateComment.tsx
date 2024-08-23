@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useUser } from "@/services";
 import { useCreateCardComment } from "@/services/card";
 import { SendIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -13,7 +12,6 @@ interface CreateCommentProps {
 }
 
 const CreateComment = ({ board, status, card }: CreateCommentProps) => {
-  const { user } = useUser();
   const { t } = useTranslation("common");
 
   const [content, setContent] = useState("");
@@ -38,8 +36,8 @@ const CreateComment = ({ board, status, card }: CreateCommentProps) => {
   };
 
   return (
-    <div className="-mx-5 border-t px-5">
-      <div className="mt-3 flex w-full gap-2 py-1">
+    <div className="-ml-5 border-t">
+      <div className="flex w-full gap-2 p-3">
         <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -48,7 +46,7 @@ const CreateComment = ({ board, status, card }: CreateCommentProps) => {
         <div>
           <Button
             size="sm"
-            className="bottom-2 right-2 h-full"
+            className="h-full"
             onClick={() => handleSendComment()}
             disabled={isLoading}
           >

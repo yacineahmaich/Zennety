@@ -8,7 +8,7 @@ const ActivityList = ({
   activities: App.Models.Activity[];
 }) => {
   return (
-    <div className="mt-2 h-full flex-1 overflow-y-scroll">
+    <div className="mt-2 h-full flex-1 overflow-y-scroll pr-5">
       <ul className="space-y-2 pb-4">
         {activities.map((activity) => (
           <li key={activity.id}>

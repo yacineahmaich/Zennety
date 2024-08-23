@@ -1,4 +1,5 @@
 import { ConfirmationDialog } from "@/components/shared/ConfirmationDialog";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDeleteCard, useUpdateCard } from "@/services/card";
-import { Edit3Icon, EllipsisVerticalIcon, Trash2Icon } from "lucide-react";
+import { Edit3Icon, EqualIcon, Trash2Icon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
@@ -66,9 +67,14 @@ const CardTitle = ({
       </div>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <button>
-            <EllipsisVerticalIcon size={18} />
-          </button>
+          <Button
+            size="sm"
+            variant="secondary"
+            className="flex h-8 items-center gap-2"
+          >
+            <EqualIcon size={14} />
+            <span>Actions</span>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem
