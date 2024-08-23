@@ -53,8 +53,10 @@ const WorkspaceBanner = ({
               subtitle={t("invite-to-workspace-subtitle")}
               openTrigger={
                 <Button size="sm" variant="secondary">
-                  <UserPlusIcon size={20} className="mr-2" />
-                  {t("invite-workspace-members")}
+                  <UserPlusIcon size={20} />
+                  <span className="ml-2 hidden md:block">
+                    {t("invite-workspace-members")}
+                  </span>
                 </Button>
               }
             />

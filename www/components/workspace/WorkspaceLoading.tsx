@@ -20,7 +20,7 @@ const WorkspaceLoading = () => {
           <Skeleton className="h-6 w-6" />
           <Skeleton className="h-6 w-[70px]" />
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }, (_, i) => (
             <Skeleton key={i} className="h-card rounded-lg" />
           ))}
