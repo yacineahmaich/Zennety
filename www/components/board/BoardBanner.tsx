@@ -93,7 +93,8 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
             <InviteMembers
               openTrigger={
                 <Button size="sm" className="flex items-center gap-2 text-xs">
-                  <UserPlusIcon size={16} /> {t("share")}
+                  <UserPlusIcon size={16} />
+                  <span className="hidden md:block">{t("share")}</span>
                 </Button>
               }
               resourceId={board?.id}
@@ -109,7 +110,8 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
               "text-xs"
             )}
           >
-            <KanbanIcon size={16} className="mr-1" /> {t("kanban")}
+            <KanbanIcon size={16} className="mr-1" />
+            <span className="hidden md:block">{t("kanban")}</span>
           </Link>
           <Link
             href={route("board/settings", board.workspaceId, board.id)}
@@ -118,7 +120,8 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
               "text-xs"
             )}
           >
-            <SettingsIcon size={16} className="mr-1" /> {t("settings")}
+            <SettingsIcon size={16} className="mr-1" />
+            <span className="hidden md:block">{t("settings")}</span>
           </Link>
           <Link
             href={route("board/members", board.workspaceId, board.id)}
@@ -127,7 +130,8 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
               "text-xs"
             )}
           >
-            <UserIcon size={16} className="mr-1" /> {t("members")}
+            <UserIcon size={16} className="mr-1" />
+            <span className="hidden md:block">{t("members")}</span>
           </Link>
           <Link
             href="#"
@@ -136,7 +140,8 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
               "text-xs"
             )}
           >
-            <CalendarSearchIcon size={16} className="mr-1" /> {t("activity")}
+            <CalendarSearchIcon size={16} className="mr-1" />
+            <span className="hidden md:block">{t("activity")}</span>
           </Link>
         </div>
       </div>

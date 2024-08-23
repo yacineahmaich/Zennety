@@ -77,7 +77,7 @@ const StatusCard = ({
         </Card>
       </DialogTrigger>
       <DialogContent
-        className="h-screen w-full max-w-full overflow-y-auto"
+        className="h-full max-h-full max-w-full"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <CardDetails cardId={card.id} status={status} board={board} />

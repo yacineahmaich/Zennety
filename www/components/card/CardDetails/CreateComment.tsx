@@ -38,21 +38,23 @@ const CreateComment = ({ board, status, card }: CreateCommentProps) => {
   };
 
   return (
-    <div className="-mx-5 mt-auto border-t px-5">
-      <div className="mt-3 flex h-full w-full gap-2">
+    <div className="-mx-5 border-t px-5">
+      <div className="mt-3 flex w-full gap-2 py-1">
         <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder={t("share-thoughts")}
         />
-        <Button
-          size="sm"
-          className="bottom-2 right-2 h-full"
-          onClick={() => handleSendComment()}
-          disabled={isLoading}
-        >
-          <SendIcon size={18} />
-        </Button>
+        <div>
+          <Button
+            size="sm"
+            className="bottom-2 right-2 h-full"
+            onClick={() => handleSendComment()}
+            disabled={isLoading}
+          >
+            <SendIcon size={18} />
+          </Button>
+        </div>
       </div>
     </div>
   );

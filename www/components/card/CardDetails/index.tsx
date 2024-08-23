@@ -35,7 +35,7 @@ const CardDetails = ({
   if (!card) return null;
 
   return (
-    <div className="grid grid-cols-5 divide-x">
+    <div className="grid max-h-full flex-1 grid-cols-5 divide-x overflow-hidden">
       <div className="col-span-3 divide-y pr-5">
         <div className="space-y-6 pb-5">
           <CardTitle board={board} status={status} card={card} />
@@ -43,8 +43,8 @@ const CardDetails = ({
         </div>
         <div></div>
       </div>
-      <div className="col-span-2 pl-5">
-        <div className="flex h-full flex-col">
+      <div className="col-span-2 flex h-full flex-col overflow-hidden pl-5">
+        <div className="flex h-full w-full flex-1 flex-col">
           <div className="flex items-center gap-2">
             <CalendarSearchIcon size={18} className="flex-shrink-0" />
             <h2 className="break-all">{t("activity")}</h2>
