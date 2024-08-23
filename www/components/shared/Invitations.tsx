@@ -55,7 +55,7 @@ const Invitations = ({
         </h2>
       </span>
       <div>
-        <div className="flex justify-between gap-4">
+        <div className="flex flex-col justify-between gap-4 md:flex-row">
           <Input
             placeholder={t("search-by-username-or-email")}
             onChange={(e) => {
@@ -85,7 +85,15 @@ const Invitations = ({
             </SelectContent>
           </Select>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          {invitations?.map((invitation) => (
+            <Invitation
+              key={invitation.id}
+              invitation={invitation}
+              resourceId={resourceId}
+              resourceType={resourceType}
+            />
+          ))}
           {invitations?.map((invitation) => (
             <Invitation
               key={invitation.id}

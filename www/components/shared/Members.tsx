@@ -61,7 +61,7 @@ const Members = ({
           <Loader />
         ) : (
           <>
-            <div className="flex justify-between gap-4">
+            <div className="flex flex-col justify-between gap-4 md:flex-row">
               <Input
                 placeholder={t("search-by-username-or-email")}
                 onChange={(e) => {
@@ -91,7 +91,7 @@ const Members = ({
                 </SelectContent>
               </Select>
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
               {members?.map((member) => (
                 <Member
                   key={member.id}
