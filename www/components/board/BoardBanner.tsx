@@ -3,7 +3,6 @@ import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useUpdateBoard } from "@/services";
 import {
-  CalendarSearchIcon,
   ChevronsRightIcon,
   KanbanIcon,
   SettingsIcon,
@@ -17,10 +16,11 @@ import InviteMembers from "../shared/InviteMembers";
 import PinButton from "../shared/PinButton";
 import UserAvatar from "../shared/UserAvatar";
 import { Button, buttonVariants } from "../ui/button";
+import UpdateBoard from "./UpdateBoard";
 
 const BoardBanner = ({ board }: { board: App.Models.Board }) => {
   const { t } = useTranslation("common");
-  const canInvite = useCan("update", "board", board.id);
+  const canUpdate = useCan("update", "board", board.id);
   const { updateBoard, isLoading, variables } = useUpdateBoard();
 
   const [name, setName] = useState(board.name);
@@ -29,7 +29,7 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
   const members = board?.members || [];
 
   return (
-    <header className="-mx-4 flex items-center justify-between border-b p-4">
+    <section className="-mx-4 flex flex-col justify-between gap-4 border-b p-4 md:flex-row md:items-center">
       <div className="flex items-center gap-2">
         {editing ? (
           <input
@@ -89,12 +89,12 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
 
       <div className="flex items-center space-x-4">
         <div className="flex items-center">
-          {canInvite && (
+          {canUpdate && (
             <InviteMembers
               openTrigger={
                 <Button size="sm" className="flex items-center gap-2 text-xs">
                   <UserPlusIcon size={16} />
-                  <span className="hidden md:block">{t("share")}</span>
+                  <span className="hidden sm:block">{t("share")}</span>
                 </Button>
               }
               resourceId={board?.id}
@@ -111,7 +111,7 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
             )}
           >
             <KanbanIcon size={16} className="mr-1" />
-            <span className="hidden md:block">{t("kanban")}</span>
+            <span>{t("kanban")}</span>
           </Link>
           <Link
             href={route("board/settings", board.workspaceId, board.id)}
@@ -121,7 +121,7 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
             )}
           >
             <SettingsIcon size={16} className="mr-1" />
-            <span className="hidden md:block">{t("settings")}</span>
+            <span>{t("settings")}</span>
           </Link>
           <Link
             href={route("board/members", board.workspaceId, board.id)}
@@ -131,21 +131,12 @@ const BoardBanner = ({ board }: { board: App.Models.Board }) => {
             )}
           >
             <UserIcon size={16} className="mr-1" />
-            <span className="hidden md:block">{t("members")}</span>
+            <span>{t("members")}</span>
           </Link>
-          <Link
-            href="#"
-            className={cn(
-              buttonVariants({ size: "sm", variant: "link" }),
-              "text-xs"
-            )}
-          >
-            <CalendarSearchIcon size={16} className="mr-1" />
-            <span className="hidden md:block">{t("activity")}</span>
-          </Link>
+          {canUpdate && <UpdateBoard board={board} />}
         </div>
       </div>
-    </header>
+    </section>
   );
 };
 
