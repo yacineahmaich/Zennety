@@ -94,14 +94,6 @@ const Invitations = ({
               resourceType={resourceType}
             />
           ))}
-          {invitations?.map((invitation) => (
-            <Invitation
-              key={invitation.id}
-              invitation={invitation}
-              resourceId={resourceId}
-              resourceType={resourceType}
-            />
-          ))}
         </div>
       </div>
     </div>
