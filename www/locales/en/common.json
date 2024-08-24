@@ -155,5 +155,6 @@
   "deleted": "{{resource}} deleted",
   "reset-password-email-sent": "Reset password email sent at {{email}}",
   "back-to-login": "Back to login page",
-  "share-thoughts": "Share your thoughts here..."
+  "share-thoughts": "Share your thoughts here...",
+  "card-no-description": "It seems this task doesn't have any description yet."
 }
