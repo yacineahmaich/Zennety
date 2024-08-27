@@ -49,7 +49,10 @@ const CardDescription = ({
                 className="flex h-7 items-center gap-1"
                 disabled={isLoading}
                 onClick={() => {
-                  if (description === card.description) return;
+                  if (description === card.description) {
+                    setEditingDesc(false);
+                    return;
+                  }
 
                   updateCard(
                     {
