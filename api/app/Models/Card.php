@@ -15,14 +15,30 @@ class Card extends Model
         'name',
         'description',
         'pos',
-        'status_id'
+        'priority',
+        'start_date',
+        'end_date',
+        'status_id',
+        'user_id',
     ];
 
-    public function status():BelongsTo {
+    protected $casts = [
+        "start_date" => "datetime",
+        "end_date" => "datetime",
+    ];
+
+    public function assignee(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function status(): BelongsTo
+    {
         return $this->belongsTo(Status::class);
     }
 
-    public function activities() {
+    public function activities()
+    {
         return $this->morphMany(Activity::class, 'subject');
     }
 }

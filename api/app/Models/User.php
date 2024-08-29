@@ -14,7 +14,7 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements MustVerifyEmail, HasMedia
+class User extends Authenticatable implements /*MustVerifyEmail,*/ HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
@@ -50,6 +50,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'pins' => 'array'
+    ];
+
+    protected $attributes = [
+        'pins' => "[]"
     ];
 
     public function memberships(): HasMany

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string("bio")->nullable();
             $table->string('password');
-            $table->json("pins")->default([]);
+            $table->json("pins");
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
