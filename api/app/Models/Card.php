@@ -16,15 +16,13 @@ class Card extends Model
         'description',
         'pos',
         'priority',
-        'start_date',
-        'end_date',
+        'deadline',
         'status_id',
         'user_id',
     ];
 
     protected $casts = [
-        "start_date" => "datetime",
-        "end_date" => "datetime",
+        "deadline" => "datetime",
     ];
 
     public function assignee(): BelongsTo

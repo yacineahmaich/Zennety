@@ -18,8 +18,7 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->integer('pos')->default(0);
             $table->enum('priority', Priority::values())->nullable();
-            $table->dateTime('start_date')->nullable();
-            $table->dateTime('end_date')->nullable();
+            $table->dateTime('deadline')->nullable();
             $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();

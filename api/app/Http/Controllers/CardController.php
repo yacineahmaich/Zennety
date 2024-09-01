@@ -39,10 +39,15 @@ class CardController extends Controller
 
         $pos = $status->cards()->max('pos');
 
-        $card = $status->cards()->create([
-            'name' => $request->validated('name'),
-            'pos' => is_numeric($pos) ? $pos + 1 : 0
-        ]);
+        $data = $request->validated();
+
+        // Give the card the last position in the status column
+        $data["pos"] = is_numeric($pos) ? $pos + 1 : 0;
+
+        // link assignee via membership model
+        $data["user_id"] = $board->members()->where("membershipable_id", $data["assignee"])->value("id");
+
+        $card = $status->cards()->create($data);
 
         activity()
             ->performedOn($card)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Priority;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCardRequest extends FormRequest
@@ -22,7 +23,21 @@ class StoreCardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required'
+            'name' => [
+                'required'
+            ],
+            'assignee' => [
+                'nullable',
+                'exists:memberships,id'
+            ],
+            'priority' => [
+                'nullable',
+                'in:' . implode(',', Priority::values())
+            ],
+            'deadline' => [
+                'nullable',
+                'date'    
+            ]
         ];
     }
 }
