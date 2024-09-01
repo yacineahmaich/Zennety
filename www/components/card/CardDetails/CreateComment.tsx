@@ -37,7 +37,7 @@ const CreateComment = ({ board, status, card }: CreateCommentProps) => {
 
   return (
     <div className="-ml-5 border-t">
-      <div className="flex w-full gap-2 p-3">
+      <div className="flex w-full gap-2 p-3 pb-0">
         <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}

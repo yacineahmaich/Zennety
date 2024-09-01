@@ -37,7 +37,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
         </ThemeProvider>
         <Toaster />
-        <ReactQueryDevtools />
+        <ReactQueryDevtools buttonPosition="bottom-left" />
       </QueryClientProvider>
     </ErrorBoundary>
   );
