@@ -25,7 +25,7 @@ const CardDescription = ({
         <AlignLeftIcon size={16} />
         <span>Description</span>
       </h3>
-      <div className="w-1/2 text-sm text-muted-foreground">
+      <div className="text-sm text-muted-foreground">
         {editingDesc ? (
           <div className="relative">
             <Textarea

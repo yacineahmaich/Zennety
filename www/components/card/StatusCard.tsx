@@ -52,7 +52,7 @@ const StatusCard = ({
             isDragging && "opacity-50"
           )}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between">
             <h2 className="break-words text-sm font-medium">{card.name}</h2>
             {card.priority && (
               <PriorityIcon priority={card.priority as Priority} />
