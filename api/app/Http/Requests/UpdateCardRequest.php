@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Priority;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCardRequest extends FormRequest
@@ -23,7 +24,11 @@ class UpdateCardRequest extends FormRequest
     {
         return [
             "name" => ["sometimes", "required"],
-            "description" => ["sometimes"]
+            "description" => ["sometimes"],
+            "priority" => ["sometimes", "in:" . implode(",", Priority::values())],
+            "assignee" => ["sometimes", "exists:memberships,id"],
+            "status_id" => ["sometimes", "exists:statuses,id"],
+            "deadline" => ["sometimes", "date"],
         ];
     }
 }

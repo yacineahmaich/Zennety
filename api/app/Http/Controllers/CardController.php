@@ -19,8 +19,7 @@ class CardController extends Controller
 {
     public function __construct(
         public CardService $service
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -44,8 +43,8 @@ class CardController extends Controller
         // Give the card the last position in the status column
         $data["pos"] = is_numeric($pos) ? $pos + 1 : 0;
 
-        // link assignee via membership model
-        $data["user_id"] = $board->members()->where("membershipable_id", $data["assignee"])->value("id");
+        // link assign via membership model
+        $data["user_id"] = $board->members()->where("id", $data["assignee"])->value("user_id");
 
         $card = $status->cards()->create($data);
 
@@ -101,9 +100,17 @@ class CardController extends Controller
     public function update(UpdateCardRequest $request, Workspace $workspace, Board $board, Status $status, Card $card)
     {
         $user = auth()->user();
+        $data = $request->validated();
+
 
         $oldCardName = $card->name;
-        $updatedCard = tap($card)->update($request->validated());
+
+        // link assign via membership model
+        if (isset($data["assignee"])) {
+            $data["user_id"] = $board->members()->where("id", $data["assignee"])->value("user_id");
+        }
+
+        $updatedCard = tap($card)->update($data);
 
         if ($oldCardName !== $updatedCard->name) {
             activity()
