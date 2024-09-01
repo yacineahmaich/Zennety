@@ -1,9 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Priority } from "@/types/enums";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { formatDistance } from "date-fns";
-import { MessageCircleIcon } from "lucide-react";
+import { format, formatDistance } from "date-fns";
+import { ClockIcon, MessageCircleIcon } from "lucide-react";
+import PriorityIcon from "../shared/PriorityIcon";
 import UserAvatar from "../shared/UserAvatar";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import CardDetails from "./CardDetails";
@@ -50,18 +52,33 @@ const StatusCard = ({
             isDragging && "opacity-50"
           )}
         >
-          <h2 className="break-words text-sm font-medium">{card.name}</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="break-words text-sm font-medium">{card.name}</h2>
+            {card.priority && (
+              <PriorityIcon priority={card.priority as Priority} />
+            )}
+          </div>
           <footer className="flex items-center justify-between text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <MessageCircleIcon size={14} />
-              <div className="h-4 w-px bg-border"></div>
-              <span className="text-xs">
-                updated{" "}
-                {formatDistance(new Date(card?.updatedAt), new Date(), {
-                  addSuffix: true,
-                })}
-              </span>
-            </div>
+            {card?.deadline ? (
+              <div className="flex items-center gap-1">
+                <ClockIcon size={14} />
+                <div className="h-4 w-px bg-border"></div>
+                <span className="text-xs">
+                  {format(new Date(card?.deadline), "d MMMM yyyy")}
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1">
+                <MessageCircleIcon size={14} />
+                <div className="h-4 w-px bg-border"></div>
+                <span className="text-xs">
+                  updated{" "}
+                  {formatDistance(new Date(card?.updatedAt), new Date(), {
+                    addSuffix: true,
+                  })}
+                </span>
+              </div>
+            )}
             <div className="flex items-center -space-x-3">
               {card?.participants
                 ?.slice(0, 3)

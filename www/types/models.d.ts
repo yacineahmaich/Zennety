@@ -46,6 +46,9 @@ declare namespace App.Models {
     id: number;
     name: string;
     description: string;
+    assignee: User;
+    priority: string;
+    deadline: string;
     statusId: number;
     activities: Activity[];
     participants: User[];

@@ -11,16 +11,22 @@ const PinButton = ({
   resourceType: ResourceType;
   pinned: boolean;
 }) => {
-  const { pin } = usePin();
+  const { pin, isLoading } = usePin();
+
   return (
     <button
       onClick={() => pin({ resourceType, resourceId })}
       className="flex items-center justify-center transition-transform active:scale-90"
+      disabled={isLoading}
     >
       <StarIcon
         size={16}
         className={
-          pinned ? "fill-yellow-300 stroke-yellow-300" : "fill-transparent"
+          pinned
+            ? "fill-yellow-300 stroke-yellow-300"
+            : isLoading
+            ? "stroke-accent"
+            : "fill-transparent"
         }
       />
     </button>

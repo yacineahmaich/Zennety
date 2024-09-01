@@ -2,6 +2,12 @@ export enum Visibility {
   PUBLIC = "Public",
   PRIVATE = "Private",
 }
+export enum Priority {
+  NORMAL = "Normal",
+  MEDIUM = "Medium",
+  HIGH = "Hight",
+  URGENT = "Urgent",
+}
 export enum Role {
   OWNER = "Owner",
   ADMIN = "Admin",

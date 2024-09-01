@@ -100,7 +100,7 @@ const StatusColumn = ({
           </p>
         </Button>
       ) : (
-        <StatusColumnWrapper status={status}>
+        <StatusColumnWrapper board={board} status={status}>
           <SortableContext
             items={items || []}
             strategy={verticalListSortingStrategy}

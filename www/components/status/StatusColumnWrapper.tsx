@@ -5,10 +5,12 @@ import { PropsWithChildren, useState } from "react";
 import CreateCard from "../card/CreateCard";
 
 interface StatusColumnWrapperProps extends PropsWithChildren {
+  board: App.Models.Board;
   status: App.Models.Status;
 }
 
 const StatusColumnWrapper = ({
+  board,
   status,
   children,
 }: StatusColumnWrapperProps) => {
@@ -22,7 +24,11 @@ const StatusColumnWrapper = ({
           {children}
           {showForm && (
             <div className="pt-1">
-              <CreateCard status={status} onHide={() => setShowForm(false)} />
+              <CreateCard
+                board={board}
+                status={status}
+                onHide={() => setShowForm(false)}
+              />
             </div>
           )}
         </div>
