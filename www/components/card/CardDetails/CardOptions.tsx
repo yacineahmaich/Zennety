@@ -24,6 +24,7 @@ import {
   CircleDashedIcon,
   FlagTriangleRightIcon,
   UserPlusIcon,
+  XIcon,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -44,6 +45,17 @@ const CardOptions = ({
   );
 
   const { updateCard, isLoading: isUpdating } = useUpdateCard();
+
+  const handleUpdateCard = (data: Record<string, unknown>) => {
+    updateCard({
+      workspaceId: board.workspaceId,
+      boardId: board.id,
+      cardId: card.id,
+      statusId: status.id,
+      data,
+    });
+  };
+
   return (
     <div className="grid grid-cols-2 gap-y-4">
       <div className="space-y-3">
@@ -52,14 +64,8 @@ const CardOptions = ({
           value={status.id?.toString()}
           disabled={isUpdating}
           onValueChange={(statusId) => {
-            updateCard({
-              workspaceId: board.workspaceId,
-              boardId: board.id,
-              cardId: card.id,
-              statusId: status.id,
-              data: {
-                status_id: statusId,
-              },
+            handleUpdateCard({
+              status_id: statusId,
             });
           }}
         >
@@ -78,142 +84,168 @@ const CardOptions = ({
       </div>
       <div className="space-y-3">
         <h6 className="text-sm font-medium">Assignee</h6>
-        <Select
-          value={
-            board?.members
-              ?.find((m) => m.profile?.id === card?.assignee?.id)
-              ?.id?.toString() ?? ""
-          }
-          onValueChange={(assignee) => {
-            updateCard({
-              workspaceId: board.workspaceId,
-              boardId: board.id,
-              cardId: card.id,
-              statusId: status.id,
-              data: {
+        <div className="group flex items-center gap-1">
+          <Select
+            value={
+              board?.members
+                ?.find((m) => m.profile?.id === card?.assignee?.id)
+                ?.id?.toString() ?? ""
+            }
+            disabled={isUpdating}
+            onValueChange={(assignee) => {
+              handleUpdateCard({
                 assignee,
-              },
-            });
-          }}
-          disabled={isUpdating}
-        >
-          <SelectTrigger className="flex h-auto w-auto items-center p-2 text-xs font-medium [&>svg:last-child]:hidden">
-            {card.assignee ? (
-              <div className="flex items-center">
-                <UserAvatar className="h-3.5 w-3.5" user={card.assignee} />
-                <span className="ml-2 border-l pl-2 capitalize">
-                  {card.assignee.name}
-                </span>
-              </div>
-            ) : (
-              <UserPlusIcon size={14} />
-            )}
-          </SelectTrigger>
-          <SelectContent>
-            {board?.members?.map((member) => (
-              <SelectItem key={member.id} value={member.id?.toString()}>
+              });
+            }}
+          >
+            <SelectTrigger className="flex h-auto w-auto items-center p-2 text-xs font-medium [&>svg:last-child]:hidden">
+              {card.assignee ? (
                 <div className="flex items-center">
-                  <UserAvatar className="h-3.5 w-3.5" user={member.profile} />
+                  <UserAvatar className="h-3.5 w-3.5" user={card.assignee} />
                   <span className="ml-2 border-l pl-2 capitalize">
-                    {member.profile.name}
+                    {card.assignee.name}
                   </span>
                 </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="space-y-3">
-        <h6 className="text-sm font-medium">Prority</h6>
-        <Select
-          value={card.priority}
-          disabled={isUpdating}
-          onValueChange={(priority) => {
-            updateCard({
-              workspaceId: board.workspaceId,
-              boardId: board.id,
-              cardId: card.id,
-              statusId: status.id,
-              data: {
-                priority,
-              },
-            });
-          }}
-        >
-          <SelectTrigger className="flex h-auto w-auto items-center gap-2 p-2 text-xs font-medium [&>svg:last-child]:hidden">
-            {card.priority ? (
-              <>
-                <PriorityIcon priority={card.priority as Priority} />
-                {card.priority && <span>{card.priority}</span>}
-              </>
-            ) : (
-              <FlagTriangleRightIcon size={14} />
-            )}
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {priorties.map((priority) => (
-                <SelectItem key={priority.label} value={priority.label}>
-                  <div className="flex items-center gap-2">
-                    <FlagTriangleRightIcon
-                      size={14}
-                      color={
-                        priorties.find((p) => p.label === priority.label)?.color
-                      }
-                      fill={
-                        priorties.find((p) => p.label === priority.label)?.color
-                      }
-                    />
-                    <span>{priority.label}</span>
+              ) : (
+                <UserPlusIcon size={14} />
+              )}
+            </SelectTrigger>
+            <SelectContent>
+              {board?.members?.map((member) => (
+                <SelectItem key={member.id} value={member.id?.toString()}>
+                  <div className="flex items-center">
+                    <UserAvatar className="h-3.5 w-3.5" user={member.profile} />
+                    <span className="ml-2 border-l pl-2 capitalize">
+                      {member.profile.name}
+                    </span>
                   </div>
                 </SelectItem>
               ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+            </SelectContent>
+          </Select>
+          {card.assignee && !isUpdating && (
+            <button
+              className="scale-0 transition-transform group-hover:scale-100"
+              onClick={() => {
+                handleUpdateCard({
+                  assignee: null,
+                });
+              }}
+            >
+              <XIcon size={14} />
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="space-y-3">
+        <h6 className="text-sm font-medium">Prority</h6>
+        <div className="group flex items-center gap-1">
+          <Select
+            value={card.priority}
+            disabled={isUpdating}
+            onValueChange={(priority) => {
+              handleUpdateCard({
+                priority,
+              });
+            }}
+          >
+            <SelectTrigger className="flex h-auto w-auto items-center gap-2 p-2 text-xs font-medium [&>svg:last-child]:hidden">
+              {card.priority ? (
+                <>
+                  <PriorityIcon priority={card.priority as Priority} />
+                  {card.priority && <span>{card.priority}</span>}
+                </>
+              ) : (
+                <FlagTriangleRightIcon size={14} />
+              )}
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {priorties.map((priority) => (
+                  <SelectItem key={priority.label} value={priority.label}>
+                    <div className="flex items-center gap-2">
+                      <FlagTriangleRightIcon
+                        size={14}
+                        color={
+                          priorties.find((p) => p.label === priority.label)
+                            ?.color
+                        }
+                        fill={
+                          priorties.find((p) => p.label === priority.label)
+                            ?.color
+                        }
+                      />
+                      <span>{priority.label}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          {card.priority && !isUpdating && (
+            <button
+              className="scale-0 transition-transform group-hover:scale-100"
+              onClick={() => {
+                handleUpdateCard({
+                  priority: null,
+                });
+              }}
+            >
+              <XIcon size={14} />
+            </button>
+          )}
+        </div>
       </div>
       <div className="space-y-3">
         <h6 className="text-sm font-medium">Deadline</h6>
-        <Popover
-          open={deadlinePickerOpen}
-          onOpenChange={setDeadlinePickerOpen}
-          modal={true}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              disabled={isUpdating}
-              className="flex h-auto w-auto items-center gap-2 rounded border p-2 text-xs font-medium [&>svg:last-child]:hidden"
-            >
-              <div>
-                <CalendarIcon size={14} />
-              </div>
-              {card.deadline && (
-                <span>{format(new Date(card.deadline), "d MMMM yyyy")}</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={card.deadline ? new Date(card.deadline) : undefined}
-              onSelect={(deadline) => {
-                updateCard({
-                  workspaceId: board.workspaceId,
-                  boardId: board.id,
-                  cardId: card.id,
-                  statusId: status.id,
-                  data: {
+        <div className="group flex items-center gap-1">
+          <Popover
+            open={deadlinePickerOpen}
+            onOpenChange={setDeadlinePickerOpen}
+            modal={true}
+          >
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                disabled={isUpdating}
+                className="flex h-auto w-auto items-center gap-2 rounded border p-2 text-xs font-medium [&>svg:last-child]:hidden"
+              >
+                <div>
+                  <CalendarIcon size={14} />
+                </div>
+                {card.deadline && (
+                  <span>{format(new Date(card.deadline), "d MMMM yyyy")}</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={card.deadline ? new Date(card.deadline) : undefined}
+                onSelect={(deadline) => {
+                  handleUpdateCard({
                     deadline,
-                  },
+                  });
+                  setDeadlinePickerOpen(false);
+                }}
+                disabled={(date) => date < new Date()}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+          {card.deadline && !isUpdating && (
+            <button
+              className="scale-0 transition-transform group-hover:scale-100"
+              onClick={() => {
+                handleUpdateCard({
+                  deadline: null,
                 });
-                setDeadlinePickerOpen(false);
               }}
-              disabled={(date) => date < new Date()}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
+            >
+              <XIcon size={14} />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
