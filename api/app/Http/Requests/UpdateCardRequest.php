@@ -25,10 +25,10 @@ class UpdateCardRequest extends FormRequest
         return [
             "name" => ["sometimes", "required"],
             "description" => ["sometimes"],
-            "priority" => ["sometimes", "in:" . implode(",", Priority::values())],
-            "assignee" => ["sometimes", "exists:memberships,id"],
+            "priority" => ["sometimes", "nullable", "in:" . implode(",", Priority::values())],
+            "assignee" => ["sometimes", "nullable", "exists:memberships,id"],
             "status_id" => ["sometimes", "exists:statuses,id"],
-            "deadline" => ["sometimes", "date"],
+            "deadline" => ["sometimes", "nullable", "date"],
         ];
     }
 }

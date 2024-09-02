@@ -106,9 +106,7 @@ class CardController extends Controller
         $oldCardName = $card->name;
 
         // link assign via membership model
-        if (isset($data["assignee"])) {
-            $data["user_id"] = $board->members()->where("id", $data["assignee"])->value("user_id");
-        }
+        $data["user_id"] = isset($data["assignee"]) ? $board->members()->where("id", $data["assignee"])->value("user_id") : null;
 
         $updatedCard = tap($card)->update($data);
 
