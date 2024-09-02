@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateCard } from "@/services/card";
-import { AlignLeftIcon, CornerDownRightIcon } from "lucide-react";
+import { AlignLeftIcon, CornerDownRightIcon, PenIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
@@ -20,10 +20,16 @@ const CardDescription = ({
   const { updateCard, isLoading } = useUpdateCard();
 
   return (
-    <div className="space-y-2">
+    <div className="group space-y-2">
       <h3 className="flex items-center gap-2 text-sm font-medium">
         <AlignLeftIcon size={16} />
-        <span>Description</span>
+        <span>{t("description")}</span>
+        <button
+          className="scale-0 transition-transform group-hover:scale-100"
+          onClick={() => setEditingDesc(true)}
+        >
+          <PenIcon size={12} />
+        </button>
       </h3>
       <div className="text-sm text-muted-foreground">
         {editingDesc ? (
@@ -78,9 +84,7 @@ const CardDescription = ({
             </div>
           </div>
         ) : (
-          <p onClick={() => setEditingDesc(true)} className="p-2">
-            {card.description || t("card-no-description")}
-          </p>
+          <p className="p-2">{card.description || t("card-no-description")}</p>
         )}
       </div>
     </div>
