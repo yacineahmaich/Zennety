@@ -48,11 +48,6 @@ class CardController extends Controller
 
         $card = $status->cards()->create($data);
 
-        activity()
-            ->performedOn($card)
-            ->causedBy($user)
-            ->log("$user->name created - $card->name.");
-
         return CardResource::make($card);
     }
 
@@ -99,23 +94,14 @@ class CardController extends Controller
      */
     public function update(UpdateCardRequest $request, Workspace $workspace, Board $board, Status $status, Card $card)
     {
-        $user = auth()->user();
         $data = $request->validated();
 
-
-        $oldCardName = $card->name;
-
         // link assign via membership model
-        $data["user_id"] = isset($data["assignee"]) ? $board->members()->where("id", $data["assignee"])->value("user_id") : null;
-
-        $updatedCard = tap($card)->update($data);
-
-        if ($oldCardName !== $updatedCard->name) {
-            activity()
-                ->performedOn($card)
-                ->causedBy($user)
-                ->log("$user->name renamed this card from '$oldCardName' to '$updatedCard->name'");
+        if ($request->has("assignee")) {
+            $data["user_id"] = $board->members()->where("id", $data["assignee"])->value("user_id");
         }
+
+        $card = tap($card)->update($data);
 
         return CardResource::make($card);
     }
