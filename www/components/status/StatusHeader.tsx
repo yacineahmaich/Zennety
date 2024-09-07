@@ -105,8 +105,8 @@ const StatusHeader = ({
           className="line-clamp-1 break-all text-sm font-semibold uppercase"
           onClick={() => setEditing(true)}
         >
-          {/* @ts-ignore */}
-          {isLoading ? variables?.data?.name : status.name}
+          {isLoading ? (variables?.data?.name as string) : status.name} [
+          {status.cards?.length}]
         </h4>
       )}
 

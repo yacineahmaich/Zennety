@@ -96,7 +96,7 @@ const StatusColumn = ({
             className="rotate-180 text-sm uppercase"
             style={{ textOrientation: "mixed", writingMode: "vertical-lr" }}
           >
-            {status.name}
+            {status.name} [{status.cards?.length}]
           </p>
         </Button>
       ) : (

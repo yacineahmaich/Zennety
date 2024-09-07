@@ -29,7 +29,7 @@ const CardTitle = ({
   const { updateCard, variables, isLoading } = useUpdateCard();
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex justify-between">
       <div className="flex items-center gap-2">
         {editingName ? (
           <input

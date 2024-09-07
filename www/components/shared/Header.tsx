@@ -32,7 +32,7 @@ const Header = () => {
                       showCard={false}
                       className="h-6 w-6"
                     />
-                    <span className="ml-2">{user.name}</span>
+                    <span className="ml-2 border-l pl-2">{user.name}</span>
                   </Link>
                 </Button>
               ) : (

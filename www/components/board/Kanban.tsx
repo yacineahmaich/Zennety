@@ -123,7 +123,11 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
 
     const activeCard = active.data.current?.card as App.Models.Card;
 
-    if (over?.data.current?.type === "card") {
+    if (
+      over?.data.current?.type === "card" &&
+      active?.data?.current?.card?.statusId !==
+        over.data.current?.card?.statusId
+    ) {
       // Swapp the two status cards
       const overCard = over.data.current?.card as App.Models.Card;
 
