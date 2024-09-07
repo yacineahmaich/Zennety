@@ -51,6 +51,11 @@ class CardObserver
             $log = "{$user->name} changed the status to '{$card->status->name}'";
         }
 
+        if (isset($changes["user_id"])) {
+            $assigned_to = $user->id === $changes["user_id"] ? "him self" : "'{$card->assignee->name}'";
+            $log = "{$user->name} assigned this card to {$assigned_to}";
+        }
+
         if (isset($log)) {
             activity()
                 ->performedOn($card)
