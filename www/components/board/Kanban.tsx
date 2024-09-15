@@ -267,10 +267,11 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
                         status={activeStatus}
                         collapsed={collapsedColumns.includes(activeStatus.id)}
                         toggleCollapsed={() => null}
+                        dragging
                       />
                     )}
                     {/* @ts-ignore */}
-                    {activeCard && <StatusCard card={activeCard} />}
+                    {activeCard && <StatusCard card={activeCard} dragging />}
                   </DragOverlay>,
                   document.body
                 )}

@@ -18,6 +18,7 @@ const StatusColumn = ({
   nextStatus,
   collapsed,
   toggleCollapsed,
+  dragging = false,
 }: {
   board: App.Models.Board;
   status: App.Models.Status;
@@ -25,6 +26,7 @@ const StatusColumn = ({
   prevStatus?: App.Models.Status;
   collapsed: boolean;
   toggleCollapsed: () => void;
+  dragging?: boolean;
 }) => {
   const {
     setNodeRef,
@@ -72,8 +74,9 @@ const StatusColumn = ({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "flex h-full flex-col space-y-4 transition-[width]",
-        collapsed ? "w-auto" : "w-72"
+        "flex h-full transform flex-col space-y-4 transition-[width]",
+        collapsed ? "w-auto" : "w-72",
+        dragging && "-rotate-2"
       )}
     >
       <div {...attributes} {...listeners}>

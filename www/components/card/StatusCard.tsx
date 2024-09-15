@@ -14,10 +14,12 @@ const StatusCard = ({
   board,
   status,
   card,
+  dragging = false,
 }: {
   board: App.Models.Board;
   status: App.Models.Status;
   card: App.Models.Card;
+  dragging?: boolean;
 }) => {
   const {
     setNodeRef,
@@ -49,7 +51,8 @@ const StatusCard = ({
           {...listeners}
           className={cn(
             "w-full space-y-6 border p-4 hover:shadow-md",
-            isDragging && "opacity-50"
+            isDragging && "opacity-50",
+            dragging && "-rotate-2"
           )}
         >
           <div className="flex justify-between gap-2">

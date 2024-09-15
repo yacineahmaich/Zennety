@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { usePin } from "@/services";
 import { ResourceType } from "@/types/helpers";
 import { StarIcon } from "lucide-react";
@@ -21,13 +22,7 @@ const PinButton = ({
     >
       <StarIcon
         size={16}
-        className={
-          pinned
-            ? "fill-yellow-300 stroke-yellow-300"
-            : isLoading
-            ? "stroke-accent"
-            : "fill-transparent"
-        }
+        className={cn(pinned && "fill-yellow-300 stroke-yellow-300")}
       />
     </button>
   );
