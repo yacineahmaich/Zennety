@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { IUser } from "@/types/models";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
   HoverCard,
@@ -11,7 +12,7 @@ const UserAvatar = ({
   showCard = true,
   className,
 }: {
-  user: App.Models.User;
+  user: IUser;
   showCard?: boolean;
   className?: string;
 }) => {

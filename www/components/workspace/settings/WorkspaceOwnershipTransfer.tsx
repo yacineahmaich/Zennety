@@ -20,13 +20,14 @@ import {
 } from "@/components/ui/select";
 import { useTransferWorkspaceOwnership } from "@/services";
 import { Role } from "@/types/enums";
+import { IMember, IWorkspace } from "@/types/models";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
 const WorkspaceOwnershipTransfer = ({
   workspace,
 }: {
-  workspace: App.Models.Workspace;
+  workspace: IWorkspace;
 }) => {
   const { t } = useTranslation("common");
   const [newOwner, setNewOwner] = useState<string>();
@@ -38,7 +39,7 @@ const WorkspaceOwnershipTransfer = ({
 
   const owner = workspace?.members?.find(
     (m) => m.role === Role.OWNER
-  ) as App.Models.Member;
+  ) as IMember;
 
   const handleTrasferOwnership = () => {
     if (!newOwner || newOwner === owner.id?.toString()) return;

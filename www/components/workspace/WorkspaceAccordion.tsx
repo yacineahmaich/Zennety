@@ -3,6 +3,7 @@ import { useHasRole } from "@/hooks/useHasRole";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { Role, Visibility } from "@/types/enums";
+import { IWorkspace } from "@/types/models";
 import {
   Globe2Icon,
   KanbanSquareIcon,
@@ -19,11 +20,7 @@ import {
 } from "../ui/accordion";
 import { buttonVariants } from "../ui/button";
 
-const WorkspaceAccordion = ({
-  workspace,
-}: {
-  workspace?: App.Models.Workspace;
-}) => {
+const WorkspaceAccordion = ({ workspace }: { workspace?: IWorkspace }) => {
   const { t } = useTranslation("common");
 
   const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);

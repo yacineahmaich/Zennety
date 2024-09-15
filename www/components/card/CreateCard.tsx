@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { priorties } from "@/lib/constants";
 import { useCreateCard } from "@/services/card";
 import { Priority } from "@/types/enums";
+import { IBoard, IStatus } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import {
@@ -55,8 +56,8 @@ const CreateCard = ({
   status,
   onHide,
 }: {
-  board: App.Models.Board;
-  status: App.Models.Status;
+  board: IBoard;
+  status: IStatus;
   onHide: () => void;
 }) => {
   const router = useRouter();
@@ -92,7 +93,7 @@ const CreateCard = ({
   useEffect(() => {
     ref.current?.scrollIntoView();
     form.setFocus("name");
-  }, []);
+  }, [form]);
 
   return (
     <div>

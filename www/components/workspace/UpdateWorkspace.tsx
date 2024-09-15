@@ -30,6 +30,7 @@ import {
   useSetWorkspaceAvatar,
   useUpdateWorkspace,
 } from "@/services/workspace";
+import { IWorkspace } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PenLineIcon, UploadIcon, XSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -45,11 +46,7 @@ const formSchema = z.object({
 
 export type UpdateWorkspace = z.infer<typeof formSchema>;
 
-const UpdateWorkspace = ({
-  workspace,
-}: {
-  workspace: App.Models.Workspace;
-}) => {
+const UpdateWorkspace = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 

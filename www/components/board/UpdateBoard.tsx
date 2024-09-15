@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateBoard } from "@/services";
+import { IBoard } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PenLineIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -35,7 +36,7 @@ const formSchema = z.object({
 
 export type UpdateBoard = z.infer<typeof formSchema>;
 
-const UpdateBoard = ({ board }: { board: App.Models.Board }) => {
+const UpdateBoard = ({ board }: { board: IBoard }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 

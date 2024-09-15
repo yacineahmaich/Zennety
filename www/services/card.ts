@@ -1,5 +1,6 @@
 import { CreateCard } from "@/components/card/CreateCard";
 import { api } from "@/lib/api";
+import { ICard, IStatus } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const getCard = async ({
@@ -12,7 +13,7 @@ const getCard = async ({
   boardId: number;
   statusId: number;
   cardId: number;
-}): Promise<App.Models.Card> => {
+}): Promise<ICard> => {
   const response = await api.get(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}`
   );
@@ -25,7 +26,7 @@ const createCard = async ({
   boardId,
   statusId,
   ...card
-}: CreateCard): Promise<App.Models.Card> => {
+}: CreateCard): Promise<ICard> => {
   const response = await api.post(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards`,
     card
@@ -46,7 +47,7 @@ const updateCard = async ({
   statusId: number;
   cardId: number;
   data: Record<string, unknown>;
-}): Promise<App.Models.Card> => {
+}): Promise<ICard> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}`,
     data
@@ -67,30 +68,12 @@ const createCardComment = async ({
   statusId: number;
   cardId: number;
   comment: string;
-}): Promise<App.Models.Card> => {
+}): Promise<ICard> => {
   const response = await api.post(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}/comments`,
     {
       comment,
     }
-  );
-
-  return response.data.data;
-};
-
-const getCardComments = async ({
-  workspaceId,
-  boardId,
-  statusId,
-  cardId,
-}: {
-  workspaceId: number;
-  boardId: number;
-  statusId: number;
-  cardId: number;
-}): Promise<App.Models.Comment[]> => {
-  const response = await api.get(
-    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}/comments`
   );
 
   return response.data.data;
@@ -108,7 +91,7 @@ const reorderCards = async ({
   statusId: string;
   cardId: string;
   cardsOrder: Record<number, number>;
-}): Promise<App.Models.Status> => {
+}): Promise<IStatus> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/cards/reorder`,
     {
@@ -175,44 +158,6 @@ export const useCard = ({
 
   return {
     card,
-    isLoading,
-  };
-};
-
-export const useCardComments = ({
-  workspaceId,
-  boardId,
-  statusId,
-  cardId,
-}: {
-  workspaceId: number;
-  boardId: number;
-  statusId: number;
-  cardId: number;
-}) => {
-  const { data: comments, isLoading } = useQuery({
-    queryKey: [
-      "workspaces",
-      workspaceId,
-      "boards",
-      boardId,
-      "statuses",
-      statusId,
-      "cards",
-      cardId,
-      "comments",
-    ],
-    queryFn: () =>
-      getCardComments({
-        workspaceId,
-        boardId,
-        statusId,
-        cardId,
-      }),
-  });
-
-  return {
-    comments,
     isLoading,
   };
 };
@@ -339,9 +284,9 @@ export const useReorderCards = () => {
     workspaceId: string;
     boardId: string;
     overStatusId: number;
-    activeCard: App.Models.Card;
+    activeCard: ICard;
   }) => {
-    const reorderedStatuses = queryClient.setQueryData<App.Models.Status[]>(
+    const reorderedStatuses = queryClient.setQueryData<IStatus[]>(
       ["workspaces", workspaceId, "boards", boardId, "statuses"],
       (statuses = []) => {
         // find the index of the active card status

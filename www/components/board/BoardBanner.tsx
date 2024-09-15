@@ -2,6 +2,7 @@ import { useCan } from "@/hooks/useCan";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useUpdateBoard } from "@/services";
+import { IBoard } from "@/types/models";
 import {
   ChevronsRightIcon,
   KanbanIcon,
@@ -18,7 +19,7 @@ import UserAvatar from "../shared/UserAvatar";
 import { Button, buttonVariants } from "../ui/button";
 import UpdateBoard from "./UpdateBoard";
 
-const BoardBanner = ({ board }: { board: App.Models.Board }) => {
+const BoardBanner = ({ board }: { board: IBoard }) => {
   const { t } = useTranslation("common");
   const canUpdate = useCan("update", "board", board.id);
   const { updateBoard, isLoading, variables } = useUpdateBoard();

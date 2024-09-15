@@ -1,12 +1,13 @@
 import { api } from "@/lib/api";
 import { ResourceType } from "@/types/helpers";
+import { IMember } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const getMembers = async (
   resourceType: ResourceType,
   resourceId: number,
   params: Record<string, string>
-): Promise<Paginator<App.Models.Member>> => {
+): Promise<Paginator<IMember>> => {
   const response = await api.get(
     `/memberships/${resourceType}/${resourceId}/members`,
     {

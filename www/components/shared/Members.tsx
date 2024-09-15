@@ -4,6 +4,7 @@ import { roles } from "@/lib/constants";
 import { useDeleteMember, useMembers, useUpdateMemberRole } from "@/services";
 import { Role } from "@/types/enums";
 import { ResourceType } from "@/types/helpers";
+import { IMember } from "@/types/models";
 import {
   ListFilterIcon,
   LoaderIcon,
@@ -113,7 +114,7 @@ const Member = ({
   resourceId,
   resourceType,
 }: {
-  member: App.Models.Member;
+  member: IMember;
   resourceId: number;
   resourceType: ResourceType;
 }) => {

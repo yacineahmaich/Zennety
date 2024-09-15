@@ -1,5 +1,6 @@
 import { CreateStatus } from "@/components/status/CreateStatus";
 import { api } from "@/lib/api";
+import { IStatus } from "@/types/models";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -7,7 +8,7 @@ const getStatuses = async (
   workspaceId: string,
   boardId: string,
   signal: AbortSignal
-): Promise<App.Models.Status[]> => {
+): Promise<IStatus[]> => {
   const response = await api.get(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses`,
     {
@@ -22,7 +23,7 @@ const createStatus = async ({
   workspaceId,
   boardId,
   ...status
-}: CreateStatus): Promise<App.Models.Status> => {
+}: CreateStatus): Promise<IStatus> => {
   const response = await api.post(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses`,
     status
@@ -40,7 +41,7 @@ const updateStatus = async ({
   boardId: number;
   statusId: number;
   data: Record<string, unknown>;
-}): Promise<App.Models.Status> => {
+}): Promise<IStatus> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}`,
     data
@@ -71,7 +72,7 @@ const reorderStatuses = async ({
   workspaceId: string;
   boardId: string;
   statusesOrder: Record<number, number>;
-}): Promise<App.Models.Status> => {
+}): Promise<IStatus> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/boards/${boardId}/statuses/reorder`,
     {
@@ -214,7 +215,7 @@ export const useReorderStatuses = () => {
     activeStatusId: number;
     overStatusId: number;
   }) => {
-    const reorderedStatuses = queryClient.setQueryData<App.Models.Status[]>(
+    const reorderedStatuses = queryClient.setQueryData<IStatus[]>(
       ["workspaces", workspaceId, "boards", boardId, "statuses"],
       (statuses = []) => {
         const activeStatusIndex = statuses?.findIndex(

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { IBoard, IStatus } from "@/types/models";
 import {
   SortableContext,
   useSortable,
@@ -20,10 +21,10 @@ const StatusColumn = ({
   toggleCollapsed,
   dragging = false,
 }: {
-  board: App.Models.Board;
-  status: App.Models.Status;
-  nextStatus?: App.Models.Status;
-  prevStatus?: App.Models.Status;
+  board: IBoard;
+  status: IStatus;
+  nextStatus?: IStatus;
+  prevStatus?: IStatus;
   collapsed: boolean;
   toggleCollapsed: () => void;
   dragging?: boolean;

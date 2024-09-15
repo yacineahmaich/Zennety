@@ -8,6 +8,7 @@ import {
   useInvitation,
   useRejectInvitation,
 } from "@/services";
+import { IBoard, IWorkspace } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import { CheckIcon, XIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
@@ -34,18 +35,15 @@ const AcceptInvitation: NextPageWithLayout = () => {
         onSuccess() {
           if (invitation.relatedType === "workspace") {
             router.push(
-              route(
-                "workspace",
-                (invitation.related as App.Models.Workspace).id
-              )
+              route("workspace", (invitation.related as IWorkspace).id)
             );
           }
           if (invitation.relatedType === "board") {
             router.push(
               route(
                 "board",
-                (invitation.related as App.Models.Board).workspaceId,
-                (invitation.related as App.Models.Board).id
+                (invitation.related as IBoard).workspaceId,
+                (invitation.related as IBoard).id
               )
             );
           }

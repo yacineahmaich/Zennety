@@ -23,6 +23,7 @@ import {
 import { useCan } from "@/hooks/useCan";
 import { useBoard, useDeleteBoard, useUpdateBoard } from "@/services";
 import { Visibility } from "@/types/enums";
+import { IBoard } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import { Globe2Icon, LoaderIcon, LockIcon, SettingsIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
@@ -64,7 +65,7 @@ const WorkspaceSettings: NextPageWithLayout = () => {
   );
 };
 
-const BoardVisibility = ({ board }: { board: App.Models.Board }) => {
+const BoardVisibility = ({ board }: { board: IBoard }) => {
   const { t } = useTranslation("common");
   const { updateBoard, isLoading } = useUpdateBoard();
 
@@ -114,7 +115,7 @@ const BoardVisibility = ({ board }: { board: App.Models.Board }) => {
   );
 };
 
-const DeleteBoard = ({ board }: { board: App.Models.Board }) => {
+const DeleteBoard = ({ board }: { board: IBoard }) => {
   const { t } = useTranslation("common");
   const [confirmText, setConfirmationText] = useState("");
   const [open, setOpen] = useState(false);

@@ -1,13 +1,10 @@
 import UserAvatar from "@/components/shared/UserAvatar";
+import { IActivity } from "@/types/models";
 import { format } from "date-fns";
 import { CalendarSearchIcon, CornerDownRightIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 
-const CardActivity = ({
-  activities,
-}: {
-  activities: App.Models.Activity[];
-}) => {
+const CardActivity = ({ activities }: { activities: IActivity[] }) => {
   const { t } = useTranslation("common");
 
   return (

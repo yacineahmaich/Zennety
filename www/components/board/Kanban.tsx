@@ -1,5 +1,6 @@
 import { useReorderStatuses, useStatuses } from "@/services";
 import { useReorderCards } from "@/services/card";
+import { IBoard, ICard, IStatus } from "@/types/models";
 import {
   DndContext,
   DragEndEvent,
@@ -25,13 +26,11 @@ import Loader from "../shared/Loader";
 import CreateStatus from "../status/CreateStatus";
 import StatusColumn from "../status/StatusColumn";
 
-const Kanban = ({ board }: { board: App.Models.Board }) => {
+const Kanban = ({ board }: { board: IBoard }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const [activeStatus, setActiveStatus] = useState<App.Models.Status | null>(
-    null
-  );
-  const [activeCard, setActiveCard] = useState<App.Models.Card | null>(null);
+  const [activeStatus, setActiveStatus] = useState<IStatus | null>(null);
+  const [activeCard, setActiveCard] = useState<ICard | null>(null);
   const { workspaceId, boardId } = router.query as {
     workspaceId: string;
     boardId: string;
@@ -62,8 +61,8 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
       active.data.current?.type === "status" &&
       over.data.current?.type === "status"
     ) {
-      const activeStatus = active.data.current?.status as App.Models.Status;
-      const overStatus = over.data.current?.status as App.Models.Status;
+      const activeStatus = active.data.current?.status as IStatus;
+      const overStatus = over.data.current?.status as IStatus;
 
       const statusesOrder = optimistacallyReorderStatuses({
         workspaceId,
@@ -83,12 +82,12 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
       active.data.current?.type === "card" &&
       over.data.current?.type === "card"
     ) {
-      const activeCard = active.data.current?.card as App.Models.Card;
-      const overCard = over.data.current?.card as App.Models.Card;
+      const activeCard = active.data.current?.card as ICard;
+      const overCard = over.data.current?.card as ICard;
 
       if (activeCard.id === overCard.id) return;
 
-      queryClient.setQueryData<App.Models.Status[]>(
+      queryClient.setQueryData<IStatus[]>(
         ["workspaces", workspaceId, "boards", boardId, "statuses"],
         (statuses = []) => {
           return statuses.map((status) => {
@@ -121,7 +120,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
   const handleDragOver = ({ active, over }: DragOverEvent) => {
     if (!over || active.data?.current?.type !== "card") return;
 
-    const activeCard = active.data.current?.card as App.Models.Card;
+    const activeCard = active.data.current?.card as ICard;
 
     if (
       over?.data.current?.type === "card" &&
@@ -129,11 +128,11 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
         over.data.current?.card?.statusId
     ) {
       // Swapp the two status cards
-      const overCard = over.data.current?.card as App.Models.Card;
+      const overCard = over.data.current?.card as ICard;
 
       if (activeCard.id === overCard.id) return;
 
-      const reorderedStatuses = queryClient.setQueryData<App.Models.Status[]>(
+      const reorderedStatuses = queryClient.setQueryData<IStatus[]>(
         ["workspaces", workspaceId, "boards", boardId, "statuses"],
         (statuses = []) => {
           // find the index of the active card status
@@ -188,7 +187,7 @@ const Kanban = ({ board }: { board: App.Models.Board }) => {
         cardsOrder: cardsOrder || {},
       });
     } else if (over?.data.current?.type === "status") {
-      const overStatus = over?.data.current?.status as App.Models.Status;
+      const overStatus = over?.data.current?.status as IStatus;
 
       if (activeCard.statusId === overStatus.id) return;
 

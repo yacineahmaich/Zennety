@@ -1,16 +1,13 @@
 import { useCan } from "@/hooks/useCan";
 import { Visibility } from "@/types/enums";
+import { IWorkspace } from "@/types/models";
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import InviteMembers from "../shared/InviteMembers";
 import { Button } from "../ui/button";
 import UpdateWorkspace from "./UpdateWorkspace";
 
-const WorkspaceBanner = ({
-  workspace,
-}: {
-  workspace: App.Models.Workspace;
-}) => {
+const WorkspaceBanner = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
   const canInvite = useCan("update", "workspace", workspace?.id);
 

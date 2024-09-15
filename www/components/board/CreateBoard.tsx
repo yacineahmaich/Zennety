@@ -3,6 +3,7 @@ import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useCreateBoard } from "@/services";
 import { Visibility } from "@/types/enums";
+import { IWorkspace } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Globe2Icon, LockIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -44,7 +45,7 @@ const CreateBoard = ({
   workspace,
   openTrigger,
 }: {
-  workspace: App.Models.Workspace;
+  workspace: IWorkspace;
   openTrigger: JSX.Element;
 }) => {
   const { t } = useTranslation("common");

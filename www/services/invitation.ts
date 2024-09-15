@@ -1,6 +1,7 @@
 import { InviteMembers } from "@/components/shared/InviteMembers";
 import { api } from "@/lib/api";
 import { ResourceType } from "@/types/helpers";
+import { IInvitation } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const sendMembershipInvitations = async ({
@@ -19,7 +20,7 @@ const getInvitations = async (
   resourceType: ResourceType,
   resourceId: number,
   params: Record<string, string>
-): Promise<Paginator<App.Models.Invitation>> => {
+): Promise<Paginator<IInvitation>> => {
   const response = await api.get(`/invitations/${resourceType}/${resourceId}`, {
     params,
   });
@@ -27,7 +28,7 @@ const getInvitations = async (
   return response.data;
 };
 
-const getInvitation = async (token: string): Promise<App.Models.Invitation> => {
+const getInvitation = async (token: string): Promise<IInvitation> => {
   const response = await api.get(`/invitations/${token}`);
 
   return response.data.data;

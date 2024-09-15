@@ -1,4 +1,5 @@
 import { useCreateStatus } from "@/services/status";
+import { IBoard } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckIcon, PlusIcon, XIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -24,7 +25,7 @@ const formSchema = z.object({
 
 export type CreateStatus = z.infer<typeof formSchema>;
 
-const CreateStatus = ({ board }: { board: App.Models.Board }) => {
+const CreateStatus = ({ board }: { board: IBoard }) => {
   const { t } = useTranslation("common");
   const [showForm, setShowForm] = useState(false);
   const { createStatus, isLoading } = useCreateStatus();

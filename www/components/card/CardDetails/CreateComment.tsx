@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateCardComment } from "@/services/card";
+import { IBoard, ICard, IStatus } from "@/types/models";
 import { SendIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
 interface CreateCommentProps {
-  status: App.Models.Status;
-  board: App.Models.Board;
-  card: App.Models.Card;
+  status: IStatus;
+  board: IBoard;
+  card: ICard;
 }
 
 const CreateComment = ({ board, status, card }: CreateCommentProps) => {

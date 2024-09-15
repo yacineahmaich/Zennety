@@ -5,6 +5,7 @@
  */
 
 import { Role } from "@/types/enums";
+import { IUser, IWorkspace } from "@/types/models";
 
 export function getFirstApiErrorMsg(error: ApiError) {
   let errorMessage = error.message;
@@ -25,14 +26,11 @@ export function getFirstApiErrorMsg(error: ApiError) {
  * @returns string
  */
 export function groupWorkspacesByOwnership(
-  workspaces: App.Models.Workspace[] = [],
-  user: App.Models.User
+  workspaces: IWorkspace[] = [],
+  user: IUser
 ) {
   const groupedWorkspaces = workspaces?.reduce(
-    (
-      groups: { owner: App.Models.Workspace[]; guest: App.Models.Workspace[] },
-      workspace
-    ) => {
+    (groups: { owner: IWorkspace[]; guest: IWorkspace[] }, workspace) => {
       const member = workspace.members?.find(
         (member) => member.userId === user?.id
       );
@@ -51,7 +49,7 @@ export function groupWorkspacesByOwnership(
   return groupedWorkspaces;
 }
 
-export function getPinnedBoard(workspaces: App.Models.Workspace[] = []) {
+export function getPinnedBoard(workspaces: IWorkspace[] = []) {
   return workspaces.flatMap(
     (workspace) => (workspace.boards || [])?.filter((b) => b.pinned)
   );

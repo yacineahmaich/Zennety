@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateCard } from "@/services/card";
+import { IBoard, ICard, IStatus } from "@/types/models";
 import { AlignLeftIcon, CornerDownRightIcon, PenIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
@@ -10,9 +11,9 @@ const CardDescription = ({
   status,
   card,
 }: {
-  board: App.Models.Board;
-  status: App.Models.Status;
-  card: App.Models.Card;
+  board: IBoard;
+  status: IStatus;
+  card: ICard;
 }) => {
   const { t } = useTranslation("common");
   const [editingDesc, setEditingDesc] = useState(false);

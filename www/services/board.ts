@@ -1,12 +1,13 @@
 import { CreateBoard } from "@/components/board/CreateBoard";
 import { api } from "@/lib/api";
 import { route } from "@/lib/routes";
+import { IBoard } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const createBoard = async ({
   workspaceId,
   ...board
-}: CreateBoard): Promise<App.Models.Board> => {
+}: CreateBoard): Promise<IBoard> => {
   const response = await api.post(`/workspaces/${workspaceId}/boards`, board);
 
   return response.data.data;
@@ -15,7 +16,7 @@ const createBoard = async ({
 const getBoardById = async (
   workspaceId: string,
   boardId: string
-): Promise<App.Models.Board> => {
+): Promise<IBoard> => {
   const response = await api.get(
     `/workspaces/${workspaceId}/boards/${boardId}`
   );
@@ -31,7 +32,7 @@ const updateBoard = async ({
   workspaceId: number;
   boardId: number;
   data: Record<string, unknown>;
-}): Promise<App.Models.Board> => {
+}): Promise<IBoard> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/boards/${boardId}`,
     data

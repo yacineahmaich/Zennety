@@ -1,23 +1,24 @@
 import { CreateWorkspace } from "@/components/workspace/CreateWorkspace";
 import { api } from "@/lib/api";
 import { route } from "@/lib/routes";
+import { IBoard, IWorkspace } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const createWorkspace = async (
   workspace: CreateWorkspace
-): Promise<App.Models.Workspace> => {
+): Promise<IWorkspace> => {
   const response = await api.post("/workspaces", workspace);
 
   return response.data.data;
 };
 
-const getWorkspaceById = async (id: string): Promise<App.Models.Workspace> => {
+const getWorkspaceById = async (id: string): Promise<IWorkspace> => {
   const response = await api.get(`/workspaces/${id}`);
 
   return response.data.data;
 };
 
-const getMyWorkspaces = async (): Promise<App.Models.Workspace[]> => {
+const getMyWorkspaces = async (): Promise<IWorkspace[]> => {
   const response = await api.get(`/workspaces`);
 
   return response.data.data;
@@ -29,7 +30,7 @@ const updateWorkspace = async ({
 }: {
   workspaceId: number;
   data: Record<string, unknown>;
-}): Promise<App.Models.Board> => {
+}): Promise<IBoard> => {
   const response = await api.put(`/workspaces/${workspaceId}`, data);
 
   return response.data.data;
@@ -71,7 +72,7 @@ const transferWorkspaceOwnership = async ({
 }: {
   workspaceId: number;
   newOwner: string;
-}): Promise<App.Models.Board> => {
+}): Promise<IBoard> => {
   const response = await api.put(
     `/workspaces/${workspaceId}/transfer-ownership`,
     {

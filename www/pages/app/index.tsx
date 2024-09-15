@@ -9,6 +9,7 @@ import { getPinnedBoard, groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
 import { Role } from "@/types/enums";
+import { IWorkspace } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import {
   FolderKanbanIcon,
@@ -70,7 +71,7 @@ const WorkspaceGroup = ({
   workspaces,
 }: {
   title: string;
-  workspaces: App.Models.Workspace[];
+  workspaces: IWorkspace[];
 }) => {
   const { t } = useTranslation("common");
 
@@ -92,11 +93,7 @@ const WorkspaceGroup = ({
   );
 };
 
-const WorkspaceSection = ({
-  workspace,
-}: {
-  workspace: App.Models.Workspace;
-}) => {
+const WorkspaceSection = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
 
   const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);

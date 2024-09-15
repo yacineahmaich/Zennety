@@ -4,6 +4,7 @@ import {
   useNotifications,
 } from "@/services";
 import { NotificationType } from "@/types/enums";
+import { INotification } from "@/types/models";
 import { format } from "date-fns";
 import {
   CheckIcon,
@@ -49,7 +50,7 @@ const Notifications = () => {
 
         <div className="mt-6 space-y-2">
           {notifications?.map((notification) => (
-            <Notification
+            <NotificationItem
               key={notification.id}
               notification={notification}
               onClose={() => setOpen(false)}
@@ -61,11 +62,11 @@ const Notifications = () => {
   );
 };
 
-const Notification = ({
+const NotificationItem = ({
   notification,
   onClose,
 }: {
-  notification: App.Models.Notification;
+  notification: INotification;
   onClose: () => void;
 }) => {
   const { markNotificationAsRead, isLoading: isMarkingAsRead } =

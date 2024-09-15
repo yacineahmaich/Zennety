@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Priority } from "@/types/enums";
+import { IBoard, ICard, IStatus } from "@/types/models";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { format, formatDistance } from "date-fns";
@@ -16,9 +17,9 @@ const StatusCard = ({
   card,
   dragging = false,
 }: {
-  board: App.Models.Board;
-  status: App.Models.Status;
-  card: App.Models.Card;
+  board: IBoard;
+  status: IStatus;
+  card: ICard;
   dragging?: boolean;
 }) => {
   const {

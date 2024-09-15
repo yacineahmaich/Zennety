@@ -1,4 +1,5 @@
 import { useCan } from "@/hooks/useCan";
+import { IWorkspace } from "@/types/models";
 import { FolderSearchIcon, PenSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import CreateBoard from "../board/CreateBoard";
@@ -8,7 +9,7 @@ const EmptyWorkspace = ({
   workspace,
   withIcon = false,
 }: {
-  workspace: App.Models.Workspace;
+  workspace: IWorkspace;
   withIcon?: boolean;
 }) => {
   const { t } = useTranslation("common");

@@ -1,5 +1,6 @@
 import Loader from "@/components/shared/Loader";
 import { useCard } from "@/services/card";
+import { IBoard, IStatus } from "@/types/models";
 import CardActivity from "./CardActivity";
 import CardDescription from "./CardDescription";
 import CardOptions from "./CardOptions";
@@ -11,8 +12,8 @@ const CardDetails = ({
   status,
   cardId,
 }: {
-  board: App.Models.Board;
-  status: App.Models.Status;
+  board: IBoard;
+  status: IStatus;
   cardId: number;
 }) => {
   const { card, isLoading } = useCard({

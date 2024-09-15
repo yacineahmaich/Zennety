@@ -11,14 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDeleteWorkspace } from "@/services";
+import { IWorkspace } from "@/types/models";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
-const DeleteWorkspace = ({
-  workspace,
-}: {
-  workspace: App.Models.Workspace;
-}) => {
+const DeleteWorkspace = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
   const [confirmText, setConfirmationText] = useState("");
   const [open, setOpen] = useState(false);

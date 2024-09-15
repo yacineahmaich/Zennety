@@ -7,14 +7,11 @@ import {
 } from "@/components/ui/select";
 import { useUpdateWorkspace } from "@/services";
 import { Visibility } from "@/types/enums";
+import { IWorkspace } from "@/types/models";
 import { Globe2Icon, LoaderIcon, LockIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 
-const WorkspaceVisibility = ({
-  workspace,
-}: {
-  workspace: App.Models.Workspace;
-}) => {
+const WorkspaceVisibility = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
   const { updateWorkspace, isLoading } = useUpdateWorkspace();
 

@@ -4,13 +4,14 @@ import { route } from "@/lib/routes";
 import { UserLogin } from "@/pages/auth/login";
 import { ResetPassword } from "@/pages/auth/password-reset/[token]";
 import { UserRegister } from "@/pages/auth/register";
+import { IUser } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
 const register = async (
   data: UserRegister
 ): Promise<{
-  user: App.Models.User;
+  user: IUser;
   token: string;
 }> => {
   const response = await api.post("/register", data);
@@ -21,7 +22,7 @@ const register = async (
 const login = async (
   data: UserLogin
 ): Promise<{
-  user: App.Models.User;
+  user: IUser;
   token: string;
 }> => {
   const response = await api.post("/login", data);
@@ -33,7 +34,7 @@ const logout = async () => {
   await api.post("/logout");
 };
 
-const getUser = async (): Promise<App.Models.User> => {
+const getUser = async (): Promise<IUser> => {
   const response = await api.get("/user");
   return response.data.data;
 };

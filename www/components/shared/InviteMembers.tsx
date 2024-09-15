@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useSendMembershipInvitations } from "@/services";
 import { Role } from "@/types/enums";
 import { ResourceType } from "@/types/helpers";
+import { IUser } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserCogIcon, UserIcon, UserSearchIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
@@ -168,7 +169,7 @@ const InviteMembers = ({
                         Option: (props) => {
                           //@ts-ignore
                           const value = props.value;
-                          const user = value.user as App.Models.User;
+                          const user = value.user as IUser;
 
                           if (!user) return;
 
@@ -273,7 +274,7 @@ const InviteMembers = ({
   );
 };
 
-const searchUsers = async (search: string): Promise<App.Models.User[]> => {
+const searchUsers = async (search: string): Promise<IUser[]> => {
   if (!search) return [];
 
   const response = await api.get(`/users/${search}`);

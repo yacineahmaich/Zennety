@@ -1,7 +1,8 @@
 import { api } from "@/lib/api";
+import { INotification } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const getNotifications = async (): Promise<App.Models.Notification[]> => {
+const getNotifications = async (): Promise<INotification[]> => {
   const response = await api.get("/notifications");
 
   return response.data.data;
@@ -48,7 +49,7 @@ export const useMarkNotificationAsRead = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: markNotificationAsRead,
     onMutate({ id }) {
-      queryClient.setQueryData<App.Models.Notification[]>(
+      queryClient.setQueryData<INotification[]>(
         ["notifications"],
         (notifications) =>
           notifications?.map((n) => (n.id === id ? { ...n, isRead: true } : n))
@@ -73,7 +74,7 @@ export const useDeleteNotification = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteNotification,
     onMutate({ id }) {
-      queryClient.setQueryData<App.Models.Notification[]>(
+      queryClient.setQueryData<INotification[]>(
         ["notifications"],
         (notifications) => notifications?.filter((n) => n.id !== id)
       );

@@ -1,3 +1,4 @@
+import { IBoard } from "@/types/models";
 import { Globe2Icon, LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { route } from "www/lib/routes";
@@ -7,7 +8,7 @@ import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 
 type Props = {
-  board: App.Models.Board;
+  board: IBoard;
 };
 
 const BoardCard = ({ board }: Props) => {

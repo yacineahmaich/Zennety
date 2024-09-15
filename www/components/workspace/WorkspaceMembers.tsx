@@ -2,6 +2,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
 import { useMembers } from "@/services";
 import { Role } from "@/types/enums";
+import { IWorkspace } from "@/types/models";
 import { ListFilterIcon, TrashIcon, UserCogIcon, UserIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
@@ -17,24 +18,18 @@ import {
   SelectValue,
 } from "../ui/select";
 
-const WorkspaceMembers = ({
-  workspace,
-}: {
-  workspace: App.Models.Workspace;
-}) => {
+const WorkspaceMembers = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
   const [role, setRole] = useState("");
   const [_search, setSearch] = useState("");
   const search = useDebounce(_search, 0.3);
 
-  const { data } = useMembers("workspace", workspace.id, {
+  const { members } = useMembers("workspace", workspace.id, {
     search,
     role: role === "all" ? "" : role,
   });
 
-  if (!data) return null;
-
-  const { data: members, meta } = data;
+  if (!members) return null;
 
   return (
     <div className="p-8">

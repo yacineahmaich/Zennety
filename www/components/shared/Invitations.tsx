@@ -3,6 +3,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { roles } from "@/lib/constants";
 import { useDeleteInvitation, useInvitations } from "@/services";
 import { ResourceType } from "@/types/helpers";
+import { IInvitation } from "@/types/models";
 import { format } from "date-fns";
 import {
   CalendarX2Icon,
@@ -105,7 +106,7 @@ const Invitation = ({
   resourceId,
   resourceType,
 }: {
-  invitation: App.Models.Invitation;
+  invitation: IInvitation;
   resourceId: number;
   resourceType: ResourceType;
 }) => {

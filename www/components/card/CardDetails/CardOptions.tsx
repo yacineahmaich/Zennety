@@ -18,6 +18,7 @@ import { priorties } from "@/lib/constants";
 import { useStatuses } from "@/services";
 import { useUpdateCard } from "@/services/card";
 import { Priority } from "@/types/enums";
+import { IBoard, ICard, IStatus } from "@/types/models";
 import { format } from "date-fns";
 import {
   CalendarIcon,
@@ -33,9 +34,9 @@ const CardOptions = ({
   status,
   card,
 }: {
-  board: App.Models.Board;
-  status: App.Models.Status;
-  card: App.Models.Card;
+  board: IBoard;
+  status: IStatus;
+  card: ICard;
 }) => {
   const [deadlinePickerOpen, setDeadlinePickerOpen] = useState(false);
 

@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { IBoard, IStatus } from "@/types/models";
 import { PlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { PropsWithChildren, useState } from "react";
 import CreateCard from "../card/CreateCard";
 
 interface StatusColumnWrapperProps extends PropsWithChildren {
-  board: App.Models.Board;
-  status: App.Models.Status;
+  board: IBoard;
+  status: IStatus;
 }
 
 const StatusColumnWrapper = ({
