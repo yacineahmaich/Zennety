@@ -1,4 +1,4 @@
-import { useMyWorkspaces, useWorkspace } from "@/services";
+import { useMyWorkspaces } from "@/services";
 import { isMatch } from "micromatch";
 import { useRouter } from "next/router";
 import { Accordion } from "../ui/accordion";
@@ -6,9 +6,12 @@ import WorkspaceAccordion from "../workspace/WorkspaceAccordion";
 
 const SidebarWorkspaces = () => {
   const router = useRouter();
-  const { workspaces, isLoading } = useMyWorkspaces();
+  const { workspaces } = useMyWorkspaces();
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace } = useWorkspace(workspaceId, true);
+
+  const workspace = workspaces?.find(
+    (workspace) => String(workspace.id) === workspaceId
+  );
 
   if (!isMatch(router.pathname, ["/app", "/app/w/**"])) {
     return <div className="flex-1" />;

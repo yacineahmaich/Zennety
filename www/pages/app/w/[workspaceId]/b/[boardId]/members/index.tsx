@@ -9,6 +9,7 @@ import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
+import { Suspense } from "react";
 
 const BoardMembers: NextPageWithLayout = () => {
   const router = useRouter();
@@ -19,18 +20,19 @@ const BoardMembers: NextPageWithLayout = () => {
 
   const canViewInvitations = useCan("update", "board", +boardId);
 
-  const { board, isLoading } = useBoard(workspaceId, boardId);
-
-  if (isLoading) return <Loader />;
-  if (!board) return;
+  const { board } = useBoard(workspaceId, boardId);
 
   return (
     <div>
       <BoardBanner board={board} />
       <div className="space-y-8 py-4">
-        <Members resourceType="board" resourceId={board.id} />
+        <Suspense fallback={<Loader />}>
+          <Members resourceType="board" resourceId={board.id} />
+        </Suspense>
         {canViewInvitations && (
-          <Invitations resourceType="board" resourceId={board.id} />
+          <Suspense fallback={<Loader />}>
+            <Invitations resourceType="board" resourceId={board.id} />
+          </Suspense>
         )}
       </div>
     </div>

@@ -2,7 +2,11 @@ import { InviteMembers } from "@/components/shared/InviteMembers";
 import { api } from "@/lib/api";
 import { ResourceType } from "@/types/helpers";
 import { IInvitation } from "@/types/models";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 const sendMembershipInvitations = async ({
   resourceType,
@@ -53,16 +57,13 @@ const deleteInvitation = async ({ token }: { token: string }) => {
  */
 
 export const useInvitation = (token: string) => {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["invitations", token],
     queryFn: () => getInvitation(token),
   });
 
   return {
     invitation: data,
-    isLoading,
-    isError,
-    error,
   };
 };
 
@@ -71,11 +72,9 @@ export const useInvitations = (
   resourceId: number,
   params: Record<string, string>
 ) => {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useSuspenseQuery({
     queryKey: ["invitations", resourceType, resourceId, params],
     queryFn: () => getInvitations(resourceType, resourceId, params),
-    placeholderData: (previousData) => previousData,
-    enabled: !!resourceType && !!resourceId,
   });
 
   return {

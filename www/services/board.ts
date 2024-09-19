@@ -2,7 +2,11 @@ import { CreateBoard } from "@/components/board/CreateBoard";
 import { api } from "@/lib/api";
 import { route } from "@/lib/routes";
 import { IBoard } from "@/types/models";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 const createBoard = async ({
   workspaceId,
@@ -53,6 +57,26 @@ const deleteBoard = async ({
 
 /**
  * ==========================================
+ * ========= QUERIES ========================
+ * ==========================================
+ */
+
+export const useBoard = (workspaceId: string, boardId: string) => {
+  const { data, isLoading, isError, error } = useSuspenseQuery({
+    queryKey: ["workspaces", workspaceId, "boards", boardId],
+    queryFn: () => getBoardById(workspaceId, boardId),
+  });
+
+  return {
+    board: data,
+    isLoading,
+    isError,
+    error,
+  };
+};
+
+/**
+ * ==========================================
  * ========= MUTATIONS ======================
  * ==========================================
  */
@@ -71,21 +95,6 @@ export const useCreateBoard = () => {
   return {
     createBoard: mutate,
     isLoading: isPending,
-  };
-};
-
-export const useBoard = (workspaceId: string, boardId: string) => {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["workspaces", workspaceId, "boards", boardId],
-    queryFn: () => getBoardById(workspaceId, boardId),
-    enabled: !!workspaceId && !!boardId,
-  });
-
-  return {
-    board: data,
-    isLoading,
-    isError,
-    error,
   };
 };
 

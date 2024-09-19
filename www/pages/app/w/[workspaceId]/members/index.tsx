@@ -1,6 +1,5 @@
 import { AppLayout } from "@/components/layouts";
 import Invitations from "@/components/shared/Invitations";
-import Loader from "@/components/shared/Loader";
 import Members from "@/components/shared/Members";
 import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
 import { useCan } from "@/hooks/useCan";
@@ -13,12 +12,9 @@ import { useRouter } from "next/router";
 const WorkspaceMembers: NextPageWithLayout = () => {
   const router = useRouter();
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace, isLoading } = useWorkspace(workspaceId);
+  const { workspace } = useWorkspace(workspaceId);
 
   const canViewInvitations = useCan("update", "workspace", +workspaceId);
-
-  if (isLoading) return <Loader />;
-  if (!workspace) return;
 
   return (
     <div>

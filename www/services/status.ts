@@ -2,7 +2,11 @@ import { CreateStatus } from "@/components/status/CreateStatus";
 import { api } from "@/lib/api";
 import { IStatus } from "@/types/models";
 import { arrayMove } from "@dnd-kit/sortable";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 const getStatuses = async (
   workspaceId: string,
@@ -95,7 +99,7 @@ export const useStatuses = (workspaceId: string, boardId: string) => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useSuspenseQuery({
     queryKey: ["workspaces", workspaceId, "boards", boardId, "statuses"],
     queryFn: ({ signal }) => getStatuses(workspaceId, boardId, signal),
   });

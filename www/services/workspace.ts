@@ -2,7 +2,12 @@ import { CreateWorkspace } from "@/components/workspace/CreateWorkspace";
 import { api } from "@/lib/api";
 import { route } from "@/lib/routes";
 import { IBoard, IWorkspace } from "@/types/models";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 const createWorkspace = async (
   workspace: CreateWorkspace
@@ -89,12 +94,10 @@ const transferWorkspaceOwnership = async ({
  * ==========================================
  */
 
-export const useWorkspace = (id: string, sidebar = false) => {
-  const { data, isLoading, isError, error } = useQuery({
+export const useWorkspace = (id: string) => {
+  const { data, isLoading, isError, error } = useSuspenseQuery({
     queryKey: ["workspaces", id],
     queryFn: () => getWorkspaceById(id),
-    enabled: !!id,
-    throwOnError: !sidebar,
   });
 
   return {

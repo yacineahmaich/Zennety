@@ -13,15 +13,13 @@ import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
+import { Suspense } from "react";
 
 const Workspace: NextPageWithLayout = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace, isLoading } = useWorkspace(workspaceId);
-
-  if (isLoading) return <WorkspaceLoading />;
-  if (!workspace) return;
+  const { workspace } = useWorkspace(workspaceId);
 
   return (
     <div>
@@ -71,7 +69,11 @@ export const getServerSideProps = async ({
 };
 
 Workspace.getLayout = (page) => {
-  return <AppLayout>{page}</AppLayout>;
+  return (
+    <AppLayout>
+      <Suspense fallback={<WorkspaceLoading />}>{page}</Suspense>
+    </AppLayout>
+  );
 };
 
 export default Workspace;

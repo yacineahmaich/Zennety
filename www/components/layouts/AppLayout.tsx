@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Notifications from "../_partials/Notifications";
 import SideNav from "../_partials/SideNav";
 import SidebarLogo from "../_partials/SidebarLogo";
@@ -7,6 +7,7 @@ import SidebarWorkspaces from "../_partials/SidebarWorkspaces";
 import UserDropdown from "../_partials/UserDropdown";
 import WorkspacesDropdown from "../_partials/WorkspacesDropdown";
 import ErrorBoundary from "../shared/ErrorBoundary";
+import Loader from "../shared/Loader";
 import { ThemeSwitcher } from "../shared/ThemeSwitcher";
 import CreateWorkspace from "../workspace/CreateWorkspace";
 
@@ -45,7 +46,9 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <ThemeSwitcher />
           </div>
         </header>
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <ErrorBoundary>
+          <Suspense fallback={<Loader />}>{children}</Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );

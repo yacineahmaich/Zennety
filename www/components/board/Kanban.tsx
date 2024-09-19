@@ -22,7 +22,6 @@ import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import StatusCard from "../card/StatusCard";
-import Loader from "../shared/Loader";
 import CreateStatus from "../status/CreateStatus";
 import StatusColumn from "../status/StatusColumn";
 
@@ -35,7 +34,7 @@ const Kanban = ({ board }: { board: IBoard }) => {
     workspaceId: string;
     boardId: string;
   };
-  const { statuses, isLoading } = useStatuses(workspaceId, boardId);
+  const { statuses } = useStatuses(workspaceId, boardId);
   const { reorderStatuses, optimistacallyReorderStatuses } =
     useReorderStatuses();
 
@@ -217,13 +216,11 @@ const Kanban = ({ board }: { board: IBoard }) => {
   );
 
   const items = useMemo(
-    () => statuses?.map((status) => `status-${status.id}`),
+    () => statuses.map((status) => `status-${status.id}`),
     [statuses]
   );
 
   const [collapsedColumns, setCollapsedColumns] = useState<Array<number>>([]);
-
-  if (isLoading) return <Loader />;
 
   return (
     <DndContext
@@ -235,13 +232,13 @@ const Kanban = ({ board }: { board: IBoard }) => {
     >
       <main className="-ml-4 flex-1 overflow-x-auto py-4 pl-4">
         <div className="flex h-full items-start gap-4">
-          {(statuses || []).length > 0 && (
+          {statuses.length > 0 && (
             <>
               <SortableContext
                 strategy={horizontalListSortingStrategy}
                 items={items || []}
               >
-                {statuses?.map((status, idx) => (
+                {statuses.map((status, idx) => (
                   <StatusColumn
                     key={status.id}
                     board={board}

@@ -1,6 +1,5 @@
 import BoardBanner from "@/components/board/BoardBanner";
 import { AppLayout } from "@/components/layouts";
-import Loader from "@/components/shared/Loader";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -40,13 +39,10 @@ const WorkspaceSettings: NextPageWithLayout = () => {
     boardId: string;
   };
 
-  const { board, isLoading } = useBoard(workspaceId, boardId);
+  const { board } = useBoard(workspaceId, boardId);
 
   const canUpdateBoard = useCan("update", "board", board?.id);
   const canDeleteBoard = useCan("delete", "board", board?.id);
-
-  if (isLoading) return <Loader />;
-  if (!board) return;
 
   return (
     <div>

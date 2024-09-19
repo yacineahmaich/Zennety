@@ -23,7 +23,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     <ErrorBoundary>
       <NextTopLoader
         showSpinner={false}
-        color="#000"
+        color="hsl(var(--primary))"
         shadow={false}
         speed={600}
       />
