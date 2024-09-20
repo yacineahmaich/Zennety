@@ -1,7 +1,6 @@
 import BoardBanner from "@/components/board/BoardBanner";
 import { AppLayout } from "@/components/layouts";
 import Invitations from "@/components/shared/Invitations";
-import Loader from "@/components/shared/Loader";
 import Members from "@/components/shared/Members";
 import { useCan } from "@/hooks/useCan";
 import { useBoard } from "@/services";
@@ -9,7 +8,6 @@ import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
-import { Suspense } from "react";
 
 const BoardMembers: NextPageWithLayout = () => {
   const router = useRouter();
@@ -26,13 +24,9 @@ const BoardMembers: NextPageWithLayout = () => {
     <div>
       <BoardBanner board={board} />
       <div className="space-y-8 py-4">
-        <Suspense fallback={<Loader />}>
-          <Members resourceType="board" resourceId={board.id} />
-        </Suspense>
+        <Members resourceType="board" resourceId={board.id} />
         {canViewInvitations && (
-          <Suspense fallback={<Loader />}>
-            <Invitations resourceType="board" resourceId={board.id} />
-          </Suspense>
+          <Invitations resourceType="board" resourceId={board.id} />
         )}
       </div>
     </div>

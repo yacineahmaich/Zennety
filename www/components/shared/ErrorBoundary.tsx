@@ -1,4 +1,4 @@
-import { MessageSquareWarningIcon } from "lucide-react";
+import { RefreshCcwIcon, ServerCrashIcon } from "lucide-react";
 import { TFunction, withTranslation } from "next-i18next";
 import React from "react";
 import { Button } from "../ui/button";
@@ -26,13 +26,26 @@ class ErrorBoundary extends React.Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="mx-auto flex w-fit flex-col items-center gap-2 pt-10">
-          <MessageSquareWarningIcon />
+          <ServerCrashIcon size={40} />
           <h2 className="text-xl font-semibold">
             {this.props.t("something-went-wrong")}
           </h2>
-          <Button size="sm" onClick={() => window.location.reload()}>
-            {this.props.t("reload")}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              onClick={() => window.location.reload()}
+              className="flex items-center gap-2"
+            >
+              <RefreshCcwIcon size={16} /> {this.props.t("reload")}
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => this.setState({ hasError: false })}
+            >
+              {this.props.t("try-again")}
+            </Button>
+          </div>
         </div>
       );
     }

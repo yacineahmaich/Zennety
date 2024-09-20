@@ -72,7 +72,7 @@ export const useInvitations = (
   resourceId: number,
   params: Record<string, string>
 ) => {
-  const { data, isLoading, isError, error } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["invitations", resourceType, resourceId, params],
     queryFn: () => getInvitations(resourceType, resourceId, params),
   });
@@ -80,9 +80,6 @@ export const useInvitations = (
   return {
     invitations: data?.data,
     pagination: data?.meta,
-    isLoading,
-    isError,
-    error,
   };
 };
 

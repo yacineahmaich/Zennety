@@ -62,7 +62,6 @@ export const useUser = () => {
     queryFn: () => getUser(),
     retry: false,
     staleTime: Infinity,
-    throwOnError: false,
   });
 
   return {

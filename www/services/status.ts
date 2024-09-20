@@ -94,21 +94,13 @@ const reorderStatuses = async ({
  */
 
 export const useStatuses = (workspaceId: string, boardId: string) => {
-  const {
-    data: statuses,
-    isLoading,
-    isError,
-    error,
-  } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["workspaces", workspaceId, "boards", boardId, "statuses"],
     queryFn: ({ signal }) => getStatuses(workspaceId, boardId, signal),
   });
 
   return {
-    statuses,
-    isLoading,
-    isError,
-    error,
+    statuses: data,
   };
 };
 

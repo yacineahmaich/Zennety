@@ -95,16 +95,13 @@ const transferWorkspaceOwnership = async ({
  */
 
 export const useWorkspace = (id: string) => {
-  const { data, isLoading, isError, error } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["workspaces", id],
     queryFn: () => getWorkspaceById(id),
   });
 
   return {
     workspace: data,
-    isLoading,
-    isError,
-    error,
   };
 };
 

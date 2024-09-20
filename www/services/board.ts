@@ -62,16 +62,13 @@ const deleteBoard = async ({
  */
 
 export const useBoard = (workspaceId: string, boardId: string) => {
-  const { data, isLoading, isError, error } = useSuspenseQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["workspaces", workspaceId, "boards", boardId],
     queryFn: () => getBoardById(workspaceId, boardId),
   });
 
   return {
     board: data,
-    isLoading,
-    isError,
-    error,
   };
 };
 
