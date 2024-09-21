@@ -3,9 +3,16 @@ import { IActivity } from "@/types/models";
 import { format } from "date-fns";
 import { CalendarSearchIcon, CornerDownRightIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { useEffect, useRef } from "react";
 
 const CardActivity = ({ activities }: { activities: IActivity[] }) => {
   const { t } = useTranslation("common");
+  const listRef = useRef<HTMLUListElement>(null);
+
+  // scroll to the new activity log
+  useEffect(() => {
+    listRef.current?.lastElementChild?.scrollIntoView();
+  }, [activities?.length]);
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -14,7 +21,7 @@ const CardActivity = ({ activities }: { activities: IActivity[] }) => {
         <h2 className="break-all">{t("activity")}</h2>
       </div>
       <div className="mt-2 h-full flex-1 overflow-y-scroll pr-5">
-        <ul className="space-y-2 pb-4">
+        <ul ref={listRef} className="space-y-2 pb-4">
           {activities.map((activity) => (
             <li key={activity.id}>
               <small className="text-xs">
