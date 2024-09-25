@@ -143,7 +143,7 @@ const Invitation = ({
         </div>
         {canUpdate && (
           <ConfirmationDialog
-            desc={t("delete-invitation-desc")}
+            desc={t("delete-resource-desc", { resource: t("invitation") })}
             onConfirm={() =>
               deleteInvitation(
                 { token: invitation.token },

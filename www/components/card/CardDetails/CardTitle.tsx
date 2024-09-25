@@ -86,7 +86,7 @@ const CardTitle = ({
             {t("rename")}
           </DropdownMenuItem>
           <ConfirmationDialog
-            desc={t("delete-invitation-desc")}
+            desc={t("delete-resource-desc", { resource: t("card") })}
             onConfirm={async () => {
               await deleteCard({
                 workspaceId: board.workspaceId,

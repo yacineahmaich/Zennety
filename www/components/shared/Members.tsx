@@ -170,7 +170,7 @@ const Member = ({
         </Select>
         {canUpdate && member.role !== Role.OWNER && (
           <ConfirmationDialog
-            desc={t("delete-member-desc")}
+            desc={t("delete-resource-desc", { resource: t("member") })}
             onConfirm={() =>
               deleteMember({ id: member.id, resourceType, resourceId })
             }

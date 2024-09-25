@@ -154,7 +154,7 @@ const StatusHeader = ({
               {t("move")}
             </DropdownMenuItem>
             <ConfirmationDialog
-              desc={t("delete-invitation-desc")}
+              desc={t("delete-resource-desc", { resource: t("status") })}
               onConfirm={async () =>
                 await deleteStatus({
                   workspaceId: board.workspaceId,
