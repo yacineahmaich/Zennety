@@ -142,15 +142,19 @@ const UpdateWorkspace = ({ workspace }: { workspace: IWorkspace }) => {
                             {t("upload-photo")}
                           </label>
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2"
-                          onClick={() =>
-                            deleteWorkspaceAvatar({ workspaceId: workspace.id })
-                          }
-                        >
-                          <XSquareIcon size={14} />
-                          {t("remove-photo")}
-                        </DropdownMenuItem>
+                        {workspace.has_avatar && (
+                          <DropdownMenuItem
+                            className="flex items-center gap-2"
+                            onClick={() =>
+                              deleteWorkspaceAvatar({
+                                workspaceId: workspace.id,
+                              })
+                            }
+                          >
+                            <XSquareIcon size={14} />
+                            {t("remove-photo")}
+                          </DropdownMenuItem>
+                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

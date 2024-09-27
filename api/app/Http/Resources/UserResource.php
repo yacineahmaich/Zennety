@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'bio' => $this->bio,
             'avatar' => $this->getFirstMediaUrl('avatar'),
+            'has_avatar' => $this->hasMedia('avatar'),
             'memberships' => MembershipResource::collection($this->whenLoaded('memberships')),
         ];
     }

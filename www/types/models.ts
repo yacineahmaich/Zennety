@@ -4,6 +4,7 @@ export interface IUser {
   email: string;
   bio: string;
   avatar: string;
+  has_avatar: boolean;
   memberships: IMember[];
 }
 export interface IWorkspace {
@@ -14,6 +15,7 @@ export interface IWorkspace {
   members?: IMember[];
   boards?: IBoard[];
   avatar: string;
+  has_avatar: boolean;
 }
 export interface IBoard {
   id: number;

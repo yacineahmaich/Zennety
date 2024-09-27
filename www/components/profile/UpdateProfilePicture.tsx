@@ -55,21 +55,25 @@ const UpdateProfilePicture = () => {
         <Button size="sm" variant="link">
           <label htmlFor="profile-avatar">{t("upload-photo")}</label>
         </Button>
-        <Button
-          size="sm"
-          variant="link"
-          onClick={() =>
-            deleteProfileAvatar(undefined, {
-              onSuccess() {
-                toast.success(t("success"), {
-                  description: t("updated", { resource: t("profile-picture") }),
-                });
-              },
-            })
-          }
-        >
-          {t("remove-photo")}
-        </Button>
+        {user.has_avatar && (
+          <Button
+            size="sm"
+            variant="link"
+            onClick={() =>
+              deleteProfileAvatar(undefined, {
+                onSuccess() {
+                  toast.success(t("success"), {
+                    description: t("updated", {
+                      resource: t("profile-picture"),
+                    }),
+                  });
+                },
+              })
+            }
+          >
+            {t("remove-photo")}
+          </Button>
+        )}
       </div>
     </div>
   );
