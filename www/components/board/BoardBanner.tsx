@@ -27,8 +27,6 @@ const BoardBanner = ({ board }: { board: IBoard }) => {
   const [name, setName] = useState(board.name);
   const [editing, setEditing] = useState(false);
 
-  const members = board?.members || [];
-
   return (
     <section className="-mx-4 flex flex-col justify-between gap-4 border-b p-4 md:flex-row md:items-center">
       <div className="flex items-center gap-2">
@@ -40,9 +38,9 @@ const BoardBanner = ({ board }: { board: IBoard }) => {
             autoFocus
             onBlur={() => {
               setEditing(false);
-              if (name === board?.name) return;
+              if (name === board.name) return;
               if (name === "") {
-                setName(board?.name);
+                setName(board.name);
                 return;
               }
               updateBoard({
@@ -60,27 +58,27 @@ const BoardBanner = ({ board }: { board: IBoard }) => {
             onClick={() => setEditing(true)}
           >
             {/* @ts-ignore */}
-            {isLoading ? variables?.data?.name : board?.name}
+            {isLoading ? variables?.data?.name : board.name}
           </h2>
         )}
 
         <div className="border-r pr-2">
           <PinButton
             resourceType="board"
-            resourceId={board?.id}
-            pinned={board?.pinned}
+            resourceId={board.id}
+            pinned={board.pinned}
           />
         </div>
 
         <div className="flex items-center">
           <div className="flex select-none items-center -space-x-2">
-            {members
+            {board.members
               ?.slice(0, 3)
               .map((member) => (
                 <UserAvatar key={member.id} user={member.profile} />
               ))}
           </div>
-          {members.length > 3 && (
+          {board.members && board.members.length > 3 && (
             <Link href={route("board/members", board.workspaceId, board.id)}>
               <ChevronsRightIcon size={14} className="text-muted-foreground" />
             </Link>
@@ -89,7 +87,7 @@ const BoardBanner = ({ board }: { board: IBoard }) => {
       </div>
 
       <div className="flex items-center space-x-4">
-        <div className="flex items-center">
+        <div className="flex items-center overflow-x-auto">
           {canUpdate && (
             <InviteMembers
               openTrigger={
@@ -98,7 +96,7 @@ const BoardBanner = ({ board }: { board: IBoard }) => {
                   <span className="hidden sm:block">{t("share")}</span>
                 </Button>
               }
-              resourceId={board?.id}
+              resourceId={board.id}
               resourceType="board"
               title={t("invite-to-board-title")}
               subtitle={t("invite-to-board-subtitle")}

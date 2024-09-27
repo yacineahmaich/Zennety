@@ -33,8 +33,8 @@ const UserDropdown = () => {
               />
             </div>
             <div className="line-clamp-1 flex flex-col items-start">
-              <span>{user?.name}</span>
-              <small className="text-xs">{user?.email}</small>
+              <span>{user.name}</span>
+              <small className="text-xs">{user.email}</small>
             </div>
           </div>
         </Button>

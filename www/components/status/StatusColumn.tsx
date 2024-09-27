@@ -110,7 +110,7 @@ const StatusColumn = ({
             strategy={verticalListSortingStrategy}
             disabled={collapsed}
           >
-            {status?.cards?.map((card) => (
+            {status.cards?.map((card) => (
               <StatusCard
                 key={card.id}
                 card={card}

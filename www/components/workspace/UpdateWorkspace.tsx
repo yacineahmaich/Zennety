@@ -57,8 +57,8 @@ const UpdateWorkspace = ({ workspace }: { workspace: IWorkspace }) => {
   const form = useForm<UpdateWorkspace>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: workspace?.name,
-      description: workspace?.description ?? "",
+      name: workspace.name,
+      description: workspace.description ?? "",
     },
   });
 

@@ -57,7 +57,7 @@ const InviteMembers = ({
   subtitle,
   openTrigger,
 }: {
-  resourceId?: number;
+  resourceId: number;
   resourceType: ResourceType;
   title: string;
   subtitle: string;

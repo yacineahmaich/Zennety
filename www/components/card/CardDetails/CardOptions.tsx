@@ -88,7 +88,7 @@ const CardOptions = ({
         <div className="group flex items-center gap-1">
           <Select
             value={
-              board?.members
+              board.members
                 ?.find((m) => m.profile?.id === card?.assignee?.id)
                 ?.id?.toString() ?? ""
             }
@@ -112,7 +112,7 @@ const CardOptions = ({
               )}
             </SelectTrigger>
             <SelectContent>
-              {board?.members?.map((member) => (
+              {board.members?.map((member) => (
                 <SelectItem key={member.id} value={member.id?.toString()}>
                   <div className="flex items-center">
                     <UserAvatar className="h-3.5 w-3.5" user={member.profile} />

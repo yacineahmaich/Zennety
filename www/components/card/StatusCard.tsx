@@ -65,12 +65,12 @@ const StatusCard = ({
             )}
           </div>
           <footer className="flex items-center justify-between text-muted-foreground">
-            {card?.deadline ? (
+            {card.deadline ? (
               <div className="flex items-center gap-1">
                 <ClockIcon size={14} />
                 <div className="h-4 w-px bg-border"></div>
                 <span className="text-xs">
-                  {format(new Date(card?.deadline), "d MMMM yyyy")}
+                  {format(new Date(card.deadline), "d MMMM yyyy")}
                 </span>
               </div>
             ) : (
@@ -79,14 +79,14 @@ const StatusCard = ({
                 <div className="h-4 w-px bg-border"></div>
                 <span className="text-xs">
                   updated{" "}
-                  {formatDistance(new Date(card?.updatedAt), new Date(), {
+                  {formatDistance(new Date(card.updatedAt), new Date(), {
                     addSuffix: true,
                   })}
                 </span>
               </div>
             )}
             <div className="flex items-center -space-x-3">
-              {card?.participants
+              {card.participants
                 ?.slice(0, 3)
                 .map((participant) => (
                   <UserAvatar

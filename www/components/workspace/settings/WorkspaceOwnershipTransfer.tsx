@@ -37,7 +37,7 @@ const WorkspaceOwnershipTransfer = ({
   const { transferWorkspaceOwnership, isLoading } =
     useTransferWorkspaceOwnership();
 
-  const owner = workspace?.members?.find(
+  const owner = workspace.members?.find(
     (m) => m.role === Role.OWNER
   ) as IMember;
 
@@ -76,7 +76,7 @@ const WorkspaceOwnershipTransfer = ({
           <SelectValue placeholder="Select a role" />
         </SelectTrigger>
         <SelectContent>
-          {workspace?.members
+          {workspace.members
             ?.filter((member) =>
               [Role.ADMIN, Role.OWNER].includes(member.role as Role)
             )

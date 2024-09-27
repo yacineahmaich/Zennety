@@ -41,8 +41,8 @@ const WorkspaceSettings: NextPageWithLayout = () => {
 
   const { board } = useBoard(workspaceId, boardId);
 
-  const canUpdateBoard = useCan("update", "board", board?.id);
-  const canDeleteBoard = useCan("delete", "board", board?.id);
+  const canUpdateBoard = useCan("update", "board", board.id);
+  const canDeleteBoard = useCan("delete", "board", board.id);
 
   return (
     <div>

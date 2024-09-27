@@ -96,7 +96,7 @@ const WorkspaceGroup = ({
 const WorkspaceSection = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
 
-  const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);
+  const isOwner = useHasRole(Role.OWNER, "workspace", workspace.id);
   const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
 
   const canViewSettings = isOwner || canUpdateWorkspace;
@@ -140,7 +140,7 @@ const WorkspaceSection = ({ workspace }: { workspace: IWorkspace }) => {
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {workspace?.boards?.map((board) => (
+        {workspace.boards?.map((board) => (
           <BoardCard key={board.id} board={board} />
         ))}
 

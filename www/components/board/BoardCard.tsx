@@ -19,8 +19,8 @@ const BoardCard = ({ board }: Props) => {
           <h3 className="text-sm font-bold  hover:underline">{board.name}</h3>
         </Link>
         <Badge variant="secondary" className="space-x-1 ">
-          {board?.visibility === Visibility.PRIVATE && <LockIcon size={14} />}
-          {board?.visibility === Visibility.PUBLIC && <Globe2Icon size={14} />}
+          {board.visibility === Visibility.PRIVATE && <LockIcon size={14} />}
+          {board.visibility === Visibility.PUBLIC && <Globe2Icon size={14} />}
           <span>{board.visibility}</span>
         </Badge>
       </header>
@@ -41,8 +41,8 @@ const BoardCard = ({ board }: Props) => {
         </div>
         <PinButton
           resourceType="board"
-          resourceId={board?.id}
-          pinned={board?.pinned}
+          resourceId={board.id}
+          pinned={board.pinned}
         />
       </footer>
     </Card>

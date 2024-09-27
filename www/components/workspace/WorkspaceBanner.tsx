@@ -9,7 +9,7 @@ import UpdateWorkspace from "./UpdateWorkspace";
 
 const WorkspaceBanner = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
-  const canInvite = useCan("update", "workspace", workspace?.id);
+  const canInvite = useCan("update", "workspace", workspace.id);
 
   return (
     <div className="-mx-4 border-b p-4">
@@ -18,24 +18,23 @@ const WorkspaceBanner = ({ workspace }: { workspace: IWorkspace }) => {
           <div className="flex items-center gap-2">
             <div className="h-20 w-20 rounded-xl bg-accent shadow-xl">
               <img
-                // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
                 src={workspace.avatar}
                 alt={workspace.name}
                 className="h-full w-full rounded-[inherit] object-cover"
               />
             </div>
             <div className="flex flex-col">
-              <h2 className="font-semibold">{workspace?.name}</h2>
+              <h2 className="font-semibold">{workspace.name}</h2>
               <div className="flex gap-2 text-xs font-medium">
                 <span>Premium</span>
                 <p className="flex items-center space-x-1">
-                  {workspace?.visibility === Visibility.PRIVATE && (
+                  {workspace.visibility === Visibility.PRIVATE && (
                     <LockIcon size={16} />
                   )}
-                  {workspace?.visibility === Visibility.PUBLIC && (
+                  {workspace.visibility === Visibility.PUBLIC && (
                     <Globe2Icon size={16} />
                   )}
-                  <span>{workspace?.visibility}</span>
+                  <span>{workspace.visibility}</span>
                 </p>
               </div>
             </div>
@@ -45,7 +44,7 @@ const WorkspaceBanner = ({ workspace }: { workspace: IWorkspace }) => {
           {canInvite && (
             <InviteMembers
               resourceType="workspace"
-              resourceId={workspace?.id}
+              resourceId={workspace.id}
               title={t("invite-to-workspace-title")}
               subtitle={t("invite-to-workspace-subtitle")}
               openTrigger={
@@ -61,7 +60,7 @@ const WorkspaceBanner = ({ workspace }: { workspace: IWorkspace }) => {
           {canInvite && <UpdateWorkspace workspace={workspace} />}
         </div>
       </div>
-      {workspace?.description && (
+      {workspace.description && (
         <p className="mt-2 max-w-2xl break-all text-sm text-muted-foreground">
           {workspace.description}
         </p>

@@ -34,9 +34,9 @@ const UpdateProfileInfo = () => {
   const form = useForm<UpdateWorkspace>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: user?.name,
-      email: user?.email,
-      bio: user?.bio,
+      name: user.name,
+      email: user.email,
+      bio: user.bio,
     },
   });
 

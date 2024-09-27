@@ -45,8 +45,8 @@ const UpdateBoard = ({ board }: { board: IBoard }) => {
   const form = useForm<UpdateBoard>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: board?.name,
-      description: board?.description ?? "",
+      name: board.name,
+      description: board.description ?? "",
     },
   });
 

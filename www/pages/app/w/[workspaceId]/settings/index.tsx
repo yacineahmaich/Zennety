@@ -1,5 +1,4 @@
 import { AppLayout } from "@/components/layouts";
-import Loader from "@/components/shared/Loader";
 import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
 import DeleteWorkspace from "@/components/workspace/settings/DeleteWorkspace";
 import WorkspaceOwnershipTransfer from "@/components/workspace/settings/WorkspaceOwnershipTransfer";
@@ -19,14 +18,11 @@ const WorkspaceSettings: NextPageWithLayout = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { workspaceId } = router.query as { workspaceId: string };
-  const { workspace, isLoading } = useWorkspace(workspaceId);
+  const { workspace } = useWorkspace(workspaceId);
 
-  const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);
-  const canUpdateWorkspace = useCan("update", "workspace", workspace?.id);
-  const canDeleteWorkspace = useCan("delete", "workspace", workspace?.id);
-
-  if (isLoading) return <Loader />;
-  if (!workspace) return;
+  const isOwner = useHasRole(Role.OWNER, "workspace", workspace.id);
+  const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
+  const canDeleteWorkspace = useCan("delete", "workspace", workspace.id);
 
   return (
     <div>

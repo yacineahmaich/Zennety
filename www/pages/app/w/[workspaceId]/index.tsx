@@ -31,15 +31,15 @@ const Workspace: NextPageWithLayout = () => {
         </span>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3  2xl:grid-cols-4">
-          {workspace?.boards?.map((board) => (
+          {workspace.boards?.map((board) => (
             <BoardCard key={board.id} board={board} />
           ))}
 
-          {workspace?.boards?.length === 0 && (
+          {workspace.boards?.length === 0 && (
             <EmptyWorkspace workspace={workspace} withIcon />
           )}
 
-          {workspace?.boards && workspace.boards.length > 0 && (
+          {workspace.boards && workspace.boards.length > 0 && (
             <CreateBoard
               openTrigger={
                 <Card className="flex h-card items-center justify-center ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2">

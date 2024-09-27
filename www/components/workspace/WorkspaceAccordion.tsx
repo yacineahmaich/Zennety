@@ -20,15 +20,13 @@ import {
 } from "../ui/accordion";
 import { buttonVariants } from "../ui/button";
 
-const WorkspaceAccordion = ({ workspace }: { workspace?: IWorkspace }) => {
+const WorkspaceAccordion = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
 
-  const isOwner = useHasRole(Role.OWNER, "workspace", workspace?.id);
-  const canUpdateWorkspace = useCan("update", "workspace", workspace?.id);
+  const isOwner = useHasRole(Role.OWNER, "workspace", workspace.id);
+  const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
 
   const canViewSettings = isOwner || canUpdateWorkspace;
-
-  if (!workspace) return null;
 
   return (
     <AccordionItem value={workspace.id.toString()}>
@@ -43,7 +41,7 @@ const WorkspaceAccordion = ({ workspace }: { workspace?: IWorkspace }) => {
             />
           </div>
           <div className="text-xs">
-            <h2>{workspace?.name}</h2>
+            <h2>{workspace.name}</h2>
             <p className="flex items-center gap-1 text-muted-foreground">
               {workspace.visibility === Visibility.PRIVATE && (
                 <LockIcon size={14} />
