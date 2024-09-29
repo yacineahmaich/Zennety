@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { ConfirmationDialog } from "./ConfirmationDialog";
+import NoRecords from "./NoRecords";
 import UserAvatar from "./UserAvatar";
 
 const Invitations = ({
@@ -44,8 +45,6 @@ const Invitations = ({
     search,
     role: role === "all" ? "" : role,
   });
-
-  if ((invitations?.length ?? 0) === 0) return null;
 
   return (
     <div>
@@ -96,6 +95,7 @@ const Invitations = ({
             />
           ))}
         </div>
+        {invitations?.length === 0 && <NoRecords />}
       </div>
     </div>
   );

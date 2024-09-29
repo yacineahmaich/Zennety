@@ -4,6 +4,7 @@ import { ResourceType } from "@/types/helpers";
 import { IInvitation } from "@/types/models";
 import {
   useMutation,
+  useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
@@ -72,7 +73,7 @@ export const useInvitations = (
   resourceId: number,
   params: Record<string, string>
 ) => {
-  const { data } = useSuspenseQuery({
+  const { data } = useQuery({
     queryKey: ["invitations", resourceType, resourceId, params],
     queryFn: () => getInvitations(resourceType, resourceId, params),
   });

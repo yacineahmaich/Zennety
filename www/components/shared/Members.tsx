@@ -26,6 +26,7 @@ import {
 } from "../ui/select";
 import { ConfirmationDialog } from "./ConfirmationDialog";
 import Loader from "./Loader";
+import NoRecords from "./NoRecords";
 import UserAvatar from "./UserAvatar";
 
 const Members = ({
@@ -102,6 +103,7 @@ const Members = ({
                 />
               ))}
             </div>
+            {members?.length === 0 && <NoRecords />}
           </>
         )}
       </div>

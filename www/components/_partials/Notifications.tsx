@@ -17,6 +17,7 @@ import {
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useState } from "react";
+import NoRecords from "../shared/NoRecords";
 import { Button } from "../ui/button";
 import {
   Sheet,
@@ -41,7 +42,7 @@ const Notifications = () => {
           <InboxIcon size={16} />
         </Button>
       </SheetTrigger>
-      <SheetContent className="min-w-[450px] overflow-y-auto p-3">
+      <SheetContent className="min-w-[400px] overflow-y-auto p-3">
         <SheetHeader>
           <SheetTitle>
             {t("notifications")} ({notifications?.length ?? 0})
@@ -56,6 +57,8 @@ const Notifications = () => {
               onClose={() => setOpen(false)}
             />
           ))}
+
+          {notifications?.length === 0 && <NoRecords />}
         </div>
       </SheetContent>
     </Sheet>
