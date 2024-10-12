@@ -8,8 +8,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ProfilePage: NextPageWithLayout = () => {
   return (
-    <div className="flex gap-16 pb-20">
-      <div className="w-[450px] space-y-8">
+    <div className="flex flex-col-reverse gap-16 pb-20 md:flex-row">
+      <div className="space-y-8 md:max-w-[450px]">
         <UpdateProfileInfo />
         <UpdatePasswordForm />
       </div>
