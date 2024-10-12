@@ -57,7 +57,9 @@ const WorkspaceBanner = ({ workspace }: { workspace: IWorkspace }) => {
               }
             />
           )}
-          {canInvite && <UpdateWorkspace workspace={workspace} />}
+          {canInvite && (
+            <UpdateWorkspace key={workspace.id} workspace={workspace} />
+          )}
         </div>
       </div>
       {workspace.description && (
