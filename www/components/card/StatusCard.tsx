@@ -44,7 +44,7 @@ const StatusCard = ({
 
   return (
     <Dialog>
-      <DialogTrigger className="w-full space-y-6 text-left">
+      <DialogTrigger disabled={dragging} className="w-full space-y-6 text-left">
         <Card
           ref={setNodeRef}
           style={style}

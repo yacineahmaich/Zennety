@@ -70,6 +70,10 @@
   * {
     @apply border-border;
   }
+  html {
+    font-size: 15px !important;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

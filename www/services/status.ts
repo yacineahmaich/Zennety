@@ -188,7 +188,8 @@ export const useReorderStatuses = () => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: reorderStatuses,
-    onSuccess(status, { workspaceId, boardId }) {
+    onMutate({ workspaceId, boardId }) {},
+    onError(_, { workspaceId, boardId }) {
       queryClient.invalidateQueries({
         queryKey: [
           "workspaces",
