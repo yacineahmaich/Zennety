@@ -1,4 +1,4 @@
-import { InviteMembers } from "@/components/shared/InviteMembers";
+import { InviteMembers } from "@/components/shared/invite-members";
 import { api } from "@/lib/api";
 import { ResourceType } from "@/types/helpers";
 import { IInvitation } from "@/types/models";

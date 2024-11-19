@@ -1,11 +1,11 @@
-import BoardCard from "@/components/board/BoardCard";
-import CreateBoard from "@/components/board/CreateBoard";
+import BoardCard from "@/components/board/board-card";
+import CreateBoard from "@/components/board/create-board";
 import { AppLayout } from "@/components/layouts";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
-import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
-import WorkspaceLoading from "@/components/workspace/WorkspaceLoading";
+import EmptyWorkspace from "@/components/workspace/empty-workspace";
+import WorkspaceBanner from "@/components/workspace/workspace-banner";
+import WorkspaceLoading from "@/components/workspace/workspace-loading";
 import { useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { KanbanSquareIcon, PenSquareIcon } from "lucide-react";

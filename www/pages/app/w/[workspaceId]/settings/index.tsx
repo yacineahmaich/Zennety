@@ -1,10 +1,10 @@
 import { AppLayout } from "@/components/layouts";
-import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
-import DeleteWorkspace from "@/components/workspace/settings/DeleteWorkspace";
-import WorkspaceOwnershipTransfer from "@/components/workspace/settings/WorkspaceOwnershipTransfer";
-import WorkspaceVisibility from "@/components/workspace/settings/WorkspaceVisibility";
-import { useCan } from "@/hooks/useCan";
-import { useHasRole } from "@/hooks/useHasRole";
+import DeleteWorkspace from "@/components/workspace/settings/delete-workspace";
+import WorkspaceOwnershipTransfer from "@/components/workspace/settings/workspace-ownership-transfer";
+import WorkspaceVisibility from "@/components/workspace/settings/workspace-visibility";
+import WorkspaceBanner from "@/components/workspace/workspace-banner";
+import { useCan } from "@/hooks/use-can";
+import { useHasRole } from "@/hooks/use-has-role";
 import { useWorkspace } from "@/services";
 import { Role } from "@/types/enums";
 import { NextPageWithLayout } from "@/types/next";

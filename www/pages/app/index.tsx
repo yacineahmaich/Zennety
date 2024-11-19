@@ -1,10 +1,10 @@
-import BoardCard from "@/components/board/BoardCard";
+import BoardCard from "@/components/board/board-card";
 import { AppLayout } from "@/components/layouts";
-import Loader from "@/components/shared/Loader";
+import Loader from "@/components/shared/loader";
 import { buttonVariants } from "@/components/ui/button";
-import EmptyWorkspace from "@/components/workspace/EmptyWorkspace";
-import { useCan } from "@/hooks/useCan";
-import { useHasRole } from "@/hooks/useHasRole";
+import EmptyWorkspace from "@/components/workspace/empty-workspace";
+import { useCan } from "@/hooks/use-can";
+import { useHasRole } from "@/hooks/use-has-role";
 import { getPinnedBoard, groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";

@@ -1,7 +1,7 @@
-import BoardBanner from "@/components/board/BoardBanner";
-import Kanban from "@/components/board/Kanban";
+import BoardBanner from "@/components/board/board-banner";
+import Kanban from "@/components/board/kanban";
 import { AppLayout } from "@/components/layouts";
-import Loader from "@/components/shared/Loader";
+import Loader from "@/components/shared/loader";
 
 import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";

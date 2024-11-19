@@ -1,5 +1,5 @@
 import { Layout } from "@/components/layouts";
-import ErrorBoundary from "@/components/shared/ErrorBoundary";
+import ErrorBoundary from "@/components/shared/error-boundary";
 import { queryClient } from "@/lib/react-query";
 import "@/styles/globals.css";
 import { AppPropsWithLayout } from "@/types/next";

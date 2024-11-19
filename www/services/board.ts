@@ -1,4 +1,4 @@
-import { CreateBoard } from "@/components/board/CreateBoard";
+import { CreateBoard } from "@/components/board/create-board";
 import { api } from "@/lib/api";
 import { route } from "@/lib/routes";
 import { IBoard } from "@/types/models";

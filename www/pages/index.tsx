@@ -1,4 +1,4 @@
-import Hero from "@/components/landing/Hero";
+import Hero from "@/components/landing/hero";
 import { GuestLayout } from "@/components/layouts";
 import { NextPageWithLayout } from "@/types/next";
 import type { GetServerSidePropsContext } from "next";

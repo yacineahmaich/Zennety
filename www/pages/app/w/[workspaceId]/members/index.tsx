@@ -1,8 +1,8 @@
 import { AppLayout } from "@/components/layouts";
-import Invitations from "@/components/shared/Invitations";
-import Members from "@/components/shared/Members";
-import WorkspaceBanner from "@/components/workspace/WorkspaceBanner";
-import { useCan } from "@/hooks/useCan";
+import Invitations from "@/components/shared/invitations";
+import Members from "@/components/shared/members";
+import WorkspaceBanner from "@/components/workspace/workspace-banner";
+import { useCan } from "@/hooks/use-can";
 import { useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";

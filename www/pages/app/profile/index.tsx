@@ -1,7 +1,7 @@
 import { AppLayout } from "@/components/layouts";
-import UpdatePasswordForm from "@/components/profile/UpdatePasswordForm";
-import UpdateProfileInfo from "@/components/profile/UpdateProfileInfo";
-import UpdateProfilePicture from "@/components/profile/UpdateProfilePicture";
+import UpdatePasswordForm from "@/components/profile/update-password-form";
+import UpdateProfileInfo from "@/components/profile/update-profile-info";
+import UpdateProfilePicture from "@/components/profile/update-profile-picture";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";

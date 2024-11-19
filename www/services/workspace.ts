@@ -1,4 +1,4 @@
-import { CreateWorkspace } from "@/components/workspace/CreateWorkspace";
+import { CreateWorkspace } from "@/components/workspace/create-workspace";
 import { api } from "@/lib/api";
 import { route } from "@/lib/routes";
 import { IBoard, IWorkspace } from "@/types/models";

@@ -1,5 +1,5 @@
 import { AppLayout } from "@/components/layouts";
-import UserAvatar from "@/components/shared/UserAvatar";
+import UserAvatar from "@/components/shared/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { route } from "@/lib/routes";

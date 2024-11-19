@@ -1,4 +1,4 @@
-import { CreateCard } from "@/components/card/CreateCard";
+import { CreateCard } from "@/components/card/create-card";
 import { api } from "@/lib/api";
 import { ICard, IStatus } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

@@ -1,4 +1,4 @@
-import BoardBanner from "@/components/board/BoardBanner";
+import BoardBanner from "@/components/board/board-banner";
 import { AppLayout } from "@/components/layouts";
 import {
   AlertDialog,
@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCan } from "@/hooks/useCan";
+import { useCan } from "@/hooks/use-can";
 import { useBoard, useDeleteBoard, useUpdateBoard } from "@/services";
 import { Visibility } from "@/types/enums";
 import { IBoard } from "@/types/models";

@@ -1,4 +1,4 @@
-import { CreateStatus } from "@/components/status/CreateStatus";
+import { CreateStatus } from "@/components/status/create-status";
 import { api } from "@/lib/api";
 import { IStatus } from "@/types/models";
 import { arrayMove } from "@dnd-kit/sortable";

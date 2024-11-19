@@ -1,8 +1,8 @@
-import BoardBanner from "@/components/board/BoardBanner";
+import BoardBanner from "@/components/board/board-banner";
 import { AppLayout } from "@/components/layouts";
-import Invitations from "@/components/shared/Invitations";
-import Members from "@/components/shared/Members";
-import { useCan } from "@/hooks/useCan";
+import Invitations from "@/components/shared/invitations";
+import Members from "@/components/shared/members";
+import { useCan } from "@/hooks/use-can";
 import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
