@@ -8,7 +8,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { appWithTranslation } from "next-i18next";
 import { ThemeProvider } from "next-themes";
 import { useState } from "react";
-import "react-quill/dist/quill.snow.css";
 
 import { Toaster } from "@/components/ui/sonner";
 import NextTopLoader from "nextjs-toploader";
