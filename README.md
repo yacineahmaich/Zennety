@@ -8,3 +8,7 @@ Zennety
     - finish card details view
     - landing page
     - refactore permissions
+    - add tooltip
+    - add breadcrumb
+    - override default chadcn styles
+    
