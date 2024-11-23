@@ -51,7 +51,7 @@ const StatusColumn = ({
 
   const items = useMemo(
     () => status.cards?.map((card) => `card-${card.id}`),
-    [status.cards]
+    [status.cards?.length]
   );
 
   if (isDragging) {
