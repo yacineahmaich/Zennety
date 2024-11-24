@@ -29,13 +29,12 @@ import Loader from "./loader";
 import NoRecords from "./no-records";
 import UserAvatar from "./user-avatar";
 
-const Members = ({
-  resourceType,
-  resourceId,
-}: {
+type Props = {
   resourceType: ResourceType;
   resourceId: number;
-}) => {
+};
+
+const Members = ({ resourceType, resourceId }: Props) => {
   const { t } = useTranslation("common");
   const [role, setRole] = useState("all");
   const [_search, setSearch] = useState("");

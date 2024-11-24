@@ -7,15 +7,13 @@ import CardOptions from "./card-options";
 import CardTitle from "./card-title";
 import CreateComment from "./create-comment";
 
-const CardDetails = ({
-  board,
-  status,
-  cardId,
-}: {
+type Props = {
   board: IBoard;
   status: IStatus;
   cardId: number;
-}) => {
+};
+
+const CardDetails = ({ board, status, cardId }: Props) => {
   const { card, isLoading } = useCard({
     workspaceId: board.workspaceId,
     boardId: board.id,

@@ -1,8 +1,8 @@
 import ErrorBoundary from "@/components/shared/error-boundary";
 import Header from "@/components/shared/header";
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 
-const GuestLayout = ({ children }: { children: ReactNode }) => {
+const GuestLayout = ({ children }: PropsWithChildren) => {
   return (
     <div>
       <Header />

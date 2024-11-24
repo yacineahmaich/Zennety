@@ -12,6 +12,16 @@ import { useMemo } from "react";
 import StatusColumnWrapper from "./status-column-wrapper";
 import StatusHeader from "./status-header";
 
+type Props = {
+  board: IBoard;
+  status: IStatus;
+  nextStatus?: IStatus;
+  prevStatus?: IStatus;
+  collapsed: boolean;
+  toggleCollapsed: () => void;
+  dragging?: boolean;
+};
+
 const StatusColumn = ({
   board,
   status,
@@ -20,15 +30,7 @@ const StatusColumn = ({
   collapsed,
   toggleCollapsed,
   dragging = false,
-}: {
-  board: IBoard;
-  status: IStatus;
-  nextStatus?: IStatus;
-  prevStatus?: IStatus;
-  collapsed: boolean;
-  toggleCollapsed: () => void;
-  dragging?: boolean;
-}) => {
+}: Props) => {
   const {
     setNodeRef,
     attributes,

@@ -24,11 +24,11 @@ import { IMember, IWorkspace } from "@/types/models";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
-const WorkspaceOwnershipTransfer = ({
-  workspace,
-}: {
+type Props = {
   workspace: IWorkspace;
-}) => {
+};
+
+const WorkspaceOwnershipTransfer = ({ workspace }: Props) => {
   const { t } = useTranslation("common");
   const [newOwner, setNewOwner] = useState<string>();
   const [open, setOpen] = useState(false);

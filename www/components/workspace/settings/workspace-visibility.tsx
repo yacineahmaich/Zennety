@@ -11,7 +11,9 @@ import { IWorkspace } from "@/types/models";
 import { Globe2Icon, LoaderIcon, LockIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 
-const WorkspaceVisibility = ({ workspace }: { workspace: IWorkspace }) => {
+type Props = { workspace: IWorkspace };
+
+const WorkspaceVisibility = ({ workspace }: Props) => {
   const { t } = useTranslation("common");
   const { updateWorkspace, isLoading } = useUpdateWorkspace();
 

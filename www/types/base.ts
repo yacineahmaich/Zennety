@@ -1,9 +1,9 @@
-type ApiError = {
+export type ApiError = {
   message: string;
   errors?: Record<string, string[]>;
 };
 
-type Paginator<T> = {
+export type Paginator<T> = {
   data: T[];
   meta: {
     current_page: number;

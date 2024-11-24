@@ -7,15 +7,13 @@ import {
 import { cn } from "@/lib/utils";
 import { IUser } from "@/types/models";
 
-const UserAvatar = ({
-  user,
-  showCard = true,
-  className,
-}: {
+type Props = {
   user: IUser;
   showCard?: boolean;
   className?: string;
-}) => {
+};
+
+const UserAvatar = ({ user, showCard = true, className }: Props) => {
   return (
     <HoverCard>
       <HoverCardTrigger>

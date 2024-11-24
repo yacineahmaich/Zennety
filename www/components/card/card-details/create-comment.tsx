@@ -6,13 +6,13 @@ import { SendIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
-interface CreateCommentProps {
+type Props = {
   status: IStatus;
   board: IBoard;
   card: ICard;
-}
+};
 
-const CreateComment = ({ board, status, card }: CreateCommentProps) => {
+const CreateComment = ({ board, status, card }: Props) => {
   const { t } = useTranslation("common");
 
   const [content, setContent] = useState("");

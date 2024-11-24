@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google";
 import Logo from "@/components/shared/logo";
 import { useUser } from "@/services";
 import { useRouter } from "next/router";
+import { PropsWithChildren } from "react";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -11,7 +12,7 @@ export const fontSans = FontSans({
 
 const unauthenticatedRoutes = ["/auth/**", "/"];
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const { user, isLoading } = useUser();
 

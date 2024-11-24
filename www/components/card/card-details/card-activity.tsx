@@ -5,7 +5,9 @@ import { CalendarSearchIcon, CornerDownRightIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useEffect, useRef } from "react";
 
-const CardActivity = ({ activities }: { activities: IActivity[] }) => {
+type Props = { activities: IActivity[] };
+
+const CardActivity = ({ activities }: Props) => {
   const { t } = useTranslation("common");
   const listRef = useRef<HTMLUListElement>(null);
 

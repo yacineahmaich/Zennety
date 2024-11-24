@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
-type ConfirmationDialogProps = {
+type Props = {
   title?: string;
   desc: string;
   onConfirm: () => void | Promise<any>;
@@ -29,7 +29,7 @@ export const ConfirmationDialog = ({
   onConfirm,
   disabled = false,
   openTrigger,
-}: ConfirmationDialogProps) => {
+}: Props) => {
   const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
 

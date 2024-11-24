@@ -36,7 +36,9 @@ const formSchema = z.object({
 
 export type UpdateBoard = z.infer<typeof formSchema>;
 
-const UpdateBoard = ({ board }: { board: IBoard }) => {
+type Props = { board: IBoard };
+
+const UpdateBoard = ({ board }: Props) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 

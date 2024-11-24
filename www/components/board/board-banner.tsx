@@ -19,7 +19,9 @@ import Link from "next/link";
 import { useState } from "react";
 import UpdateBoard from "./update-board";
 
-const BoardBanner = ({ board }: { board: IBoard }) => {
+type Props = { board: IBoard };
+
+const BoardBanner = ({ board }: Props) => {
   const { t } = useTranslation("common");
   const canUpdate = useCan("update", "board", board.id);
   const { updateBoard, isLoading, variables } = useUpdateBoard();

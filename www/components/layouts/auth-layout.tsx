@@ -1,16 +1,17 @@
 import Logo from "@/components/shared/logo";
 import { useTranslation } from "next-i18next";
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
+
+type Props = {
+  heading: string;
+  description: string;
+};
 
 const AuthLayout = ({
   children,
   heading,
   description,
-}: {
-  children: ReactNode;
-  heading: string;
-  description: string;
-}) => {
+}: PropsWithChildren<Props>) => {
   const { t } = useTranslation("common");
 
   return (

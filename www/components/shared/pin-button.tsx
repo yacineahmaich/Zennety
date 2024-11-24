@@ -3,15 +3,13 @@ import { usePin } from "@/services";
 import { ResourceType } from "@/types/helpers";
 import { StarIcon } from "lucide-react";
 
-const PinButton = ({
-  resourceType,
-  resourceId,
-  pinned,
-}: {
+type Props = {
   resourceId: number;
   resourceType: ResourceType;
   pinned: boolean;
-}) => {
+};
+
+const PinButton = ({ resourceType, resourceId, pinned }: Props) => {
   const { pin, isLoading } = usePin();
 
   return (

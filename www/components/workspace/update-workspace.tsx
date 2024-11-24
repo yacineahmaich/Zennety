@@ -46,7 +46,9 @@ const formSchema = z.object({
 
 export type UpdateWorkspace = z.infer<typeof formSchema>;
 
-const UpdateWorkspace = ({ workspace }: { workspace: IWorkspace }) => {
+type Props = { workspace: IWorkspace };
+
+const UpdateWorkspace = ({ workspace }: Props) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 

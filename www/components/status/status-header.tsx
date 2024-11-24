@@ -25,6 +25,15 @@ import {
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
+type Props = {
+  board: IBoard;
+  status: IStatus;
+  nextStatus?: IStatus;
+  prevStatus?: IStatus;
+  collapsed: boolean;
+  toggleCollapsed: () => void;
+};
+
 const StatusHeader = ({
   board,
   status,
@@ -32,14 +41,7 @@ const StatusHeader = ({
   nextStatus,
   collapsed,
   toggleCollapsed,
-}: {
-  board: IBoard;
-  status: IStatus;
-  nextStatus?: IStatus;
-  prevStatus?: IStatus;
-  collapsed: boolean;
-  toggleCollapsed: () => void;
-}) => {
+}: Props) => {
   const { t } = useTranslation("common");
   const { deleteStatus, isLoading: isDeleting } = useDeleteStatus();
   const { updateStatus, isLoading, variables } = useUpdateStatus();

@@ -55,15 +55,13 @@ const formSchema = z.object({
 
 export type CreateCard = z.infer<typeof formSchema>;
 
-const CreateCard = ({
-  board,
-  status,
-  onHide,
-}: {
+type Props = {
   board: IBoard;
   status: IStatus;
   onHide: () => void;
-}) => {
+};
+
+const CreateCard = ({ board, status, onHide }: Props) => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const ref = useRef<HTMLDivElement>(null);

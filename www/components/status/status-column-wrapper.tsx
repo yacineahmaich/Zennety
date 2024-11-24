@@ -5,16 +5,16 @@ import { PlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { PropsWithChildren, useState } from "react";
 
-interface StatusColumnWrapperProps extends PropsWithChildren {
+type Props = {
   board: IBoard;
   status: IStatus;
-}
+};
 
 const StatusColumnWrapper = ({
   board,
   status,
   children,
-}: StatusColumnWrapperProps) => {
+}: PropsWithChildren<Props>) => {
   const { t } = useTranslation("common");
   const [showForm, setShowForm] = useState(false);
 

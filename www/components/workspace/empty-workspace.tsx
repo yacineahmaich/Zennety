@@ -5,13 +5,12 @@ import { IWorkspace } from "@/types/models";
 import { FolderSearchIcon, PenSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 
-const EmptyWorkspace = ({
-  workspace,
-  withIcon = false,
-}: {
+type Props = {
   workspace: IWorkspace;
   withIcon?: boolean;
-}) => {
+};
+
+const EmptyWorkspace = ({ workspace, withIcon = false }: Props) => {
   const { t } = useTranslation("common");
   const canCreate = useCan("update", "workspace", workspace.id);
 

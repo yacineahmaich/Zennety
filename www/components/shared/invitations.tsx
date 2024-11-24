@@ -29,13 +29,12 @@ import { ConfirmationDialog } from "./confirmation-dialog";
 import NoRecords from "./no-records";
 import UserAvatar from "./user-avatar";
 
-const Invitations = ({
-  resourceType,
-  resourceId,
-}: {
+type Props = {
   resourceType: ResourceType;
   resourceId: number;
-}) => {
+};
+
+const Invitations = ({ resourceType, resourceId }: Props) => {
   const { t } = useTranslation("common");
   const [role, setRole] = useState("all");
   const [_search, setSearch] = useState("");

@@ -7,7 +7,9 @@ import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import UpdateWorkspace from "./update-workspace";
 
-const WorkspaceBanner = ({ workspace }: { workspace: IWorkspace }) => {
+type Props = { workspace: IWorkspace };
+
+const WorkspaceBanner = ({ workspace }: Props) => {
   const { t } = useTranslation("common");
   const canInvite = useCan("update", "workspace", workspace.id);
 

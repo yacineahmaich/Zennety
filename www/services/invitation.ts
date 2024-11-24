@@ -1,5 +1,6 @@
 import { InviteMembers } from "@/components/shared/invite-members";
 import { api } from "@/lib/api";
+import { Paginator } from "@/types/base";
 import { ResourceType } from "@/types/helpers";
 import { IInvitation } from "@/types/models";
 import {

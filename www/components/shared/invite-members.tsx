@@ -50,19 +50,21 @@ const formSchema = z.object({
 
 export type InviteMembers = z.infer<typeof formSchema>;
 
+type Props = {
+  resourceId: number;
+  resourceType: ResourceType;
+  title: string;
+  subtitle: string;
+  openTrigger: JSX.Element;
+};
+
 const InviteMembers = ({
   resourceId,
   resourceType,
   title,
   subtitle,
   openTrigger,
-}: {
-  resourceId: number;
-  resourceType: ResourceType;
-  title: string;
-  subtitle: string;
-  openTrigger: JSX.Element;
-}) => {
+}: Props) => {
   const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
   const { sendMembershipInvitations, isLoading } =

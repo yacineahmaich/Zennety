@@ -1,3 +1,4 @@
+import { ApiError } from "@/types/base";
 import { QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getFirstApiErrorMsg } from "./helpers";

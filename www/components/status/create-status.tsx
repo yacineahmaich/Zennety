@@ -25,7 +25,9 @@ const formSchema = z.object({
 
 export type CreateStatus = z.infer<typeof formSchema>;
 
-const CreateStatus = ({ board }: { board: IBoard }) => {
+type Props = { board: IBoard };
+
+const CreateStatus = ({ board }: Props) => {
   const { t } = useTranslation("common");
   const [showForm, setShowForm] = useState(false);
   const { createStatus, isLoading } = useCreateStatus();

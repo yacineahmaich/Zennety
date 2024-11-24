@@ -9,9 +9,9 @@ import Loader from "@/components/shared/loader";
 import ThemeSwitcher from "@/components/shared/theme-switcher";
 import CreateWorkspace from "@/components/workspace/create-workspace";
 import { cn } from "@/lib/utils";
-import { Suspense, useState } from "react";
+import { PropsWithChildren, Suspense, useState } from "react";
 
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
+const AppLayout = ({ children }: PropsWithChildren) => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (

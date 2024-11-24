@@ -2,13 +2,12 @@ import { priorties } from "@/lib/constants";
 import { Priority } from "@/types/enums";
 import { FlagTriangleRightIcon } from "lucide-react";
 
-const PriorityIcon = ({
-  priority,
-  size = 14,
-}: {
+type Props = {
   priority: Priority;
   size?: number;
-}) => {
+};
+
+const PriorityIcon = ({ priority, size = 14 }: Props) => {
   const priorityObj = priorties.find((p) => p.label === priority);
 
   if (!priorityObj) return null;

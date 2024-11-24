@@ -1,4 +1,5 @@
 import { api } from "@/lib/api";
+import { Paginator } from "@/types/base";
 import { ResourceType } from "@/types/helpers";
 import { IMember } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

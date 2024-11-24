@@ -6,13 +6,12 @@ import { cn } from "@/lib/utils";
 import { ChevronLeftSquareIcon, ChevronRightSquareIcon } from "lucide-react";
 import Link from "next/link";
 
-const SidebarLogo = ({
-  collapsed,
-  toggleCollapsed,
-}: {
+type Props = {
   collapsed: boolean;
   toggleCollapsed: () => void;
-}) => {
+};
+
+const SidebarLogo = ({ collapsed, toggleCollapsed }: Props) => {
   return (
     <div
       className={cn(

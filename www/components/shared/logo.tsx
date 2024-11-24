@@ -1,8 +1,6 @@
 import { SVGProps } from "react";
 
-interface LogoProps extends SVGProps<SVGSVGElement> {}
-
-const Logo = (props: LogoProps) => {
+const Logo = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width="40"

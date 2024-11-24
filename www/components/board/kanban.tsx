@@ -25,7 +25,9 @@ import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
-const Kanban = ({ board }: { board: IBoard }) => {
+type Props = { board: IBoard };
+
+const Kanban = ({ board }: Props) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const [activeStatus, setActiveStatus] = useState<IStatus | null>(null);

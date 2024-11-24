@@ -29,15 +29,13 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-const CardOptions = ({
-  board,
-  status,
-  card,
-}: {
+type Props = {
   board: IBoard;
   status: IStatus;
   card: ICard;
-}) => {
+};
+
+const CardOptions = ({ board, status, card }: Props) => {
   const [deadlinePickerOpen, setDeadlinePickerOpen] = useState(false);
 
   const { statuses } = useStatuses(

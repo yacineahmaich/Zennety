@@ -6,15 +6,13 @@ import { AlignLeftIcon, CornerDownRightIcon, PenIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
-const CardDescription = ({
-  board,
-  status,
-  card,
-}: {
+type Props = {
   board: IBoard;
   status: IStatus;
   card: ICard;
-}) => {
+};
+
+const CardDescription = ({ board, status, card }: Props) => {
   const { t } = useTranslation("common");
   const [editingDesc, setEditingDesc] = useState(false);
   const [description, setDescription] = useState(card.description);

@@ -20,7 +20,9 @@ import {
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 
-const WorkspaceAccordion = ({ workspace }: { workspace: IWorkspace }) => {
+type Props = { workspace: IWorkspace };
+
+const WorkspaceAccordion = ({ workspace }: Props) => {
   const { t } = useTranslation("common");
 
   const isOwner = useHasRole(Role.OWNER, "workspace", workspace.id);

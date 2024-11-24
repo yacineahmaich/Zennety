@@ -15,7 +15,9 @@ import { IWorkspace } from "@/types/models";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
-const DeleteWorkspace = ({ workspace }: { workspace: IWorkspace }) => {
+type Props = { workspace: IWorkspace };
+
+const DeleteWorkspace = ({ workspace }: Props) => {
   const { t } = useTranslation("common");
   const [confirmText, setConfirmationText] = useState("");
   const [open, setOpen] = useState(false);

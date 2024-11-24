@@ -11,17 +11,14 @@ import { format, formatDistance } from "date-fns";
 import { ClockIcon, MessageCircleIcon } from "lucide-react";
 import CardDetails from "./card-details";
 
-const StatusCard = ({
-  board,
-  status,
-  card,
-  dragging = false,
-}: {
+type Props = {
   board: IBoard;
   status: IStatus;
   card: ICard;
   dragging?: boolean;
-}) => {
+};
+
+const StatusCard = ({ board, status, card, dragging = false }: Props) => {
   const {
     setNodeRef,
     attributes,

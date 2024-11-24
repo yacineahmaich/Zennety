@@ -41,13 +41,12 @@ const formSchema = z.object({
 
 export type CreateBoard = z.infer<typeof formSchema>;
 
-const CreateBoard = ({
-  workspace,
-  openTrigger,
-}: {
+type Props = {
   workspace: IWorkspace;
   openTrigger: JSX.Element;
-}) => {
+};
+
+const CreateBoard = ({ workspace, openTrigger }: Props) => {
   const { t } = useTranslation("common");
   const { createBoard, isLoading } = useCreateBoard();
   const canCreate = useCan("update", "workspace", workspace.id);
