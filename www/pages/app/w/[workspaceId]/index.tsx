@@ -42,7 +42,7 @@ const Workspace: NextPageWithLayout = () => {
           {workspace.boards && workspace.boards.length > 0 && (
             <CreateBoard
               openTrigger={
-                <Card className="flex h-card items-center justify-center ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-2">
+                <Card className="flex h-card items-center justify-center ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-1">
                   <Button variant="ghost" className="h-full w-full">
                     <PenSquareIcon size={16} className="mr-2" />
                     {t("create-new-board")}

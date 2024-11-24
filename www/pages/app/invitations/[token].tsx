@@ -69,7 +69,7 @@ const AcceptInvitation: NextPageWithLayout = () => {
         <div className="flex items-center gap-4">
           <UserAvatar
             user={invitation.invitedBy}
-            className="h-9 w-9 ring-foreground ring-offset-2 ring-offset-background"
+            className="h-9 w-9 ring-foreground ring-offset-1 ring-offset-background"
           />
 
           <h2 className="text-sm">

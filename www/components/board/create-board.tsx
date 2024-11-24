@@ -143,7 +143,7 @@ const CreateBoard = ({
                             className={cn(
                               "flex-1 rounded-lg",
                               field.value === Visibility.PRIVATE &&
-                                "ring-2 ring-ring ring-offset-2 ring-offset-background"
+                                "ring-2 ring-ring ring-offset-1 ring-offset-background"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
@@ -166,7 +166,7 @@ const CreateBoard = ({
                             className={cn(
                               "flex-1 rounded-lg",
                               field.value === Visibility.PUBLIC &&
-                                "ring-2 ring-ring ring-offset-2 ring-offset-background"
+                                "ring-2 ring-ring ring-offset-1 ring-offset-background"
                             )}
                           >
                             <FormLabel className="block cursor-pointer select-none space-y-2 p-2 font-normal">
