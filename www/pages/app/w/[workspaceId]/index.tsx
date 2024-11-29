@@ -2,7 +2,6 @@ import BoardCard from "@/components/board/board-card";
 import CreateBoard from "@/components/board/create-board";
 import { AppLayout } from "@/components/layouts";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import EmptyWorkspace from "@/components/workspace/empty-workspace";
 import WorkspaceBanner from "@/components/workspace/workspace-banner";
 import WorkspaceLoading from "@/components/workspace/workspace-loading";
@@ -42,12 +41,13 @@ const Workspace: NextPageWithLayout = () => {
           {workspace.boards && workspace.boards.length > 0 && (
             <CreateBoard
               openTrigger={
-                <Card className="flex h-card items-center justify-center ring-offset-background hover:ring-2 hover:ring-ring hover:ring-offset-1">
-                  <Button variant="ghost" className="h-full w-full">
-                    <PenSquareIcon size={16} className="mr-2" />
-                    {t("create-new-board")}
-                  </Button>
-                </Card>
+                <Button
+                  variant="outline"
+                  className="flex h-card w-full items-center"
+                >
+                  <PenSquareIcon size={16} className="mr-2" />
+                  {t("create-new-board")}
+                </Button>
               }
               workspace={workspace}
             />

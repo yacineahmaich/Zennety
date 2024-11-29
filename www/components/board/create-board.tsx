@@ -140,7 +140,7 @@ const CreateBoard = ({ workspace, openTrigger }: Props) => {
                         >
                           <FormItem
                             className={cn(
-                              "flex-1 rounded-lg",
+                              "flex-1 rounded-lg border border-border",
                               field.value === Visibility.PRIVATE &&
                                 "ring-2 ring-ring ring-offset-1 ring-offset-background"
                             )}
@@ -163,7 +163,7 @@ const CreateBoard = ({ workspace, openTrigger }: Props) => {
                           </FormItem>
                           <FormItem
                             className={cn(
-                              "flex-1 rounded-lg",
+                              "flex-1 rounded-lg border border-border",
                               field.value === Visibility.PUBLIC &&
                                 "ring-2 ring-ring ring-offset-1 ring-offset-background"
                             )}
