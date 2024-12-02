@@ -4,6 +4,7 @@
  * @returns string
  */
 
+import { ApiError } from "@/types/base";
 import { Role } from "@/types/enums";
 import { IUser, IWorkspace } from "@/types/models";
 
