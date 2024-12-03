@@ -9,4 +9,7 @@ Zennety
     - add tooltip
     - add breadcrumb
     - override default chadcn styles
-    
+    - add kanban page loading skeleton
+    - settings page
+    - Write some unit tests (front/backend)
+    - refactore backend code (dtos, services)
