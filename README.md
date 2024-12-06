@@ -13,3 +13,4 @@ Zennety
     - settings page
     - Write some unit tests (front/backend)
     - refactore backend code (dtos, services)
+    - add board loading skeleton

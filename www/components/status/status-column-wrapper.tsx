@@ -38,7 +38,7 @@ const StatusColumnWrapper = ({
         <Button
           size="sm"
           variant="ghost"
-          className="w-full text-xs text-muted-foreground"
+          className="w-full text-xs text-muted-foreground ring-offset-transparent"
           onClick={() => {
             setShowForm(true);
           }}

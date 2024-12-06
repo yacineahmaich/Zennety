@@ -57,7 +57,7 @@ const WorkspaceAccordion = ({ workspace }: Props) => {
         </div>
       </AccordionTrigger>
 
-      <AccordionContent className={cn("mt-2 text-muted-foreground")}>
+      <AccordionContent className={cn("mt-2 px-1 text-muted-foreground")}>
         <Link
           href={route("workspace", workspace.id)}
           className={cn(

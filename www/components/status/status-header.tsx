@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
 type Props = {
   board: IBoard;
@@ -120,9 +121,9 @@ const StatusHeader = ({
       ) : (
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
-            <button className="px-2">
+            <Button className="h-5 px-1">
               <MoreHorizontalIcon size={16} />
-            </button>
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem
