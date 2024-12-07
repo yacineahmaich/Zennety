@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import { useResetPassword } from "@/services";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { z } from "zod";
 
@@ -67,53 +68,59 @@ const ResetPassword: NextPageWithLayout = () => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-2">
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("password")}</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder={t("your-password")}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password_confirmation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("confirm-password")}</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder={t("your-confirmation-password")}
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          size="sm"
-          disabled={isLoading}
-          className="flex w-full items-center gap-2"
-        >
-          {t("reset-password")}
-        </Button>
-      </form>
-    </Form>
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-2">
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("password")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder={t("your-password")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password_confirmation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("confirm-password")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder={t("your-confirmation-password")}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            size="sm"
+            disabled={isLoading}
+            className="flex w-full items-center gap-2"
+          >
+            {t("reset-password")}
+          </Button>
+        </form>
+      </Form>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo title={t("reset-password")} />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

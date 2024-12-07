@@ -7,6 +7,7 @@ import { useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 
 const WorkspaceMembers: NextPageWithLayout = () => {
@@ -17,15 +18,21 @@ const WorkspaceMembers: NextPageWithLayout = () => {
   const canViewInvitations = useCan("update", "workspace", +workspaceId);
 
   return (
-    <div>
-      <WorkspaceBanner workspace={workspace} />
-      <div className="space-y-8 py-4">
-        <Members resourceType="workspace" resourceId={workspace.id} />
-        {canViewInvitations && (
-          <Invitations resourceType="workspace" resourceId={workspace.id} />
-        )}
+    <>
+      <div>
+        <WorkspaceBanner workspace={workspace} />
+        <div className="space-y-8 py-4">
+          <Members resourceType="workspace" resourceId={workspace.id} />
+          {canViewInvitations && (
+            <Invitations resourceType="workspace" resourceId={workspace.id} />
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo title={workspace.name} />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

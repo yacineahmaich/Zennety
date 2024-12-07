@@ -7,6 +7,7 @@ import { useBoard } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
 
@@ -19,12 +20,18 @@ const Board: NextPageWithLayout = () => {
   const { board } = useBoard(workspaceId, boardId);
 
   return (
-    <div className="flex h-[calc(100vh-6rem)] flex-col">
-      <BoardBanner board={board} />
-      <Suspense fallback={<Loader />}>
-        <Kanban board={board} />
-      </Suspense>
-    </div>
+    <>
+      <div className="flex h-[calc(100vh-6rem)] flex-col">
+        <BoardBanner board={board} />
+        <Suspense fallback={<Loader />}>
+          <Kanban board={board} />
+        </Suspense>
+      </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo title={board.name} />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

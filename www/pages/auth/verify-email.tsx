@@ -6,6 +6,7 @@ import { ArrowRightLeftIcon, SendIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 
 const VerifyEmail: NextPageWithLayout = () => {
   const { resendVerificationEmail, isLoading } = useResendVerificationEmail();
@@ -13,25 +14,31 @@ const VerifyEmail: NextPageWithLayout = () => {
   const { t } = useTranslation("common");
 
   return (
-    <div className="mt-4 flex gap-2">
-      <Button
-        size="sm"
-        onClick={() => resendVerificationEmail()}
-        disabled={isLoading}
-      >
-        <SendIcon size="20" className="mr-2" />
-        {t("resend-verification-email")}
-      </Button>
-      <Button
-        size="sm"
-        variant="outline"
-        className="mx-auto w-fit"
-        onClick={() => logout()}
-      >
-        <ArrowRightLeftIcon size="20" className="mr-2" />
-        {t("login-with-diffrent-account")}
-      </Button>
-    </div>
+    <>
+      <div className="mt-4 flex gap-2">
+        <Button
+          size="sm"
+          onClick={() => resendVerificationEmail()}
+          disabled={isLoading}
+        >
+          <SendIcon size="20" className="mr-2" />
+          {t("resend-verification-email")}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          className="mx-auto w-fit"
+          onClick={() => logout()}
+        >
+          <ArrowRightLeftIcon size="20" className="mr-2" />
+          {t("login-with-diffrent-account")}
+        </Button>
+      </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo title={t("verify-email")} />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

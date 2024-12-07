@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { route } from "@/lib/routes";
 import { useSendResetPasswordEmail } from "@/services";
 import { Loader2Icon, LogInIcon, SendIcon } from "lucide-react";
+import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -54,19 +55,25 @@ const ForgotPassword: NextPageWithLayout = () => {
 
   if (sent) {
     return (
-      <div className="mt-4 flex justify-center">
-        <Button
-          size="sm"
-          variant="secondary"
-          asChild
-          className="flex items-center gap-2"
-        >
-          <Link href={route("login")}>
-            <LogInIcon size={18} />
-            <span>{t("back-to-login")}</span>
-          </Link>
-        </Button>
-      </div>
+      <>
+        <div className="mt-4 flex justify-center">
+          <Button
+            size="sm"
+            variant="secondary"
+            asChild
+            className="flex items-center gap-2"
+          >
+            <Link href={route("login")}>
+              <LogInIcon size={18} />
+              <span>{t("back-to-login")}</span>
+            </Link>
+          </Button>
+        </div>
+
+        {/* ======= SEO START ======= */}
+        <NextSeo title={t("forgot-password")} />
+        {/* ======= END START ======= */}
+      </>
     );
   }
 
