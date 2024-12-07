@@ -45,7 +45,20 @@ const WorkspaceSettings: NextPageWithLayout = () => {
       </div>
 
       {/* ======= SEO START ======= */}
-      <NextSeo title={workspace.name} />
+      <NextSeo
+        title={workspace.name}
+        description={workspace.description}
+        openGraph={{
+          title: workspace.name,
+          description: workspace.description,
+          images: [
+            {
+              url: workspace.avatar,
+              alt: workspace.name,
+            },
+          ],
+        }}
+      />
       {/* ======= END START ======= */}
     </>
   );

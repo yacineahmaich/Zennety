@@ -3,7 +3,7 @@ import { AppLayout } from "@/components/layouts";
 import Invitations from "@/components/shared/invitations";
 import Members from "@/components/shared/members";
 import { useCan } from "@/hooks/use-can";
-import { useBoard } from "@/services";
+import { useBoard, useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -19,6 +19,7 @@ const BoardMembers: NextPageWithLayout = () => {
 
   const canViewInvitations = useCan("update", "board", +boardId);
 
+  const { workspace } = useWorkspace(workspaceId);
   const { board } = useBoard(workspaceId, boardId);
 
   return (
@@ -34,7 +35,20 @@ const BoardMembers: NextPageWithLayout = () => {
       </div>
 
       {/* ======= SEO START ======= */}
-      <NextSeo title={board.name} />
+      <NextSeo
+        title={board.name}
+        description={board.description}
+        openGraph={{
+          title: board.name,
+          description: board.description,
+          images: [
+            {
+              url: workspace.avatar,
+              alt: board.name,
+            },
+          ],
+        }}
+      />
       {/* ======= END START ======= */}
     </>
   );

@@ -20,7 +20,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCan } from "@/hooks/use-can";
-import { useBoard, useDeleteBoard, useUpdateBoard } from "@/services";
+import {
+  useBoard,
+  useDeleteBoard,
+  useUpdateBoard,
+  useWorkspace,
+} from "@/services";
 import { Visibility } from "@/types/enums";
 import { IBoard } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
@@ -40,6 +45,7 @@ const WorkspaceSettings: NextPageWithLayout = () => {
     boardId: string;
   };
 
+  const { workspace } = useWorkspace(workspaceId);
   const { board } = useBoard(workspaceId, boardId);
 
   const canUpdateBoard = useCan("update", "board", board.id);
@@ -62,7 +68,20 @@ const WorkspaceSettings: NextPageWithLayout = () => {
       </div>
 
       {/* ======= SEO START ======= */}
-      <NextSeo title={board.name} />
+      <NextSeo
+        title={board.name}
+        description={board.description}
+        openGraph={{
+          title: board.name,
+          description: board.description,
+          images: [
+            {
+              url: workspace.avatar,
+              alt: board.name,
+            },
+          ],
+        }}
+      />
       {/* ======= END START ======= */}
     </>
   );
