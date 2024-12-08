@@ -14,6 +14,7 @@ import { CheckIcon, XIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 
 const AcceptInvitation: NextPageWithLayout = () => {
@@ -64,43 +65,49 @@ const AcceptInvitation: NextPageWithLayout = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      <Card className="space-y-4 p-8">
-        <div className="flex items-center gap-4">
-          <UserAvatar
-            user={invitation.invitedBy}
-            className="h-9 w-9 ring-foreground ring-offset-1 ring-offset-background"
-          />
+    <>
+      <div className="flex justify-center">
+        <Card className="space-y-4 p-8">
+          <div className="flex items-center gap-4">
+            <UserAvatar
+              user={invitation.invitedBy}
+              className="h-9 w-9 ring-foreground ring-offset-1 ring-offset-background"
+            />
 
-          <h2 className="text-sm">
-            {invitation?.invitedBy?.name} {t("invited-you-to-join")}
-            <span className="ml-1 rounded-lg bg-accent p-1 font-medium">
-              {invitation?.related.name}
-            </span>
-          </h2>
-        </div>
-        <p className="text-sm">{invitation?.message}</p>
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            className="flex-1"
-            onClick={handleAccept}
-            disabled={isLoading}
-          >
-            <CheckIcon size={16} className="mr-1" /> {t("accept")}
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            className="flex-1"
-            onClick={handleReject}
-            disabled={isLoading}
-          >
-            <XIcon size={16} className="mr-1" /> {t("reject")}
-          </Button>
-        </div>
-      </Card>
-    </div>
+            <h2 className="text-sm">
+              {invitation?.invitedBy?.name} {t("invited-you-to-join")}
+              <span className="ml-1 rounded-lg bg-accent p-1 font-medium">
+                {invitation?.related.name}
+              </span>
+            </h2>
+          </div>
+          <p className="text-sm">{invitation?.message}</p>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              className="flex-1"
+              onClick={handleAccept}
+              disabled={isLoading}
+            >
+              <CheckIcon size={16} className="mr-1" /> {t("accept")}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="flex-1"
+              onClick={handleReject}
+              disabled={isLoading}
+            >
+              <XIcon size={16} className="mr-1" /> {t("reject")}
+            </Button>
+          </div>
+        </Card>
+      </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo title={t("invitation")} />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

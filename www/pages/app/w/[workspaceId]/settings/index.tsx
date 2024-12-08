@@ -12,6 +12,7 @@ import { SettingsIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 
 const WorkspaceSettings: NextPageWithLayout = () => {
@@ -25,20 +26,41 @@ const WorkspaceSettings: NextPageWithLayout = () => {
   const canDeleteWorkspace = useCan("delete", "workspace", workspace.id);
 
   return (
-    <div>
-      <WorkspaceBanner workspace={workspace} />
-      <div className="py-4">
-        <span className="mb-4 flex items-center">
-          <SettingsIcon size={20} className="mr-2" />
-          <h2 className="text-lg font-semibold">{t("workspace-settings")}</h2>
-        </span>
-        <div className="space-y-8 pl-4">
-          {canUpdateWorkspace && <WorkspaceVisibility workspace={workspace} />}
-          {isOwner && <WorkspaceOwnershipTransfer workspace={workspace} />}
-          {canDeleteWorkspace && <DeleteWorkspace workspace={workspace} />}
+    <>
+      <div>
+        <WorkspaceBanner workspace={workspace} />
+        <div className="py-4">
+          <span className="mb-4 flex items-center">
+            <SettingsIcon size={20} className="mr-2" />
+            <h2 className="text-lg font-semibold">{t("workspace-settings")}</h2>
+          </span>
+          <div className="space-y-8 pl-4">
+            {canUpdateWorkspace && (
+              <WorkspaceVisibility workspace={workspace} />
+            )}
+            {isOwner && <WorkspaceOwnershipTransfer workspace={workspace} />}
+            {canDeleteWorkspace && <DeleteWorkspace workspace={workspace} />}
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo
+        title={workspace.name}
+        description={workspace.description}
+        openGraph={{
+          title: workspace.name,
+          description: workspace.description,
+          images: [
+            {
+              url: workspace.avatar,
+              alt: workspace.name,
+            },
+          ],
+        }}
+      />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

@@ -22,6 +22,7 @@ import {
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import Link from "next/link";
 
 const AppPage: NextPageWithLayout = () => {
@@ -37,32 +38,38 @@ const AppPage: NextPageWithLayout = () => {
   const pinnedBoards = getPinnedBoard(workspaces || []);
 
   return (
-    <div>
-      {pinnedBoards?.length > 0 && (
-        <section>
-          <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">
-            <StarIcon className="mr-2 w-6 stroke-yellow-300" />
-            <span className="text-yellow-300">{t("pinned")}</span>
-          </h2>
+    <>
+      <div>
+        {pinnedBoards?.length > 0 && (
+          <section>
+            <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">
+              <StarIcon className="mr-2 w-6 stroke-yellow-300" />
+              <span className="text-yellow-300">{t("pinned")}</span>
+            </h2>
 
-          <div className="ml-3 border-l border-accent p-4 pb-5">
-            <div className="grid grid-cols-3 gap-4">
-              {pinnedBoards?.map((board) => (
-                <BoardCard key={board.id} board={board} />
-              ))}
+            <div className="ml-3 border-l border-accent p-4 pb-5">
+              <div className="grid grid-cols-3 gap-4">
+                {pinnedBoards?.map((board) => (
+                  <BoardCard key={board.id} board={board} />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
-      <WorkspaceGroup
-        title="my-workspaces"
-        workspaces={groupedWorkspaces.owner}
-      />
-      <WorkspaceGroup
-        title="guest-workspaces"
-        workspaces={groupedWorkspaces.guest}
-      />
-    </div>
+          </section>
+        )}
+        <WorkspaceGroup
+          title="my-workspaces"
+          workspaces={groupedWorkspaces.owner}
+        />
+        <WorkspaceGroup
+          title="guest-workspaces"
+          workspaces={groupedWorkspaces.guest}
+        />
+      </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo title={t("dashboard")} />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

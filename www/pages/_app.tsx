@@ -12,6 +12,9 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import NextTopLoader from "nextjs-toploader";
 
+import { DefaultSeo } from "next-seo";
+import deafaultSeoConfig from "../next-seo.config";
+
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // prevent creating new query client on re-renders
   const [_queryClient] = useState(queryClient);
@@ -20,6 +23,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   return (
     <ErrorBoundary>
+      <DefaultSeo {...deafaultSeoConfig} />
       <NextTopLoader
         showSpinner={false}
         color="hsl(var(--primary))"

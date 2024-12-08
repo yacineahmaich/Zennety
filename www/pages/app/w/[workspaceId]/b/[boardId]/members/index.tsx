@@ -3,10 +3,11 @@ import { AppLayout } from "@/components/layouts";
 import Invitations from "@/components/shared/invitations";
 import Members from "@/components/shared/members";
 import { useCan } from "@/hooks/use-can";
-import { useBoard } from "@/services";
+import { useBoard, useWorkspace } from "@/services";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 
 const BoardMembers: NextPageWithLayout = () => {
@@ -18,18 +19,38 @@ const BoardMembers: NextPageWithLayout = () => {
 
   const canViewInvitations = useCan("update", "board", +boardId);
 
+  const { workspace } = useWorkspace(workspaceId);
   const { board } = useBoard(workspaceId, boardId);
 
   return (
-    <div>
-      <BoardBanner board={board} />
-      <div className="space-y-8 py-4">
-        <Members resourceType="board" resourceId={board.id} />
-        {canViewInvitations && (
-          <Invitations resourceType="board" resourceId={board.id} />
-        )}
+    <>
+      <div>
+        <BoardBanner board={board} />
+        <div className="space-y-8 py-4">
+          <Members resourceType="board" resourceId={board.id} />
+          {canViewInvitations && (
+            <Invitations resourceType="board" resourceId={board.id} />
+          )}
+        </div>
       </div>
-    </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo
+        title={board.name}
+        description={board.description}
+        openGraph={{
+          title: board.name,
+          description: board.description,
+          images: [
+            {
+              url: workspace.avatar,
+              alt: board.name,
+            },
+          ],
+        }}
+      />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

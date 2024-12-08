@@ -4,19 +4,29 @@ import UpdateProfileInfo from "@/components/profile/update-profile-info";
 import UpdateProfilePicture from "@/components/profile/update-profile-picture";
 import { NextPageWithLayout } from "@/types/next";
 import { GetServerSidePropsContext } from "next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 
 const ProfilePage: NextPageWithLayout = () => {
+  const { t } = useTranslation("common");
+
   return (
-    <div className="flex flex-col-reverse gap-16 pb-20 md:flex-row">
-      <div className="space-y-8 md:max-w-[450px]">
-        <UpdateProfileInfo />
-        <UpdatePasswordForm />
+    <>
+      <div className="flex flex-col-reverse gap-16 pb-20 md:flex-row">
+        <div className="space-y-8 md:max-w-[450px]">
+          <UpdateProfileInfo />
+          <UpdatePasswordForm />
+        </div>
+        <div>
+          <UpdateProfilePicture />
+        </div>
       </div>
-      <div>
-        <UpdateProfilePicture />
-      </div>
-    </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo title={t("profile")} />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 
@@ -30,6 +40,8 @@ export const getServerSideProps = async ({
   };
 };
 
-ProfilePage.getLayout = (page) => <AppLayout>{page}</AppLayout>;
+ProfilePage.getLayout = (page) => {
+  return <AppLayout>{page}</AppLayout>;
+};
 
 export default ProfilePage;

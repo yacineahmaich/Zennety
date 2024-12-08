@@ -20,7 +20,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCan } from "@/hooks/use-can";
-import { useBoard, useDeleteBoard, useUpdateBoard } from "@/services";
+import {
+  useBoard,
+  useDeleteBoard,
+  useUpdateBoard,
+  useWorkspace,
+} from "@/services";
 import { Visibility } from "@/types/enums";
 import { IBoard } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
@@ -28,6 +33,7 @@ import { Globe2Icon, LoaderIcon, LockIcon, SettingsIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -39,25 +45,45 @@ const WorkspaceSettings: NextPageWithLayout = () => {
     boardId: string;
   };
 
+  const { workspace } = useWorkspace(workspaceId);
   const { board } = useBoard(workspaceId, boardId);
 
   const canUpdateBoard = useCan("update", "board", board.id);
   const canDeleteBoard = useCan("delete", "board", board.id);
 
   return (
-    <div>
-      <BoardBanner board={board} />
-      <div className="py-4">
-        <span className="mb-4 flex items-center">
-          <SettingsIcon size={20} className="mr-2" />
-          <h2 className="text-lg font-semibold">{t("board-settings")}</h2>
-        </span>
-        <div className="space-y-8 pl-4">
-          {canUpdateBoard && <BoardVisibility board={board} />}
-          {canDeleteBoard && <DeleteBoard board={board} />}
+    <>
+      <div>
+        <BoardBanner board={board} />
+        <div className="py-4">
+          <span className="mb-4 flex items-center">
+            <SettingsIcon size={20} className="mr-2" />
+            <h2 className="text-lg font-semibold">{t("board-settings")}</h2>
+          </span>
+          <div className="space-y-8 pl-4">
+            {canUpdateBoard && <BoardVisibility board={board} />}
+            {canDeleteBoard && <DeleteBoard board={board} />}
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo
+        title={board.name}
+        description={board.description}
+        openGraph={{
+          title: board.name,
+          description: board.description,
+          images: [
+            {
+              url: workspace.avatar,
+              alt: board.name,
+            },
+          ],
+        }}
+      />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 

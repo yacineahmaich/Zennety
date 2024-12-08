@@ -14,3 +14,5 @@ Zennety
     - Write some unit tests (front/backend)
     - refactore backend code (dtos, services)
     - add board loading skeleton
+    - toggle create card form when clicking away
+    - Empty dashboard state

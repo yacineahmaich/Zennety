@@ -11,6 +11,7 @@ import { KanbanSquareIcon, PenSquareIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
 
@@ -21,40 +22,59 @@ const Workspace: NextPageWithLayout = () => {
   const { workspace } = useWorkspace(workspaceId);
 
   return (
-    <div>
-      <WorkspaceBanner workspace={workspace} />
-      <div className="py-4">
-        <span className="mb-4 flex items-center">
-          <KanbanSquareIcon size={20} className="mr-2" />
-          <h2 className="text-lg font-semibold">{t("boards")}</h2>
-        </span>
+    <>
+      <div>
+        <WorkspaceBanner workspace={workspace} />
+        <div className="py-4">
+          <span className="mb-4 flex items-center">
+            <KanbanSquareIcon size={20} className="mr-2" />
+            <h2 className="text-lg font-semibold">{t("boards")}</h2>
+          </span>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3  2xl:grid-cols-4">
-          {workspace.boards?.map((board) => (
-            <BoardCard key={board.id} board={board} />
-          ))}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3  2xl:grid-cols-4">
+            {workspace.boards?.map((board) => (
+              <BoardCard key={board.id} board={board} />
+            ))}
 
-          {workspace.boards?.length === 0 && (
-            <EmptyWorkspace workspace={workspace} withIcon />
-          )}
+            {workspace.boards?.length === 0 && (
+              <EmptyWorkspace workspace={workspace} withIcon />
+            )}
 
-          {workspace.boards && workspace.boards.length > 0 && (
-            <CreateBoard
-              openTrigger={
-                <Button
-                  variant="outline"
-                  className="flex h-card w-full items-center"
-                >
-                  <PenSquareIcon size={16} className="mr-2" />
-                  {t("create-new-board")}
-                </Button>
-              }
-              workspace={workspace}
-            />
-          )}
+            {workspace.boards && workspace.boards.length > 0 && (
+              <CreateBoard
+                openTrigger={
+                  <Button
+                    variant="outline"
+                    className="flex h-card w-full items-center"
+                  >
+                    <PenSquareIcon size={16} className="mr-2" />
+                    {t("create-new-board")}
+                  </Button>
+                }
+                workspace={workspace}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* ======= SEO START ======= */}
+      <NextSeo
+        title={workspace.name}
+        description={workspace.description}
+        openGraph={{
+          title: workspace.name,
+          description: workspace.description,
+          images: [
+            {
+              url: workspace.avatar,
+              alt: workspace.name,
+            },
+          ],
+        }}
+      />
+      {/* ======= END START ======= */}
+    </>
   );
 };
 
