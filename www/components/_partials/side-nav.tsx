@@ -10,7 +10,7 @@ const SideNav = () => {
 
   return (
     <nav className="-mx-4 overflow-x-hidden">
-      <ul className="space-y-2 border-b border-accent px-2 pb-2">
+      <ul className="space-y-2 border-b border-accent px-1 px-2 pb-2">
         <li>
           <Link
             href={route("app")}
