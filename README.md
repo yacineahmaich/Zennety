@@ -1,7 +1,6 @@
 Zennety
 
 ## TODO:
-    - SEO
     - make app sidebar responsive
     - finish card details view
     - landing page
@@ -16,3 +15,7 @@ Zennety
     - add board loading skeleton
     - toggle create card form when clicking away
     - Empty dashboard state
+
+    - add google & github signin
+    - look for free laravel hosting providers 
+    - deploy frontend into vercel
