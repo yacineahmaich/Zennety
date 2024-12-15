@@ -19,3 +19,4 @@ Zennety
     - add google & github signin
     - look for free laravel hosting providers 
     - deploy frontend into vercel
+    - project README file
