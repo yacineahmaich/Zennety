@@ -1,6 +1,11 @@
 import PinButton from "@/components/shared/pin-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { IBoard } from "@/types/models";
 import { Globe2Icon, LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
@@ -25,9 +30,16 @@ const BoardCard = ({ board }: Props) => {
         </Badge>
       </header>
       <div className="flex flex-1 items-center">
-        <p className="line-clamp-2 max-w-[80%] break-all text-xs text-muted-foreground">
-          {board.description}
-        </p>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <p className="line-clamp-2 max-w-[80%] break-all text-xs text-muted-foreground">
+              {board.description}
+            </p>
+          </TooltipTrigger>
+          <TooltipContent className="max-w-[400px]">
+            {board.description}
+          </TooltipContent>
+        </Tooltip>
       </div>
       <footer className="mt-auto flex items-center justify-between">
         <div className="flex items-center divide-x">

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import NextTopLoader from "nextjs-toploader";
 
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { DefaultSeo } from "next-seo";
 import deafaultSeoConfig from "../next-seo.config";
 
@@ -37,7 +38,9 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           enableSystem
           disableTransitionOnChange
         >
-          <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
+          <TooltipProvider>
+            <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
+          </TooltipProvider>
         </ThemeProvider>
         <Toaster />
         <ReactQueryDevtools buttonPosition="bottom-left" />

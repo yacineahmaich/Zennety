@@ -34,16 +34,15 @@ const WorkspaceAccordion = ({ workspace }: Props) => {
     <AccordionItem value={workspace.id.toString()}>
       <AccordionTrigger className="rounded p-2 hover:bg-accent hover:no-underline">
         <div className="flex items-center gap-2">
-          <div className="h-7 w-7 rounded bg-accent shadow-xl">
+          <div className="h-7 w-7 shrink-0 rounded bg-accent shadow-xl">
             <img
-              // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
               src={workspace.avatar}
               alt={workspace.name}
               className="h-full w-full rounded-[inherit] object-cover"
             />
           </div>
           <div className="text-xs">
-            <h2>{workspace.name}</h2>
+            <h2 className="line-clamp-1">{workspace.name}</h2>
             <p className="flex items-center gap-1 text-muted-foreground">
               {workspace.visibility === Visibility.PRIVATE && (
                 <LockIcon size={14} />

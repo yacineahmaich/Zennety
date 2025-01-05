@@ -91,7 +91,7 @@ const UpdatePasswordForm = () => {
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={t("current-password")}
+                      placeholder={t("new-password")}
                       {...field}
                     />
                   </FormControl>
