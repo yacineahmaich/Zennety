@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useDeleteCard, useUpdateCard } from "@/services/card";
 import { IBoard, ICard, IStatus } from "@/types/models";
-import { Edit3Icon, EqualIcon, Trash2Icon } from "lucide-react";
+import { Edit3Icon, EllipsisVerticalIcon, Trash2Icon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
@@ -66,13 +66,8 @@ const CardTitle = ({ board, status, card }: Props) => {
       </div>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button
-            size="sm"
-            variant="secondary"
-            className="flex h-8 items-center gap-2"
-          >
-            <EqualIcon size={14} />
-            <span>Actions</span>
+          <Button size="icon" variant="ghost">
+            <EllipsisVerticalIcon size={14} />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
