@@ -1,5 +1,4 @@
 import { api } from "@/lib/api";
-import { ResourceType } from "@/types/helpers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const updateProfile = async (data: Record<string, unknown>) => {
@@ -8,16 +7,6 @@ const updateProfile = async (data: Record<string, unknown>) => {
 
 const updatePassword = async (data: Record<string, unknown>) => {
   await api.put("/user/password", data);
-};
-
-const pin = async ({
-  resourceType,
-  resourceId,
-}: {
-  resourceType: ResourceType;
-  resourceId: number;
-}) => {
-  await api.put(`/pins/${resourceType}/${resourceId}`);
 };
 
 const setProfileAvatar = async ({ avatar }: { avatar: File }) => {
@@ -73,28 +62,6 @@ export const useUpdatePassword = () => {
 
   return {
     updatePassword: mutate,
-    isLoading: isPending,
-  };
-};
-
-export const usePin = () => {
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: pin,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: ["my-workspaces"],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ["workspaces"],
-      });
-    },
-  });
-
-  return {
-    pin: mutate,
     isLoading: isPending,
   };
 };

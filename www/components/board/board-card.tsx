@@ -1,4 +1,4 @@
-import PinButton from "@/components/shared/pin-button";
+import BookmarkButton from "@/components/shared/bookmark-button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -51,7 +51,7 @@ const BoardCard = ({ board }: Props) => {
             Updated 2 hours ago
           </p>
         </div>
-        <PinButton
+        <BookmarkButton
           resourceType="board"
           resourceId={board.id}
           pinned={board.pinned}

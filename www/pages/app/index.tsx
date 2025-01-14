@@ -12,11 +12,11 @@ import { Role } from "@/types/enums";
 import { IWorkspace } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import {
+  BookMarkedIcon,
   FolderKanbanIcon,
   GripHorizontalIcon,
   KanbanSquareIcon,
   SettingsIcon,
-  StarIcon,
   UserIcon,
 } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
@@ -43,8 +43,8 @@ const AppPage: NextPageWithLayout = () => {
         {pinnedBoards?.length > 0 && (
           <section>
             <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">
-              <StarIcon className="mr-2 w-6 stroke-yellow-300" />
-              <span className="text-yellow-300">{t("pinned")}</span>
+              <BookMarkedIcon className="mr-2 w-6 " />
+              <span className="">{t("bookmarks")}</span>
             </h2>
 
             <div className="ml-3 border-l border-accent p-4 pb-5">

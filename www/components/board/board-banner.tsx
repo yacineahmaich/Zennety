@@ -1,5 +1,5 @@
+import BookmarkButton from "@/components/shared/bookmark-button";
 import InviteMembers from "@/components/shared/invite-members";
-import PinButton from "@/components/shared/pin-button";
 import UserAvatar from "@/components/shared/user-avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useCan } from "@/hooks/use-can";
@@ -65,7 +65,7 @@ const BoardBanner = ({ board }: Props) => {
         )}
 
         <div className="border-r pr-2">
-          <PinButton
+          <BookmarkButton
             resourceType="board"
             resourceId={board.id}
             pinned={board.pinned}
