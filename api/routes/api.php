@@ -30,7 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/user', [UserController::class, 'update']);
     Route::put('/user/password', [UserController::class, 'updatePassword']);
     Route::get('/users/{search}', [UserController::class, 'search']);
-    Route::put('/pins/{type}/{id}', [UserController::class, 'pin']);
+    Route::put('/bookmarks/{type}/{id}', [UserController::class, 'bookmark']);
     Route::post("/user/avatar", [UserController::class, 'setAvatar']);
     Route::delete("/user/avatar", [UserController::class, 'deleteAvatar']);
 

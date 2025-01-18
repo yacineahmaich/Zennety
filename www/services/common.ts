@@ -10,7 +10,7 @@ const bookmarkItem = async ({
   resourceType: ResourceType;
   resourceId: number;
 }) => {
-  await api.put(`/pins/${resourceType}/${resourceId}`);
+  await api.put(`/bookmarks/${resourceType}/${resourceId}`);
 };
 
 export const useBookmarkItem = () => {

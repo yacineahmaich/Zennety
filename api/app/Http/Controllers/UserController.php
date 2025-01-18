@@ -62,7 +62,7 @@ class UserController extends Controller
         return response()->noContent();
     }
 
-    public function pin(Request $request, $type, $id)
+    public function bookmark(Request $request, $type, $id)
     {
         /**
          * @var \App\Models\User
