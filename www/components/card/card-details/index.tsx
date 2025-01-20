@@ -42,7 +42,7 @@ const CardDetails = ({ board, status, cardId }: Props) => {
         <div className="p-5">
           <CardOptions board={board} status={status} card={card} />
         </div>
-        <div className="p-5">HMMM</div>
+        <div className="p-5"></div>
       </div>
       <div className="col-span-2 flex h-full flex-col overflow-hidden p-5 pr-0">
         <div className="flex h-full w-full flex-1 flex-col">

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { FolderKanbanIcon, WalletCardsIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const SideNav = () => {
   const { t } = useTranslation("common");
@@ -23,16 +24,21 @@ const SideNav = () => {
           </Link>
         </li>
         <li>
-          <Link
-            href="#"
-            className={cn(
-              buttonVariants({ size: "sm", variant: "ghost" }),
-              "w-full justify-start [&[aria-disabled]]:cursor-not-allowed"
-            )}
-            aria-disabled
-          >
-            <WalletCardsIcon className="mr-2" /> {t("templates")}
-          </Link>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className={cn(
+                  buttonVariants({ size: "sm", variant: "ghost" }),
+                  "w-full justify-start [&[aria-disabled]]:cursor-not-allowed"
+                )}
+                aria-disabled
+              >
+                <WalletCardsIcon className="mr-2" /> {t("templates")}
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>{t("coming-soon")}</TooltipContent>
+          </Tooltip>
         </li>
       </ul>
     </nav>

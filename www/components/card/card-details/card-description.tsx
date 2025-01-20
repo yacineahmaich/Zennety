@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateCard } from "@/services/card";
 import { IBoard, ICard, IStatus } from "@/types/models";
-import { AlignLeftIcon, CornerDownRightIcon, PenIcon } from "lucide-react";
+import { AlignLeftIcon, CornerDownRightIcon, PenLineIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
@@ -27,7 +27,7 @@ const CardDescription = ({ board, status, card }: Props) => {
           className="scale-0 transition-transform group-hover:scale-100"
           onClick={() => setEditingDesc(true)}
         >
-          <PenIcon size={12} />
+          <PenLineIcon size={12} />
         </button>
       </h3>
       <div className="text-sm text-muted-foreground">
