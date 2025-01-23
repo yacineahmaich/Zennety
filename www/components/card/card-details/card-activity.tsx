@@ -25,41 +25,40 @@ const CardActivity = ({ activities }: Props) => {
       <div className="mt-2 h-full flex-1 overflow-y-scroll pr-5">
         <ul ref={listRef} className="space-y-2 pb-4">
           {activities.map((activity) => (
-            <li key={activity.id}>
-              <small className="text-xs">
-                {format(new Date(activity?.createdAt), "dd MM yyyy H:mm")}
-              </small>
-              <div className="flex items-center gap-1">
-                <CornerDownRightIcon size={12} />
-                <div className="min-w-[200px] rounded bg-accent px-3 py-1">
-                  {activity.type === "log" && (
-                    <small className="font-medium">
-                      {activity.description}
-                    </small>
-                  )}
-                  {activity.type === "comment" && (
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <UserAvatar
-                          user={activity.causer}
-                          className="h-6 w-6"
-                        />
-                        <h4 className="text-sm font-semibold">
-                          {activity.causer.name}
-                        </h4>
-                      </div>
-                      <small className="font-medium">
-                        {activity.description}
-                      </small>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </li>
+            <ActivityItem key={activity.id} activity={activity} />
           ))}
         </ul>
       </div>
     </div>
+  );
+};
+
+const ActivityItem = ({ activity }: { activity: IActivity }) => {
+  return (
+    <li>
+      <small className="text-xs">
+        {format(new Date(activity?.createdAt), "dd MM yyyy H:mm")}
+      </small>
+      <div className="flex items-center gap-1">
+        <CornerDownRightIcon size={12} />
+        <div className="min-w-[200px] rounded bg-accent px-3 py-1">
+          {activity.type === "log" && (
+            <small className="font-medium">{activity.description}</small>
+          )}
+          {activity.type === "comment" && (
+            <div>
+              <div className="flex items-center gap-2">
+                <UserAvatar user={activity.causer} className="h-6 w-6" />
+                <h4 className="text-sm font-semibold">
+                  {activity.causer.name}
+                </h4>
+              </div>
+              <small className="font-medium">{activity.description}</small>
+            </div>
+          )}
+        </div>
+      </div>
+    </li>
   );
 };
 

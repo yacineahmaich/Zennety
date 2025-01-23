@@ -32,7 +32,7 @@ const CardDescription = ({ board, status, card }: Props) => {
       </h3>
       <div className="text-sm text-muted-foreground">
         {editingDesc ? (
-          <div className="relative">
+          <div className="space-y-2">
             <Textarea
               rows={5}
               placeholder={t("board-description-placeholder")}
@@ -40,18 +40,16 @@ const CardDescription = ({ board, status, card }: Props) => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-            <div className="absolute bottom-2 right-2 flex items-center gap-1">
+            <div className="flex items-center justify-end gap-1">
               <Button
                 size="sm"
                 variant="secondary"
-                className="h-7"
                 onClick={() => setEditingDesc(false)}
               >
                 Cancel
               </Button>
               <Button
                 size="sm"
-                className="flex h-7 items-center gap-1"
                 disabled={isLoading}
                 onClick={() => {
                   if (description === card.description) {
@@ -77,7 +75,7 @@ const CardDescription = ({ board, status, card }: Props) => {
                   );
                 }}
               >
-                <CornerDownRightIcon size={12} />
+                <CornerDownRightIcon size={12} className="mr-2" />
                 <span className="text-xs">Save</span>
               </Button>
             </div>
