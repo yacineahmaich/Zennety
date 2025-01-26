@@ -39,7 +39,7 @@ const AppPage: NextPageWithLayout = () => {
 
   return (
     <>
-      <div>
+      <div className="py-4">
         {pinnedBoards?.length > 0 && (
           <section>
             <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">

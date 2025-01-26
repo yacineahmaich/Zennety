@@ -1,11 +1,10 @@
 Zennety
 
 ## TODO:
+    - fix app breadcrumb not updated when navigating to workspace
     - make app sidebar responsive
-    - finish card details view
     - landing page
     - refactore permissions
-    - add tooltip
     - add breadcrumb
     - override default chadcn styles
     - add kanban page loading skeleton

@@ -10,6 +10,7 @@ import ThemeSwitcher from "@/components/shared/theme-switcher";
 import CreateWorkspace from "@/components/workspace/create-workspace";
 import { cn } from "@/lib/utils";
 import { PropsWithChildren, Suspense, useState } from "react";
+import AppBreadcrumb from "../_partials/app-breadcrumb";
 
 const AppLayout = ({ children }: PropsWithChildren) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -36,7 +37,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
         {!collapsed && <UserDropdown />}
       </aside>
       <div className="flex-1 overflow-x-auto p-4 pb-0">
-        <header className="mb-10 flex h-10 items-center justify-between">
+        <header className="flex items-center justify-between pb-4">
           <div className="space-x-2">
             <WorkspacesDropdown />
             <CreateWorkspace />
@@ -46,6 +47,9 @@ const AppLayout = ({ children }: PropsWithChildren) => {
             <ThemeSwitcher />
           </div>
         </header>
+
+        <AppBreadcrumb />
+
         <ErrorBoundary>
           <Suspense fallback={<Loader />}>{children}</Suspense>
         </ErrorBoundary>
