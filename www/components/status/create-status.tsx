@@ -1,3 +1,4 @@
+import FocusedContent from "@/components/shared/focused-content";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -64,49 +65,52 @@ const CreateStatus = ({ board }: Props) => {
     );
   }
   return (
-    <div className="w-64 shrink-0">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder={t("status-name-placeholder")}
-                    className="uppercase placeholder:normal-case"
-                    autoComplete="off"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs font-normal" />
-              </FormItem>
-            )}
-          />
-          <div className="flex gap-1">
-            <Button
-              size="icon"
-              className="h-7 w-full text-xs"
-              disabled={isLoading}
-            >
-              <CheckIcon size={16} className="mr-1" /> {t("save")}
-            </Button>
-            <Button
-              size="icon"
-              variant="outline"
-              className="h-7 w-full text-xs"
-              onClick={() => {
-                setShowForm(false);
-                form.unregister();
-              }}
-            >
-              <XIcon size={16} className="mr-1" /> {t("cancel")}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+    <FocusedContent onBlur={() => setShowForm(false)}>
+      <div className="w-64 shrink-0">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder={t("status-name-placeholder")}
+                      className="uppercase placeholder:normal-case"
+                      autoComplete="off"
+                      autoFocus
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-xs font-normal" />
+                </FormItem>
+              )}
+            />
+            <div className="flex gap-2">
+              <Button
+                size="icon"
+                className="h-7 w-full text-xs"
+                disabled={isLoading}
+              >
+                <CheckIcon size={16} className="mr-1" /> {t("save")}
+              </Button>
+              <Button
+                size="icon"
+                variant="outline"
+                className="h-7 w-full text-xs"
+                onClick={() => {
+                  setShowForm(false);
+                  form.unregister();
+                }}
+              >
+                <XIcon size={16} className="mr-1" /> {t("cancel")}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </FocusedContent>
   );
 };
 

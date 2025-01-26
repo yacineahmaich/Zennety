@@ -1,4 +1,5 @@
 import CreateCard from "@/components/card/create-card";
+import FocusedContent from "@/components/shared/focused-content";
 import { Button } from "@/components/ui/button";
 import { IBoard, IStatus } from "@/types/models";
 import { PlusIcon } from "lucide-react";
@@ -24,13 +25,15 @@ const StatusColumnWrapper = ({
         <div className="w-full flex-1 space-y-2 overflow-y-auto px-1 pb-2">
           {children}
           {showForm && (
-            <div className="pt-1">
-              <CreateCard
-                board={board}
-                status={status}
-                onHide={() => setShowForm(false)}
-              />
-            </div>
+            <FocusedContent onBlur={() => setShowForm(false)}>
+              <div className="pt-1">
+                <CreateCard
+                  board={board}
+                  status={status}
+                  onHide={() => setShowForm(false)}
+                />
+              </div>
+            </FocusedContent>
           )}
         </div>
       )}
