@@ -6,22 +6,24 @@ namespace App\Services;
 use App\DTO\WorkspaceDTO;
 use App\Enums\Role;
 use App\Enums\Visibility;
+use App\Models\Membership;
+use App\Models\User;
 use App\Models\Workspace;
 use Illuminate\Support\Facades\DB;
 
 class WorkspaceService
 {
-    public function getMyWorkspaces()
+    public function getMyWorkspaces(User $user)
     {
         // TODO: Group query by owned workspaces and guest workspaces (currently done in frontend)
         // TODO: include workspaces in whish user is a member of its boards
         return Workspace::with('members')
-            ->whereHas('members', function ($query) {
-                $query->where('user_id', auth()->id());
+            ->whereHas('members', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
             })
-            ->with('boards', function ($query) {
-                $query->whereHas('members', function ($query) {
-                    $query->where('user_id', auth()->id());
+            ->with('boards', function ($query) use ($user) {
+                $query->whereHas('members', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
                 })
                     ->orWhere('visibility', Visibility::PUBLIC)
                     ->with('members');
@@ -29,35 +31,30 @@ class WorkspaceService
             ->get();
     }
 
-    public function store(WorkspaceDTO $workspaceDTO): Workspace
+    public function createWorkspace(array $data, User $user): Workspace
     {
-        $workspace = DB::transaction(function () use ($workspaceDTO) {
+        return DB::transaction(function () use ($data, $user) {
             /**@var Workspace $workspace */
-            $workspace = Workspace::create([
-                'name' => $workspaceDTO->name,
-                'description' => $workspaceDTO->description,
-                'visibility' => $workspaceDTO->visibility,
-            ]);
+            $workspace = Workspace::create($data);
 
-            /**@var App\Models\Membership $owner */
+            /**@var Membership $owner */
             $owner = $workspace->members()->create([
-                "user_id" => auth()->id()
+                "user_id" => $user->id
             ]);
 
             $owner->assignRole(Role::OWNER);
 
             return $workspace;
         });
-
-        return $workspace;
     }
 
-    public function update(WorkspaceDTO $workspaceDTO, Workspace $workspace): Workspace
+    public function updateWorkspace(Workspace $workspace, array $data): Workspace
     {
-        return tap($workspace)->update([
-            'name' => $workspaceDTO->name,
-            'description' => $workspaceDTO->description,
-            'visibility' => $workspaceDTO->visibility,
-        ]);
+        return tap($workspace)->update($data);
+    }
+
+    public function deleteWorkspace(Workspace $workspace): void
+    {
+        $workspace->delete();
     }
 }

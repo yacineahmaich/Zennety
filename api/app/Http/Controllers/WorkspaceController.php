@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\WorkspaceDTO;
 use App\Enums\Role;
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
+use App\Models\User;
 use App\Models\Workspace;
 use App\Services\InvitationService;
 use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -24,9 +25,9 @@ class WorkspaceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): ResourceCollection
     {
-        $workspaces = $this->service->getMyWorkspaces();
+        $workspaces = $this->service->getMyWorkspaces($request->user());
 
         return WorkspaceResource::collection($workspaces);
     }
@@ -34,10 +35,11 @@ class WorkspaceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreWorkspaceRequest $request)
+    public function store(StoreWorkspaceRequest $request): WorkspaceResource
     {
-        $workspace = $this->service->store(
-            WorkspaceDTO::fromRequest($request),
+        $workspace = $this->service->createWorkspace(
+            $request->validated(),
+            $request->user()
         );
 
         return WorkspaceResource::make($workspace);
@@ -60,7 +62,7 @@ class WorkspaceController extends Controller
     {
         $this->authorize('update', $workspace);
 
-        $updatedWorkspace = tap($workspace)->update($request->validated());
+        $updatedWorkspace = $this->service->updateWorkspace($workspace, $request->validated());
 
         return WorkspaceResource::make($updatedWorkspace);
     }
@@ -72,7 +74,7 @@ class WorkspaceController extends Controller
     {
         $this->authorize('delete', $workspace);
 
-        $workspace->delete();
+        $this->service->deleteWorkspace($workspace);
 
         return response()->noContent();
     }
@@ -85,7 +87,7 @@ class WorkspaceController extends Controller
         $this->authorize('transferOwnership', $workspace);
 
         /**
-         * @var \App\Models\User $user
+         * @var User $user
          */
         $user = auth()->user();
 
