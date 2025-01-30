@@ -26,9 +26,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  useDeleteWorkspaceAvatar,
-  useSetWorkspaceAvatar,
   useUpdateWorkspace,
+  useUpdateWorkspaceAvatar,
 } from "@/services/workspace";
 import { IWorkspace } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,8 +52,7 @@ const UpdateWorkspace = ({ workspace }: Props) => {
   const [open, setOpen] = useState(false);
 
   const { updateWorkspace, isLoading } = useUpdateWorkspace();
-  const { setWorkspaceAvatar } = useSetWorkspaceAvatar();
-  const { deleteWorkspaceAvatar } = useDeleteWorkspaceAvatar();
+  const { updateWorkspaceAvatar } = useUpdateWorkspaceAvatar();
 
   const form = useForm<UpdateWorkspace>({
     resolver: zodResolver(formSchema),
@@ -114,7 +112,7 @@ const UpdateWorkspace = ({ workspace }: Props) => {
                       onChange={(e) => {
                         const avatar = e.target.files?.[0];
                         if (avatar) {
-                          setWorkspaceAvatar({
+                          updateWorkspaceAvatar({
                             workspaceId: workspace.id,
                             avatar,
                           });
@@ -147,11 +145,12 @@ const UpdateWorkspace = ({ workspace }: Props) => {
                         {workspace.has_avatar && (
                           <DropdownMenuItem
                             className="flex items-center gap-2"
-                            onClick={() =>
-                              deleteWorkspaceAvatar({
+                            onClick={() => {
+                              updateWorkspaceAvatar({
                                 workspaceId: workspace.id,
-                              })
-                            }
+                                avatar: "unset",
+                              });
+                            }}
                           >
                             <XSquareIcon size={14} />
                             {t("remove-photo")}

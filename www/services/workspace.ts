@@ -45,12 +45,12 @@ const deleteWorkspace = async ({ workspaceId }: { workspaceId: number }) => {
   await api.delete(`/workspaces/${workspaceId}`);
 };
 
-const setWorkspaceAvatar = async ({
+const updateWorkspaceAvatar = async ({
   workspaceId,
   avatar,
 }: {
   workspaceId: number;
-  avatar: File;
+  avatar: File | "unset";
 }) => {
   await api.post(
     `/workspaces/${workspaceId}/avatar`,
@@ -61,14 +61,6 @@ const setWorkspaceAvatar = async ({
       },
     }
   );
-};
-
-const deleteWorkspaceAvatar = async ({
-  workspaceId,
-}: {
-  workspaceId: number;
-}) => {
-  await api.delete(`/workspaces/${workspaceId}/avatar`);
 };
 
 const transferWorkspaceOwnership = async ({
@@ -191,12 +183,12 @@ export const useTransferWorkspaceOwnership = () => {
   };
 };
 
-export const useSetWorkspaceAvatar = () => {
+export const useUpdateWorkspaceAvatar = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, variables } = useMutation({
-    mutationFn: setWorkspaceAvatar,
-    onSuccess(workspace, { workspaceId }) {
+    mutationFn: updateWorkspaceAvatar,
+    onSuccess(_, { workspaceId }) {
       return queryClient.invalidateQueries({
         queryKey: ["workspaces", workspaceId.toString()],
       });
@@ -204,26 +196,7 @@ export const useSetWorkspaceAvatar = () => {
   });
 
   return {
-    setWorkspaceAvatar: mutate,
-    isLoading: isPending,
-    variables,
-  };
-};
-
-export const useDeleteWorkspaceAvatar = () => {
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending, variables } = useMutation({
-    mutationFn: deleteWorkspaceAvatar,
-    onSuccess(workspace, { workspaceId }) {
-      return queryClient.invalidateQueries({
-        queryKey: ["workspaces", workspaceId.toString()],
-      });
-    },
-  });
-
-  return {
-    deleteWorkspaceAvatar: mutate,
+    updateWorkspaceAvatar: mutate,
     isLoading: isPending,
     variables,
   };
