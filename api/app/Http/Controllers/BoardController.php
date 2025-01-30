@@ -2,41 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\BoardDTO;
 use App\Http\Requests\StoreBoardRequest;
 use App\Http\Requests\UpdateBoardRequest;
 use App\Http\Resources\BoardResource;
 use App\Models\Board;
 use App\Models\Workspace;
 use App\Services\BoardService;
-use App\Services\InvitationService;
+use Illuminate\Http\Response;
 
 class BoardController extends Controller
 {
     public function __construct(
         public BoardService $service,
-        public InvitationService $invitationService
     ) {
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Workspace $workspace, Board $board)
-    {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBoardRequest $request, Workspace $workspace)
+    public function store(StoreBoardRequest $request, Workspace $workspace): BoardResource
     {
         $this->authorize('create', [Board::class, $workspace]);
 
-        $board = $this->service->store(
-            BoardDTO::fromRequest($request),
-            $workspace
+        $board = $this->service->createBoard(
+            $workspace,
+            $request->user(),
+            $request->validated()
         );
 
         return BoardResource::make($board);
@@ -45,7 +36,7 @@ class BoardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Workspace $workspace, Board $board)
+    public function show(Workspace $workspace, Board $board): BoardResource
     {
         $this->authorize('view', $board);
 
@@ -55,11 +46,11 @@ class BoardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBoardRequest $request, Workspace $workspace, Board $board)
+    public function update(UpdateBoardRequest $request, Workspace $workspace, Board $board): BoardResource
     {
         $this->authorize('update', $board);
 
-        $updatedBoard = tap($board)->update($request->validated());
+        $updatedBoard = $this->service->updateBoard($board, $request->validated());
 
         return BoardResource::make($updatedBoard);
     }
@@ -67,11 +58,11 @@ class BoardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Workspace $workspace, Board $board)
+    public function destroy(Workspace $workspace, Board $board): Response
     {
         $this->authorize("delete", $board);
 
-        $board->delete();
+        $this->service->deleteBoard($board);
 
         return response()->noContent();
     }

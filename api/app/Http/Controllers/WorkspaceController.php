@@ -13,7 +13,6 @@ use App\Services\WorkspaceService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class WorkspaceController extends Controller
 {
@@ -91,6 +90,9 @@ class WorkspaceController extends Controller
         return response()->noContent();
     }
 
+    /**
+     * Update workspace avatar
+     */
     public function updateAvatar(Request $request, Workspace $workspace)
     {
         $this->authorize('update', $workspace);
