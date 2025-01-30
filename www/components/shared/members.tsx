@@ -8,8 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCan } from "@/hooks/use-can";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useHasRole } from "@/hooks/use-has-role";
 import { roles } from "@/lib/constants";
 import { useDeleteMember, useMembers, useUpdateMemberRole } from "@/services";
 import { Role } from "@/types/enums";
@@ -122,7 +122,8 @@ const Member = ({
   const { t } = useTranslation("common");
   const { deleteMember, isLoading: isDeleting } = useDeleteMember();
   const { updateMemberRole, isLoading: isUpdatingRole } = useUpdateMemberRole();
-  const canUpdate = useCan("update", resourceType, resourceId);
+
+  const isOwner = useHasRole(Role.OWNER, resourceType, resourceId);
 
   return (
     <Card className="flex items-center justify-between gap-2 p-2">
@@ -136,7 +137,7 @@ const Member = ({
       <div className="flex items-center gap-2">
         <Select
           value={member.role}
-          disabled={member.role === Role.OWNER || !canUpdate || isUpdatingRole}
+          disabled={member.role === Role.OWNER || !isOwner || isUpdatingRole}
           onValueChange={(role) =>
             updateMemberRole({ id: member.id, role, resourceType, resourceId })
           }
@@ -169,7 +170,7 @@ const Member = ({
               ))}
           </SelectContent>
         </Select>
-        {canUpdate && member.role !== Role.OWNER && (
+        {isOwner && member.role !== Role.OWNER && (
           <ConfirmationDialog
             desc={t("delete-resource-desc", { resource: t("member") })}
             onConfirm={() =>

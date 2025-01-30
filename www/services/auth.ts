@@ -1,9 +1,9 @@
+import { UserLogin } from "@/components/auth/login-form";
+import { UserRegister } from "@/components/auth/register-form";
+import { ResetPassword } from "@/components/auth/reset-password-form";
 import { api } from "@/lib/api";
 import app from "@/lib/app";
 import { route } from "@/lib/routes";
-import { UserLogin } from "@/pages/auth/login";
-import { ResetPassword } from "@/pages/auth/password-reset/[token]";
-import { UserRegister } from "@/pages/auth/register";
 import { IUser } from "@/types/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";

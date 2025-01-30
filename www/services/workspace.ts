@@ -73,16 +73,13 @@ const deleteWorkspaceAvatar = async ({
 
 const transferWorkspaceOwnership = async ({
   workspaceId,
-  newOwner,
+  memberId,
 }: {
   workspaceId: number;
-  newOwner: string;
+  memberId: string;
 }): Promise<IBoard> => {
   const response = await api.put(
-    `/workspaces/${workspaceId}/transfer-ownership`,
-    {
-      newOwner,
-    }
+    `/workspaces/${workspaceId}/transfer-ownership/${memberId}`
   );
 
   return response.data.data;

@@ -30,7 +30,7 @@ type Props = {
 
 const WorkspaceOwnershipTransfer = ({ workspace }: Props) => {
   const { t } = useTranslation("common");
-  const [newOwner, setNewOwner] = useState<string>();
+  const [memberId, setMemberId] = useState<string>();
   const [open, setOpen] = useState(false);
   const [confirmText, setConfirmationText] = useState("");
 
@@ -42,12 +42,12 @@ const WorkspaceOwnershipTransfer = ({ workspace }: Props) => {
   ) as IMember;
 
   const handleTrasferOwnership = () => {
-    if (!newOwner || newOwner === owner.id?.toString()) return;
+    if (!memberId || memberId === owner.id?.toString()) return;
 
     transferWorkspaceOwnership(
       {
         workspaceId: workspace.id,
-        newOwner,
+        memberId,
       },
       {
         onSuccess() {
@@ -60,7 +60,7 @@ const WorkspaceOwnershipTransfer = ({ workspace }: Props) => {
 
   const confirmationWord = `w/${workspace.name}`;
 
-  const disabled = !newOwner || newOwner === owner?.userId?.toString();
+  const disabled = !memberId || memberId === owner?.userId?.toString();
 
   return (
     <div className="-ml-4 rounded-lg border border-orange-400 bg-orange-100 p-4 dark:bg-transparent">
@@ -69,8 +69,8 @@ const WorkspaceOwnershipTransfer = ({ workspace }: Props) => {
         <p className="text-xs">{t("transform-workspace-to-an-admin")}</p>
       </div>
       <Select
-        defaultValue={owner?.userId?.toString()}
-        onValueChange={(value) => setNewOwner(value)}
+        defaultValue={owner?.id?.toString()}
+        onValueChange={(value) => setMemberId(value)}
       >
         <SelectTrigger className="w-64">
           <SelectValue placeholder="Select a role" />
@@ -81,7 +81,7 @@ const WorkspaceOwnershipTransfer = ({ workspace }: Props) => {
               [Role.ADMIN, Role.OWNER].includes(member.role as Role)
             )
             .map((member) => (
-              <SelectItem value={member.userId.toString()} key={member.id}>
+              <SelectItem value={member.id.toString()} key={member.id}>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-6 w-6 object-cover">
                     <AvatarImage src="https://github.com/shadcn.png" />
