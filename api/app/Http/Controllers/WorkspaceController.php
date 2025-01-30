@@ -91,21 +91,11 @@ class WorkspaceController extends Controller
         return response()->noContent();
     }
 
-    public function setAvatar(Request $request, Workspace $workspace)
+    public function updateAvatar(Request $request, Workspace $workspace)
     {
-        $request->validate([
-            "avatar" => ["required", "image", "max:1024"]
-        ]);
+        $this->authorize('update', $workspace);
 
-        $workspace->addMediaFromRequest('avatar')
-            ->toMediaCollection('avatar');
-
-        return response()->noContent();
-    }
-
-    public function deleteAvatar(Request $request, Workspace $workspace)
-    {
-        $workspace->getFirstMedia('avatar')?->delete();
+        $this->service->updateWorkspaceAvatar($workspace, $request->avatar);
 
         return response()->noContent();
     }

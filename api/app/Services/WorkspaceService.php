@@ -68,4 +68,14 @@ class WorkspaceService
             $member->syncRoles([Role::OWNER]);
         });
     }
+
+    public function updateWorkspaceAvatar(Workspace $workspace, $avatar): void
+    {
+        if($avatar === "unset") {
+            $workspace->getFirstMedia('avatar')?->delete();
+        }elseif(is_uploaded_file($avatar)) {
+            $workspace->addMedia($avatar)
+                ->toMediaCollection('avatar');
+        }
+    }
 }

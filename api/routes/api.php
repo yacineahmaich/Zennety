@@ -41,8 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put("/workspaces/{workspace}", [WorkspaceController::class, 'update']);
     Route::delete("/workspaces/{workspace}", [WorkspaceController::class, 'destroy']);
     Route::put("/workspaces/{workspace}/transfer-ownership/{membership}", [WorkspaceController::class, 'tranferOwnership']);
-    Route::post("/workspaces/{workspace}/avatar", [WorkspaceController::class, 'setAvatar']);
-    Route::delete("/workspaces/{workspace}/avatar", [WorkspaceController::class, 'deleteAvatar']);
+    Route::post("/workspaces/{workspace}/avatar", [WorkspaceController::class, 'updateAvatar']);
 
     // Board
     Route::post("/workspaces/{workspace}/boards", [BoardController::class, 'store']);
