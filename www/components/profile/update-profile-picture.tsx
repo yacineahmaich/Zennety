@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  useDeleteProfileAvatar,
-  useSetProfileAvatar,
-  useUser,
-} from "@/services";
+import { useUpdateProfileAvatar, useUser } from "@/services";
 import { useTranslation } from "next-i18next";
 import { toast } from "sonner";
 
@@ -11,8 +7,24 @@ const UpdateProfilePicture = () => {
   const { t } = useTranslation("common");
   const { user } = useUser();
 
-  const { setProfileAvatar } = useSetProfileAvatar();
-  const { deleteProfileAvatar } = useDeleteProfileAvatar();
+  const { updateProfileAvatar } = useUpdateProfileAvatar();
+
+  const handleUpdateProfile = (avatar: File | "unset") => {
+    updateProfileAvatar(
+      {
+        avatar,
+      },
+      {
+        onSuccess() {
+          toast.success(t("success"), {
+            description: t("updated", {
+              resource: t("profile-picture"),
+            }),
+          });
+        },
+      }
+    );
+  };
 
   return (
     <div className="space-y-2">
@@ -21,7 +33,6 @@ const UpdateProfilePicture = () => {
       </div>
       <div className="h-24 w-24 rounded-full bg-accent shadow-xl">
         <img
-          // src="https://trello-logos.s3.amazonaws.com/a3d46149564db08bb5164625ab2244ca/170.png"
           src={user.avatar}
           alt={user.name}
           className="h-full w-full rounded-[inherit] object-cover"
@@ -34,20 +45,7 @@ const UpdateProfilePicture = () => {
         onChange={(e) => {
           const avatar = e.target.files?.[0];
           if (avatar) {
-            setProfileAvatar(
-              {
-                avatar,
-              },
-              {
-                onSuccess() {
-                  toast.success(t("success"), {
-                    description: t("updated", {
-                      resource: t("profile-picture"),
-                    }),
-                  });
-                },
-              }
-            );
+            handleUpdateProfile(avatar);
           }
         }}
       />
@@ -59,17 +57,9 @@ const UpdateProfilePicture = () => {
           <Button
             size="sm"
             variant="link"
-            onClick={() =>
-              deleteProfileAvatar(undefined, {
-                onSuccess() {
-                  toast.success(t("success"), {
-                    description: t("updated", {
-                      resource: t("profile-picture"),
-                    }),
-                  });
-                },
-              })
-            }
+            onClick={() => {
+              handleUpdateProfile("unset");
+            }}
           >
             {t("remove-photo")}
           </Button>

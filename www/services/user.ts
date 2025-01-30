@@ -9,7 +9,7 @@ const updatePassword = async (data: Record<string, unknown>) => {
   await api.put("/user/password", data);
 };
 
-const setProfileAvatar = async ({ avatar }: { avatar: File }) => {
+const updateProfileAvatar = async ({ avatar }: { avatar: File | "unset" }) => {
   await api.post(
     "/user/avatar",
     { avatar },
@@ -19,10 +19,6 @@ const setProfileAvatar = async ({ avatar }: { avatar: File }) => {
       },
     }
   );
-};
-
-const deleteProfileAvatar = async () => {
-  await api.delete("/user/avatar");
 };
 
 /**
@@ -66,11 +62,11 @@ export const useUpdatePassword = () => {
   };
 };
 
-export const useSetProfileAvatar = () => {
+export const useUpdateProfileAvatar = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, variables } = useMutation({
-    mutationFn: setProfileAvatar,
+    mutationFn: updateProfileAvatar,
     onSuccess() {
       return queryClient.invalidateQueries({
         queryKey: ["user"],
@@ -79,26 +75,7 @@ export const useSetProfileAvatar = () => {
   });
 
   return {
-    setProfileAvatar: mutate,
-    isLoading: isPending,
-    variables,
-  };
-};
-
-export const useDeleteProfileAvatar = () => {
-  const queryClient = useQueryClient();
-
-  const { mutate, isPending, variables } = useMutation({
-    mutationFn: deleteProfileAvatar,
-    onSuccess() {
-      return queryClient.invalidateQueries({
-        queryKey: ["user"],
-      });
-    },
-  });
-
-  return {
-    deleteProfileAvatar: mutate,
+    updateProfileAvatar: mutate,
     isLoading: isPending,
     variables,
   };
