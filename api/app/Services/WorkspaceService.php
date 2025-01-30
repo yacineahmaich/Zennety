@@ -57,4 +57,15 @@ class WorkspaceService
     {
         $workspace->delete();
     }
+
+    public function tranferOwnership(Workspace $workspace, User $user, Membership $member): void
+    {
+        DB::transaction(function () use ($workspace, $member, $user) {
+            $currentOwnerMembership = $user->memberFor($workspace);
+
+            $currentOwnerMembership->syncRoles([Role::ADMIN]);
+
+            $member->syncRoles([Role::OWNER]);
+        });
+    }
 }

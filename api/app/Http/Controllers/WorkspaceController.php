@@ -6,7 +6,7 @@ use App\Enums\Role;
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
-use App\Models\User;
+use App\Models\Membership;
 use App\Models\Workspace;
 use App\Services\InvitationService;
 use App\Services\WorkspaceService;
@@ -82,24 +82,11 @@ class WorkspaceController extends Controller
     /**
      * Transfer workspace ownership to an admin
      */
-    public function tranferOwnership(Request $request, Workspace $workspace): Response
+    public function tranferOwnership(Request $request, Workspace $workspace, Membership $membership): Response
     {
-        $this->authorize('transferOwnership', $workspace);
+        $this->authorize('transferOwnership', [$workspace, $membership]);
 
-        /**
-         * @var User $user
-         */
-        $user = auth()->user();
-
-        DB::transaction(function () use ($request, $workspace, $user) {
-            $newOwnerMembership = $workspace->members()->where('user_id', $request->newOwner)->firstOrFail();
-
-            $currentOwnerMembership = $user->memberFor($workspace);
-
-            $currentOwnerMembership->syncRoles([Role::ADMIN]);
-
-            $newOwnerMembership->syncRoles([Role::OWNER]);
-        });
+        $this->service->tranferOwnership($workspace, $request->user(), $membership);
 
         return response()->noContent();
     }

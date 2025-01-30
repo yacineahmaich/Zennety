@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\Role;
 use App\Enums\Visibility;
+use App\Models\Membership;
 use App\Models\User;
 use App\Models\Workspace;
 
@@ -88,11 +89,16 @@ class WorkspacePolicy
     /**
      * Determine whether the user can tranfer workspace ownership
      */
-    public function transferOwnership(User $user, Workspace $workspace): bool
+    public function transferOwnership(User $user, Workspace $workspace, Membership $membership): bool
     {
         if (!$member = $user->memberFor($workspace)) {
             return false;
         }
-        return $member->hasRole(Role::OWNER);        
+
+        if(!$membership->hasRole(Role::ADMIN)) {
+            return false;
+        }
+
+        return $member->hasRole(Role::OWNER);
     }
 }
