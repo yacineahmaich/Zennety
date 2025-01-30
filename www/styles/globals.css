@@ -67,6 +67,12 @@
 }
 
 @layer base {
+  :root {
+    --card-height: 8.5rem;
+  }
+}
+
+@layer base {
   * {
     @apply border-border;
   }
@@ -77,8 +83,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 
-  :root {
-    --card-height: 8.5rem;
-  }
+input[aria-invalid="true"] {
+  @apply border-destructive bg-destructive/10 !ring-destructive/30 placeholder:text-destructive;
 }
