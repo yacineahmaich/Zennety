@@ -43,7 +43,7 @@ class UserController extends Controller
         return UserResource::make($updatedUser);
     }
 
-    public function updatePassword(UpdatePasswordRequest $request)
+    public function updatePassword(UpdatePasswordRequest $request): Response
     {
         $this->service->updatePassword(
             $request->user(),
@@ -63,7 +63,7 @@ class UserController extends Controller
     /**
      * Update user avatar
      */
-    public function updateAvatar(Request $request)
+    public function updateAvatar(Request $request): Response
     {
         $this->service->updateUserAvatar($request->user(), $request->avatar);
 

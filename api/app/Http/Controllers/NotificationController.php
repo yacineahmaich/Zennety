@@ -4,18 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
+use App\Services\NotificationService;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 class NotificationController extends Controller
 {
+    public function __construct(
+        public NotificationService $service
+    ){}
+
     /**
      * Display a listing of user notifications.
      */
-    public function index()
+    public function index(Request $request): ResourceCollection
     {
-        /**@var App\Models\User $user */
-        $user = auth()->user();
-
-        $notifications = $user->notifications()->latest()->get();
+        $notifications = $this->service->getNotifications($request->user());
 
         return NotificationResource::collection($notifications);
     }
@@ -23,22 +28,20 @@ class NotificationController extends Controller
     /**
      * Mark a user notifications as read.
      */
-    public function markAsRead(Notification $notification)
+    public function markAsRead(Notification $notification): Response
     {
-        $notification->update([
-            'is_read' => true,
-        ]);
+        $this->service->markNotificationAsRead($notification);
 
-        return response()->json();
+        return response()->noContent();
     }
 
     /**
      * Delete a user notifications.
      */
-    public function delete(Notification $notification)
+    public function delete(Notification $notification): Response
     {
-        $notification->delete();
+        $this->service->deleteNotification($notification);
 
-        return response()->json();
+        return response()->noContent();
     }
 }

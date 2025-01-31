@@ -93,7 +93,7 @@ class WorkspaceController extends Controller
     /**
      * Update workspace avatar
      */
-    public function updateAvatar(Request $request, Workspace $workspace)
+    public function updateAvatar(Request $request, Workspace $workspace): Response
     {
         $this->authorize('update', $workspace);
 
