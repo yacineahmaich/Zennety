@@ -38,6 +38,11 @@ class Card extends Model
         return $this->belongsTo(Status::class);
     }
 
+    public function board(): BelongsTo
+    {
+        return $this->status->board();
+    }
+
     public function activities()
     {
         return $this->morphMany(Activity::class, 'subject');

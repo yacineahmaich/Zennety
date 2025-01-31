@@ -13,7 +13,8 @@ use App\Models\Status;
 use App\Models\Workspace;
 use App\Services\CardService;
 use Illuminate\Http\Request;
-use Spatie\Activitylog\Models\Activity;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 class CardController extends Controller
 {
@@ -22,69 +23,19 @@ class CardController extends Controller
     ) {}
 
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCardRequest $request, Workspace $workspace, Board $board, Status $status)
+    public function store(StoreCardRequest $request, Workspace $workspace, Board $board, Status $status): CardResource
     {
-        $user = auth()->user();
-
-        $pos = $status->cards()->max('pos');
-
-        $data = $request->validated();
-
-        // Give the card the last position in the status column
-        $data["pos"] = is_numeric($pos) ? $pos + 1 : 0;
-
-        // link assign via membership model
-        $data["user_id"] = $board->members()->where("id", $data["assignee"])->value("user_id");
-
-        $card = $status->cards()->create($data);
+        $card = $this->service->createCard($status, $request->validated());
 
         return CardResource::make($card);
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function comment(StoreCardCommentRequest $request, Workspace $workspace, Board $board, Status $status, Card $card)
-    {
-        $user = auth()->user();
-
-        activity()
-            ->performedOn($card)
-            ->causedBy($user)
-            ->withProperties(['type' => 'comment', 'comment' => $request->comment])
-            ->log("$user->name added a comment - '$request->comment'");
-
-        $card->updated_at = now();
-        $card->save();
-
-        return response()->noContent();
-    }
-
-    public function comments(Request $request, Workspace $workspace, Board $board, Status $status, Card $card)
-    {
-        $comments = Activity::where('properties->type', 'comment')
-            ->whereMorphedTo('subject', $card)
-            ->with("causer")
-            ->latest()
-            ->get();
-
-        return CommentResource::collection($comments);
-    }
-
-    /**
      * Display the specified resource.
      */
-    public function show(Workspace $workspace, Board $board, Status $status, Card $card)
+    public function show(Workspace $workspace, Board $board, Status $status, Card $card): CardResource
     {
         return CardResource::make($card->load("activities"));
     }
@@ -92,16 +43,9 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCardRequest $request, Workspace $workspace, Board $board, Status $status, Card $card)
+    public function update(UpdateCardRequest $request, Workspace $workspace, Board $board, Status $status, Card $card): CardResource
     {
-        $data = $request->validated();
-
-        // link assign via membership model
-        if ($request->has("assignee")) {
-            $data["user_id"] = $board->members()->where("id", $data["assignee"])->value("user_id");
-        }
-
-        $card = tap($card)->update($data);
+        $this->service->updateCard($card, $request->validated());
 
         return CardResource::make($card);
     }
@@ -109,29 +53,43 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Workspace $workspace, Board $board, Status $status, Card $card)
+    public function destroy(Workspace $workspace, Board $board, Status $status, Card $card): Response
     {
         $this->authorize("delete", [$board, $card]);
 
-        $card->delete();
+        $this->service->deleteCard($card);
 
         return response()->noContent();
     }
 
-    public function reorder(Request $request, Workspace $workspace, Board $board)
+    public function reorder(Request $request, Workspace $workspace, Board $board): Response
     {
-        // get moved card
-        $card = Card::findOrFail($request->get('card_id'));
-
-        // get target status
-        $status = Status::with('cards')->findOrFail($request->get('status_id'));
-
-        $this->service->reorder(
-            $card,
-            $status,
+        $this->service->reorderCards(
+            $request->only(['status_id', 'card_id']),
             $request->get('cards_order', [])
         );
 
         return response()->noContent();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function comment(StoreCardCommentRequest $request, Workspace $workspace, Board $board, Status $status, Card $card): Response
+    {
+        $this->service->createComment(
+            $card,
+            $request->user(),
+            $request->validated()
+        );
+
+        return response()->noContent();
+    }
+
+    public function comments(Request $request, Workspace $workspace, Board $board, Status $status, Card $card): ResourceCollection
+    {
+        $comments = $this->service->getCardComments($card);
+
+        return CommentResource::collection($comments);
     }
 }
