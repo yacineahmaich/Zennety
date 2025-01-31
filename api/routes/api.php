@@ -31,8 +31,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/user/password', [UserController::class, 'updatePassword']);
     Route::get('/users/{search}', [UserController::class, 'search']);
     Route::put('/bookmarks/{type}/{id}', [UserController::class, 'bookmark']);
-    Route::post("/user/avatar", [UserController::class, 'setAvatar']);
-    Route::delete("/user/avatar", [UserController::class, 'deleteAvatar']);
+    Route::post("/user/avatar", [UserController::class, 'updateAvatar']);
 
     // Workspace
     Route::get("/workspaces", [WorkspaceController::class, 'index']);
