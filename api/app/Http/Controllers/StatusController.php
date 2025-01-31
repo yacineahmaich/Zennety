@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\StatusDTO;
 use App\Http\Requests\StoreStatusRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use App\Http\Resources\StatusResource;
@@ -11,6 +10,8 @@ use App\Models\Status;
 use App\Models\Workspace;
 use App\Services\StatusService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use \Illuminate\Http\Response;
 
 class StatusController extends Controller
 {
@@ -21,44 +22,32 @@ class StatusController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Workspace $workspace, Board $board)
+    public function index(Workspace $workspace, Board $board): ResourceCollection
     {
-        return StatusResource::collection(
-            $board
-                ->statuses()
-                ->orderBy('pos')
-                ->get()
-                ->load('cards')
-        );
+        $statuses = $this->service->getBoardStatus($board);
+
+        return StatusResource::collection($statuses);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStatusRequest $request, Workspace $workspace, Board $board)
+    public function store(StoreStatusRequest $request, Workspace $workspace, Board $board): StatusResource
     {
-        $status = $this->service->store(
-            StatusDTO::fromRequest($request),
-            $board
+        $status = $this->service->createStatus(
+            $board,
+            $request->validated(),
         );
 
         return StatusResource::make($status);
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Status $status)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStatusRequest $request,Workspace $workspace, Board $board, Status $status)
+    public function update(UpdateStatusRequest $request,Workspace $workspace, Board $board, Status $status): StatusResource
     {
-        $updatedStatus = tap($status)->update($request->validated());
+        $updatedStatus = $this->service->updateStatus($status, $request->validated());
 
         return StatusResource::make($updatedStatus);
     }
@@ -66,17 +55,17 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Workspace $workspace, Board $board, Status $status)
+    public function destroy(Workspace $workspace, Board $board, Status $status): Response
     {
-        $status->delete();
+        $this->service->deleteStatus($status);
 
         return response()->noContent();
     }
 
-    public function reorder(Request $request, Workspace $workspace, Board $board)
+    public function reorder(Request $request, Workspace $workspace, Board $board): Response
     {
-        $this->service->reorder(
-            $board->statuses()->orderBy('pos')->get(),
+        $this->service->reorderStatuses(
+            $board,
             $request->get('statuses_order', [])
         );
 

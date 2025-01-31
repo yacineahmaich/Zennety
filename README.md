@@ -11,6 +11,8 @@ Zennety
     - refactore backend code (dtos, services)
     - Empty dashboard state
 
+    - use elequont sortable to handle status & card sorting
+
     - add google & github signin
     - look for free laravel hosting providers 
     - deploy frontend into vercel
