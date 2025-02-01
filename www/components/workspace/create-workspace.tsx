@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { useCreateWorkspace } from "@/services/workspace";
 import { Visibility } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Globe2Icon, LockIcon, PlusCircleIcon } from "lucide-react";
+import { Globe2Icon, LockIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -38,7 +38,11 @@ const formSchema = z.object({
 
 export type CreateWorkspace = z.infer<typeof formSchema>;
 
-const CreateWorkspace = () => {
+type Props = {
+  openTrigger: JSX.Element;
+};
+
+const CreateWorkspace = ({ openTrigger }: Props) => {
   const { t } = useTranslation();
   const { createWorkspace, isLoading } = useCreateWorkspace();
 
@@ -61,12 +65,7 @@ const CreateWorkspace = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <PlusCircleIcon size={20} />
-          <span className="ml-2 hidden sm:block">{t("create")}</span>
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{openTrigger}</DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-auto">
         <div className="flex gap-8">
           <div className="flex-1">

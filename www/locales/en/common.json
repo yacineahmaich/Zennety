@@ -159,5 +159,6 @@
   "card-no-description": "This card doesn't have any description yet.",
   "no-records": "No records found.",
   "dashboard": "Dashboard",
-  "coming-soon": "Coming soon"
+  "coming-soon": "Coming soon",
+  "nothing-here": "Nothing here yet !"
 }

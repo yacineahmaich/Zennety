@@ -9,10 +9,14 @@ import Loader from "@/components/shared/loader";
 import ThemeSwitcher from "@/components/shared/theme-switcher";
 import CreateWorkspace from "@/components/workspace/create-workspace";
 import { cn } from "@/lib/utils";
+import { PlusCircleIcon } from "lucide-react";
+import { useTranslation } from "next-i18next";
 import { PropsWithChildren, Suspense, useState } from "react";
 import AppBreadcrumb from "../_partials/app-breadcrumb";
+import { Button } from "../ui/button";
 
 const AppLayout = ({ children }: PropsWithChildren) => {
+  const { t } = useTranslation("common");
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -40,7 +44,14 @@ const AppLayout = ({ children }: PropsWithChildren) => {
         <header className="flex items-center justify-between pb-4">
           <div className="space-x-2">
             <WorkspacesDropdown />
-            <CreateWorkspace />
+            <CreateWorkspace
+              openTrigger={
+                <Button size="sm">
+                  <PlusCircleIcon size={20} />
+                  <span className="ml-2 hidden sm:block">{t("create")}</span>
+                </Button>
+              }
+            />
           </div>
           <div className="flex items-center gap-2">
             <Notifications />

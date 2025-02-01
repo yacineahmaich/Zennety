@@ -1,7 +1,8 @@
 import BoardCard from "@/components/board/board-card";
 import { AppLayout } from "@/components/layouts";
 import Loader from "@/components/shared/loader";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import CreateWorkspace from "@/components/workspace/create-workspace";
 import EmptyWorkspace from "@/components/workspace/empty-workspace";
 import { useCan } from "@/hooks/use-can";
 import { useHasRole } from "@/hooks/use-has-role";
@@ -16,6 +17,7 @@ import {
   FolderKanbanIcon,
   GripHorizontalIcon,
   KanbanSquareIcon,
+  PlusCircleIcon,
   SettingsIcon,
   UserIcon,
 } from "lucide-react";
@@ -36,6 +38,27 @@ const AppPage: NextPageWithLayout = () => {
 
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
   const pinnedBoards = getPinnedBoard(workspaces || []);
+
+  if (!workspaces?.length) {
+    return (
+      <div className="mt-5 flex flex-col items-center py-20">
+        <h2 className="mb-1 text-3xl font-black">Nothing here yet !</h2>
+        <p className="text-sm text-muted-foreground">
+          Start by creating your first workspace now.
+        </p>
+        <CreateWorkspace
+          openTrigger={
+            <Button className="mt-5">
+              <PlusCircleIcon size={20} />
+              <span className="ml-2 hidden sm:block">
+                {t("create-workspace")}
+              </span>
+            </Button>
+          }
+        />
+      </div>
+    );
+  }
 
   return (
     <>
