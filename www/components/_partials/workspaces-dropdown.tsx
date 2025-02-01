@@ -21,7 +21,7 @@ const WorkspacesDropdown = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { user } = useUser();
-  const { workspaces, isLoading } = useMyWorkspaces();
+  let { workspaces, isLoading } = useMyWorkspaces();
   const { workspaceId } = router.query as { workspaceId: string };
 
   const currentWorkspace = useMemo(() => {
@@ -45,6 +45,13 @@ const WorkspacesDropdown = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56 max-w-full">
+        {!workspaces?.length && (
+          <DropdownMenuItem disabled>
+            <div className="flex w-full justify-center py-4">
+              <span>{t("nothing-here")}</span>
+            </div>
+          </DropdownMenuItem>
+        )}
         {groupedWorkspaces.owner.length > 0 && (
           <>
             <DropdownMenuLabel>{t("my-workspaces")}</DropdownMenuLabel>
