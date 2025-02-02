@@ -9,10 +9,10 @@ Zennety
     - settings page
     - Write some unit tests (front/backend)
     - refactore backend code (dtos, services)
-    - Empty dashboard state
 
     - use elequont sortable to handle status & card sorting
-
+    - debouncing search users
+    
     - add google & github signin
     - look for free laravel hosting providers 
     - deploy frontend into vercel

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\InvitationDTO;
 use App\Http\Requests\InvitationRequest;
-use App\Http\Requests\UpdateInvitationRequest;
 use App\Http\Resources\InvitationResource;
-use App\Models\Board;
 use App\Models\Invitation;
-use App\Models\Workspace;
 use App\Services\InvitationService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 class InvitationController extends Controller
 {
@@ -21,17 +19,9 @@ class InvitationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, $type, $id): ResourceCollection
     {
-        $role = $request->get('role');
-        $search = $request->get('search');
-
-        $invitations = Invitation::fromRequest($request)
-            ->with('invited')
-            ->whereHas('invited', fn ($q) => $q->search($search))
-            ->where(fn ($q) =>  $role ? $q->where('role', $role) : null)
-            ->where('expires_at', '>', now())
-            ->paginate();
+        $invitations = $this->service->getInvitations($type,$id, $request->all());
 
         return InvitationResource::collection($invitations);
     }
@@ -39,46 +29,29 @@ class InvitationController extends Controller
     /**
      * Send a membership invitation .
      */
-    public function invite(InvitationRequest $request, string $type, int $id)
+    public function invite(InvitationRequest $request, $type, $id): Response
     {
-        $invitable = null;
-
-        if ($type === "workspace") {
-            $invitable = Workspace::find($id);
-        } else if ($type === "board") {
-            $invitable = Board::find($id);
-        }
-
-        if (is_null($invitable)) {
-            abort(404);
-        }
-
-
-        $this->service->send(
-            $type,
-            $invitable,
-            InvitationDTO::fromRequest($request)
-        );
+        $this->service->sendInvitation($type, $id, $request->validated());
 
         return response()->noContent();
     }
 
     /**
-     * Accept a worksapce/board membership invitation.
+     * Accept a membership invitation.
      */
-    public function accept(Invitation $invitation)
+    public function accept(Request $request, Invitation $invitation): Response
     {
-        $this->service->accept($invitation);
+        $this->service->acceptInvitation($invitation, $request->user());
 
         return response()->noContent();
     }
 
     /**
-     * Reject a worksapce/board membership invitation.
+     * Reject a membership invitation.
      */
-    public function reject(Invitation $invitation)
+    public function reject(Invitation $invitation): Response
     {
-        $this->service->reject($invitation);
+        $this->service->rejectInvitation($invitation);
 
         return response()->noContent();
     }
@@ -86,25 +59,17 @@ class InvitationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Invitation $invitation)
+    public function show(Invitation $invitation): InvitationResource
     {
         return InvitationResource::make($invitation);
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateInvitationRequest $request, Invitation $invitation)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invitation $invitation)
+    public function destroy(Invitation $invitation): Response
     {
-        $invitation->delete();
+        $this->service->deleteInvitation($invitation);
 
         return response()->noContent();
     }

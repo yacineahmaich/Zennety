@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Http\Request;
 
 class Invitation extends Model
 {
@@ -54,13 +53,10 @@ class Invitation extends Model
         return $this->belongsTo(Notification::class);
     }
 
-    public static function fromRequest(Request $request): Builder
+    public static function from($type, $id): Builder
     {
-        $id = $request->route('id');
-        $type = "App\\Models\\" . ucfirst($request->route('type'));
-
         return self::query()
             ->where('inviteable_id', $id)
-            ->where('inviteable_type', $type);
+            ->where('inviteable_type', getModelNamespace($type));
     }
 }

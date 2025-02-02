@@ -2,20 +2,38 @@
 
 namespace App\Services;
 
-use App\DTO\InvitationDTO;
 use App\Enums\NotificationType;
 use App\Models\Invitation;
+use App\Models\Membership;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 class InvitationService
 {
 
-    public function send($type, $inviteable, InvitationDTO $invitationDTO)
+    public function getInvitations($type, $id, array $params = []): \Illuminate\Contracts\Pagination\Paginator
     {
-        DB::transaction(function () use ($type, $inviteable, $invitationDTO) {
-            $users = User::whereIn('id', $invitationDTO->users)->get();
+        $invitations = Invitation::from($type, $id)
+            ->with('invited')
+            ->whereHas('invited', fn ($q) => $q->search($params['search'] ?? null))
+            ->when(fn ($q) =>  $params['role'] ? $q->where('role', $params['role']) : null)
+            ->where('expires_at', '>', now())
+            ->paginate();
+
+        return $invitations;
+    }
+
+    public function sendInvitation($type, $id, array $data): void
+    {
+        /** @var Illuminate\Database\Eloquent\Model $inviteable */
+        if(!$inviteable = getModel($type, $id)) {
+            throw new ModelNotFoundException();
+        }
+
+        DB::transaction(function () use ($type, $inviteable, $data) {
+            $users = User::whereIn('id', $data['users'])->get();
 
             $invitations = [];
 
@@ -36,16 +54,16 @@ class InvitationService
                 // Create notification for invitation
                 $notification = $user->notifications()->create([
                     'type' => NotificationType::NORMAL,
-                    'title' => 'Invited to join ' . $type === "workspace" ? "w/" : "b/" . $inviteable->name,
-                    'description' => $invitationDTO->message,
+                    'title' => 'Invited to join ' . getModelPrefix($type) . $inviteable->name,
+                    'description' => $data['message'],
                     'link' => '/app/invitations/' . $invitation_token,
                 ]);
 
                 $invitations[] = [
                     'token' => $invitation_token,
                     'invited_email' => $user->email,
-                    'message' => $invitationDTO->message,
-                    'role' => $invitationDTO->role,
+                    'message' => $data['message'],
+                    'role' => $data['role'],
                     'user_id' => auth()->id(),
                     'notification_id' => $notification->id,
                     'expires_at' => now()->addWeek(),
@@ -56,38 +74,40 @@ class InvitationService
         });
     }
 
-    public function accept(Invitation $invitation)
+    public function acceptInvitation(Invitation $invitation, User $user): void
     {
-        DB::transaction(function () use ($invitation) {
-            $inviteable = $invitation->inviteable;
+        $inviteable = $invitation->inviteable;
 
-            /**@var App\Models\User $user */
-            $user = auth()->user();
+        // Check if user is already a member
+        if ($user->memberFor($inviteable)) {
+            abort(402, 'You\'re aleady a member in - ' . $inviteable->name);
+        };
 
-            // Check if user is already a member 
-            if ($user->memberFor($inviteable)) {
-                abort(402, 'You\'re aleady a member in - ' . $inviteable->name);
-            };
-
-            /**@var App\Models\Membership $member */
+        DB::transaction(function () use ($invitation, $inviteable, $user) {
+            /**@var Membership $member */
             $member = $inviteable->members()->create([
-                'user_id' => auth()->id(),
+                'user_id' => $user->id,
             ]);
 
             $member->assignRole($invitation->role);
 
             $invitation->delete();
+
             $invitation->notification()->delete();
+
         });
     }
 
-    public function reject(Invitation $invitation)
+    public function rejectInvitation(Invitation $invitation): void
     {
         DB::transaction(function () use ($invitation) {
             $invitation->delete();
             $invitation->notification()->delete();
         });
+    }
 
-        return response()->noContent();
+    public function deleteInvitation(Invitation $invitation): void
+    {
+        $invitation->delete();
     }
 }
