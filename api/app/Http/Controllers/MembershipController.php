@@ -23,6 +23,8 @@ class MembershipController extends Controller
      */
     public function index(Request $request, $type, $id): ResourceCollection
     {
+        $this->authorize('viewAny', [Membership::class, getModel($type, $id)]);
+
         $memberships = $this->service->getMemberships($type, $id,$request->all());
 
         return MembershipResource::collection($memberships);

@@ -4,14 +4,14 @@ namespace App\Policies;
 
 use App\Models\Membership;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Database\Eloquent\Model;
 
 class MembershipPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user, $membershipable): bool
+    public function viewAny(User $user, Model $membershipable): bool
     {
         if (!$member = $user->memberFor($membershipable)) {
             return false;
