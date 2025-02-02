@@ -128,15 +128,15 @@ const Invitation = ({
       </div>
       <div className="flex items-center gap-2">
         <div className="flex flex-col items-end justify-center gap-1 text-xs">
-          <p className="g-1 flex items-center">
-            <UserIcon size={14} />
+          <p className="flex items-center gap-1">
+            <UserIcon size={12} />
             {invitation.role}
           </p>
           <p
-            className="g-1 flex items-center"
+            className="flex items-center gap-1"
             title={`Expires at ${expirationDate}`}
           >
-            <CalendarX2Icon size={14} />
+            <CalendarX2Icon size={12} />
             {expirationDate}
           </p>
         </div>
@@ -158,7 +158,7 @@ const Invitation = ({
               )
             }
             openTrigger={
-              <Button size="sm" variant="destructive" className="p-2">
+              <Button size="icon" variant="destructive-outline" className="p-2">
                 <TrashIcon size={16} />
               </Button>
             }

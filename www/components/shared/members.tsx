@@ -178,7 +178,7 @@ const Member = ({
             }
             disabled={isDeleting}
             openTrigger={
-              <Button size="sm" variant="destructive" className="p-2">
+              <Button size="icon" variant="destructive-outline" className="p-2">
                 <TrashIcon size={16} />
               </Button>
             }
