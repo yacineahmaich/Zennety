@@ -5,45 +5,49 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateMembershipRequest;
 use App\Http\Resources\MembershipResource;
 use App\Models\Membership;
+use App\Services\MembershipService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Response;
 
 class MembershipController extends Controller
 {
-    public function index(Request $request)
+
+    public function __construct(
+        public MembershipService $service
+    )
+    {}
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request, $type, $id): ResourceCollection
     {
-        // $membership = Membership::fromRequest($request)
-        //     ->where('user_id', auth()->id())
-        //     ->first();
-            
-        // $this->authorize('viewAny', [Membership::class, $membership->membershipable]);
-
-        $role = $request->get('role');
-        $search = $request->get('search');
-
-        $memberships = Membership::fromRequest($request)
-            ->with('user')
-            ->with('roles')
-            ->whereHas('user', fn ($q) => $q->search($search))
-            ->whereHas('roles', fn ($q) =>  $role ? $q->where('roles.name', $role) : null)
-            ->paginate();
+        $memberships = $this->service->getMemberships($type, $id,$request->all());
 
         return MembershipResource::collection($memberships);
     }
 
-    public function update(UpdateMembershipRequest $request, string $type, int $id, Membership $membership)
+    /**
+     * Update the specified resource.
+     */
+    public function update(UpdateMembershipRequest $request, string $type, int $id, Membership $membership): Response
     {
         $this->authorize('update', $membership);
 
-        $membership->syncRoles([$request->validated('role')]);
+        $this->service->updateMembership($membership, $request->validated());
 
         return response()->noContent();
     }
 
-    public function delete(string $type, int $id, Membership $membership)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function delete(string $type, int $id, Membership $membership): Response
     {
         $this->authorize('delete', $membership);
 
-        $membership->delete();
+        $this->service->deleteMembership($membership);
 
         return response()->noContent();
     }

@@ -30,13 +30,10 @@ class Membership extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function fromRequest(Request $request): Builder
+    public static function from($type, $id): Builder
     {
-        $id = $request->route('id');
-        $type = "App\\Models\\" . ucfirst($request->route('type'));
-
         return self::query()
             ->where('membershipable_id', $id)
-            ->where('membershipable_type', $type);
+            ->where('membershipable_type', getModelNamespace($type));
     }
 }
