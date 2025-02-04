@@ -31,11 +31,11 @@ class WorkspaceService
             ->get();
     }
 
-    public function createWorkspace(array $data, User $user): Workspace
+    public function createWorkspace(WorkspaceDTO $workspaceDTO, User $user): Workspace
     {
-        return DB::transaction(function () use ($data, $user) {
+        return DB::transaction(function () use ($workspaceDTO, $user) {
             /**@var Workspace $workspace */
-            $workspace = Workspace::create($data);
+            $workspace = Workspace::create($workspaceDTO->toArray());
 
             /**@var Membership $owner */
             $owner = $workspace->members()->create([
@@ -48,9 +48,9 @@ class WorkspaceService
         });
     }
 
-    public function updateWorkspace(Workspace $workspace, array $data): Workspace
+    public function updateWorkspace(Workspace $workspace, WorkspaceDTO $workspaceDTO): Workspace
     {
-        return tap($workspace)->update($data);
+        return tap($workspace)->update($workspaceDTO->toArray());
     }
 
     public function deleteWorkspace(Workspace $workspace): void

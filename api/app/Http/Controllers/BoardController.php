@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\BoardDTO;
 use App\Http\Requests\StoreBoardRequest;
 use App\Http\Requests\UpdateBoardRequest;
 use App\Http\Resources\BoardResource;
@@ -27,7 +28,7 @@ class BoardController extends Controller
         $board = $this->service->createBoard(
             $workspace,
             $request->user(),
-            $request->validated()
+            BoardDTO::from($request->validated())
         );
 
         return BoardResource::make($board);
@@ -50,7 +51,10 @@ class BoardController extends Controller
     {
         $this->authorize('update', $board);
 
-        $updatedBoard = $this->service->updateBoard($board, $request->validated());
+        $updatedBoard = $this->service->updateBoard(
+            $board,
+            BoardDTO::from($request->validated())
+        );
 
         return BoardResource::make($updatedBoard);
     }

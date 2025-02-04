@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\DTO\BoardDTO;
 use App\Enums\Role;
 use App\Models\Board;
 use App\Models\Membership;
@@ -12,11 +13,11 @@ use Illuminate\Support\Facades\DB;
 
 class BoardService
 {
-    public function createBoard(Workspace $workspace, User $user, array $data): Board
+    public function createBoard(Workspace $workspace, User $user, BoardDTO $boardDTO): Board
     {
-        return DB::transaction(function () use ($workspace, $user, $data) {
+        return DB::transaction(function () use ($workspace, $user, $boardDTO) {
             /**@var Board $board */
-            $board = $workspace->boards()->create($data);
+            $board = $workspace->boards()->create($boardDTO->toArray());
 
             /**@var Membership $owner */
             $owner = $board->members()->create([
@@ -29,9 +30,9 @@ class BoardService
         });
     }
 
-    public function updateBoard(Board $board, array $data): Board
+    public function updateBoard(Board $board, BoardDTO $boardDTO): Board
     {
-        return tap($board)->update($data);
+        return tap($board)->update($boardDTO->toArray());
     }
 
     public function deleteBoard(Board $board): void

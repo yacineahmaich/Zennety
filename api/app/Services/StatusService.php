@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\DTO\StatusDTO;
 use App\Models\Board;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,22 +20,23 @@ class StatusService
             ->load('cards');
     }
 
-    public function createStatus(Board $board, array $data): Status
+    public function createStatus(Board $board, StatusDTO $statusDTO): Status
     {
         $pos = $board->statuses()->max('pos');
 
         /** @var Status $status */
-        $status = $board->statuses()->create([
-            'name' => $data["name"],
-            'pos' => is_numeric($pos) ? $pos + 1 : 0
-        ]);
+        $status = $board->statuses()->create(
+            array_merge($statusDTO->toArray(), [
+                'pos' => is_numeric($pos) ? $pos + 1 : 0
+            ])
+        );
 
         return $status;
     }
 
-    public function updateStatus(Status $status, array $data): Status
+    public function updateStatus(Status $status, StatusDTO $statusDTO): Status
     {
-        return tap($status)->update($data);
+        return tap($status)->update($statusDTO->toArray());
     }
 
     public function deleteStatus(Status $status): void

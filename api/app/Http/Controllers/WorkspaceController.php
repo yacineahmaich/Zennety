@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Role;
+use App\DTO\WorkspaceDTO;
 use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
@@ -37,7 +37,7 @@ class WorkspaceController extends Controller
     public function store(StoreWorkspaceRequest $request): WorkspaceResource
     {
         $workspace = $this->service->createWorkspace(
-            $request->validated(),
+            WorkspaceDTO::from($request->validated()),
             $request->user()
         );
 
@@ -61,7 +61,10 @@ class WorkspaceController extends Controller
     {
         $this->authorize('update', $workspace);
 
-        $updatedWorkspace = $this->service->updateWorkspace($workspace, $request->validated());
+        $updatedWorkspace = $this->service->updateWorkspace(
+            $workspace,
+            WorkspaceDTO::from($request->validated()),
+        );
 
         return WorkspaceResource::make($updatedWorkspace);
     }

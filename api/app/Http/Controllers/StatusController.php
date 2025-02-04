@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\StatusDTO;
 use App\Http\Requests\StoreStatusRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use App\Http\Resources\StatusResource;
@@ -36,7 +37,7 @@ class StatusController extends Controller
     {
         $status = $this->service->createStatus(
             $board,
-            $request->validated(),
+            StatusDTO::from($request->validated()),
         );
 
         return StatusResource::make($status);
@@ -47,7 +48,10 @@ class StatusController extends Controller
      */
     public function update(UpdateStatusRequest $request,Workspace $workspace, Board $board, Status $status): StatusResource
     {
-        $updatedStatus = $this->service->updateStatus($status, $request->validated());
+        $updatedStatus = $this->service->updateStatus(
+            $status,
+            StatusDTO::from($request->validated())
+        );
 
         return StatusResource::make($updatedStatus);
     }
