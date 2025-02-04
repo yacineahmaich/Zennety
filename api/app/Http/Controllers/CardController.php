@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\CardDTO;
 use App\Http\Requests\StoreCardCommentRequest;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
@@ -27,7 +28,10 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request, Workspace $workspace, Board $board, Status $status): CardResource
     {
-        $card = $this->service->createCard($status, $request->validated());
+        $card = $this->service->createCard(
+            $status,
+            CardDTO::from($request->validated())
+        );
 
         return CardResource::make($card);
     }
@@ -45,7 +49,10 @@ class CardController extends Controller
      */
     public function update(UpdateCardRequest $request, Workspace $workspace, Board $board, Status $status, Card $card): CardResource
     {
-        $this->service->updateCard($card, $request->validated());
+        $this->service->updateCard(
+            $card,
+            CardDTO::from($request->validated())
+        );
 
         return CardResource::make($card);
     }

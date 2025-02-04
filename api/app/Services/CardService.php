@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\DTO\CardDTO;
 use App\Models\Card;
 use App\Models\Status;
 use App\Models\User;
@@ -13,7 +14,7 @@ use Spatie\Activitylog\Models\Activity;
 class CardService
 {
 
-    public function createCard(Status $status, array $data): Card
+    public function createCard(Status $status, CardDTO $cardDTO): Card
     {
         $pos = $status->cards()->max('pos');
 
@@ -21,28 +22,37 @@ class CardService
         $data["pos"] = is_numeric($pos) ? $pos + 1 : 0;
 
         // link assign via membership model
-        if(isset($data['assignee'])) {
-            $data["user_id"] = $status->board->members()->where("id", $data["assignee"])->value("user_id");
+        if(isset($cardDTO->assignee)) {
+            $cardDTO->assignee = $status->board->members()->where("id", $cardDTO->assignee)->value("user_id");
         }
 
         /** @var Card $card */
-        $card = $status->cards()->create($data);
+        $card = $status->cards()->create(
+            array_merge($cardDTO->toArray(), [
+                'pos' => is_numeric($pos) ? $pos + 1 : 0,
+                'user_id' => $cardDTO->assignee
+            ])
+        );
 
         return $card;
     }
 
-    public function updateCard(Card $card, array $data): Card
+    public function updateCard(Card $card, CardDTO $cardDTO): Card
     {
         // link assign via membership model
-        if (array_key_exists("assignee", $data)) {
-            if(is_null($data["assignee"])) {
-                $data["user_id"] = null;
+        if (array_key_exists("assignee", $cardDTO->toArray())) {
+            if(is_null($cardDTO->assignee)) {
+                $cardDTO->assignee = null;
             }else {
-                $data["user_id"] = $card->board->members()->where("id", $data["assignee"])->value("user_id");
+                $cardDTO->assignee = $card->board->members()->where("id", $cardDTO->assignee)->value("user_id");
             }
         }
 
-        return tap($card)->update($data);
+        return tap($card)->update(
+            array_merge($cardDTO->toArray(), [
+                'user_id' => $cardDTO->assignee
+            ])
+        );
     }
 
     public function deleteCard(Card $card): void
