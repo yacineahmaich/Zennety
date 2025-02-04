@@ -38,6 +38,17 @@ const AppBreadcrumb = () => {
     []
   );
 
+  /**
+   * TODO: this is just a temporary work around, need a better solution
+   */
+  const [key, setKey] = useState(new Date().getSeconds());
+
+  useEffect(() => {
+    const interval = setInterval(() => setKey(new Date().getSeconds()), 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const { workspaceId, boardId } = router.query as {
     workspaceId: string;
     boardId: string;
@@ -105,7 +116,7 @@ const AppBreadcrumb = () => {
     setBreadcrumbItems(items);
 
     // @ts-ignore
-  }, [workspaceId, boardId, queryClient, router.asPath, t, user?.name]);
+  }, [workspaceId, boardId, queryClient, router.asPath, t, user?.name, key]);
 
   if (!breadcrumbItems?.length)
     return (
