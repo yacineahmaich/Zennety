@@ -11,13 +11,30 @@ import CreateWorkspace from "@/components/workspace/create-workspace";
 import { cn } from "@/lib/utils";
 import { PlusCircleIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { PropsWithChildren, Suspense, useState } from "react";
+import { useRouter } from "next/router";
+import { PropsWithChildren, Suspense, useEffect, useState } from "react";
 import AppBreadcrumb from "../_partials/app-breadcrumb";
 import { Button } from "../ui/button";
 
+// TODO: use sheet component on mobile
+
+function isMobile() {
+  return window.innerWidth < 768;
+}
+
 const AppLayout = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation("common");
-  const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
+  const [collapsed, setCollapsed] = useState(isMobile);
+
+  /**
+   * Collapse sidebar when navigating to other router on mobile
+   */
+  useEffect(() => {
+    if (isMobile() && !collapsed) {
+      setCollapsed(true);
+    }
+  }, [router.asPath]);
 
   return (
     <div
@@ -26,6 +43,13 @@ const AppLayout = ({ children }: PropsWithChildren) => {
         !collapsed && "md:pl-64"
       )}
     >
+      <div
+        className={cn(
+          "fixed inset-0 z-50 bg-black/80 md:hidden",
+          collapsed && "hidden"
+        )}
+        onClick={() => setCollapsed(true)}
+      />
       <aside
         className={cn(
           "fixed left-0 top-0 z-50 flex h-screen shrink-0 flex-col space-y-5 overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",

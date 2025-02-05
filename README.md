@@ -2,8 +2,6 @@ Zennety
 
 ## TODO:
 
-    - fix app breadcrumb not updated when navigating to workspace
-    - make app sidebar responsive
     - landing page
     - refactore permissions
     - override default chadcn styles

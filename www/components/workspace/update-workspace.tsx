@@ -126,7 +126,7 @@ const UpdateWorkspace = ({ workspace }: Props) => {
                         className="h-full w-full rounded-[inherit] object-cover"
                       />
                     </div>
-                    <DropdownMenu modal={false}>
+                    <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="mt-1 w-full rounded bg-accent p-1 text-xs font-medium">
                           Edit
