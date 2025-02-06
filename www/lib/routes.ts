@@ -4,6 +4,7 @@ type RouteName =
   | "register"
   | "forgot-password"
   | "app"
+  | "bookmarks"
   | "workspace"
   | "board"
   | "workspace/members"
@@ -37,6 +38,10 @@ const routes: Route[] = [
   {
     name: "app",
     buildPath: () => "/app",
+  },
+  {
+    name: "bookmarks",
+    buildPath: () => "/app/bookmarks",
   },
   {
     name: "workspace",

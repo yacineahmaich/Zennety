@@ -66,6 +66,14 @@ const AppBreadcrumb = () => {
       });
     }
 
+    // Bookmarks
+    if (isMatch(router.asPath, route("bookmarks"))) {
+      items.push({
+        label: t("bookmarks"),
+        link: route("bookmarks"),
+      });
+    }
+
     // Workspace
     if (isMatch(router.asPath, route("workspace", workspaceId) + "/**")) {
       const workspace = queryClient.getQueryData<IWorkspace>([

@@ -6,14 +6,13 @@ import CreateWorkspace from "@/components/workspace/create-workspace";
 import EmptyWorkspace from "@/components/workspace/empty-workspace";
 import { useCan } from "@/hooks/use-can";
 import { useHasRole } from "@/hooks/use-has-role";
-import { getPinnedBoard, groupWorkspacesByOwnership } from "@/lib/helpers";
+import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
 import { Role } from "@/types/enums";
 import { IWorkspace } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import {
-  BookMarkedIcon,
   FolderKanbanIcon,
   GripHorizontalIcon,
   KanbanSquareIcon,
@@ -37,7 +36,6 @@ const AppPage: NextPageWithLayout = () => {
   }
 
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
-  const pinnedBoards = getPinnedBoard(workspaces || []);
 
   if (!workspaces?.length) {
     return (
@@ -63,22 +61,6 @@ const AppPage: NextPageWithLayout = () => {
   return (
     <>
       <div className="py-4">
-        {pinnedBoards?.length > 0 && (
-          <section>
-            <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">
-              <BookMarkedIcon className="mr-2 w-6 " />
-              <span className="">{t("bookmarks")}</span>
-            </h2>
-
-            <div className="ml-3 border-l border-accent p-4 pb-5">
-              <div className="grid grid-cols-3 gap-4">
-                {pinnedBoards?.map((board) => (
-                  <BoardCard key={board.id} board={board} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
         <WorkspaceGroup
           title="my-workspaces"
           workspaces={groupedWorkspaces.owner}

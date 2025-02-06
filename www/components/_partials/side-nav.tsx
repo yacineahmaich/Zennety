@@ -1,7 +1,11 @@
 import { buttonVariants } from "@/components/ui/button";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { FolderKanbanIcon, WalletCardsIcon } from "lucide-react";
+import {
+  BookMarkedIcon,
+  FolderKanbanIcon,
+  WalletCardsIcon,
+} from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -21,6 +25,17 @@ const SideNav = () => {
             )}
           >
             <FolderKanbanIcon className="mr-2" /> {t("home")}
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={route("bookmarks")}
+            className={cn(
+              buttonVariants({ size: "sm", variant: "ghost" }),
+              "w-full justify-start"
+            )}
+          >
+            <BookMarkedIcon className="mr-2" /> {t("bookmarks")}
           </Link>
         </li>
         <li>
