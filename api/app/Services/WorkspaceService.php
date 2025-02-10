@@ -9,24 +9,22 @@ use App\Enums\Visibility;
 use App\Models\Membership;
 use App\Models\User;
 use App\Models\Workspace;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class WorkspaceService
 {
-    public function getMyWorkspaces(User $user)
+    public function getMyWorkspaces(User $user): Collection
     {
         // TODO: Group query by owned workspaces and guest workspaces (currently done in frontend)
-        // TODO: include workspaces in whish user is a member of its boards
-        return Workspace::with('members')
+        return Workspace::with(['members', 'boards'])
             ->whereHas('members', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            ->with('boards', function ($query) use ($user) {
-                $query->whereHas('members', function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                })
-                    ->orWhere('visibility', Visibility::PUBLIC)
-                    ->with('members');
+            ->orWhereHas('boards', function ($query) use ($user) {
+                $query->whereHas('members',function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    });
             })
             ->get();
     }

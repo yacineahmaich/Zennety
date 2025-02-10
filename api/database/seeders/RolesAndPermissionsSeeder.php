@@ -17,6 +17,7 @@ class RolesAndPermissionsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Create permissions
+        Permission::create(['name' => 'create']);
         Permission::create(['name' => 'view']);
         Permission::create(['name' => 'update']);
         Permission::create(['name' => 'delete']);
@@ -25,22 +26,29 @@ class RolesAndPermissionsSeeder extends Seeder
         $owner = Role::create(['name' => \App\Enums\Role::OWNER]);
         $admin = Role::create(['name' => \App\Enums\Role::ADMIN]);
         $member = Role::create(['name' => \App\Enums\Role::MEMBER]);
-        $viewer = Role::create(['name' => \App\Enums\Role::VIEWER]);
+        $guest = Role::create(['name' => \App\Enums\Role::GUEST]);
 
         // Assign permissions to roles
-        $owner->givePermissionTo(
+        $owner->givePermissionTo([
+            'create',
             'view',
             'update',
-            'delete',
-        );
-        $admin->givePermissionTo(
+            'delete'
+        ]);
+
+        $admin->givePermissionTo([
+            'create',
             'view',
-            'update',
-        );
-        $member->givePermissionTo(
+            'update'
+        ]);
+
+        $member->givePermissionTo([
+            'create',
             'view',
-        );
-        $viewer->givePermissionTo(
+            'update'
+        ]);
+
+        $guest->givePermissionTo(
             'view',
         );
 

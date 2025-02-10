@@ -7,7 +7,7 @@ class Role
     const OWNER = "Owner";
     const ADMIN = "Admin";
     const MEMBER = "Member";
-    const VIEWER = "Viewer";
+    const GUEST = "Guest";
 
     public static function values(): array
     {
@@ -15,7 +15,7 @@ class Role
             self::OWNER,
             self::ADMIN,
             self::MEMBER,
-            self::VIEWER
+            self::GUEST
         ];
     }
 }

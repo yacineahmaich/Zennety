@@ -11,14 +11,6 @@ use App\Models\Workspace;
 class WorkspacePolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Workspace $workspace): bool
@@ -27,8 +19,9 @@ class WorkspacePolicy
             return true;
         }
 
+        // user can see workspace if he is a member of one of its board
         foreach($workspace->boards as $board) {
-            if($member = $user->memberFor($board)) {
+            if($user->memberFor($board)) {
                 return true;
             }
         }
@@ -38,14 +31,6 @@ class WorkspacePolicy
         }
 
         return $member->checkPermissionTo('view');
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        //
     }
 
     /**
@@ -68,22 +53,6 @@ class WorkspacePolicy
             return false;
         }
         return $member->checkPermissionTo('delete');
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Workspace $workspace): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Workspace $workspace): bool
-    {
-        //
     }
 
     /**
