@@ -32,9 +32,9 @@ class Workspace extends Model implements HasMedia
                 $query->where('user_id', auth()->id());
             })
             // show public boards only when user is a member in workspace
-            ->orWhere(function($query) {
+            ->orWhere(function ($query) {
                 $query->where('visibility', Visibility::PUBLIC)
-                    ->whereHas('members',function ($query) {
+                    ->whereHas('workspace.members', function ($query) {
                         $query->where('user_id', auth()->id());
                     });
             });
