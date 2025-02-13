@@ -1,6 +1,6 @@
 import { Priority, Role } from "@/types/enums";
 
-export const roles = [Role.OWNER, Role.ADMIN, Role.MEMBER, Role.VIEWER];
+export const roles = [Role.OWNER, Role.ADMIN, Role.MEMBER, Role.GUEST];
 
 export const priorties = [
   {

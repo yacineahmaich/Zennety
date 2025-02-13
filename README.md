@@ -3,14 +3,8 @@ Zennety
 ## TODO:
 
     - landing page
-    - refactore permissions
-    - override default chadcn styles
-    - settings page
     - Write some unit tests (front/backend)
-    - refactore backend code (dtos, services)
-    - add card dto & adjust inviation & membership dtos
 
-    - use elequont sortable to handle status & card sorting
     - debouncing search users
 
     - add google & github signin

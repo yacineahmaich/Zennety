@@ -1,7 +1,7 @@
 import { useUser } from "@/services";
 import { ResourceType } from "@/types/helpers";
 
-type Action = "view" | "update" | "delete";
+type Action = "create" | "view" | "update" | "delete";
 
 export const useCan = (
   action: Action,

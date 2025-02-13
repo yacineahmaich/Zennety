@@ -5,11 +5,9 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import CreateWorkspace from "@/components/workspace/create-workspace";
 import EmptyWorkspace from "@/components/workspace/empty-workspace";
 import { useCan } from "@/hooks/use-can";
-import { useHasRole } from "@/hooks/use-has-role";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
-import { Role } from "@/types/enums";
 import { IWorkspace } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import {
@@ -108,10 +106,8 @@ const WorkspaceGroup = ({
 const WorkspaceSection = ({ workspace }: { workspace: IWorkspace }) => {
   const { t } = useTranslation("common");
 
-  const isOwner = useHasRole(Role.OWNER, "workspace", workspace.id);
-  const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
-
-  const canViewSettings = isOwner || canUpdateWorkspace;
+  const canViewMembers = useCan("view", "workspace", workspace.id);
+  const canViewSettings = useCan("update", "workspace", workspace.id);
 
   return (
     <div key={workspace.id} className="pt-2 sm:p-4">
@@ -131,15 +127,17 @@ const WorkspaceSection = ({ workspace }: { workspace: IWorkspace }) => {
               {t("boards")} ({workspace.boards?.length})
             </span>
           </Link>
-          <Link
-            href={route("workspace/members", workspace.id)}
-            className={buttonVariants({ size: "sm", variant: "ghost" })}
-          >
-            <UserIcon size={16} />
-            <span className="ml-2 hidden md:block">
-              {t("members")} ({workspace.members?.length})
-            </span>
-          </Link>
+          {canViewMembers && (
+            <Link
+              href={route("workspace/members", workspace.id)}
+              className={buttonVariants({ size: "sm", variant: "ghost" })}
+            >
+              <UserIcon size={16} />
+              <span className="ml-2 hidden md:block">
+                {t("members")} ({workspace.members?.length})
+              </span>
+            </Link>
+          )}
           {canViewSettings && (
             <Link
               href={route("workspace/settings", workspace.id)}

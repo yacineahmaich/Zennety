@@ -23,13 +23,14 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/lib/api";
+import { roles } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useSendMembershipInvitations } from "@/services";
 import { Role } from "@/types/enums";
 import { ResourceType } from "@/types/helpers";
 import { IUser } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserCogIcon, UserIcon, UserSearchIcon } from "lucide-react";
+import { UserCogIcon, UserIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -226,22 +227,15 @@ const InviteMembers = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value={Role.ADMIN}>
-                        <div className="flex items-center gap-2">
-                          <UserCogIcon size={16} /> <span>{Role.ADMIN}</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value={Role.MEMBER}>
-                        <div className="flex items-center gap-2">
-                          <UserIcon size={16} /> <span>{Role.MEMBER}</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value={Role.VIEWER}>
-                        <div className="flex items-center gap-2">
-                          <UserSearchIcon size={16} />{" "}
-                          <span>{Role.VIEWER}</span>
-                        </div>
-                      </SelectItem>
+                      {roles
+                        .filter((r) => r !== Role.OWNER)
+                        .map((role) => (
+                          <SelectItem key={role} value={role}>
+                            <div className="flex items-center gap-2">
+                              <UserCogIcon size={16} /> <span>{role}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

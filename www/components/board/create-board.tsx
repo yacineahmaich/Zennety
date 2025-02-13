@@ -49,7 +49,7 @@ type Props = {
 const CreateBoard = ({ workspace, openTrigger }: Props) => {
   const { t } = useTranslation("common");
   const { createBoard, isLoading } = useCreateBoard();
-  const canCreate = useCan("update", "workspace", workspace.id);
+  const canCreate = useCan("create", "workspace", workspace.id);
 
   const form = useForm<CreateBoard>({
     resolver: zodResolver(formSchema),

@@ -12,7 +12,7 @@ type Props = {
 
 const EmptyWorkspace = ({ workspace, withIcon = false }: Props) => {
   const { t } = useTranslation("common");
-  const canCreate = useCan("update", "workspace", workspace.id);
+  const canCreate = useCan("create", "workspace", workspace.id);
 
   return (
     <div className="col-span-full flex flex-col items-center justify-center p-6 text-center text-muted-foreground">

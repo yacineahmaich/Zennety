@@ -12,7 +12,7 @@ export enum Role {
   OWNER = "Owner",
   ADMIN = "Admin",
   MEMBER = "Member",
-  VIEWER = "Viewer",
+  GUEST = "Guest",
 }
 export enum NotificationType {
   NORMAL = "Normal",
