@@ -21,11 +21,12 @@ class WorkspaceService
             ->whereHas('members', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            ->orWhereHas('boards', function ($query) use ($user) {
-                $query->whereHas('members',function ($query) use ($user) {
-                        $query->where('user_id', $user->id);
-                    });
-            })
+            // TODO: include workspaces where user is member of one of its boards
+//            ->orWhereHas('boards', function ($query) use ($user) {
+//                $query->whereHas('members',function ($query) use ($user) {
+//                        $query->where('user_id', $user->id);
+//                    });
+//            })
             ->get();
     }
 

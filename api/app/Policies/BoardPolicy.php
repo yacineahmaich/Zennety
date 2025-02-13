@@ -10,18 +10,11 @@ use App\Models\Workspace;
 class BoardPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Board $board): bool
     {
+        // user can see board if its public and he is a member of workspace
         if ($board->visibility == Visibility::PUBLIC) {
             if ($user->memberFor($board->workspace)) {
                 return true;
@@ -44,8 +37,7 @@ class BoardPolicy
             return false;
         }
 
-        // if user can update workspace then he can create a board
-        return $member->checkPermissionTo('update');
+        return $member->checkPermissionTo('create');
     }
 
     /**
@@ -70,21 +62,5 @@ class BoardPolicy
         }
 
         return $member->checkPermissionTo('delete');
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Board $board): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Board $board): bool
-    {
-        //
     }
 }

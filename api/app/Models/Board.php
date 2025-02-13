@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Visibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,23 +17,6 @@ class Board extends Model
         'description',
         'visibility'
     ];
-
-    public function resolveRouteBinding($value, $field = null)
-    {
-        return $this
-            ->where('id', $value)
-            ->where(function ($query) {
-                $query->whereIn(
-                    'id',
-                    auth()->user()
-                        ->memberships()
-                        ->where('membershipable_type', 'App\Models\Board')
-                        ->select('membershipable_id')
-                )
-                    ->orWhere('visibility', Visibility::PUBLIC);
-            })
-            ->firstOrFail();
-    }
 
     public function workspace(): BelongsTo
     {

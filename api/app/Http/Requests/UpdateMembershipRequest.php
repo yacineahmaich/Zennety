@@ -24,11 +24,7 @@ class UpdateMembershipRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "role" => Rule::in([
-                Role::ADMIN,
-                Role::MEMBER,
-                Role::VIEWER
-            ])
+            "role" => Rule::in(Role::values())
         ];
     }
 }
