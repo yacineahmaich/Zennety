@@ -7,7 +7,7 @@ import { isMatch } from "micromatch";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -128,7 +128,7 @@ const AppBreadcrumb = () => {
 
   if (!breadcrumbItems?.length)
     return (
-      <div className="my-5">
+      <div className="py-2">
         <Breadcrumb className="invisible">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -140,35 +140,37 @@ const AppBreadcrumb = () => {
     );
 
   return (
-    <div className=" py-2">
+    <div className="py-2">
       <Breadcrumb>
         <BreadcrumbList>
           {breadcrumbItems.map((item, key) => (
-            <BreadcrumbItem key={key}>
-              {item?.links?.length ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-1">
-                    {item.label}
-                    <ChevronDownIcon size={14} />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    {item.links.map((subItem, subItemKey) => (
-                      <DropdownMenuItem key={subItemKey} asChild>
-                        <Link href={subItem.link}>{subItem.label}</Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : item.link ? (
-                <BreadcrumbLink asChild>
-                  <Link href={item.link}>{item.label}</Link>
-                </BreadcrumbLink>
-              ) : (
-                <BreadcrumbPage>{item.label}</BreadcrumbPage>
-              )}
+            <Fragment key={key}>
+              <BreadcrumbItem>
+                {item?.links?.length ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center gap-1">
+                      {item.label}
+                      <ChevronDownIcon size={14} />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                      {item.links.map((subItem, subItemKey) => (
+                        <DropdownMenuItem key={subItemKey} asChild>
+                          <Link href={subItem.link}>{subItem.label}</Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : item.link ? (
+                  <BreadcrumbLink asChild>
+                    <Link href={item.link}>{item.label}</Link>
+                  </BreadcrumbLink>
+                ) : (
+                  <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                )}
+              </BreadcrumbItem>
               {breadcrumbItems.length > 1 &&
                 key < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
-            </BreadcrumbItem>
+            </Fragment>
           ))}
         </BreadcrumbList>
       </Breadcrumb>

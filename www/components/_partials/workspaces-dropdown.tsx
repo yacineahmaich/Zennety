@@ -11,7 +11,7 @@ import {
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
-import { ChevronDownIcon, KanbanSquareIcon, LayersIcon } from "lucide-react";
+import { ChevronDownIcon, KanbanSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,13 +21,11 @@ const WorkspacesDropdown = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { user } = useUser();
-  let { workspaces, isLoading } = useMyWorkspaces();
+  let { workspaces } = useMyWorkspaces();
   const { workspaceId } = router.query as { workspaceId: string };
 
   const currentWorkspace = useMemo(() => {
-    return workspaces?.find(
-      (worksapce) => worksapce.id.toString() === workspaceId
-    );
+    return workspaces?.find((w) => String(w.id) === workspaceId);
   }, [workspaceId]);
 
   const groupedWorkspaces = useMemo(() => {
@@ -38,9 +36,9 @@ const WorkspacesDropdown = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
-          <LayersIcon size={20} className="mr-2" />
+          <KanbanSquareIcon size={20} className="mr-2" />
           <span>{currentWorkspace?.name || t("my-workspaces")}</span>
-          <ChevronDownIcon size={20} className="ml-2" />
+          <ChevronDownIcon size={16} className="ml-2" />
         </Button>
       </DropdownMenuTrigger>
 
