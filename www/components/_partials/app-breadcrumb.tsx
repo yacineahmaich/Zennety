@@ -62,7 +62,7 @@ const AppBreadcrumb = () => {
         label: isMatch(router.asPath, route("app"))
           ? t("user-welcome-back", { name: user?.name })
           : t("dashboard"),
-        link: isMatch(router.asPath, route("app")) ? "" : route("app"),
+        link: isMatch(router.asPath, route("app")) ? undefined : route("app"),
       });
     }
 

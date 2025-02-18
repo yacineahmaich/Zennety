@@ -6,6 +6,7 @@ Zennety
     - Write some unit tests (front/backend)
 
     - debouncing search users
+    - replace invite member async-select
 
     - add google & github signin
     - look for free laravel hosting providers

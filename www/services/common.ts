@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import { ResourceType } from "@/types/helpers";
-import { IWorkspace } from "@/types/models";
+import { IBoard, IWorkspace } from "@/types/models";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const bookmarkItem = async ({
@@ -19,7 +19,6 @@ export const useBookmarkItem = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: bookmarkItem,
     onMutate(vars) {
-      const previousBoards = queryClient.getQueryData(["my-workspaces"]);
       queryClient.setQueryData<IWorkspace[]>(
         ["my-workspaces"],
         (workspaces) => {
@@ -33,6 +32,23 @@ export const useBookmarkItem = () => {
                 )
                   return board;
 
+                queryClient.setQueryData<IBoard>(
+                  [
+                    "workspaces",
+                    String(board.workspaceId),
+                    "boards",
+                    String(board.id),
+                  ],
+                  (oldBoard) => {
+                    if (!oldBoard) return undefined;
+
+                    return {
+                      ...oldBoard,
+                      pinned: !oldBoard.pinned,
+                    };
+                  }
+                );
+
                 return {
                   ...board,
                   pinned: !board.pinned,
@@ -43,16 +59,7 @@ export const useBookmarkItem = () => {
         }
       );
     },
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: ["my-workspaces"],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ["workspaces"],
-      });
-    },
-    onSettled: () => {
+    onError: () => {
       queryClient.invalidateQueries({ queryKey: ["my-workspaces"] });
     },
   });

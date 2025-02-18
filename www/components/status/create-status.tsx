@@ -65,7 +65,12 @@ const CreateStatus = ({ board }: Props) => {
     );
   }
   return (
-    <FocusedContent onBlur={() => setShowForm(false)}>
+    <FocusedContent
+      onBlur={() => {
+        setShowForm(false);
+        form.unregister();
+      }}
+    >
       <div className="w-64 shrink-0">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">

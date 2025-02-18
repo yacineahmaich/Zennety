@@ -20,14 +20,14 @@ const Bookmarks: NextPageWithLayout = () => {
 
   return (
     <div>
-      <section>
+      <section className="py-4">
         <h2 className="flex items-center text-sm font-semibold uppercase tracking-tight">
           <BookMarkedIcon className="mr-2 w-6 " />
           <span className="">{t("bookmarks")}</span>
         </h2>
 
         <div className="ml-3 border-l border-accent p-4 pb-5">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2  lg:grid-cols-3 2xl:grid-cols-4">
             {pinnedBoards?.map((board) => (
               <BoardCard key={board.id} board={board} />
             ))}
