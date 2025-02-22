@@ -87,6 +87,10 @@
 
 input[aria-invalid="true"],
 textarea[aria-invalid="true"],
-select[aria-invalid="true"] {
+select[aria-invalid="true"],
+button[role="combobox"][aria-invalid="true"] {
   @apply border-destructive bg-destructive/10 !ring-destructive/30 placeholder:text-destructive;
+}
+button[role="combobox"][aria-invalid="true"] {
+  @apply text-destructive;
 }
