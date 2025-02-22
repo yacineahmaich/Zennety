@@ -27,7 +27,8 @@ abstract class BaseDTO
     }
 
     /**
-     * Convert DTO properties to an array excluding null values
+     * Convert DTO properties to an array
+     * @param bool $include_nullable include nullable values in the resulted array
      */
     public function toArray(bool $include_nullable = false): array
     {
