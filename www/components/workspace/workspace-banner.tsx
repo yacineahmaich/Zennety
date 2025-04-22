@@ -18,7 +18,7 @@ const WorkspaceBanner = ({ workspace }: Props) => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <div className="h-20 w-20 rounded-xl bg-accent shadow-xl">
+            <div className="h-20 w-20 rounded-xl border border-border bg-accent shadow-xl">
               <img
                 src={workspace.avatar}
                 alt={workspace.name}

@@ -2,7 +2,6 @@ Zennety
 
 ## TODO:
 
-    - landing page
     - Write some unit tests (front/backend)
 
     - debouncing search users

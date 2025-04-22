@@ -41,7 +41,7 @@ const Header = () => {
                     asChild
                     size="sm"
                     variant="outline"
-                    className="flex items-center gap-2 rounded-full"
+                    className="flex items-center gap-2"
                   >
                     <Link href={route("login")}>
                       <LogInIcon size={14} />
@@ -52,7 +52,7 @@ const Header = () => {
                     asChild
                     size="sm"
                     variant="default"
-                    className="flex items-center gap-2 rounded-full"
+                    className="flex items-center gap-2"
                   >
                     <Link href={route("register")}>
                       <UserRoundIcon size={14} />
