@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type Props = { workspace: IWorkspace };
 
@@ -34,13 +35,10 @@ const WorkspaceAccordion = ({ workspace }: Props) => {
     <AccordionItem value={workspace.id.toString()}>
       <AccordionTrigger className="rounded p-2 hover:bg-accent hover:no-underline">
         <div className="flex items-center gap-2">
-          <div className="h-7 w-7 shrink-0 rounded bg-accent shadow-xl">
-            <img
-              src={workspace.avatar}
-              alt={workspace.name}
-              className="h-full w-full rounded-[inherit] object-cover"
-            />
-          </div>
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={workspace.avatar} alt={workspace.name} />
+            <AvatarFallback>{workspace.name[0]}</AvatarFallback>
+          </Avatar>
           <div className="text-xs">
             <h2 className="line-clamp-1">{workspace.name}</h2>
             <p className="flex items-center gap-1 text-muted-foreground">

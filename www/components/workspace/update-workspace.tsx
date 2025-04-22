@@ -37,6 +37,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const formSchema = z.object({
   name: z.string().max(100),
@@ -119,13 +120,13 @@ const UpdateWorkspace = ({ workspace }: Props) => {
                         }
                       }}
                     />
-                    <div className="h-24 w-24 rounded-xl bg-accent shadow-xl">
-                      <img
+                    <Avatar className="h-24 w-24">
+                      <AvatarImage
                         src={workspace.avatar}
                         alt={workspace.name}
-                        className="h-full w-full rounded-[inherit] object-cover"
                       />
-                    </div>
+                      <AvatarFallback>{workspace.name[0]}</AvatarFallback>
+                    </Avatar>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="mt-1 w-full rounded bg-accent p-1 text-xs font-medium">

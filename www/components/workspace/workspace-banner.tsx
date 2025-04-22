@@ -5,6 +5,7 @@ import { Visibility } from "@/types/enums";
 import { IWorkspace } from "@/types/models";
 import { Globe2Icon, LockIcon, UserPlusIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import UpdateWorkspace from "./update-workspace";
 
 type Props = { workspace: IWorkspace };
@@ -18,13 +19,10 @@ const WorkspaceBanner = ({ workspace }: Props) => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <div className="h-20 w-20 rounded-xl border border-border bg-accent shadow-xl">
-              <img
-                src={workspace.avatar}
-                alt={workspace.name}
-                className="h-full w-full rounded-[inherit] object-cover"
-              />
-            </div>
+            <Avatar className="h-20 w-20">
+              <AvatarImage src={workspace.avatar} alt={workspace.name} />
+              <AvatarFallback>{workspace.name[0]}</AvatarFallback>
+            </Avatar>
             <div className="flex flex-col">
               <h2 className="font-semibold">{workspace.name}</h2>
               <div className="flex gap-2 text-xs font-medium">

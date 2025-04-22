@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useUpdateProfileAvatar, useUser } from "@/services";
 import { useTranslation } from "next-i18next";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const UpdateProfilePicture = () => {
   const { t } = useTranslation("common");
@@ -31,13 +32,11 @@ const UpdateProfilePicture = () => {
       <div>
         <h2 className="font-semibold">{t("profile-picture")}</h2>
       </div>
-      <div className="h-24 w-24 rounded-full bg-accent shadow-xl">
-        <img
-          src={user.avatar}
-          alt={user.name}
-          className="h-full w-full rounded-[inherit] object-cover"
-        />
-      </div>
+
+      <Avatar className="h-24 w-24">
+        <AvatarImage src={user.avatar} alt={user.name} />
+        <AvatarFallback>{user.name[0]}</AvatarFallback>
+      </Avatar>
       <input
         id="profile-avatar"
         type="file"
