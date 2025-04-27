@@ -26,6 +26,22 @@ class BoardService
 
             $owner->assignRole(Role::OWNER);
 
+            // Init board with default statuses
+            $board->statuses()->createMany([
+                [
+                    "position" => 1,
+                    "name" => "Pending",
+                ],
+                [
+                    "position" => 2,
+                    "name" => "In progress",
+                ],
+                [
+                    "position" => 3,
+                    "name" => "Done",
+                ],
+            ]);
+
             return $board;
         });
     }
