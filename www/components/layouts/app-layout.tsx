@@ -16,8 +16,6 @@ import { PropsWithChildren, Suspense, useEffect, useState } from "react";
 import AppBreadcrumb from "../_partials/app-breadcrumb";
 import { Button } from "../ui/button";
 
-// TODO: use sheet component on mobile
-
 function isMobile() {
   return window.innerWidth < 768;
 }

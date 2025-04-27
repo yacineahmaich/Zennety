@@ -1,6 +1,7 @@
 import BoardCard from "@/components/board/board-card";
 import { AppLayout } from "@/components/layouts";
 import Loader from "@/components/shared/loader";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import CreateWorkspace from "@/components/workspace/create-workspace";
 import EmptyWorkspace from "@/components/workspace/empty-workspace";
@@ -12,7 +13,6 @@ import { IWorkspace } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import {
   FolderKanbanIcon,
-  GripHorizontalIcon,
   KanbanSquareIcon,
   PlusCircleIcon,
   SettingsIcon,
@@ -112,11 +112,17 @@ const WorkspaceSection = ({ workspace }: { workspace: IWorkspace }) => {
   return (
     <div key={workspace.id} className="pt-2 sm:p-4">
       <div className="mb-2 flex items-center justify-between sm:mb-4">
-        <h3 className="flex items-center gap-1 text-sm font-semibold tracking-tight text-muted-foreground sm:-ml-4">
+        <div className="flex items-center gap-2 sm:-ml-4">
           <span className="hidden h-px w-4 bg-accent sm:block"></span>
-          <GripHorizontalIcon size={20} />
-          {workspace.name}
-        </h3>
+          <Avatar className="h-6 w-6 rounded">
+            <AvatarImage src={workspace.avatar} alt={workspace.name} />
+            <AvatarFallback>{workspace.name[0]}</AvatarFallback>
+          </Avatar>
+          <h3 className="flex items-center gap-1 text-sm font-semibold tracking-tight text-muted-foreground">
+            {/* <GripVerticalIcon size={20} /> */}
+            {workspace.name}
+          </h3>
+        </div>
         <div className="space-x-1 text-muted-foreground">
           <Link
             href={route("workspace", workspace.id)}

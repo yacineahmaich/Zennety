@@ -17,6 +17,7 @@ const SidebarWorkspaces = () => {
 
   return (
     <Accordion
+      value={workspaceId}
       type="single"
       collapsible
       className="-mx-4 flex-1 overflow-y-auto"

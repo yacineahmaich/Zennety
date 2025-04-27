@@ -16,6 +16,7 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const WorkspacesDropdown = () => {
   const router = useRouter();
@@ -35,8 +36,18 @@ const WorkspacesDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          <KanbanSquareIcon size={20} className="mr-2" />
+        <Button variant="outline" size="sm" className="space-x-2">
+          {currentWorkspace ? (
+            <Avatar className="h-6 w-6 rounded">
+              <AvatarImage
+                src={currentWorkspace.avatar}
+                alt={currentWorkspace.name}
+              />
+              <AvatarFallback>{currentWorkspace.name[0]}</AvatarFallback>
+            </Avatar>
+          ) : (
+            <KanbanSquareIcon size={20} className="mr-2" />
+          )}
           <span>{currentWorkspace?.name || t("my-workspaces")}</span>
           <ChevronDownIcon size={16} className="ml-2" />
         </Button>
@@ -59,9 +70,16 @@ const WorkspacesDropdown = () => {
                 <DropdownMenuItem key={workspace.id} asChild>
                   <Link
                     href={route("workspace", workspace.id)}
-                    className="cursor-pointer"
+                    className="cursor-pointer space-x-2"
                   >
-                    <KanbanSquareIcon size={16} className="mr-2" />
+                    {/* <KanbanSquareIcon size={16} className="mr-2" /> */}
+                    <Avatar className="h-6 w-6 rounded">
+                      <AvatarImage
+                        src={workspace.avatar}
+                        alt={workspace.name}
+                      />
+                      <AvatarFallback>{workspace.name[0]}</AvatarFallback>
+                    </Avatar>
                     <span>{workspace.name}</span>
                   </Link>
                 </DropdownMenuItem>
