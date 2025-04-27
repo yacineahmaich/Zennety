@@ -26,6 +26,7 @@ export interface IBoard {
   members?: IMember[];
   statuses?: IStatus[];
   pinned: boolean;
+  updated_at: string;
 }
 export interface IMember {
   id: number;

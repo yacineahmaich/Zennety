@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { IBoard } from "@/types/models";
+import { formatDistance } from "date-fns";
 import { Globe2Icon, LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { route } from "www/lib/routes";
@@ -48,7 +49,10 @@ const BoardCard = ({ board }: Props) => {
             <span>{board.members?.length}</span>
           </div>
           <p className="pl-2 text-xs text-muted-foreground">
-            Updated 2 hours ago
+            Updated{" "}
+            {formatDistance(new Date(board.updated_at), new Date(), {
+              addSuffix: true,
+            })}
           </p>
         </div>
         <BookmarkButton

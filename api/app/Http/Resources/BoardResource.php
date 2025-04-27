@@ -29,7 +29,8 @@ class BoardResource extends JsonResource
             'visibility' => $this->visibility,
             'members' => MembershipResource::collection($this->whenLoaded('members')),
             'statuses' => StatusResource::collection($this->whenLoaded('statuses')),
-            'pinned' => $pinned
+            'pinned' => $pinned,
+            'updated_at' => $this->updated_at
         ];
     }
 }
