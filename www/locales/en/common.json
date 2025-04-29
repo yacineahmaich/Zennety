@@ -153,7 +153,7 @@
   "updated": "{{resource}} updated",
   "deleted": "{{resource}} deleted",
   "reset-password-email-sent": "Reset password email sent at {{email}}",
-  "user-welcome-back": "Welcome back, {{name}}",
+  "user-welcome-back": "👋 Welcome back, {{name}}",
   "back-to-login": "Back to login page",
   "share-thoughts": "Share your thoughts here...",
   "card-no-description": "This card doesn't have any description yet.",

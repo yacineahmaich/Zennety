@@ -68,7 +68,7 @@ const ForgotPasswordForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mt-4 flex items-center gap-2"
+        className="mt-4 flex items-stretch gap-2"
       >
         <FormField
           control={form.control}
@@ -78,7 +78,8 @@ const ForgotPasswordForm = () => {
               <FormControl>
                 <Input
                   placeholder={t("your-email")}
-                  autoComplete="username"
+                  autoComplete="email"
+                  className="w-64"
                   {...field}
                 />
               </FormControl>
@@ -86,7 +87,7 @@ const ForgotPasswordForm = () => {
             </FormItem>
           )}
         />
-        <Button size="icon" className="self-start" disabled={isLoading}>
+        <Button className="aspect-square self-stretch" disabled={isLoading}>
           {isLoading ? (
             <Loader2Icon size={20} className="animate-spin" />
           ) : (

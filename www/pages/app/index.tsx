@@ -94,7 +94,7 @@ const WorkspaceGroup = ({
         <span>{t(title)}</span>
       </h2>
 
-      <div className="border-accent pb-5 sm:ml-3 sm:border-l">
+      <div className="pb-5 sm:ml-3 sm:border-l">
         {workspaces.map((workspace) => (
           <WorkspaceSection key={workspace.id} workspace={workspace} />
         ))}
@@ -113,7 +113,7 @@ const WorkspaceSection = ({ workspace }: { workspace: IWorkspace }) => {
     <div key={workspace.id} className="pt-2 sm:p-4">
       <div className="mb-2 flex items-center justify-between sm:mb-4">
         <div className="flex items-center gap-2 sm:-ml-4">
-          <span className="hidden h-px w-4 bg-accent sm:block"></span>
+          <span className="hidden h-px w-4 bg-border sm:block"></span>
           <Avatar className="h-6 w-6 rounded">
             <AvatarImage src={workspace.avatar} alt={workspace.name} />
             <AvatarFallback>{workspace.name[0]}</AvatarFallback>
