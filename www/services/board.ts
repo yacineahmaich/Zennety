@@ -1,6 +1,5 @@
 import { CreateBoard } from "@/components/board/create-board";
 import { api } from "@/lib/api";
-import { route } from "@/lib/routes";
 import { IBoard } from "@/types/models";
 import {
   useMutation,
@@ -79,14 +78,8 @@ export const useBoard = (workspaceId: string, boardId: string) => {
  */
 
 export const useCreateBoard = () => {
-  // const queryClient = useQueryClient();
-
   const { mutate, isPending } = useMutation({
     mutationFn: createBoard,
-    onSuccess(board) {
-      // Enable if navigating using next/router when a workspace created successfully
-      // queryClient.setQueryData(["workspaces", workspace.id], workspace);
-    },
   });
 
   return {
@@ -122,9 +115,6 @@ export const useUpdateBoard = () => {
 export const useDeleteBoard = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteBoard,
-    onSuccess(_, { workspaceId }) {
-      window.location.href = route("workspace", workspaceId);
-    },
   });
 
   return {

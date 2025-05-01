@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCan } from "@/hooks/use-can";
+import { route } from "@/lib/routes";
 import {
   useBoard,
   useDeleteBoard,
@@ -150,8 +151,8 @@ const DeleteBoard = ({ board }: { board: IBoard }) => {
     deleteBoard(
       { workspaceId: board.workspaceId, boardId: board.id },
       {
-        onSuccess() {
-          setOpen(false);
+        onSuccess(_, { workspaceId }) {
+          window.location.href = route("workspace", workspaceId);
         },
       }
     );
