@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { route } from "@/lib/routes";
 import { useDeleteWorkspace } from "@/services";
 import { IWorkspace } from "@/types/models";
 import { useTranslation } from "next-i18next";
@@ -31,7 +32,7 @@ const DeleteWorkspace = ({ workspace }: Props) => {
       { workspaceId: workspace.id },
       {
         onSuccess() {
-          setOpen(false);
+          window.location.href = route("app");
         },
       }
     );

@@ -82,7 +82,8 @@ const AppBreadcrumb = () => {
       ]);
 
       const myWorkspaces = queryClient.getQueryData<Array<IWorkspace>>([
-        "my-workspaces",
+        "workspaces",
+        "my",
       ]);
 
       if (!workspace) return;

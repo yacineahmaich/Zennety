@@ -25,9 +25,9 @@ const WorkspacesDropdown = () => {
   let { workspaces } = useMyWorkspaces();
   const { workspaceId } = router.query as { workspaceId: string };
 
-  const currentWorkspace = useMemo(() => {
-    return workspaces?.find((w) => String(w.id) === workspaceId);
-  }, [workspaceId]);
+  const currentWorkspace = workspaces?.find(
+    (w) => String(w.id) === workspaceId
+  );
 
   const groupedWorkspaces = useMemo(() => {
     return groupWorkspacesByOwnership(workspaces, user);
@@ -46,7 +46,7 @@ const WorkspacesDropdown = () => {
               <AvatarFallback>{currentWorkspace.name[0]}</AvatarFallback>
             </Avatar>
           ) : (
-            <KanbanSquareIcon size={20} className="mr-2" />
+            <KanbanSquareIcon className="mr-2 h-6 w-6" />
           )}
           <span>{currentWorkspace?.name || t("my-workspaces")}</span>
           <ChevronDownIcon size={16} className="ml-2" />

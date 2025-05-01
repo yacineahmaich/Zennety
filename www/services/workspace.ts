@@ -1,6 +1,5 @@
 import { CreateWorkspace } from "@/components/workspace/create-workspace";
 import { api } from "@/lib/api";
-import { route } from "@/lib/routes";
 import { IBoard, IWorkspace } from "@/types/models";
 import {
   useMutation,
@@ -96,7 +95,7 @@ export const useWorkspace = (id: string) => {
 
 export const useMyWorkspaces = () => {
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["my-workspaces"],
+    queryKey: ["workspaces", "my"],
     queryFn: () => getMyWorkspaces(),
   });
 
@@ -115,14 +114,8 @@ export const useMyWorkspaces = () => {
  */
 
 export const useCreateWorkspace = () => {
-  // const queryClient = useQueryClient();
-
   const { mutate, isPending } = useMutation({
     mutationFn: createWorkspace,
-    onSuccess(workspace) {
-      // Enable if navigating using next/router when a workspace created successfully
-      // queryClient.setQueryData(["workspaces", workspace.id], workspace);
-    },
   });
 
   return {
@@ -136,9 +129,9 @@ export const useUpdateWorkspace = () => {
 
   const { mutate, isPending, variables } = useMutation({
     mutationFn: updateWorkspace,
-    onSuccess(workspace, { workspaceId }) {
+    onSuccess() {
       return queryClient.invalidateQueries({
-        queryKey: ["workspaces", workspaceId.toString()],
+        queryKey: ["workspaces"],
       });
     },
   });
@@ -153,9 +146,6 @@ export const useUpdateWorkspace = () => {
 export const useDeleteWorkspace = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteWorkspace,
-    onSuccess() {
-      window.location.href = route("app");
-    },
   });
 
   return {
@@ -169,9 +159,9 @@ export const useTransferWorkspaceOwnership = () => {
 
   const { mutate, isPending, variables } = useMutation({
     mutationFn: transferWorkspaceOwnership,
-    onSuccess(workspace, { workspaceId }) {
+    onSuccess() {
       return queryClient.invalidateQueries({
-        queryKey: ["workspaces", workspaceId.toString()],
+        queryKey: ["workspaces"],
       });
     },
   });
@@ -188,9 +178,9 @@ export const useUpdateWorkspaceAvatar = () => {
 
   const { mutate, isPending, variables } = useMutation({
     mutationFn: updateWorkspaceAvatar,
-    onSuccess(_, { workspaceId }) {
+    onSuccess() {
       return queryClient.invalidateQueries({
-        queryKey: ["workspaces", workspaceId.toString()],
+        queryKey: ["workspaces"],
       });
     },
   });

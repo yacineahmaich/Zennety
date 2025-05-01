@@ -20,7 +20,7 @@ export const useBookmarkItem = () => {
     mutationFn: bookmarkItem,
     onMutate(vars) {
       queryClient.setQueryData<IWorkspace[]>(
-        ["my-workspaces"],
+        ["workspaces", "my"],
         (workspaces) => {
           return workspaces?.map((workspace) => {
             return {
@@ -60,7 +60,7 @@ export const useBookmarkItem = () => {
       );
     },
     onError: () => {
-      queryClient.invalidateQueries({ queryKey: ["my-workspaces"] });
+      queryClient.invalidateQueries({ queryKey: ["workspaces", "my"] });
     },
   });
 
