@@ -1,9 +1,8 @@
 import Logo from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
-import app from "@/lib/app";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { ChevronLeftSquareIcon, ChevronRightSquareIcon } from "lucide-react";
+import { SidebarCloseIcon, SidebarOpenIcon } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
@@ -23,12 +22,20 @@ const SidebarLogo = ({ collapsed, toggleCollapsed }: Props) => {
         <Link href={route("app")}>
           <div className="flex items-center gap-2">
             <Logo />
-            <span className="text-xl font-bold">{app.name}</span>
           </div>
         </Link>
       )}
-      <Button size="icon" variant="link" onClick={toggleCollapsed}>
-        {collapsed ? <ChevronRightSquareIcon /> : <ChevronLeftSquareIcon />}
+      <Button
+        size="icon"
+        variant="secondary"
+        className="aspect-square"
+        onClick={toggleCollapsed}
+      >
+        {collapsed ? (
+          <SidebarOpenIcon size={16} />
+        ) : (
+          <SidebarCloseIcon size={16} />
+        )}
       </Button>
     </div>
   );
