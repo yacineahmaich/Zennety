@@ -45,7 +45,7 @@ const Workspace: NextPageWithLayout = () => {
                 openTrigger={
                   <Button
                     variant="outline"
-                    className="flex h-card w-full items-center"
+                    className="flex h-card w-full items-center bg-card text-card-foreground"
                   >
                     <PenSquareIcon size={16} className="mr-2" />
                     {t("create-new-board")}
