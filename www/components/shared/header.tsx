@@ -17,7 +17,7 @@ const Header = () => {
       <div className="container flex items-center justify-between">
         <div>
           <Link href={route("home")} className="text-2xl font-bold">
-            <Logo height={35} />
+            <Logo />
           </Link>
         </div>
 

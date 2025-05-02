@@ -25,7 +25,7 @@ const Hero = () => {
           transition={{ duration: 0.6 }}
         >
           <motion.div
-            className="mb-8 hidden w-full max-w-4xl justify-between sm:flex"
+            className="mb-8 flex w-full max-w-4xl justify-between"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
@@ -35,23 +35,17 @@ const Hero = () => {
           </motion.div>
 
           <motion.h1
-            className="mx-auto max-w-4xl text-center text-4xl font-bold leading-[2.5rem] sm:text-5xl sm:leading-[3.5rem]"
+            className="mx-auto max-w-4xl text-4xl font-bold leading-[2.8rem] sm:text-center sm:text-5xl sm:leading-[3.8rem]"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <span className="bg-gradient-to-t from-gray-600 to-gray-400 bg-clip-text text-transparent">
-              Simplify
-            </span>{" "}
+            <span className="bg-secondary px-2 text-primary">Simplify</span>{" "}
             your tasks.{" "}
-            <span className="bg-gradient-to-t from-gray-600 to-gray-400 bg-clip-text text-transparent">
-              Enhance
-            </span>{" "}
-            your efficiency.{" "}
-            <span className="bg-gradient-to-t from-gray-600 to-gray-400 bg-clip-text text-transparent">
-              Reach
-            </span>{" "}
-            new heights.
+            <span className="bg-secondary px-2 text-primary">Enhance</span> your
+            efficiency.{" "}
+            <span className="bg-secondary px-2 text-primary">Reach</span> new
+            heights.
           </motion.h1>
           <motion.p
             className="mx-auto mb-8 mt-4 max-w-2xl text-center text-lg text-gray-500 dark:text-gray-300"
@@ -68,11 +62,7 @@ const Hero = () => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <Button
-              asChild
-              size="lg"
-              className="flex items-center gap-2 bg-gradient-to-tr from-gray-700 via-gray-500 to-gray-600 shadow-lg"
-            >
+            <Button asChild size="lg" className="flex items-center gap-2">
               <Link href={route("login")}>
                 <StepForwardIcon size={16} />
                 <span>{t("get-started")}</span>
@@ -128,8 +118,8 @@ const ShinyStar = () => (
         y2="179.5"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="gray" />
-        <stop offset="1" stopColor="gray" />
+        <stop stopColor="hsl(var(--primary))" />
+        <stop offset="1" stopColor="hsl(var(--primary))" />
       </linearGradient>
       <clipPath id="clip0_118_208">
         <rect width="200" height="200" fill="white" />
