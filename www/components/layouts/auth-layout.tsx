@@ -1,6 +1,6 @@
-import Logo from "@/components/shared/logo";
 import { useTranslation } from "next-i18next";
 import { PropsWithChildren } from "react";
+import Logo from "../shared/logo";
 
 type Props = {
   heading: string;
@@ -17,7 +17,7 @@ const AuthLayout = ({
   return (
     <div className="flex flex-col items-center gap-2 py-28">
       <div>
-        <Logo className="mx-auto" width={60} height={60} />
+        <Logo variant="small" className="mx-auto" height={60} width={60} />
         {heading && (
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             {t(heading)}
