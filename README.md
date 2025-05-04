@@ -2,7 +2,8 @@ Zennety
 
 ## TODO:
 
-    - Write some unit tests (front/backend)
+    - add organization
+    - settings page
 
     - debouncing search users
     - replace invite member async-select

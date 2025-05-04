@@ -37,6 +37,14 @@ class BoardService
                     "name" => "In progress",
                 ],
                 [
+                    "position" => 2,
+                    "name" => "In Review",
+                ],
+                [
+                    "position" => 2,
+                    "name" => "Blocked",
+                ],
+                [
                     "position" => 3,
                     "name" => "Done",
                 ],
