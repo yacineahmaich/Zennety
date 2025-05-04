@@ -1,6 +1,6 @@
 import BoardCard from "@/components/board/board-card";
+import DashboardLoading from "@/components/dashboard/dashboard-loading";
 import { AppLayout } from "@/components/layouts";
-import Loader from "@/components/shared/loader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import CreateWorkspace from "@/components/workspace/create-workspace";
@@ -30,7 +30,7 @@ const AppPage: NextPageWithLayout = () => {
   const { user } = useUser();
 
   if (isLoading) {
-    return <Loader />;
+    return <DashboardLoading />;
   }
 
   const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
