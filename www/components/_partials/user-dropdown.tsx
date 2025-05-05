@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout, useUser } from "@/services";
-import { SettingsIcon, UserIcon } from "lucide-react";
+import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
@@ -61,6 +61,7 @@ const UserDropdown = () => {
             className="w-full"
             onClick={() => logout()}
           >
+            <LogOutIcon size={14} />
             Logout
           </Button>
         </DropdownMenuItem>

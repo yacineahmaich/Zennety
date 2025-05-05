@@ -64,7 +64,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
       </aside>
       <div className="flex-1 overflow-x-auto p-4 pb-0">
         <header className="flex items-center justify-between pb-4">
-          <div className="space-x-2">
+          <div className="flex items-center gap-2">
             <WorkspacesDropdown />
             <CreateWorkspace
               openTrigger={

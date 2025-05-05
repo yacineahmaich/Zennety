@@ -46,7 +46,7 @@ const WorkspacesDropdown = () => {
               <AvatarFallback>{currentWorkspace.name[0]}</AvatarFallback>
             </Avatar>
           ) : (
-            <KanbanSquareIcon className="mr-2 h-6 w-6" />
+            <KanbanSquareIcon className="h-6 w-6" />
           )}
           <span>{currentWorkspace?.name || t("my-workspaces")}</span>
           <ChevronDownIcon size={16} className="ml-2" />
