@@ -32,7 +32,7 @@ const CardDetails = ({ board, status, cardId }: Props) => {
 
   return (
     <div className="grid max-h-full flex-1 grid-cols-6 divide-x overflow-hidden">
-      <div className="col-span-4 divide-y overflow-y-scroll">
+      <div className="col-span-full divide-y overflow-y-scroll md:col-span-4">
         <div className="p-5">
           <CardTitle board={board} status={status} card={card} />
         </div>
@@ -44,7 +44,7 @@ const CardDetails = ({ board, status, cardId }: Props) => {
         </div>
         <div className="p-5"></div>
       </div>
-      <div className="col-span-2 flex h-full flex-col overflow-hidden p-5 pr-0">
+      <div className="col-span-full flex h-full flex-col overflow-hidden p-5 pr-0 md:col-span-2">
         <div className="flex h-full w-full flex-1 flex-col">
           <CardActivity activities={card.activities ?? []} />
           <CreateComment board={board} status={status} card={card} />

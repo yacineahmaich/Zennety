@@ -41,7 +41,7 @@ const ActivityItem = ({ activity }: { activity: IActivity }) => {
       </small>
       <div className="flex items-center gap-1">
         <CornerDownRightIcon size={12} />
-        <div className="min-w-[200px] rounded bg-accent px-3 py-1">
+        <div className="rounded bg-accent px-3 py-1 md:min-w-[200px]">
           {activity.type === "log" && (
             <small className="font-medium">{activity.description}</small>
           )}
