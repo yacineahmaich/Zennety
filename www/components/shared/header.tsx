@@ -17,7 +17,8 @@ const Header = () => {
       <div className="container flex items-center justify-between">
         <div>
           <Link href={route("home")} className="text-2xl font-bold">
-            <Logo />
+            <Logo className="hidden sm:block" />
+            <Logo variant="small" className="block h-10 w-10 sm:hidden" />
           </Link>
         </div>
 

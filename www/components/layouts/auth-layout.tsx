@@ -19,7 +19,7 @@ const AuthLayout = ({
       <div>
         <Logo variant="small" className="mx-auto" height={60} width={60} />
         {heading && (
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-primary dark:text-white">
             {t(heading)}
           </h2>
         )}
