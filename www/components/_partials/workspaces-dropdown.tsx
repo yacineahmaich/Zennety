@@ -36,7 +36,11 @@ const WorkspacesDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="space-x-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="max-w-[40vw] space-x-2 sm:max-w-none"
+        >
           {currentWorkspace ? (
             <Avatar className="h-6 w-6 rounded">
               <AvatarImage
@@ -48,7 +52,9 @@ const WorkspacesDropdown = () => {
           ) : (
             <KanbanSquareIcon className="h-6 w-6" />
           )}
-          <span>{currentWorkspace?.name || t("my-workspaces")}</span>
+          <span className="truncate">
+            {currentWorkspace?.name || t("my-workspaces")}
+          </span>
           <ChevronDownIcon size={16} className="ml-2" />
         </Button>
       </DropdownMenuTrigger>
@@ -72,7 +78,6 @@ const WorkspacesDropdown = () => {
                     href={route("workspace", workspace.id)}
                     className="cursor-pointer space-x-2"
                   >
-                    {/* <KanbanSquareIcon size={16} className="mr-2" /> */}
                     <Avatar className="h-6 w-6 rounded">
                       <AvatarImage
                         src={workspace.avatar}
@@ -98,7 +103,13 @@ const WorkspacesDropdown = () => {
                     href={route("workspace", workspace.id)}
                     className="cursor-pointer"
                   >
-                    <KanbanSquareIcon size={16} className="mr-2" />
+                    <Avatar className="h-6 w-6 rounded">
+                      <AvatarImage
+                        src={workspace.avatar}
+                        alt={workspace.name}
+                      />
+                      <AvatarFallback>{workspace.name[0]}</AvatarFallback>
+                    </Avatar>
                     <span>{workspace.name}</span>
                   </Link>
                 </DropdownMenuItem>
