@@ -205,3 +205,6 @@ button[role="combobox"][aria-invalid="true"] {
 button[role="combobox"][aria-invalid="true"] {
   @apply text-destructive;
 }
+*[aria-roledescription="sortable"] {
+  touch-action: none;
+}
