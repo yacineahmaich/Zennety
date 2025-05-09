@@ -9,6 +9,7 @@ use App\Models\Status;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\Models\Activity;
 
 class CardService
@@ -39,19 +40,20 @@ class CardService
 
     public function updateCard(Card $card, CardDTO $cardDTO): Card
     {
+        $data = $cardDTO->toArray();
+
         // link assign via membership model
         if (array_key_exists("assignee", $cardDTO->toArray())) {
+            Log::info($cardDTO->assignee);
             if(is_null($cardDTO->assignee)) {
-                $cardDTO->assignee = null;
+                $data['user_id'] = null;
             }else {
-                $cardDTO->assignee = $card->board->members()->where("id", $cardDTO->assignee)->value("user_id");
+                $data['user_id'] = $card->board->members()->where("id", $cardDTO->assignee)->value("user_id");
             }
         }
 
         return tap($card)->update(
-            array_merge($cardDTO->toArray(), [
-                'user_id' => $cardDTO->assignee
-            ])
+            array_merge($data)
         );
     }
 
