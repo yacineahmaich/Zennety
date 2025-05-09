@@ -15,7 +15,7 @@ const Hero = () => {
   });
 
   return (
-    <section className="min-h-screen overflow-hidden py-24">
+    <section className="min-h-screen overflow-hidden py-10 sm:py-24">
       <div className="container mx-auto px-4">
         <motion.div
           ref={ref}
@@ -57,7 +57,7 @@ const Hero = () => {
           </motion.p>
 
           <motion.div
-            className="flex justify-center gap-4"
+            className="flex w-full flex-col gap-4 sm:flex-row sm:justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.6 }}
