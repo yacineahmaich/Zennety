@@ -17,4 +17,5 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-CMD ["/start.sh"]
+# CMD ["/start.sh"]
+CMD ["/bin/sh", "-c", "touch /database/database.sqlite && chmod 666 /database/database.sqlite && /start.sh"]
