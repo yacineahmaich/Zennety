@@ -4,7 +4,7 @@ composer global require hirak/prestissimo
 composer install --no-dev --working-dir=/var/www/html
 
 echo "linking storage..."
-php artisan storage:link --show
+php artisan storage:link
 
 echo "Caching config..."
 php artisan config:cache
