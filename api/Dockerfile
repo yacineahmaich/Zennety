@@ -18,4 +18,4 @@ ENV LOG_CHANNEL stderr
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # CMD ["/start.sh"]
-CMD ["/bin/sh", "-c", "touch /database/database.sqlite && chmod 666 /database/database.sqlite && /start.sh"]
+CMD ["/bin/sh", "-c", "touch /var/www/html/database/database.sqlite && chmod 666 /var/www/html/database/database.sqlite && /start.sh"]
