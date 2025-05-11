@@ -14,3 +14,6 @@ php artisan route:cache
 
 echo "Running migrations..."
 php artisan migrate
+
+echo "seed database..."
+php artisan db:seed
