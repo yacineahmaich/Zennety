@@ -13,4 +13,4 @@ ENV REAL_IP_HEADER 1
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # CMD ["/start.sh"]
-CMD ["/bin/sh", "-c", "touch /var/www/html/database/database.sqlite && chmod 666 /var/www/html/database/database.sqlite && /start.sh"]
+CMD ["/bin/sh", "-c", "[ -f /var/www/html/database/database.sqlite ] || touch /var/www/html/database/database.sqlite && chmod 666 /var/www/html/database/database.sqlite && /start.sh"]
