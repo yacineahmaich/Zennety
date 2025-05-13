@@ -8,9 +8,9 @@ chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Create SQLite file if it doesn't exist
-if [ ! -f /var/www/html/database/database.sqlite ]; then
-    touch /var/www/html/database/database.sqlite
-    chmod 666 /var/www/html/database/database.sqlite
+if [ ! -f /data/database.sqlite ]; then
+    touch /data/database.sqlite
+    chmod 666 /data/database.sqlite
 fi
 
 echo "linking storage..."
