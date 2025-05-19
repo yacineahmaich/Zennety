@@ -1,0 +1,15 @@
+# Keeps Render backend alive by pinging the login endpoint every 5 minutes
+name: Keep Render Alive
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # Every 5 minutes
+  workflow_dispatch: # Optional manual trigger
+
+jobs:
+  ping-render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Curl keep-alive request to Render
+        run: curl -X POST https://zennety.onrender.com/api/login
