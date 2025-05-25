@@ -2,6 +2,7 @@ import { isMatch } from "micromatch";
 import { Inter as FontSans } from "next/font/google";
 
 import Logo from "@/components/shared/logo";
+import { cn } from "@/lib/utils";
 import { useUser } from "@/services";
 import { useRouter } from "next/router";
 import { PropsWithChildren } from "react";
@@ -33,7 +34,12 @@ const Layout = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <div className={fontSans.className}>
+    <div
+      className={cn(
+        "selection:bg-secondary selection:text-primary",
+        fontSans.className
+      )}
+    >
       {isLoading && !isMatch(router.asPath, unauthenticatedRoutes) ? (
         <div className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-background">
           <Logo height={50} />

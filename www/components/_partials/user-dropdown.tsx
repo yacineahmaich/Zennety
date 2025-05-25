@@ -58,7 +58,7 @@ const UserDropdown = () => {
           <Button
             size="sm"
             variant="outline"
-            className="w-full"
+            className="flex w-full items-center gap-2"
             onClick={() => logout()}
           >
             <LogOutIcon size={14} />

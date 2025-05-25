@@ -1,3 +1,4 @@
+import Features from "@/components/landing/features";
 import Hero from "@/components/landing/hero";
 import { GuestLayout } from "@/components/layouts";
 import app from "@/lib/app";
@@ -9,7 +10,10 @@ import { NextSeo } from "next-seo";
 const Home: NextPageWithLayout = () => {
   return (
     <>
-      <Hero />
+      <div className="space-y-12 md:space-y-24">
+        <Hero />
+        <Features />
+      </div>
 
       {/* ======= SEO START ======= */}
       <NextSeo title={app.description} />

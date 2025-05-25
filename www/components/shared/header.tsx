@@ -13,7 +13,7 @@ const Header = () => {
   const { t } = useTranslation("common");
 
   return (
-    <header className=" w-full border-b border-accent py-3 backdrop-blur">
+    <header className="fixed left-0 top-0 z-10 w-full border-b border-accent py-3 backdrop-blur">
       <div className="container flex items-center justify-between">
         <div>
           <Link href={route("home")} className="text-2xl font-bold">
