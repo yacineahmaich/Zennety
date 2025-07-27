@@ -6,3 +6,6 @@
 
 # ide
 .idea
+
+# editor
+.DS_store
