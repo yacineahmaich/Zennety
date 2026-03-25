@@ -51,7 +51,7 @@ export default function Features() {
             <motion.div
               key={idx}
               variants={landingStaggerTab}
-              className="min-w-0 flex-1"
+              className="flex-1 !flex-shrink-0"
             >
               <Button
                 size="sm"
@@ -90,7 +90,7 @@ export default function Features() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.38, ease: landingEase }}
-              className="overflow-hidden rounded-xl border-2 border-secondary shadow-lg"
+              className="aspect-[1468/835] overflow-hidden rounded-xl border-2 border-secondary"
             >
               <img
                 src={features[activeTab].image}

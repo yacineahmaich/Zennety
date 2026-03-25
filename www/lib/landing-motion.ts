@@ -29,11 +29,10 @@ export const landingStaggerChild = {
 
 /** Slightly snappier for small controls (feature tabs). */
 export const landingStaggerTab = {
-  hidden: { opacity: 0, y: 12, scale: 0.98 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: { duration: 0.38, ease: landingEase },
   },
 };

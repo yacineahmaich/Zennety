@@ -84,35 +84,48 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="remember"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl className="flex items-center space-x-2">
-                <FormLabel htmlFor={field.name}>
-                  <Checkbox
-                    id={field.name}
-                    className="my-2 mr-2"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                  {t("remember-me")}
-                </FormLabel>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex items-center justify-between">
+          <FormField
+            control={form.control}
+            name="remember"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl className="flex items-center space-x-2">
+                  <FormLabel htmlFor={field.name}>
+                    <Checkbox
+                      id={field.name}
+                      className="my-2 mr-2"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    {t("remember-me")}
+                  </FormLabel>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Link
+            href={route("forgot-password")}
+            className="block text-sm text-secondary-foreground hover:underline"
+          >
+            {t("forgot-password")}
+          </Link>
+        </div>
         <Button className="w-full" disabled={isLoading}>
           {t("login")}
         </Button>
-        <Link
-          href={route("forgot-password")}
-          className="mt-4 block text-sm text-secondary-foreground hover:underline"
-        >
-          {t("forgot-password")}
-        </Link>
+        <div className="mt-6 text-sm text-muted-foreground">
+          <p>
+            {t("auth-no-account-prompt")}{" "}
+            <Link
+              href={route("register")}
+              className="font-medium text-primary underline-offset-4 transition-colors hover:text-primary/90 hover:underline"
+            >
+              {t("register")}
+            </Link>
+          </p>
+        </div>
       </form>
     </Form>
   );

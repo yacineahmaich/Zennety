@@ -8,9 +8,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { route } from "@/lib/routes";
 import { useRegister } from "@/services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -122,6 +124,17 @@ const RegisterForm = () => {
         <Button className="w-full" disabled={isLoading}>
           {t("register")}
         </Button>
+        <div className="mt-6 text-sm text-muted-foreground">
+          <p>
+            {t("auth-have-account-prompt")}{" "}
+            <Link
+              href={route("login")}
+              className="font-medium text-primary underline-offset-4 transition-colors hover:text-primary/90 hover:underline"
+            >
+              {t("login")}
+            </Link>
+          </p>
+        </div>
       </form>
     </Form>
   );

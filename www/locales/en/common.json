@@ -15,6 +15,9 @@
   "login": "Log In",
   "remember-me": "remember me",
   "forgot-password": "Forgot your password?",
+  "auth-no-account-prompt": "Don't have an account?",
+  "auth-have-account-prompt": "Already have an account?",
+  "auth-forgot-password-short": "Forgot password?",
   "back-to-zennety": "Back to Zennety",
   "verify-email": "Verify your email",
   "verify-email-message": "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
@@ -187,5 +190,6 @@
   "landing-cta-subtitle": "Create an account or sign in and open your first workspace in a few clicks.",
   "landing-seo-description": "Zennety helps teams collaborate with workspaces, Kanban boards, and cards. Sign up to plan work, invite members, and ship faster—all in one place.",
   "footer-github": "GitHub",
-  "footer-copyright": "© {{year}} {{appName}}. Made by Yacine AHMAICH."
+  "footer-copyright": "© {{year}} {{appName}}. Made by <authorLink>Yacine AHMAICH</authorLink>.",
+  "or": "Or"
 }

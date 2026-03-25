@@ -15,7 +15,7 @@ const AuthLayout = ({
   const { t } = useTranslation("common");
 
   return (
-    <div className="flex flex-col items-center gap-2 py-28">
+    <div className="flex flex-col items-center gap-2 py-44">
       <div>
         <Logo variant="small" className="mx-auto" height={60} width={60} />
         {heading && (
@@ -29,7 +29,7 @@ const AuthLayout = ({
           </p>
         )}
       </div>
-      <div className="w-[300px]">{children}</div>
+      <div className="w-[350px]">{children}</div>
     </div>
   );
 };

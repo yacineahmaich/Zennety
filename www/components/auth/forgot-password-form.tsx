@@ -18,6 +18,9 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 
+const authLinkClass =
+  "font-medium text-primary underline-offset-4 transition-colors hover:text-primary/90 hover:underline";
+
 const formSchema = z.object({
   email: z.string().email(),
 });
@@ -60,6 +63,14 @@ const ForgotPasswordForm = () => {
             <span>{t("back-to-login")}</span>
           </Link>
         </Button>
+        <div className="mt-4 text-sm text-muted-foreground">
+          <p>
+            {t("auth-no-account-prompt")}{" "}
+            <Link href={route("register")} className={authLinkClass}>
+              {t("register")}
+            </Link>
+          </p>
+        </div>
       </div>
     );
   }
@@ -74,12 +85,11 @@ const ForgotPasswordForm = () => {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex-1">
               <FormControl>
                 <Input
                   placeholder={t("your-email")}
                   autoComplete="email"
-                  className="w-64"
                   {...field}
                 />
               </FormControl>
@@ -95,6 +105,17 @@ const ForgotPasswordForm = () => {
           )}
         </Button>
       </form>
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-muted-foreground">
+        <Link href={route("login")} className={authLinkClass}>
+          {t("login")}
+        </Link>
+        <span className="text-muted-foreground/70" aria-hidden>
+          {t("or")}
+        </span>
+        <Link href={route("register")} className={authLinkClass}>
+          {t("register")}
+        </Link>
+      </div>
     </Form>
   );
 };

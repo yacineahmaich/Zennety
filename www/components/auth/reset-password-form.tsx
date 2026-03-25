@@ -8,12 +8,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { route } from "@/lib/routes";
 import { useResetPassword } from "@/services";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+const authLinkClass =
+  "font-medium text-primary underline-offset-4 transition-colors hover:text-primary/90 hover:underline";
 
 const formSchema = z
   .object({
@@ -106,6 +111,23 @@ const ResetPasswordForm = () => {
         >
           {t("reset-password")}
         </Button>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-muted-foreground">
+          <Link href={route("login")} className={authLinkClass}>
+            {t("login")}
+          </Link>
+          <span className="text-muted-foreground/70" aria-hidden>
+            ·
+          </span>
+          <Link href={route("register")} className={authLinkClass}>
+            {t("register")}
+          </Link>
+          <span className="text-muted-foreground/70" aria-hidden>
+            ·
+          </span>
+          <Link href={route("forgot-password")} className={authLinkClass}>
+            {t("auth-forgot-password-short")}
+          </Link>
+        </div>
       </form>
     </Form>
   );
