@@ -88,22 +88,22 @@ export default function Features() {
 const features = [
   {
     title: "Create Workspace",
-    image: "../../assets/features/01 - Create Workspace.png",
-    imageDark: "../../assets/features/01 - Create Workspace (dark).png",
+    image: "/assets/features/01-create-workspace.png",
+    imageDark: "/assets/features/01-create-workspace-dark.png",
   },
   {
     title: "Create board",
-    image: "../../assets/features/02 - Create Board.png",
-    imageDark: "../../assets/features/02 - Create Board (dark).png",
+    image: "/assets/features/02-create-board.png",
+    imageDark: "/assets/features/02-create-board-dark.png",
   },
   {
     title: "Create cards",
-    image: "../../assets/features/03 - Create card.png",
-    imageDark: "../../assets/features/03 - Create card (dark).png",
+    image: "/assets/features/03-create-card.png",
+    imageDark: "/assets/features/03-create-card-dark.png",
   },
   {
     title: "Invite members",
-    image: "../../assets/features/05 - Inivte members.png",
-    imageDark: "../../assets/features/05 - Inivte members (dark).png",
+    image: "/assets/features/05-invite-members.png",
+    imageDark: "/assets/features/05-invite-members-dark.png",
   },
 ];
