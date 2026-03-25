@@ -6,6 +6,7 @@ use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkspaceController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/users/{search}', [UserController::class, 'search']);
     Route::put('/bookmarks/{type}/{id}', [UserController::class, 'bookmark']);
     Route::post("/user/avatar", [UserController::class, 'updateAvatar']);
+
+    // Organization
+    Route::get('/organizations', [OrganizationController::class, 'index']);
+    Route::post('/organizations', [OrganizationController::class, 'store']);
+    Route::get('/organizations/{organization}', [OrganizationController::class, 'show']);
+    Route::put('/organizations/{organization}', [OrganizationController::class, 'update']);
+    Route::delete('/organizations/{organization}', [OrganizationController::class, 'destroy']);
+    Route::post('/organizations/{organization}/avatar', [OrganizationController::class, 'updateAvatar']);
 
     // Workspace
     Route::get("/workspaces", [WorkspaceController::class, 'index']);

@@ -5,7 +5,7 @@ export enum Visibility {
 export enum Priority {
   NORMAL = "Normal",
   MEDIUM = "Medium",
-  HIGH = "Hight",
+  HIGH = "High",
   URGENT = "Urgent",
 }
 export enum Role {

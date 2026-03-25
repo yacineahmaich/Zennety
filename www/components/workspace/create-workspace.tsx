@@ -22,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { useOrganization } from "@/services/organization";
 import { useCreateWorkspace } from "@/services/workspace";
 import { Visibility } from "@/types/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,11 +41,14 @@ export type CreateWorkspace = z.infer<typeof formSchema>;
 
 type Props = {
   openTrigger: JSX.Element;
+  /** When set, overrides the active organization from context */
+  organizationId?: number | null;
 };
 
-const CreateWorkspace = ({ openTrigger }: Props) => {
+const CreateWorkspace = ({ openTrigger, organizationId }: Props) => {
   const { t } = useTranslation();
   const { createWorkspace, isLoading } = useCreateWorkspace();
+  const { activeOrganizationId } = useOrganization();
 
   const form = useForm<CreateWorkspace>({
     resolver: zodResolver(formSchema),
@@ -54,13 +58,20 @@ const CreateWorkspace = ({ openTrigger }: Props) => {
   });
 
   const onSubmit = (values: CreateWorkspace) => {
-    createWorkspace(values, {
-      onSuccess({ id }) {
-        if (id) {
-          window.location.href = route("workspace", id);
-        }
-      },
-    });
+    const orgId = organizationId ?? activeOrganizationId;
+    if (orgId == null) {
+      return;
+    }
+    createWorkspace(
+      { ...values, organization_id: orgId },
+      {
+        onSuccess({ id }) {
+          if (id) {
+            window.location.href = route("workspace", id);
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -190,7 +201,10 @@ const CreateWorkspace = ({ openTrigger }: Props) => {
                     size="sm"
                     type="submit"
                     className="mt-4 w-full"
-                    disabled={isLoading}
+                    disabled={
+                      isLoading ||
+                      (organizationId == null && activeOrganizationId == null)
+                    }
                   >
                     {t("create-workspace")}
                   </Button>

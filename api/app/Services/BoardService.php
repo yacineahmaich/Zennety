@@ -17,7 +17,7 @@ class BoardService
     {
         return DB::transaction(function () use ($workspace, $user, $boardDTO) {
             /**@var Board $board */
-            $board = $workspace->boards()->create($boardDTO->toArray());
+            $board = $workspace->allBoards()->create($boardDTO->toArray());
 
             /**@var Membership $owner */
             $owner = $board->members()->create([
@@ -28,26 +28,11 @@ class BoardService
 
             // Init board with default statuses
             $board->statuses()->createMany([
-                [
-                    "position" => 1,
-                    "name" => "Pending",
-                ],
-                [
-                    "position" => 2,
-                    "name" => "In progress",
-                ],
-                [
-                    "position" => 2,
-                    "name" => "In Review",
-                ],
-                [
-                    "position" => 2,
-                    "name" => "Blocked",
-                ],
-                [
-                    "position" => 3,
-                    "name" => "Done",
-                ],
+                ['pos' => 1, 'name' => 'Pending'],
+                ['pos' => 2, 'name' => 'In progress'],
+                ['pos' => 3, 'name' => 'In Review'],
+                ['pos' => 4, 'name' => 'Blocked'],
+                ['pos' => 5, 'name' => 'Done'],
             ]);
 
             return $board;

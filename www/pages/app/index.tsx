@@ -9,6 +9,7 @@ import { useCan } from "@/hooks/use-can";
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
+import { useOrganization } from "@/services/organization";
 import { IWorkspace } from "@/types/models";
 import { NextPageWithLayout } from "@/types/next";
 import {
@@ -28,14 +29,22 @@ const AppPage: NextPageWithLayout = () => {
   const { t } = useTranslation("common");
   const { workspaces, isLoading } = useMyWorkspaces();
   const { user } = useUser();
+  const { activeOrganizationId } = useOrganization();
 
   if (isLoading) {
     return <DashboardLoading />;
   }
 
-  const groupedWorkspaces = groupWorkspacesByOwnership(workspaces || [], user);
+  const scoped =
+    activeOrganizationId == null
+      ? workspaces || []
+      : (workspaces || []).filter(
+          (w) => w.organization_id === activeOrganizationId
+        );
 
-  if (!workspaces?.length) {
+  const groupedWorkspaces = groupWorkspacesByOwnership(scoped, user);
+
+  if (!scoped?.length) {
     return (
       <div className="mt-5 flex flex-col items-center py-20">
         <h2 className="mb-1 text-3xl font-black">Nothing here yet !</h2>

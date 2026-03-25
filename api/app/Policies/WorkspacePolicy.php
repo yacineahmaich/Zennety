@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Enums\Role;
 use App\Enums\Visibility;
 use App\Models\Membership;
+use App\Models\Organization;
 use App\Models\User;
 use App\Models\Workspace;
 
@@ -19,14 +20,23 @@ class WorkspacePolicy
             return true;
         }
 
-        // user can see workspace if he is a member of one of its board
-        foreach($workspace->boards as $board) {
-            if($user->memberFor($board)) {
+        if ($workspace->organization_id) {
+            $organization = $workspace->relationLoaded('organization')
+                ? $workspace->organization
+                : Organization::find($workspace->organization_id);
+            if ($organization && ($m = $user->memberFor($organization)) && $m->checkPermissionTo('view')) {
                 return true;
             }
         }
 
-        if (!$member = $user->memberFor($workspace)) {
+        // user can see workspace if he is a member of one of its board
+        foreach ($workspace->boards as $board) {
+            if ($user->memberFor($board)) {
+                return true;
+            }
+        }
+
+        if (! $member = $user->memberFor($workspace)) {
             return false;
         }
 
@@ -38,10 +48,20 @@ class WorkspacePolicy
      */
     public function update(User $user, Workspace $workspace): bool
     {
-        if (!$member = $user->memberFor($workspace)) {
-            return false;
+        if ($member = $user->memberFor($workspace)) {
+            return $member->checkPermissionTo('update');
         }
-        return $member->checkPermissionTo('update');
+
+        if ($workspace->organization_id) {
+            $organization = $workspace->relationLoaded('organization')
+                ? $workspace->organization
+                : Organization::find($workspace->organization_id);
+            if ($organization && ($m = $user->memberFor($organization)) && $m->hasAnyRole([Role::OWNER, Role::ADMIN])) {
+                return $m->checkPermissionTo('update');
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -49,10 +69,20 @@ class WorkspacePolicy
      */
     public function delete(User $user, Workspace $workspace): bool
     {
-        if (!$member = $user->memberFor($workspace)) {
-            return false;
+        if ($member = $user->memberFor($workspace)) {
+            return $member->checkPermissionTo('delete');
         }
-        return $member->checkPermissionTo('delete');
+
+        if ($workspace->organization_id) {
+            $organization = $workspace->relationLoaded('organization')
+                ? $workspace->organization
+                : Organization::find($workspace->organization_id);
+            if ($organization && ($m = $user->memberFor($organization)) && $m->hasRole(Role::OWNER)) {
+                return $m->checkPermissionTo('delete');
+            }
+        }
+
+        return false;
     }
 
     /**

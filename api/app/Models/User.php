@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -68,6 +69,14 @@ class User extends Authenticatable implements /*MustVerifyEmail,*/ HasMedia
             ->where('membershipable_id', $membershipable->id)
             ->where('user_id', $this->id)
             ->first();
+    }
+
+    public function needsOrganizationOnboarding(): bool
+    {
+        return ! $this->memberships()
+            ->where('membershipable_type', Organization::class)
+            ->whereHas('roles', fn ($q) => $q->where('name', Role::OWNER))
+            ->exists();
     }
 
     public function activities()

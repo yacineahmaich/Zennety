@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\DTO\WorkspaceDTO;
 use App\Enums\Role;
-use App\Enums\Visibility;
 use App\Models\Membership;
 use App\Models\User;
 use App\Models\Workspace;
@@ -16,24 +15,21 @@ class WorkspaceService
 {
     public function getMyWorkspaces(User $user): Collection
     {
-        // TODO: Group query by owned workspaces and guest workspaces (currently done in frontend)
-        return Workspace::with(['members', 'boards'])
-            ->whereHas('members', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
+        return Workspace::with(['members', 'boards', 'organization'])
+            ->where(function ($query) use ($user) {
+                $query->whereHas('members', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                })->orWhereHas('organization.members', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                });
             })
-            // TODO: include workspaces where user is member of one of its boards
-//            ->orWhereHas('boards', function ($query) use ($user) {
-//                $query->whereHas('members',function ($query) use ($user) {
-//                        $query->where('user_id', $user->id);
-//                    });
-//            })
             ->get();
     }
 
     public function createWorkspace(WorkspaceDTO $workspaceDTO, User $user): Workspace
     {
         return DB::transaction(function () use ($workspaceDTO, $user) {
-            /**@var Workspace $workspace */
+            /** @var Workspace $workspace */
             $workspace = Workspace::create($workspaceDTO->toArray());
 
             /**@var Membership $owner */

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreWorkspaceRequest;
 use App\Http\Requests\UpdateWorkspaceRequest;
 use App\Http\Resources\WorkspaceResource;
 use App\Models\Membership;
+use App\Models\Organization;
 use App\Models\Workspace;
 use App\Services\InvitationService;
 use App\Services\WorkspaceService;
@@ -36,6 +37,9 @@ class WorkspaceController extends Controller
      */
     public function store(StoreWorkspaceRequest $request): WorkspaceResource
     {
+        $organization = Organization::findOrFail($request->validated('organization_id'));
+        $this->authorize('createWorkspace', $organization);
+
         $workspace = $this->service->createWorkspace(
             WorkspaceDTO::from($request->validated()),
             $request->user()
@@ -51,7 +55,7 @@ class WorkspaceController extends Controller
     {
         $this->authorize('view', $workspace);
 
-        return WorkspaceResource::make($workspace->load(['members.user', 'boards.members.user']));
+        return WorkspaceResource::make($workspace->load(['members.user', 'boards.members.user', 'organization']));
     }
 
     /**

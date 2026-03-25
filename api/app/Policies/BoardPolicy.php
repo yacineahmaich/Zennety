@@ -2,8 +2,10 @@
 
 namespace App\Policies;
 
+use App\Enums\Role;
 use App\Enums\Visibility;
 use App\Models\Board;
+use App\Models\Organization;
 use App\Models\User;
 use App\Models\Workspace;
 
@@ -33,11 +35,20 @@ class BoardPolicy
      */
     public function create(User $user, Workspace $workspace): bool
     {
-        if (!$member = $user->memberFor($workspace)) {
-            return false;
+        if ($member = $user->memberFor($workspace)) {
+            return $member->checkPermissionTo('create');
         }
 
-        return $member->checkPermissionTo('create');
+        if ($workspace->organization_id) {
+            $organization = $workspace->relationLoaded('organization')
+                ? $workspace->organization
+                : Organization::find($workspace->organization_id);
+            if ($organization && ($m = $user->memberFor($organization)) && $m->hasAnyRole([Role::OWNER, Role::ADMIN])) {
+                return $m->checkPermissionTo('create');
+            }
+        }
+
+        return false;
     }
 
     /**

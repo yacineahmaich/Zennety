@@ -11,6 +11,7 @@ import {
 import { groupWorkspacesByOwnership } from "@/lib/helpers";
 import { route } from "@/lib/routes";
 import { useMyWorkspaces, useUser } from "@/services";
+import { useOrganization } from "@/services/organization";
 import { ChevronDownIcon, KanbanSquareIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
@@ -22,16 +23,25 @@ const WorkspacesDropdown = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
   const { user } = useUser();
-  let { workspaces } = useMyWorkspaces();
+  const { workspaces } = useMyWorkspaces();
+  const { activeOrganizationId } = useOrganization();
   const { workspaceId } = router.query as { workspaceId: string };
 
-  const currentWorkspace = workspaces?.find(
-    (w) => String(w.id) === workspaceId
-  );
+  const scoped = useMemo(() => {
+    if (!workspaces?.length) {
+      return [];
+    }
+    if (activeOrganizationId == null) {
+      return workspaces;
+    }
+    return workspaces.filter((w) => w.organization_id === activeOrganizationId);
+  }, [workspaces, activeOrganizationId]);
+
+  const currentWorkspace = scoped?.find((w) => String(w.id) === workspaceId);
 
   const groupedWorkspaces = useMemo(() => {
-    return groupWorkspacesByOwnership(workspaces, user);
-  }, [workspaces?.length]);
+    return groupWorkspacesByOwnership(scoped, user);
+  }, [scoped, user]);
 
   return (
     <DropdownMenu>
@@ -60,7 +70,7 @@ const WorkspacesDropdown = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56 max-w-full">
-        {!workspaces?.length && (
+        {!scoped?.length && (
           <DropdownMenuItem disabled>
             <div className="flex w-full justify-center py-4">
               <span>{t("nothing-here")}</span>

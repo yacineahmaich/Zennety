@@ -48,6 +48,7 @@ if (! function_exists('getModelPrefix')) {
         return match ($model) {
             'workspace' => 'w/',
             'board' => 'b/',
+            'organization' => 'o/',
             default => '',
         };
     }

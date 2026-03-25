@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use App\Enums\Visibility;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -18,11 +19,25 @@ class Workspace extends Model implements HasMedia
         'name',
         'description',
         'visibility',
+        'organization_id',
     ];
+
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class);
+    }
 
     public function members(): MorphMany
     {
         return $this->morphMany(Membership::class, 'membershipable');
+    }
+
+    /**
+     * All boards for this workspace (no auth filter). Use for creation and counts.
+     */
+    public function allBoards(): HasMany
+    {
+        return $this->hasMany(Board::class);
     }
 
     public function boards(): HasMany

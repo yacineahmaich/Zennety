@@ -8,8 +8,12 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 
+export type CreateWorkspacePayload = CreateWorkspace & {
+  organization_id: number;
+};
+
 const createWorkspace = async (
-  workspace: CreateWorkspace
+  workspace: CreateWorkspacePayload
 ): Promise<IWorkspace> => {
   const response = await api.post("/workspaces", workspace);
 
@@ -114,8 +118,13 @@ export const useMyWorkspaces = () => {
  */
 
 export const useCreateWorkspace = () => {
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: createWorkspace,
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] });
+    },
   });
 
   return {

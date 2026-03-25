@@ -6,7 +6,7 @@ class Priority
 {
     const NORMAL = 'Normal';
     const MEDIUM = 'Medium';
-    const HIGH = 'Hight';
+    const HIGH = 'High';
     const URGENT = 'Urgent';
 
     public static function values(): array

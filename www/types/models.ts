@@ -5,10 +5,22 @@ export interface IUser {
   bio: string;
   avatar: string;
   has_avatar: boolean;
-  memberships: IMember[];
+  needs_organization_onboarding?: boolean;
+  memberships?: IMember[];
 }
+
+export interface IOrganization {
+  id: number;
+  name: string;
+  description: string | null;
+  avatar: string;
+  has_avatar: boolean;
+}
+
 export interface IWorkspace {
   id: number;
+  organization_id: number | null;
+  organization?: IOrganization;
   name: string;
   description: string;
   visibility: "Public" | "Private";

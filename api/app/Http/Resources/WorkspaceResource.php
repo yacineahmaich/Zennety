@@ -16,6 +16,8 @@ class WorkspaceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'organization_id' => $this->organization_id,
+            'organization' => OrganizationResource::make($this->whenLoaded('organization')),
             'name' => $this->name,
             'description' => $this->description,
             'visibility' => $this->visibility,

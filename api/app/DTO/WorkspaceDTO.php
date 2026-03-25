@@ -7,4 +7,5 @@ class WorkspaceDTO extends BaseDTO
     public ?string $name;
     public ?string $description;
     public ?string $visibility;
+    public ?int $organization_id;
 }

@@ -24,6 +24,10 @@ class StoreWorkspaceRequest extends FormRequest
     {
         // TODO: User Cannot have duplicated workspace name (filter workspaces by membership)
         return [
+            'organization_id' => [
+                'required',
+                'exists:organizations,id',
+            ],
             'name' => [
                 'required',
                 'max:100'
@@ -32,6 +36,7 @@ class StoreWorkspaceRequest extends FormRequest
                 'max:255'
             ],
             'visibility' => [
+                'required',
                 'in:' . implode(',', Visibility::values())
             ],
         ];

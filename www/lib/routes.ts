@@ -4,6 +4,7 @@ type RouteName =
   | "register"
   | "forgot-password"
   | "app"
+  | "organization/settings"
   | "bookmarks"
   | "workspace"
   | "board"
@@ -38,6 +39,10 @@ const routes: Route[] = [
   {
     name: "app",
     buildPath: () => "/app",
+  },
+  {
+    name: "organization/settings",
+    buildPath: (params) => `/app/o/${params[0]}/settings`,
   },
   {
     name: "bookmarks",
