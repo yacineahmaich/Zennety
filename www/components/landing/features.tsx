@@ -1,5 +1,12 @@
+import {
+  landingEase,
+  landingSection,
+  landingStaggerChild,
+  landingStaggerParent,
+  landingStaggerTab,
+} from "@/lib/landing-motion";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Button } from "../ui/button";
@@ -13,73 +20,91 @@ export default function Features() {
   });
 
   return (
-    <motion.section ref={ref} className="space-y-10">
-      <div className="text-center">
+    <motion.section
+      ref={ref}
+      className="space-y-10"
+      variants={landingSection}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+    >
+      <motion.div variants={landingStaggerParent} className="text-center">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.2 }}
+          variants={landingStaggerChild}
           className="mx-auto w-fit bg-secondary px-2 text-3xl font-black text-primary"
         >
           Discover the Flow
         </motion.h2>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.4 }}
+          variants={landingStaggerChild}
           className="text-md mt-2 font-medium text-muted-foreground"
         >
           Take a guided tour through the app&apos;s smartest features.
         </motion.p>
-      </div>
+      </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.4, delay: 0.6 }}
-        className="mx-auto max-w-7xl space-y-2"
-      >
-        <div className="flex items-center gap-2 overflow-x-auto p-1 [&>button]:w-full">
+      <motion.div variants={landingStaggerParent} className="space-y-2">
+        <motion.div
+          variants={landingStaggerParent}
+          className="flex items-center gap-2 overflow-x-auto p-1 [&>button]:w-full"
+        >
           {features.map((feature, idx) => (
-            <Button
+            <motion.div
               key={idx}
-              size="sm"
-              className="space-x-2"
-              variant={activeTab === idx ? "default" : "secondary"}
-              onClick={() => setActiveTab(idx)}
+              variants={landingStaggerTab}
+              className="min-w-0 flex-1"
             >
-              <span
-                className={cn(
-                  "flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-primary",
-                  activeTab === idx ? "bg-secondary" : "bg-background"
-                )}
+              <Button
+                size="sm"
+                className="w-full space-x-2"
+                variant={activeTab === idx ? "default" : "secondary"}
+                onClick={() => setActiveTab(idx)}
               >
-                {(idx + 1).toString().padStart(2, "0")}
-              </span>
-              <span
-                className={cn(
-                  "font-semibold",
-                  activeTab === idx ? "text-secondary" : "text-muted-foreground"
-                )}
-              >
-                {feature.title}
-              </span>
-            </Button>
+                <span
+                  className={cn(
+                    "flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-primary",
+                    activeTab === idx ? "bg-secondary" : "bg-background"
+                  )}
+                >
+                  {(idx + 1).toString().padStart(2, "0")}
+                </span>
+                <span
+                  className={cn(
+                    "font-semibold",
+                    activeTab === idx
+                      ? "text-secondary"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {feature.title}
+                </span>
+              </Button>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="overflow-hidden rounded-xl border-8 border-secondary shadow-xl">
-          <img
-            src={features[activeTab].image}
-            className="dark:hidden"
-            alt={features[activeTab].title}
-          />
-          <img
-            src={features[activeTab].imageDark}
-            alt={features[activeTab].title}
-            className="hidden dark:block"
-          />
-        </div>
+        <motion.div variants={landingStaggerChild} className="relative">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.38, ease: landingEase }}
+              className="overflow-hidden rounded-xl border-2 border-secondary shadow-lg"
+            >
+              <img
+                src={features[activeTab].image}
+                className="dark:hidden"
+                alt={features[activeTab].title}
+              />
+              <img
+                src={features[activeTab].imageDark}
+                alt={features[activeTab].title}
+                className="hidden dark:block"
+              />
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
       </motion.div>
     </motion.section>
   );
