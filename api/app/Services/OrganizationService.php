@@ -44,7 +44,22 @@ class OrganizationService
 
     public function deleteOrganization(Organization $organization): void
     {
+        if ($organization->workspaces()->exists()) {
+            abort(422, 'Remove or reassign all workspaces before deleting this organization.');
+        }
+
         $organization->delete();
+    }
+
+    public function transferOwnership(Organization $organization, User $user, Membership $member): void
+    {
+        DB::transaction(function () use ($organization, $user, $member) {
+            $currentOwnerMembership = $user->memberFor($organization);
+
+            $currentOwnerMembership->syncRoles([Role::ADMIN]);
+
+            $member->syncRoles([Role::OWNER]);
+        });
     }
 
     public function updateOrganizationAvatar(Organization $organization, mixed $avatar): void

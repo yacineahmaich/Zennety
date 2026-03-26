@@ -1,1 +1,1 @@
-export type ResourceType = "workspace" | "board";
+export type ResourceType = "workspace" | "board" | "organization";

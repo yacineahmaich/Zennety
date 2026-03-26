@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\Role;
+use App\Models\Membership;
 use App\Models\Organization;
 use App\Models\User;
 
@@ -55,5 +56,26 @@ class OrganizationPolicy
         }
 
         return $member->hasAnyRole([Role::OWNER, Role::ADMIN]);
+    }
+
+    /**
+     * Transfer organization ownership to an admin member.
+     */
+    public function transferOwnership(User $user, Organization $organization, Membership $membership): bool
+    {
+        if ($membership->membershipable_type !== Organization::class
+            || $membership->membershipable_id !== $organization->id) {
+            return false;
+        }
+
+        if (! $member = $user->memberFor($organization)) {
+            return false;
+        }
+
+        if (! $membership->hasRole(Role::ADMIN)) {
+            return false;
+        }
+
+        return $member->hasRole(Role::OWNER);
     }
 }

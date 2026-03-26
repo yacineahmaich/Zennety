@@ -15,6 +15,7 @@ export interface IOrganization {
   description: string | null;
   avatar: string;
   has_avatar: boolean;
+  members?: IMember[];
 }
 
 export interface IWorkspace {

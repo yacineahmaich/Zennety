@@ -6,6 +6,7 @@ use App\DTO\OrganizationDTO;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\UpdateOrganizationRequest;
 use App\Http\Resources\OrganizationResource;
+use App\Models\Membership;
 use App\Models\Organization;
 use App\Services\OrganizationService;
 use Illuminate\Http\Request;
@@ -43,7 +44,23 @@ class OrganizationController extends Controller
     {
         $this->authorize('view', $organization);
 
-        return OrganizationResource::make($organization->load(['members.user']));
+        return OrganizationResource::make($organization->load(['members.user', 'members.roles']));
+    }
+
+    public function transferOwnership(
+        Request $request,
+        Organization $organization,
+        Membership $membership
+    ): Response {
+        $this->authorize('transferOwnership', [$organization, $membership]);
+
+        $this->service->transferOwnership(
+            $organization,
+            $request->user(),
+            $membership
+        );
+
+        return response()->noContent();
     }
 
     public function update(UpdateOrganizationRequest $request, Organization $organization): OrganizationResource

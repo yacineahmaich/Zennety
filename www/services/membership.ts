@@ -86,9 +86,15 @@ export const useDeleteMember = () => {
   const { mutateAsync, isPending: isLoading } = useMutation({
     mutationFn: deleteMember,
     onSuccess(data, { resourceType, resourceId }) {
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["memberships", resourceType, resourceId],
       });
+      if (resourceType === "organization") {
+        queryClient.invalidateQueries({
+          queryKey: ["organization", resourceId],
+        });
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      }
     },
   });
 
@@ -104,9 +110,15 @@ export const useUpdateMemberRole = () => {
   const { mutateAsync, isPending: isLoading } = useMutation({
     mutationFn: updateMemberRole,
     onSuccess(data, { resourceType, resourceId }) {
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["memberships", resourceType, resourceId],
       });
+      if (resourceType === "organization") {
+        queryClient.invalidateQueries({
+          queryKey: ["organization", resourceId],
+        });
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      }
     },
   });
 

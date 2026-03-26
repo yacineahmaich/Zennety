@@ -29,6 +29,55 @@ const createOrganization = async (
   return response.data.data;
 };
 
+const updateOrganization = async ({
+  organizationId,
+  data,
+}: {
+  organizationId: number;
+  data: Record<string, unknown>;
+}): Promise<IOrganization> => {
+  const response = await api.put(`/organizations/${organizationId}`, data);
+  return response.data.data;
+};
+
+const deleteOrganization = async ({
+  organizationId,
+}: {
+  organizationId: number;
+}) => {
+  await api.delete(`/organizations/${organizationId}`);
+};
+
+const updateOrganizationAvatar = async ({
+  organizationId,
+  avatar,
+}: {
+  organizationId: number;
+  avatar: File | "unset";
+}) => {
+  await api.post(
+    `/organizations/${organizationId}/avatar`,
+    { avatar },
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+};
+
+const transferOrganizationOwnership = async ({
+  organizationId,
+  memberId,
+}: {
+  organizationId: number;
+  memberId: string;
+}) => {
+  await api.put(
+    `/organizations/${organizationId}/transfer-ownership/${memberId}`
+  );
+};
+
 export const useMyOrganizations = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["organizations", "my"],
@@ -106,6 +155,104 @@ export const useCreateOrganization = () => {
 
   return {
     createOrganization: mutate,
+    isLoading: isPending,
+  };
+};
+
+/**
+ * Single organization by id (e.g. settings page). Includes members when returned by API.
+ */
+export function useOrganizationById(organizationId: number | null) {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["organization", organizationId],
+    queryFn: () => getOrganization(organizationId!),
+    enabled: organizationId != null,
+  });
+
+  return {
+    organization: data,
+    isLoading,
+    isError,
+    error,
+  };
+}
+
+export const useUpdateOrganization = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateOrganization,
+    onSuccess(_data, { organizationId }) {
+      queryClient.invalidateQueries({
+        queryKey: ["organization", organizationId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+  });
+
+  return {
+    updateOrganization: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useUpdateOrganizationAvatar = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateOrganizationAvatar,
+    onSuccess(_data, { organizationId }) {
+      queryClient.invalidateQueries({
+        queryKey: ["organization", organizationId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+    },
+  });
+
+  return {
+    updateOrganizationAvatar: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useDeleteOrganization = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteOrganization,
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+      queryClient.invalidateQueries({ queryKey: ["organization"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.removeQueries({ queryKey: ["organization"] });
+    },
+  });
+
+  return {
+    deleteOrganization: mutate,
+    isLoading: isPending,
+  };
+};
+
+export const useTransferOrganizationOwnership = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: transferOrganizationOwnership,
+    onSuccess(_data, { organizationId }) {
+      queryClient.invalidateQueries({
+        queryKey: ["organization", organizationId],
+      });
+      queryClient.invalidateQueries({ queryKey: ["organizations"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({
+        queryKey: ["memberships", "organization", organizationId],
+      });
+    },
+  });
+
+  return {
+    transferOrganizationOwnership: mutate,
     isLoading: isPending,
   };
 };

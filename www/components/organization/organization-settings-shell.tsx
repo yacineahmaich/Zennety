@@ -1,18 +1,28 @@
-import { AppLayout } from "@/components/layouts";
+import OrganizationBanner from "@/components/organization/organization-banner";
+import type { OrganizationSettingsSection } from "@/components/organization/organization-settings-sections";
 import Loader from "@/components/shared/loader";
 import { Button } from "@/components/ui/button";
-import { useCan } from "@/hooks/use-can";
 import { route } from "@/lib/routes";
 import { useOrganizationById } from "@/services/organization";
-import { NextPageWithLayout } from "@/types/next";
-import { GetServerSidePropsContext } from "next";
+import { IOrganization } from "@/types/models";
+import { SettingsIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { ReactNode } from "react";
 
-const OrganizationSettingsIndexPage: NextPageWithLayout = () => {
+type Props = {
+  activeSection: OrganizationSettingsSection;
+  pageTitle: string;
+  children: (organization: IOrganization) => ReactNode;
+};
+
+const OrganizationSettingsShell = ({
+  activeSection,
+  pageTitle,
+  children,
+}: Props) => {
   const { t } = useTranslation("common");
   const router = useRouter();
 
@@ -30,23 +40,6 @@ const OrganizationSettingsIndexPage: NextPageWithLayout = () => {
       : null;
 
   const { organization, isLoading, isError } = useOrganizationById(resolvedId);
-
-  const orgIdForAbilities = resolvedId ?? 0;
-  const canUpdateOrganization = useCan(
-    "update",
-    "organization",
-    orgIdForAbilities
-  );
-
-  useEffect(() => {
-    if (!router.isReady || !organization) return;
-    const id = String(organization.id);
-    if (canUpdateOrganization) {
-      void router.replace(route("organization/settings/details", id));
-    } else {
-      void router.replace(route("organization/settings/members", id));
-    }
-  }, [router, router.isReady, organization, canUpdateOrganization]);
 
   if (!router.isReady || resolvedId == null) {
     return (
@@ -78,24 +71,26 @@ const OrganizationSettingsIndexPage: NextPageWithLayout = () => {
   }
 
   return (
-    <div className="py-8">
-      <Loader />
-    </div>
+    <>
+      <div>
+        <OrganizationBanner
+          organization={organization}
+          settingsActiveSection={activeSection}
+        />
+        <div className="py-4">
+          <span className="mb-4 flex items-center">
+            <SettingsIcon size={20} className="mr-2" />
+            <h2 className="text-lg font-semibold">{pageTitle}</h2>
+          </span>
+          <div className="pl-4">{children(organization)}</div>
+        </div>
+      </div>
+      <NextSeo
+        title={`${organization.name} — ${pageTitle}`}
+        description={organization.description ?? organization.name}
+      />
+    </>
   );
 };
 
-export const getServerSideProps = async ({
-  locale,
-}: GetServerSidePropsContext) => {
-  return {
-    props: {
-      ...(locale ? await serverSideTranslations(locale, ["common"]) : {}),
-    },
-  };
-};
-
-OrganizationSettingsIndexPage.getLayout = (page) => (
-  <AppLayout>{page}</AppLayout>
-);
-
-export default OrganizationSettingsIndexPage;
+export default OrganizationSettingsShell;

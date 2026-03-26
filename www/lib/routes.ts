@@ -5,6 +5,9 @@ type RouteName =
   | "forgot-password"
   | "app"
   | "organization/settings"
+  | "organization/settings/details"
+  | "organization/settings/members"
+  | "organization/settings/admin"
   | "bookmarks"
   | "workspace"
   | "board"
@@ -43,6 +46,18 @@ const routes: Route[] = [
   {
     name: "organization/settings",
     buildPath: (params) => `/app/o/${params[0]}/settings`,
+  },
+  {
+    name: "organization/settings/details",
+    buildPath: (params) => `/app/o/${params[0]}/settings/details`,
+  },
+  {
+    name: "organization/settings/members",
+    buildPath: (params) => `/app/o/${params[0]}/settings/members`,
+  },
+  {
+    name: "organization/settings/admin",
+    buildPath: (params) => `/app/o/${params[0]}/settings/admin`,
   },
   {
     name: "bookmarks",

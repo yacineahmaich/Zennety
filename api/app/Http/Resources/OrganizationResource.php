@@ -18,6 +18,7 @@ class OrganizationResource extends JsonResource
             'description' => $this->description,
             'avatar' => $this->getFirstMediaUrl('avatar'),
             'has_avatar' => $this->hasMedia('avatar'),
+            'members' => MembershipResource::collection($this->whenLoaded('members')),
         ];
     }
 }

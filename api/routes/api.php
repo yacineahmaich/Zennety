@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/organizations', [OrganizationController::class, 'store']);
     Route::get('/organizations/{organization}', [OrganizationController::class, 'show']);
     Route::put('/organizations/{organization}', [OrganizationController::class, 'update']);
+    Route::put('/organizations/{organization}/transfer-ownership/{membership}', [OrganizationController::class, 'transferOwnership']);
     Route::delete('/organizations/{organization}', [OrganizationController::class, 'destroy']);
     Route::post('/organizations/{organization}/avatar', [OrganizationController::class, 'updateAvatar']);
 
