@@ -5,6 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -13,10 +14,16 @@ import { switchOrganization } from "@/lib/active-organization";
 import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { useOrganization } from "@/services/organization";
-import { Check, ChevronDown, Plus, Settings } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  Plus,
+  SettingsIcon,
+  UsersIcon,
+} from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 
 const SidebarOrganizationSwitcher = () => {
   const { openCreateOrganizationModal } = useCreateOrganizationModal();
@@ -24,17 +31,15 @@ const SidebarOrganizationSwitcher = () => {
   const router = useRouter();
   const { organizations, activeOrganizationId } = useOrganization();
 
-  const sortedOrganizations = useMemo(() => {
+  const otherOrganizations = useMemo(() => {
     if (!organizations?.length) {
       return [];
     }
-    const active = organizations.find((o) => o.id === activeOrganizationId);
-    const rest = organizations.filter((o) => o.id !== activeOrganizationId);
-    rest.sort((a, b) => a.name.localeCompare(b.name));
-    if (active) {
-      return [active, ...rest];
-    }
-    return [...organizations].sort((a, b) => a.name.localeCompare(b.name));
+    return organizations.filter((o) => o.id !== activeOrganizationId);
+  }, [organizations, activeOrganizationId]);
+
+  const activeOrganization = useMemo(() => {
+    return organizations?.find((o) => o.id === activeOrganizationId);
   }, [organizations, activeOrganizationId]);
 
   if (!organizations?.length) {
@@ -60,10 +65,9 @@ const SidebarOrganizationSwitcher = () => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
+            size="sm"
             role="combobox"
-            className={cn(
-              "h-auto w-full justify-between border-border py-2 pl-2 pr-2 font-normal"
-            )}
+            className={cn("w-full justify-between border-border font-normal")}
           >
             <span className="flex min-w-0 flex-1 items-center gap-2">
               {active && (
@@ -80,42 +84,79 @@ const SidebarOrganizationSwitcher = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[12rem]">
+          {activeOrganization && (
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                className="cursor-pointer gap-2"
+                onClick={() => switchOrganization(activeOrganization.id)}
+              >
+                <Avatar className="h-6 w-6 rounded">
+                  <AvatarImage
+                    src={activeOrganization.avatar}
+                    alt={activeOrganization.name}
+                  />
+                  <AvatarFallback>{activeOrganization.name[0]}</AvatarFallback>
+                </Avatar>
+                <span className="flex-1 truncate">
+                  {activeOrganization.name}
+                </span>
+                <Check className="h-4 w-4 shrink-0" />
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className="cursor-pointer gap-2"
+                onClick={() =>
+                  router.push(
+                    route(
+                      "organization/settings",
+                      String(activeOrganization.id)
+                    )
+                  )
+                }
+              >
+                <Avatar className="invisible h-6 w-6 rounded"></Avatar>
+                <SettingsIcon className="h-4 w-4 shrink-0" />
+                {t("settings")}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer gap-2"
+                onClick={() =>
+                  router.push(
+                    route(
+                      "organization/settings/members",
+                      String(activeOrganization.id)
+                    )
+                  )
+                }
+              >
+                <Avatar className="invisible h-6 w-6 rounded"></Avatar>
+                <UsersIcon className="h-4 w-4 shrink-0" />
+                {t("members")}
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+            </DropdownMenuGroup>
+          )}
+
           <DropdownMenuGroup>
-            {sortedOrganizations.map((org) => (
-              <Fragment key={org.id}>
-                <DropdownMenuItem
-                  className="cursor-pointer gap-2"
-                  onClick={() => switchOrganization(org.id)}
-                >
-                  <Avatar className="h-6 w-6 rounded">
-                    <AvatarImage src={org.avatar} alt={org.name} />
-                    <AvatarFallback>{org.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <span className="flex-1 truncate">{org.name}</span>
-                  {org.id === activeOrganizationId && (
-                    <Check className="h-4 w-4 shrink-0" />
-                  )}
-                </DropdownMenuItem>
-
+            <DropdownMenuLabel>
+              {t("organizations-menu-title")}
+            </DropdownMenuLabel>
+            {otherOrganizations.map((org) => (
+              <DropdownMenuItem
+                key={org.id}
+                className="cursor-pointer gap-2"
+                onClick={() => switchOrganization(org.id)}
+              >
+                <Avatar className="h-6 w-6 rounded">
+                  <AvatarImage src={org.avatar} alt={org.name} />
+                  <AvatarFallback>{org.name[0]}</AvatarFallback>
+                </Avatar>
+                <span className="flex-1 truncate">{org.name}</span>
                 {org.id === activeOrganizationId && (
-                  <>
-                    <DropdownMenuItem
-                      className="cursor-pointer gap-2"
-                      onClick={() =>
-                        router.push(
-                          route("organization/settings", String(org.id))
-                        )
-                      }
-                    >
-                      <Avatar className="invisible h-6 w-6 rounded"></Avatar>
-                      <Settings className="h-4 w-4 shrink-0" />
-                      {t("settings")}
-                    </DropdownMenuItem>
-
-                    <DropdownMenuSeparator />
-                  </>
+                  <Check className="h-4 w-4 shrink-0" />
                 )}
-              </Fragment>
+              </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
 

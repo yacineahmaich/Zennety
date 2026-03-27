@@ -64,12 +64,12 @@ const AppLayout = ({ children }: PropsWithChildren) => {
           />
           <aside
             className={cn(
-              "fixed left-0 top-1 flex h-[100dvh] shrink-0 flex-col space-y-5 overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",
+              "fixed left-0 top-0 flex h-[100dvh] shrink-0 flex-col space-y-5 overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",
               collapsed ? "w-12" : "z-50 w-64"
             )}
           >
             {!collapsed && (
-              <div className="-mx-4 shrink-0 border-b border-border px-4 pb-3 pt-2">
+              <div className="-mx-4 shrink-0 border-b border-border px-4 pb-3 pt-3">
                 <div className="min-w-0">
                   <SidebarOrganizationSwitcher />
                 </div>
@@ -79,21 +79,17 @@ const AppLayout = ({ children }: PropsWithChildren) => {
             {!collapsed && <SidebarWorkspaces />}
             {!collapsed && <UserDropdown />}
           </aside>
-          <div className="flex-1 overflow-x-auto p-4 pb-0">
-            <header className="flex items-center justify-between pb-4">
-              <div className="flex items-center gap-2">
+          <div className="flex-1 overflow-x-auto px-4 py-3 pb-0">
+            <header className="-mx-4 flex items-center justify-between border-b px-4 pb-3">
+              <div className="flex -translate-x-4 items-center gap-2">
                 <Button
                   size="icon"
-                  variant="secondary"
-                  className="aspect-square shrink-0"
+                  variant="ghost"
+                  className="shrink-0 -translate-x-1/3 rounded-l-none"
                   onClick={() => setCollapsed((c) => !c)}
                   aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
-                  {collapsed ? (
-                    <SidebarOpenIcon size={16} />
-                  ) : (
-                    <SidebarCloseIcon size={16} />
-                  )}
+                  {collapsed ? <SidebarOpenIcon /> : <SidebarCloseIcon />}
                 </Button>
                 <WorkspacesDropdown />
                 <CreateWorkspace

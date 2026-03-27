@@ -24,7 +24,7 @@ const SidebarWorkspaces = () => {
 
   const workspace = scopedWorkspaces?.find((w) => String(w.id) === workspaceId);
 
-  if (!isMatch(router.pathname, ["/app", "/app/w/**"])) {
+  if (!isMatch(router.pathname, ["/app", "/app/w/**", "/app/o/**"])) {
     return <div className="flex-1" />;
   }
 

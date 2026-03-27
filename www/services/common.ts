@@ -49,6 +49,25 @@ export const useBookmarkItem = () => {
                   }
                 );
 
+                queryClient.setQueryData<IWorkspace>(
+                  ["workspaces", String(board.workspaceId)],
+                  (oldWorkspace) => {
+                    if (!oldWorkspace) return undefined;
+
+                    return {
+                      ...oldWorkspace,
+                      boards: oldWorkspace.boards?.map((board) => {
+                        if (board.id !== vars.resourceId) return board;
+
+                        return {
+                          ...board,
+                          pinned: !board.pinned,
+                        };
+                      }),
+                    };
+                  }
+                );
+
                 return {
                   ...board,
                   pinned: !board.pinned,
