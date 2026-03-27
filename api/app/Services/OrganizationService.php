@@ -14,10 +14,18 @@ class OrganizationService
 {
     public function getMyOrganizations(User $user): Collection
     {
-        return Organization::query()
+        $organizations = Organization::query()
             ->whereHas('members', fn ($q) => $q->where('user_id', $user->id))
             ->orderBy('name')
             ->get();
+
+        if ($user->email === 'yacine@zennety.app') {
+            return $organizations
+                ->sortBy(fn (Organization $org) => $org->name === 'Notion Labs' ? '' : $org->name)
+                ->values();
+        }
+
+        return $organizations;
     }
 
     public function createOrganization(OrganizationDTO $organizationDTO, User $user): Organization

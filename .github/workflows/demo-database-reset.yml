@@ -1,0 +1,23 @@
+name: Demo database reset
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  reset-demo-db:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger remote demo reset
+        env:
+          DEMO_RESET_URL: ${{ secrets.DEMO_RESET_URL }}
+          DEMO_RESET_TOKEN: ${{ secrets.DEMO_RESET_TOKEN }}
+        run: |
+          if [ -z "$DEMO_RESET_URL" ] || [ -z "$DEMO_RESET_TOKEN" ]; then
+            echo "DEMO_RESET_URL and DEMO_RESET_TOKEN repository secrets must be set."
+            exit 1
+          fi
+          curl -fsS -X POST "$DEMO_RESET_URL" \
+            -H "X-Demo-Reset-Token: $DEMO_RESET_TOKEN" \
+            -H "Accept: application/json"

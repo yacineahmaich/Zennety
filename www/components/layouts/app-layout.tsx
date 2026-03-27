@@ -64,12 +64,12 @@ const AppLayout = ({ children }: PropsWithChildren) => {
           />
           <aside
             className={cn(
-              "fixed left-0 top-0 flex h-[100dvh] shrink-0 flex-col space-y-5 overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",
+              "fixed left-0 top-0 flex h-[100dvh] shrink-0 flex-col overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",
               collapsed ? "w-12" : "z-50 w-64"
             )}
           >
             {!collapsed && (
-              <div className="-mx-4 shrink-0 border-b border-border px-4 pb-3 pt-3">
+              <div className="-mx-4 shrink-0 border-b border-border px-2 pb-3 pt-3">
                 <div className="min-w-0">
                   <SidebarOrganizationSwitcher />
                 </div>

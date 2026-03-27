@@ -33,10 +33,10 @@ const SidebarWorkspaces = () => {
       value={workspaceId}
       type="single"
       collapsible
-      className="-mx-4 flex-1 overflow-y-auto"
+      className="-mx-4 flex-1 overflow-y-auto px-2 py-2"
     >
       {
-        <div className="px-2">
+        <div>
           {workspace ? (
             <WorkspaceAccordion workspace={workspace} />
           ) : (

@@ -124,3 +124,5 @@ npm run test         # Run tests
 php artisan serve    # Start development server
 php artisan test     # Run tests
 ```
+
+TODO: card deadline hit alert, tenant system for organizations, status color

@@ -14,8 +14,8 @@ const SideNav = () => {
   const { t } = useTranslation("common");
 
   return (
-    <nav className="-mx-4 overflow-x-hidden">
-      <ul className="space-y-2 border-b border-accent px-2 py-1 pb-2">
+    <nav className="-mx-4 overflow-x-hidden border-b border-accent px-2 py-2">
+      <ul className="space-y-2">
         <li>
           <Link
             href={route("app")}

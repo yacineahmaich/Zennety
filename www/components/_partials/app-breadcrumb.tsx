@@ -129,7 +129,7 @@ const AppBreadcrumb = () => {
 
   if (!breadcrumbItems?.length)
     return (
-      <div className="py-2">
+      <div className="pb-2 pt-4">
         <Breadcrumb className="invisible">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -141,7 +141,7 @@ const AppBreadcrumb = () => {
     );
 
   return (
-    <div className="py-2">
+    <div className="pb-2 pt-4">
       <Breadcrumb>
         <BreadcrumbList>
           {breadcrumbItems.map((item, key) => (
