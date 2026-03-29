@@ -58,6 +58,16 @@ class CardController extends Controller
     }
 
     /**
+     * Unset a field of the specified resource.
+     */
+    public function unsetField(Workspace $workspace, Board $board, Status $status, Card $card, string $field): Response
+    {
+        $this->service->unsetField($card, $field);
+
+        return response()->noContent();
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Workspace $workspace, Board $board, Status $status, Card $card): Response

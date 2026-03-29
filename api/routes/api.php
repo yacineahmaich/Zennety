@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards', [CardController::class, 'store']);
     Route::put('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards/{card}', [CardController::class, 'update']);
     Route::put('/workspaces/{workspace}/boards/{board}/statuses/cards/reorder', [CardController::class, 'reorder']);
+    Route::delete('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards/{card}/unset/{field}', [CardController::class, 'unsetField']);
     Route::delete('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards/{card}', [CardController::class, 'destroy']);
     Route::post('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards/{card}/comments', [CardController::class, 'comment']);
     Route::get('/workspaces/{workspace}/boards/{board}/statuses/{status}/cards/{card}', [CardController::class, 'show']);

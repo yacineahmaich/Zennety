@@ -17,7 +17,9 @@ const UserAvatar = ({ user, showCard = true, className }: Props) => {
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <Avatar className={cn("h-8 w-8 rounded-full", className)}>
+        <Avatar
+          className={cn("h-8 w-8 rounded-full border border-white", className)}
+        >
           <AvatarImage
             src={user.avatar}
             alt={user.name}

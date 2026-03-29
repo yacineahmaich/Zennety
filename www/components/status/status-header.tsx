@@ -77,7 +77,7 @@ const StatusHeader = ({
   return (
     <Card
       className={cn(
-        "flex h-fit shrink-0 cursor-grab items-center justify-between gap-6 bg-primary px-4 py-2 text-background transition-[width]",
+        "flex h-fit shrink-0 cursor-grab items-center justify-between gap-6 bg-primary px-3 py-2 text-background transition-[width]",
         collapsed ? "w-16 cursor-grab" : "w-72"
       )}
     >

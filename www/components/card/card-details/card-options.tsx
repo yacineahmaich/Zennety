@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { priorties } from "@/lib/constants";
 import { useStatuses } from "@/services";
-import { useUpdateCard } from "@/services/card";
+import { useUnsetCardField, useUpdateCard } from "@/services/card";
 import { Priority } from "@/types/enums";
 import { IBoard, ICard, IStatus } from "@/types/models";
 import { format } from "date-fns";
@@ -44,6 +44,7 @@ const CardOptions = ({ board, status, card }: Props) => {
   );
 
   const { updateCard, isLoading: isUpdating } = useUpdateCard();
+  const { unsetField, isLoading: isUnsetting } = useUnsetCardField();
 
   const handleUpdateCard = (data: Record<string, unknown>) => {
     updateCard({
@@ -52,6 +53,16 @@ const CardOptions = ({ board, status, card }: Props) => {
       cardId: card.id,
       statusId: status.id,
       data,
+    });
+  };
+
+  const handleUnsetField = (field: "assignee" | "priority" | "deadline") => {
+    unsetField({
+      workspaceId: board.workspaceId,
+      boardId: board.id,
+      statusId: status.id,
+      cardId: card.id,
+      field,
     });
   };
 
@@ -126,9 +137,7 @@ const CardOptions = ({ board, status, card }: Props) => {
             <button
               className="scale-0 transition-transform group-hover:scale-100"
               onClick={() => {
-                handleUpdateCard({
-                  assignee: null,
-                });
+                handleUnsetField("assignee");
               }}
             >
               <XIcon size={14} />
@@ -185,9 +194,7 @@ const CardOptions = ({ board, status, card }: Props) => {
             <button
               className="scale-0 transition-transform group-hover:scale-100"
               onClick={() => {
-                handleUpdateCard({
-                  priority: null,
-                });
+                handleUnsetField("priority");
               }}
             >
               <XIcon size={14} />
@@ -236,9 +243,7 @@ const CardOptions = ({ board, status, card }: Props) => {
             <button
               className="scale-0 transition-transform group-hover:scale-100"
               onClick={() => {
-                handleUpdateCard({
-                  deadline: null,
-                });
+                handleUnsetField("deadline");
               }}
             >
               <XIcon size={14} />

@@ -1,67 +1,65 @@
 import { AppLayout } from "@/components/layouts";
-import DeleteWorkspace from "@/components/workspace/settings/delete-workspace";
-import WorkspaceOwnershipTransfer from "@/components/workspace/settings/workspace-ownership-transfer";
-import WorkspaceVisibility from "@/components/workspace/settings/workspace-visibility";
-import WorkspaceBanner from "@/components/workspace/workspace-banner";
+import Loader from "@/components/shared/loader";
 import { useCan } from "@/hooks/use-can";
 import { useHasRole } from "@/hooks/use-has-role";
+import { route } from "@/lib/routes";
 import { useWorkspace } from "@/services";
 import { Role } from "@/types/enums";
 import { NextPageWithLayout } from "@/types/next";
-import { SettingsIcon } from "lucide-react";
 import { GetServerSidePropsContext } from "next";
-import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-const WorkspaceSettings: NextPageWithLayout = () => {
+function WorkspaceSettingsRedirectInner({
+  workspaceId,
+}: {
+  workspaceId: string;
+}) {
   const router = useRouter();
-  const { t } = useTranslation("common");
-  const { workspaceId } = router.query as { workspaceId: string };
   const { workspace } = useWorkspace(workspaceId);
 
-  const isOwner = useHasRole(Role.OWNER, "workspace", workspace.id);
   const canUpdateWorkspace = useCan("update", "workspace", workspace.id);
   const canDeleteWorkspace = useCan("delete", "workspace", workspace.id);
+  const isOwner = useHasRole(Role.OWNER, "workspace", workspace.id);
+
+  useEffect(() => {
+    if (canUpdateWorkspace) {
+      void router.replace(route("workspace/settings/details", workspaceId));
+    } else if (isOwner || canDeleteWorkspace) {
+      void router.replace(route("workspace/settings/admin", workspaceId));
+    } else {
+      void router.replace(route("workspace", workspaceId));
+    }
+  }, [router, workspaceId, canUpdateWorkspace, isOwner, canDeleteWorkspace]);
 
   return (
-    <>
-      <div>
-        <WorkspaceBanner workspace={workspace} />
-        <div className="py-4">
-          <span className="mb-4 flex items-center">
-            <SettingsIcon size={20} className="mr-2" />
-            <h2 className="text-lg font-semibold">{t("workspace-settings")}</h2>
-          </span>
-          <div className="space-y-8 pl-4">
-            {canUpdateWorkspace && (
-              <WorkspaceVisibility workspace={workspace} />
-            )}
-            {isOwner && <WorkspaceOwnershipTransfer workspace={workspace} />}
-            {canDeleteWorkspace && <DeleteWorkspace workspace={workspace} />}
-          </div>
-        </div>
-      </div>
-
-      {/* ======= SEO START ======= */}
-      <NextSeo
-        title={workspace.name}
-        description={workspace.description}
-        openGraph={{
-          title: workspace.name,
-          description: workspace.description,
-          images: [
-            {
-              url: workspace.avatar,
-              alt: workspace.name,
-            },
-          ],
-        }}
-      />
-      {/* ======= END START ======= */}
-    </>
+    <div className="py-8">
+      <Loader />
+    </div>
   );
+}
+
+const WorkspaceSettingsIndexPage: NextPageWithLayout = () => {
+  const router = useRouter();
+
+  const workspaceIdParam = router.query.workspaceId;
+  const workspaceId =
+    router.isReady &&
+    typeof workspaceIdParam === "string" &&
+    workspaceIdParam.length > 0
+      ? workspaceIdParam
+      : null;
+
+  if (!router.isReady || workspaceId == null) {
+    return (
+      <div className="py-8">
+        <Loader />
+      </div>
+    );
+  }
+
+  return <WorkspaceSettingsRedirectInner workspaceId={workspaceId} />;
 };
 
 export const getServerSideProps = async ({
@@ -74,6 +72,6 @@ export const getServerSideProps = async ({
   };
 };
 
-WorkspaceSettings.getLayout = (page) => <AppLayout>{page}</AppLayout>;
+WorkspaceSettingsIndexPage.getLayout = (page) => <AppLayout>{page}</AppLayout>;
 
-export default WorkspaceSettings;
+export default WorkspaceSettingsIndexPage;

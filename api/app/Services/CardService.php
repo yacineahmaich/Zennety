@@ -43,18 +43,23 @@ class CardService
         $data = $cardDTO->toArray();
 
         // link assign via membership model
-        if (array_key_exists("assignee", $cardDTO->toArray())) {
-            Log::info($cardDTO->assignee);
-            if(is_null($cardDTO->assignee)) {
-                $data['user_id'] = null;
-            }else {
-                $data['user_id'] = $card->board->members()->where("id", $cardDTO->assignee)->value("user_id");
-            }
+        if (!is_null($cardDTO->assignee)) {
+            $data['user_id'] = $card->board->members()->where("id", $cardDTO->assignee)->value("user_id");
         }
 
         return tap($card)->update(
             array_merge($data)
         );
+    }
+
+    public function unsetField(Card $card, string $field): void
+    {
+        if($field === "assignee") {
+            $field = "user_id";
+        }
+        $card->update([
+            $field => null
+        ]);
     }
 
     public function deleteCard(Card $card): void

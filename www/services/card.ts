@@ -56,6 +56,24 @@ const updateCard = async ({
   return response.data.data;
 };
 
+const unsetField = async ({
+  workspaceId,
+  boardId,
+  statusId,
+  cardId,
+  field,
+}: {
+  workspaceId: number;
+  boardId: number;
+  statusId: number;
+  cardId: number;
+  field: "assignee" | "priority" | "deadline";
+}): Promise<void> => {
+  await api.delete(
+    `/workspaces/${workspaceId}/boards/${boardId}/statuses/${statusId}/cards/${cardId}/unset/${field}`
+  );
+};
+
 const createCardComment = async ({
   workspaceId,
   boardId,
@@ -217,6 +235,33 @@ export const useUpdateCard = () => {
     updateCard: mutate,
     isLoading: isPending,
     variables,
+  };
+};
+
+export const useUnsetCardField = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: unsetField,
+    onSuccess(status, { workspaceId, boardId }) {
+      queryClient.invalidateQueries({
+        queryKey: ["workspaces", workspaceId, "boards", boardId, "statuses"],
+      });
+      return queryClient.invalidateQueries({
+        queryKey: [
+          "workspaces",
+          workspaceId?.toString(),
+          "boards",
+          boardId?.toString(),
+          "statuses",
+        ],
+      });
+    },
+  });
+
+  return {
+    unsetField: mutate,
+    isLoading: isPending,
   };
 };
 

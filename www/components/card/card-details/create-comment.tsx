@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { useCreateCardComment } from "@/services/card";
 import { IBoard, ICard, IStatus } from "@/types/models";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,14 +67,14 @@ const CreateComment = ({ board, status, card }: Props) => {
               render={({ field }) => (
                 <FormItem className="flex-1">
                   <FormControl>
-                    <Textarea placeholder={t("share-thoughts")} {...field} />
+                    <Input placeholder={t("share-thoughts")} {...field} />
                   </FormControl>
                 </FormItem>
               )}
             />
             <div>
               <Button size="sm" className="h-full" disabled={isLoading}>
-                <SendIcon size={18} />
+                <SendIcon size={16} />
               </Button>
             </div>
           </div>

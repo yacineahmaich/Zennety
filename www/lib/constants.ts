@@ -5,18 +5,18 @@ export const roles = [Role.OWNER, Role.ADMIN, Role.MEMBER, Role.GUEST];
 export const priorties = [
   {
     label: Priority.NORMAL,
-    color: "#E7F0DC",
+    color: "#9CA3AF",
   },
   {
     label: Priority.MEDIUM,
-    color: "#9195F6",
+    color: "#60A5FA",
   },
   {
     label: Priority.HIGH,
-    color: "#F6FB7A",
+    color: "#FBBF24",
   },
   {
     label: Priority.URGENT,
-    color: "#EE4E4E",
+    color: "#F87171",
   },
 ];

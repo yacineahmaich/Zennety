@@ -22,7 +22,7 @@ const Board: NextPageWithLayout = () => {
 
   return (
     <>
-      <div className="flex h-[calc(100vh-6rem)] flex-col">
+      <div className="flex h-[calc(100vh-8rem)] flex-col">
         <BoardBanner board={board} />
         <Suspense fallback={<Loader />}>
           <Kanban board={board} />

@@ -111,7 +111,7 @@ const WorkspacesDropdown = () => {
                 <DropdownMenuItem key={workspace.id} asChild>
                   <Link
                     href={route("workspace", workspace.id)}
-                    className="cursor-pointer"
+                    className="cursor-pointer space-x-2"
                   >
                     <Avatar className="h-6 w-6 rounded">
                       <AvatarImage

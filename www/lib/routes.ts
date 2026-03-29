@@ -13,8 +13,14 @@ type RouteName =
   | "board"
   | "workspace/members"
   | "workspace/settings"
+  | "workspace/settings/details"
+  | "workspace/settings/visibility"
+  | "workspace/settings/admin"
   | "board/members"
-  | "board/settings";
+  | "board/settings"
+  | "board/settings/details"
+  | "board/settings/visibility"
+  | "board/settings/admin";
 
 type Route = {
   name: RouteName;
@@ -80,12 +86,38 @@ const routes: Route[] = [
     buildPath: (params) => `/app/w/${params[0]}/settings`,
   },
   {
+    name: "workspace/settings/details",
+    buildPath: (params) => `/app/w/${params[0]}/settings/details`,
+  },
+  {
+    name: "workspace/settings/visibility",
+    buildPath: (params) => `/app/w/${params[0]}/settings/visibility`,
+  },
+  {
+    name: "workspace/settings/admin",
+    buildPath: (params) => `/app/w/${params[0]}/settings/admin`,
+  },
+  {
     name: "board/members",
     buildPath: (params) => `/app/w/${params[0]}/b/${params[1]}/members`,
   },
   {
     name: "board/settings",
     buildPath: (params) => `/app/w/${params[0]}/b/${params[1]}/settings`,
+  },
+  {
+    name: "board/settings/details",
+    buildPath: (params) =>
+      `/app/w/${params[0]}/b/${params[1]}/settings/details`,
+  },
+  {
+    name: "board/settings/visibility",
+    buildPath: (params) =>
+      `/app/w/${params[0]}/b/${params[1]}/settings/visibility`,
+  },
+  {
+    name: "board/settings/admin",
+    buildPath: (params) => `/app/w/${params[0]}/b/${params[1]}/settings/admin`,
   },
 ];
 
