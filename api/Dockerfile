@@ -17,4 +17,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
  && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+RUN echo 'max_execution_time = 300' > /usr/local/etc/php/conf.d/custom-timeouts.ini \
+ && echo 'max_input_time = 300' >> /usr/local/etc/php/conf.d/custom-timeouts.ini
+
 CMD ["/start.sh"]
