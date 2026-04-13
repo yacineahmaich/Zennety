@@ -4,6 +4,7 @@ import { useUser } from "@/services";
 import { LogInIcon, UserRoundIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 import Logo from "./logo";
 import ThemeSwitcher from "./theme-switcher";
 import UserAvatar from "./user-avatar";
@@ -23,7 +24,9 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          {!isLoading && (
+          {isLoading ? (
+            <Skeleton className="h-9 w-24 rounded-md" />
+          ) : (
             <>
               {user ? (
                 <Button asChild variant="outline" size="sm">

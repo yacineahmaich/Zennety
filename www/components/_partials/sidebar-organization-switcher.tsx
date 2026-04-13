@@ -9,6 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useCreateOrganizationModal } from "@/context/create-organization-modal-context";
 import { switchOrganization } from "@/lib/active-organization";
 import { route } from "@/lib/routes";
@@ -25,7 +30,9 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
-const SidebarOrganizationSwitcher = () => {
+type Props = { collapsed?: boolean };
+
+const SidebarOrganizationSwitcher = ({ collapsed }: Props) => {
   const { openCreateOrganizationModal } = useCreateOrganizationModal();
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -43,47 +50,93 @@ const SidebarOrganizationSwitcher = () => {
   }, [organizations, activeOrganizationId]);
 
   if (!organizations?.length) {
-    return (
-      <div className="min-w-0">
-        <Button
-          variant="outline"
-          className="h-auto w-full justify-start gap-2 border-border py-2 pl-2 pr-2 font-normal"
-          onClick={() => openCreateOrganizationModal()}
-        >
-          <Plus className="h-4 w-4 shrink-0" />
+    const createButton = (
+      <Button
+        variant="outline"
+        aria-label={t("create-organization")}
+        className={cn(
+          "font-normal",
+          collapsed
+            ? "h-9 w-9 justify-center p-0"
+            : "h-auto w-full justify-start gap-2 border-border py-2 pl-2 pr-2"
+        )}
+        onClick={() => openCreateOrganizationModal()}
+      >
+        <Plus className="h-4 w-4 shrink-0" />
+        {!collapsed && (
           <span className="truncate">{t("create-organization")}</span>
-        </Button>
+        )}
+      </Button>
+    );
+
+    return (
+      <div className={cn("min-w-0", collapsed && "flex justify-center")}>
+        {collapsed ? (
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>{createButton}</TooltipTrigger>
+            <TooltipContent side="right">
+              {t("create-organization")}
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          createButton
+        )}
       </div>
     );
   }
 
   const active = organizations.find((o) => o.id === activeOrganizationId);
+  const triggerLabel = active?.name ?? t("organizations-menu-title");
+
+  const trigger = (
+    <Button
+      variant="outline"
+      role="combobox"
+      aria-label={triggerLabel}
+      className={cn(
+        "font-normal",
+        collapsed
+          ? "h-9 w-9 justify-center p-0"
+          : "w-full justify-between rounded-none border-x-0 border-y border-border bg-muted"
+      )}
+    >
+      <span className="flex min-w-0 items-center gap-2">
+        {active && (
+          <>
+            <Avatar className="h-6 w-6 shrink-0 rounded">
+              <AvatarImage src={active.avatar} alt={active.name} />
+              <AvatarFallback>{active.name[0]}</AvatarFallback>
+            </Avatar>
+            {!collapsed && (
+              <span className="truncate text-left">{active.name}</span>
+            )}
+          </>
+        )}
+      </span>
+      {!collapsed && <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />}
+    </Button>
+  );
 
   return (
-    <div className="min-w-0">
+    <div className={cn("min-w-0", collapsed ? "flex justify-center" : "-mx-4")}>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            role="combobox"
-            className={cn("w-full justify-between border-border font-normal")}
-          >
-            <span className="flex min-w-0 flex-1 items-center gap-2">
-              {active && (
-                <>
-                  <Avatar className="h-6 w-6 shrink-0 rounded">
-                    <AvatarImage src={active.avatar} alt={active.name} />
-                    <AvatarFallback>{active.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <span className="truncate text-left">{active.name}</span>
-                </>
-              )}
-            </span>
-            <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[12rem]">
+        {collapsed ? (
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="right">{triggerLabel}</TooltipContent>
+          </Tooltip>
+        ) : (
+          <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
+        )}
+        <DropdownMenuContent
+          side={collapsed ? "right" : "bottom"}
+          className={cn(
+            "min-w-[12rem]",
+            !collapsed && "w-[var(--radix-dropdown-menu-trigger-width)]"
+          )}
+        >
           {activeOrganization && (
             <DropdownMenuGroup>
               <DropdownMenuItem

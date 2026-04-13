@@ -22,23 +22,28 @@ const UserDropdown = () => {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-auto select-none overflow-hidden p-2"
+          aria-label={user.name}
+          className="h-auto select-none gap-2 overflow-hidden px-2 py-1"
         >
-          <div className="mt-auto flex items-center gap-4 py-2">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="line-clamp-1 flex flex-col items-start">
-              <span>{user.name}</span>
-              <small className="text-xs">{user.email}</small>
-            </div>
-          </div>
+          <Avatar className="h-7 w-7">
+            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarFallback>{user.name[0]}</AvatarFallback>
+          </Avatar>
+          <span className="hidden max-w-[8rem] truncate sm:inline">
+            {user.name}
+          </span>
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56 max-w-full">
-        <DropdownMenuLabel>Account</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="w-56 max-w-full">
+        <DropdownMenuLabel>
+          <div className="flex flex-col">
+            <span>{user.name}</span>
+            <span className="text-xs font-normal text-muted-foreground">
+              {user.email}
+            </span>
+          </div>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>

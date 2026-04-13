@@ -1,26 +1,39 @@
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { MoonIcon, SunIcon } from "lucide-react";
+import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 
-import { Button } from "@/components/ui/button";
-import { MoonIcon, SunIcon } from "lucide-react";
+type Props = { className?: string };
 
-export default function ThemeSwitcher() {
-  const { setTheme, theme } = useTheme();
-
-  function handleToggleTheme() {
-    setTheme(theme === "dark" ? "light" : "dark");
-  }
+export default function ThemeSwitcher({ className }: Props) {
+  const { setTheme } = useTheme();
+  const { t } = useTranslation("common");
 
   return (
-    <Button variant="outline" size="sm" onClick={handleToggleTheme}>
-      <SunIcon
-        size={16}
-        className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
-      />
-      <MoonIcon
-        size={16}
-        className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-      />
-      <span className="sr-only">Toggle theme</span>
-    </Button>
+    <div
+      className={cn("inline-flex rounded-md border border-input", className)}
+      role="group"
+      aria-label="Theme"
+    >
+      <Button
+        variant="ghost"
+        size="icon"
+        className="flex-1 bg-accent text-accent-foreground dark:bg-transparent dark:text-muted-foreground"
+        onClick={() => setTheme("light")}
+        aria-label={t("light")}
+      >
+        <SunIcon size={16} />
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="flex-1 text-muted-foreground dark:bg-accent dark:text-accent-foreground"
+        onClick={() => setTheme("dark")}
+        aria-label={t("dark")}
+      >
+        <MoonIcon size={16} />
+      </Button>
+    </div>
   );
 }

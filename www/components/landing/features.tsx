@@ -90,7 +90,7 @@ export default function Features() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.38, ease: landingEase }}
-              className="aspect-[1468/835] overflow-hidden rounded-xl border-2 border-secondary"
+              className="aspect-[1468/835] overflow-hidden rounded-xl border-2 border-secondary bg-muted"
             >
               <img
                 src={features[activeTab].image}

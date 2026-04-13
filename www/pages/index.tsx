@@ -1,7 +1,6 @@
 import Features from "@/components/landing/features";
 import Hero from "@/components/landing/hero";
 import HowItWorks from "@/components/landing/how-it-works";
-import LandingCta from "@/components/landing/landing-cta";
 import LandingFaq from "@/components/landing/landing-faq";
 import { GuestLayout } from "@/components/layouts";
 import app from "@/lib/app";
@@ -31,7 +30,7 @@ const Home: NextPageWithLayout = () => {
         <Features />
         <HowItWorks />
         <LandingFaq />
-        <LandingCta />
+        {/* <LandingCta /> */}
       </div>
     </>
   );

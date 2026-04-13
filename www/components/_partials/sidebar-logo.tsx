@@ -4,6 +4,7 @@ import { route } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { SidebarCloseIcon, SidebarOpenIcon } from "lucide-react";
 import Link from "next/link";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type Props = {
   collapsed: boolean;
@@ -11,11 +12,15 @@ type Props = {
 };
 
 const SidebarLogo = ({ collapsed, toggleCollapsed }: Props) => {
+  const toggleLabel = collapsed ? "Expand sidebar" : "Collapse sidebar";
+
   return (
     <div
       className={cn(
-        "-mx-4 flex h-20 items-center justify-between px-4 py-4",
-        collapsed && "justify-center"
+        "flex items-center py-4",
+        collapsed
+          ? "-mx-1 h-12 justify-center px-1"
+          : "-mx-4 h-20 justify-between px-4"
       )}
     >
       {!collapsed && (
@@ -25,18 +30,26 @@ const SidebarLogo = ({ collapsed, toggleCollapsed }: Props) => {
           </div>
         </Link>
       )}
-      <Button
-        size="icon"
-        variant="secondary"
-        className="aspect-square"
-        onClick={toggleCollapsed}
-      >
-        {collapsed ? (
-          <SidebarOpenIcon size={16} />
-        ) : (
-          <SidebarCloseIcon size={16} />
-        )}
-      </Button>
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>
+          <Button
+            size="icon"
+            variant="secondary"
+            className="aspect-square"
+            onClick={toggleCollapsed}
+            aria-label={toggleLabel}
+          >
+            {collapsed ? (
+              <SidebarOpenIcon size={16} />
+            ) : (
+              <SidebarCloseIcon size={16} />
+            )}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side={collapsed ? "right" : "bottom"}>
+          {toggleLabel}
+        </TooltipContent>
+      </Tooltip>
     </div>
   );
 };

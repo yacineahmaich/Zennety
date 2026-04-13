@@ -10,7 +10,7 @@ const GuestFooter = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-20 border-t border-accent bg-muted/30 pb-10 pt-16 backdrop-blur">
+    <footer className="relative border-t border-accent bg-muted/30 pb-10 pt-16 backdrop-blur">
       <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
         <div className="pointer-events-auto rounded-full border border-accent bg-background p-3 shadow-lg ring-4 ring-background">
           <Link href={route("home")} className="flex" aria-label={app.name}>

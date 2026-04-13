@@ -17,7 +17,7 @@ export default function LandingCta() {
   return (
     <motion.section
       ref={ref}
-      className="rounded-2xl border-2 border-secondary bg-secondary/10 px-6 py-12 text-center sm:px-12"
+      className="rounded-2xl border-t border-secondary bg-secondary/10 px-6 py-12 pb-24 text-center sm:px-12"
       variants={landingSection}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}

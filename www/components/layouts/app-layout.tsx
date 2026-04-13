@@ -1,5 +1,6 @@
 import Notifications from "@/components/_partials/notifications";
 import SideNav from "@/components/_partials/side-nav";
+import SidebarLogo from "@/components/_partials/sidebar-logo";
 import SidebarOrganizationSwitcher from "@/components/_partials/sidebar-organization-switcher";
 import SidebarWorkspaces from "@/components/_partials/sidebar-workspaces";
 import UserDropdown from "@/components/_partials/user-dropdown";
@@ -10,18 +11,17 @@ import Logo from "@/components/shared/logo";
 import ThemeSwitcher from "@/components/shared/theme-switcher";
 import CreateWorkspace from "@/components/workspace/create-workspace";
 import { CreateOrganizationModalProvider } from "@/context/create-organization-modal-context";
+import app from "@/lib/app";
 import { cn } from "@/lib/utils";
 import { useOrganization } from "@/services/organization";
-import {
-  PlusCircleIcon,
-  SidebarCloseIcon,
-  SidebarOpenIcon,
-} from "lucide-react";
+import { ArrowUpRight, GithubIcon, PlusCircleIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { PropsWithChildren, Suspense, useEffect, useState } from "react";
 import AppBreadcrumb from "../_partials/app-breadcrumb";
 import { Button } from "../ui/button";
+import { Card } from "../ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 function isMobile() {
   return window.innerWidth < 768;
@@ -51,7 +51,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
       ) : (
         <div
           className={cn(
-            "flex pl-12 transition-[padding]",
+            "flex pl-14 transition-[padding]",
             !collapsed && "md:pl-64"
           )}
         >
@@ -64,33 +64,66 @@ const AppLayout = ({ children }: PropsWithChildren) => {
           />
           <aside
             className={cn(
-              "fixed left-0 top-0 flex h-[100dvh] shrink-0 flex-col overflow-hidden border-r border-border bg-background px-4 pb-4 transition-[width]",
-              collapsed ? "w-12" : "z-50 w-64"
+              "fixed left-0 top-0 flex h-[100dvh] shrink-0 flex-col overflow-hidden border-r border-border bg-background pb-4 transition-[width]",
+              collapsed ? "w-14 px-1" : "z-50 w-64 px-4"
             )}
           >
-            {!collapsed && (
-              <div className="-mx-4 shrink-0 border-b border-border px-2 pb-3 pt-3">
-                <div className="min-w-0">
-                  <SidebarOrganizationSwitcher />
-                </div>
-              </div>
-            )}
-            {!collapsed && <SideNav />}
-            {!collapsed && <SidebarWorkspaces />}
-            {!collapsed && <UserDropdown />}
+            <SidebarLogo
+              collapsed={collapsed}
+              toggleCollapsed={() => setCollapsed((c) => !c)}
+            />
+            <SidebarOrganizationSwitcher collapsed={collapsed} />
+            <SideNav collapsed={collapsed} />
+            <SidebarWorkspaces collapsed={collapsed} />
+            <div
+              className={cn(
+                "mt-auto flex pt-2",
+                collapsed ? "flex-col items-center gap-1" : "flex-col gap-2"
+              )}
+            >
+              {collapsed ? (
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <Button asChild variant="ghost" size="icon">
+                      <a
+                        href={app.repositoryUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={t("star-on-github")}
+                      >
+                        <GithubIcon size={16} />
+                      </a>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    {t("star-on-github")}
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <Card className="w-full overflow-hidden shadow-none">
+                  <a
+                    href={app.repositoryUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-2.5 text-sm hover:bg-accent"
+                  >
+                    <GithubIcon size={16} className="shrink-0" />
+                    <span className="min-w-0 flex-1 leading-snug">
+                      {t("star-on-github")}
+                    </span>
+                    <ArrowUpRight
+                      size={14}
+                      className="shrink-0 text-muted-foreground"
+                    />
+                  </a>
+                </Card>
+              )}
+              <ThemeSwitcher className={collapsed ? "flex-col" : undefined} />
+            </div>
           </aside>
           <div className="flex-1 overflow-x-auto px-4 py-3 pb-0">
             <header className="-mx-4 flex items-center justify-between border-b px-4 pb-3">
-              <div className="flex -translate-x-4 items-center gap-2">
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="shrink-0 -translate-x-1/3 rounded-l-none"
-                  onClick={() => setCollapsed((c) => !c)}
-                  aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-                >
-                  {collapsed ? <SidebarOpenIcon /> : <SidebarCloseIcon />}
-                </Button>
+              <div className="flex items-center gap-2">
                 <WorkspacesDropdown />
                 <CreateWorkspace
                   openTrigger={
@@ -105,7 +138,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
               </div>
               <div className="flex items-center gap-2">
                 <Notifications />
-                <ThemeSwitcher />
+                <UserDropdown />
               </div>
             </header>
 
