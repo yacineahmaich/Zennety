@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Card;
-use Illuminate\Support\Facades\Log;
+use App\Models\Status;
 
 class CardObserver
 {
@@ -12,11 +12,11 @@ class CardObserver
      */
     public function created(Card $card): void
     {
-         /**
+        /**
          * @var \App\Models\User
          */
         $user = auth()->user();
-        
+
         activity()
             ->performedOn($card)
             ->causedBy($user)
@@ -35,24 +35,25 @@ class CardObserver
 
         $changes = $card->getChanges();
 
-        if (isset($changes["name"])) {
-            $log = "$user->name changed the name to '{$changes["name"]}'";
+        if (isset($changes['name'])) {
+            $log = "$user->name changed the name to '{$changes['name']}'";
         }
 
-        if (isset($changes["priority"])) {
-            $log = "{$user->name} changed the priority to '{$changes["priority"]}'";
+        if (isset($changes['priority'])) {
+            $log = "{$user->name} changed the priority to '{$changes['priority']}'";
         }
 
-        if (isset($changes["deadline"])) {
-            $log = "{$user->name} changed the deadline date to '{$changes["deadline"]}'";
+        if (isset($changes['deadline'])) {
+            $log = "{$user->name} changed the deadline date to '{$changes['deadline']}'";
         }
 
-        if (isset($changes["status_id"])) {
-            $log = "{$user->name} changed the status to '{$card->status->name}'";
+        if (isset($changes['status_id'])) {
+            $statusName = Status::query()->whereKey($changes['status_id'])->value('name') ?? '';
+            $log = "{$user->name} changed the status to '{$statusName}'";
         }
 
-        if (isset($changes["user_id"])) {
-            $assigned_to = $user->id === $changes["user_id"] ? "him self" : "'{$card->assignee->name}'";
+        if (isset($changes['user_id'])) {
+            $assigned_to = $user->id === $changes['user_id'] ? 'him self' : "'{$card->assignee->name}'";
             $log = "{$user->name} assigned this card to {$assigned_to}";
         }
 

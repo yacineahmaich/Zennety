@@ -30,11 +30,8 @@ php artisan storage:link
 echo "Clearing Laravel caches (config, routes, views, application cache)..."
 php artisan optimize:clear
 
-echo "Running migrations..."
-php artisan migrate --force
-
-echo "seed database..."
-php artisan db:seed --force
+echo "Running migrations and demo seed (fresh database; demo instance)..."
+php artisan migrate:fresh --force --seeder=Database\\Seeders\\DemoDatabaseSeeder
 
 echo "Caching config..."
 php artisan config:cache

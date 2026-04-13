@@ -89,6 +89,7 @@ const StatusCard = ({ board, status, card, dragging = false }: Props) => {
                   <UserAvatar
                     key={participant.id}
                     user={participant}
+                    showCard={false}
                     className="h-6 w-6"
                   />
                 ))}

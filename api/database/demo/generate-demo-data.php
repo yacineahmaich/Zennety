@@ -10,16 +10,16 @@ declare(strict_types=1);
 $out = __DIR__.'/demo-data.json';
 
 $users = [
-    ['name' => 'Yacine', 'email' => 'yacine@zennety.app', 'bio' => 'Default demo account. Full admin on shared orgs; owns a personal org for private tasks.'],
-    ['name' => 'Alex Rivera', 'email' => 'alex@zennety.app', 'bio' => 'Product manager focused on roadmap and stakeholder alignment.'],
-    ['name' => 'Jordan Lee', 'email' => 'jordan@zennety.app', 'bio' => 'Engineering lead; cares about delivery metrics and team health.'],
-    ['name' => 'Sam Patel', 'email' => 'sam@zennety.app', 'bio' => 'DevOps engineer automating everything that repeats twice.'],
-    ['name' => 'Casey Murphy', 'email' => 'casey@zennety.app', 'bio' => 'Designer translating research into shippable UI.'],
-    ['name' => 'Riley Chen', 'email' => 'riley@zennety.app', 'bio' => 'QA champion; breaks things before users do.'],
-    ['name' => 'Morgan Blake', 'email' => 'morgan@zennety.app', 'bio' => 'Technical writer keeping docs honest and findable.'],
-    ['name' => 'Taylor Kim', 'email' => 'taylor@zennety.app', 'bio' => 'Data analyst turning logs into decisions.'],
-    ['name' => 'Jamie Ortiz', 'email' => 'jamie@zennety.app', 'bio' => 'Support lead triaging tickets and feedback loops.'],
-    ['name' => 'Drew Nguyen', 'email' => 'drew@zennety.app', 'bio' => 'Intern learning the stack; owns small vertical slices.'],
+    ['name' => 'Yacine', 'email' => 'yacine@zennety.app', 'bio' => 'Default demo account. Full admin on shared orgs; owns a personal org for private tasks.', 'avatar' => 'files/users/yacine.jpeg'],
+    ['name' => 'Alex Rivera', 'email' => 'alex@zennety.app', 'bio' => 'Product manager focused on roadmap and stakeholder alignment.', 'avatar' => 'files/users/alex-rivera.jpg'],
+    ['name' => 'Jordan Lee', 'email' => 'jordan@zennety.app', 'bio' => 'Engineering lead; cares about delivery metrics and team health.', 'avatar' => 'files/users/jordan-lee.jpg'],
+    ['name' => 'Sam Patel', 'email' => 'sam@zennety.app', 'bio' => 'DevOps engineer automating everything that repeats twice.', 'avatar' => 'files/users/sam-patel.avif'],
+    ['name' => 'Casey Murphy', 'email' => 'casey@zennety.app', 'bio' => 'Designer translating research into shippable UI.', 'avatar' => 'files/users/casey-murphy.jpg'],
+    ['name' => 'Riley Chen', 'email' => 'riley@zennety.app', 'bio' => 'QA champion; breaks things before users do.', 'avatar' => 'files/users/riley-chen.avif'],
+    ['name' => 'Morgan Blake', 'email' => 'morgan@zennety.app', 'bio' => 'Technical writer keeping docs honest and findable.', 'avatar' => 'files/users/girl-1.jpg'],
+    ['name' => 'Taylor Kim', 'email' => 'taylor@zennety.app', 'bio' => 'Data analyst turning logs into decisions.', 'avatar' => 'files/users/taylor-kim.jpg'],
+    ['name' => 'Jamie Ortiz', 'email' => 'jamie@zennety.app', 'bio' => 'Support lead triaging tickets and feedback loops.', 'avatar' => 'files/users/jamie-ortiz.jpg'],
+    ['name' => 'Drew Nguyen', 'email' => 'drew@zennety.app', 'bio' => 'Intern learning the stack; owns small vertical slices.', 'avatar' => 'files/users/girl-2.jpg'],
 ];
 
 $teamBookmarkOptions = [
@@ -316,8 +316,77 @@ function buildCardsForBoard(
     return $cards;
 }
 
+/**
+ * Adds comments and activity timelines to a few representative cards (Spatie activity log + CardObserver).
+ *
+ * @param  list<array<string, mixed>>  $cards
+ * @return list<array<string, mixed>>
+ */
+function applyDemoCardActivityExtras(string $orgName, string $wsName, string $boardName, array $cards): array
+{
+    if ($orgName !== 'Atlassian' || $wsName !== 'Jira') {
+        return $cards;
+    }
+
+    foreach ($cards as &$c) {
+        $t = $c['title'] ?? '';
+
+        if ($boardName === 'Sprint Backlog') {
+            if ($t === 'Refine user story acceptance criteria') {
+                $c['comments'] = [
+                    ['userEmail' => 'alex@zennety.app', 'text' => 'Can we align this with the acceptance tests in the epic doc?'],
+                    ['userEmail' => 'casey@zennety.app', 'text' => 'Drafted bullets — Casey will sync with PM on scope.'],
+                ];
+            }
+            if ($t === 'Backlog grooming session prep') {
+                $c['initialStatus'] = 'Pending';
+                $c['timeline'] = [
+                    ['kind' => 'comment', 'userEmail' => 'alex@zennety.app', 'text' => 'Let’s pull this into grooming Thursday.'],
+                    ['kind' => 'status', 'userEmail' => 'jordan@zennety.app', 'status' => 'In progress'],
+                    ['kind' => 'comment', 'userEmail' => 'drew@zennety.app', 'text' => 'Prep doc is in the shared folder.'],
+                ];
+            }
+            if ($t === 'Dependency map for epic') {
+                $c['initialStatus'] = 'Pending';
+                $c['timeline'] = [
+                    ['kind' => 'status', 'userEmail' => 'sam@zennety.app', 'status' => 'In progress'],
+                    ['kind' => 'comment', 'userEmail' => 'jordan@zennety.app', 'text' => 'Blocked on API contract from the platform team.'],
+                    ['kind' => 'status', 'userEmail' => 'casey@zennety.app', 'status' => 'In Review'],
+                    ['kind' => 'comment', 'userEmail' => 'riley@zennety.app', 'text' => 'Reviewed — one open question on edge cases.'],
+                ];
+            }
+        }
+
+        if ($boardName === 'Active Sprint') {
+            if ($t === 'Implement OAuth callback handler') {
+                $c['comments'] = [
+                    ['userEmail' => 'jordan@zennety.app', 'text' => 'Please use the shared redirect URI list from infra.'],
+                    ['userEmail' => 'taylor@zennety.app', 'text' => 'Added error handling for invalid state — ready for another pair when you are.'],
+                ];
+            }
+            if ($t === 'Staging smoke test') {
+                $c['initialStatus'] = 'Pending';
+                $c['timeline'] = [
+                    ['kind' => 'comment', 'userEmail' => 'jamie@zennety.app', 'text' => 'Smoke checklist is green except mobile Safari.'],
+                    ['kind' => 'status', 'userEmail' => 'riley@zennety.app', 'status' => 'In progress'],
+                ];
+            }
+            if ($t === 'Performance regression check') {
+                $c['initialStatus'] = 'In progress';
+                $c['timeline'] = [
+                    ['kind' => 'comment', 'userEmail' => 'morgan@zennety.app', 'text' => 'Numbers look flat week over week.'],
+                    ['kind' => 'status', 'userEmail' => 'alex@zennety.app', 'status' => 'In Review'],
+                ];
+            }
+        }
+    }
+    unset($c);
+
+    return $cards;
+}
+
 $orgDefs = [
-    ['name' => 'Atlassian', 'description' => 'Collaboration suite demo covering agile delivery, knowledge, lightweight lists, and developer workflows.', 'workspaces' => [
+    ['name' => 'Atlassian', 'description' => 'Collaboration suite demo covering agile delivery, knowledge, lightweight lists, and developer workflows.', 'avatar' => 'files/orgs/atlassian.webp', 'workspaces' => [
         ['name' => 'Jira', 'boards' => [
             ['name' => 'Sprint Backlog', 'key' => 'jira_sprint'],
             ['name' => 'Active Sprint', 'key' => 'jira_active'],
@@ -344,7 +413,7 @@ $orgDefs = [
             ['name' => 'Issues', 'key' => 'bb_issues'],
         ]],
     ]],
-    ['name' => 'Amazon', 'description' => 'Operations demo spanning ecommerce storefront, cloud, media, music, and logistics networks.', 'workspaces' => [
+    ['name' => 'Amazon', 'description' => 'Operations demo spanning ecommerce storefront, cloud, media, music, and logistics networks.', 'avatar' => 'files/orgs/amazon.webp', 'workspaces' => [
         ['name' => 'Amazon Store', 'boards' => [
             ['name' => 'Orders', 'key' => 'amz_orders'],
             ['name' => 'Shipping', 'key' => 'amz_ship'],
@@ -380,7 +449,7 @@ $orgDefs = [
             ['name' => 'Performance', 'key' => 'am_log_perf'],
         ]],
     ]],
-    ['name' => 'Notion Labs', 'description' => 'Product company demo: Notion, Notion AI, Calendar, and Teams style workspaces for planning and people ops.', 'workspaces' => [
+    ['name' => 'Notion Labs', 'description' => 'Product company demo: Notion, Notion AI, Calendar, and Teams style workspaces for planning and people ops.', 'avatar' => 'files/orgs/notion.png', 'workspaces' => [
         ['name' => 'Notion', 'boards' => [
             ['name' => 'Task Manager', 'key' => 'notion_tasks'],
             ['name' => 'Project Tracker', 'key' => 'notion_projects'],
@@ -407,6 +476,29 @@ $orgDefs = [
             ['name' => 'Team Performance', 'key' => 'nt_perf'],
         ]],
     ]],
+];
+
+/** Demo workspace icons under database/demo/files/workspaces/ (org name => workspace name => path). */
+$demoWorkspaceAvatars = [
+    'Atlassian' => [
+        'Jira' => 'files/workspaces/atlassian/jira.png',
+        'Confluence' => 'files/workspaces/atlassian/confluence.png',
+        'Trello' => 'files/workspaces/atlassian/trello.png',
+        'Bitbucket' => 'files/workspaces/atlassian/bitbucket.webp',
+    ],
+    'Amazon' => [
+        'Amazon Store' => 'files/workspaces/amazon/amazon-store.png',
+        'AWS' => 'files/workspaces/amazon/aws.png',
+        'Prime Video' => 'files/workspaces/amazon/prive-video.webp',
+        'Amazon Music' => 'files/workspaces/amazon/amazon-music.jpg',
+        'Amazon Logistics' => 'files/workspaces/amazon/amazon-logistics.png',
+    ],
+    'Notion Labs' => [
+        'Notion' => 'files/workspaces/notion-labs/notion.png',
+        'Notion AI' => 'files/workspaces/notion-labs/notion-ai.png',
+        'Notion Calendar' => 'files/workspaces/notion-labs/notion-calendar.png',
+        'Notion Teams' => 'files/workspaces/notion-labs/notion-teams.png',
+    ],
 ];
 
 $emails = array_column($users, 'email');
@@ -506,6 +598,7 @@ foreach ($orgDefs as $org) {
                 $priorities,
                 $cardTemplates
             );
+            $cards = applyDemoCardActivityExtras($org['name'], $ws['name'], $b['name'], $cards);
             $boards[] = [
                 'name' => $b['name'],
                 'description' => $bdesc,
@@ -515,7 +608,7 @@ foreach ($orgDefs as $org) {
             $boardIndex++;
         }
         $wsDesc = $workspaceDescriptions[$ws['name']] ?? 'Workspace for '.$ws['name'].' programs and coordination.';
-        $workspaces[] = [
+        $wsRow = [
             'name' => $ws['name'],
             'description' => $wsDesc,
             'visibility' => 'Public',
@@ -523,13 +616,22 @@ foreach ($orgDefs as $org) {
             'members' => $workspaceMembers,
             'boards' => $boards,
         ];
+        $wsAvatar = $demoWorkspaceAvatars[$org['name']][$ws['name']] ?? null;
+        if ($wsAvatar) {
+            $wsRow['avatar'] = $wsAvatar;
+        }
+        $workspaces[] = $wsRow;
     }
-    $organizations[] = [
+    $orgRow = [
         'name' => $org['name'],
         'description' => $org['description'],
         'yacineOrganizationRole' => in_array($org['name'], ['Notion Labs', 'Atlassian'], true) ? 'Owner' : 'Admin',
         'workspaces' => $workspaces,
     ];
+    if (! empty($org['avatar'])) {
+        $orgRow['avatar'] = $org['avatar'];
+    }
+    $organizations[] = $orgRow;
 }
 
 foreach ($users as $u) {

@@ -8,8 +8,10 @@ use App\Enums\Visibility;
 use App\Models\Board;
 use App\Models\Card;
 use App\Models\Organization;
+use App\Models\Status;
 use App\Models\User;
 use App\Models\Workspace;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -59,6 +61,14 @@ class DemoDataSeeder extends Seeder
                     'description' => $orgData['description'] ?? null,
                 ]);
 
+                $orgAvatarPath = $orgData['avatar'] ?? null;
+                if (is_string($orgAvatarPath) && $orgAvatarPath !== '') {
+                    $fullPath = database_path('demo/'.$orgAvatarPath);
+                    if (File::exists($fullPath)) {
+                        $org->addMedia($fullPath)->preservingOriginal()->toMediaCollection('avatar');
+                    }
+                }
+
                 if ($isPersonal) {
                     $ownerEmail = $orgData['ownerEmail'] ?? null;
                     $owner = $ownerEmail ? $usersByEmail->get($ownerEmail) : null;
@@ -88,6 +98,14 @@ class DemoDataSeeder extends Seeder
                         'visibility' => $this->mapVisibility($wsData['visibility'] ?? Visibility::PUBLIC),
                         'organization_id' => $org->id,
                     ]);
+
+                    $wsAvatarPath = $wsData['avatar'] ?? null;
+                    if (is_string($wsAvatarPath) && $wsAvatarPath !== '') {
+                        $fullPath = database_path('demo/'.$wsAvatarPath);
+                        if (File::exists($fullPath)) {
+                            $workspace->addMedia($fullPath)->preservingOriginal()->toMediaCollection('avatar');
+                        }
+                    }
 
                     $workspaceMembers = $wsData['members'] ?? null;
                     if (! is_array($workspaceMembers) || $workspaceMembers === []) {
@@ -133,6 +151,15 @@ class DemoDataSeeder extends Seeder
                 'password' => Hash::make($password),
                 'pins' => [],
             ]);
+
+            $avatarPath = $row['avatar'] ?? null;
+            if ($avatarPath) {
+                $fullPath = database_path('demo/' . $avatarPath);
+                if (File::exists($fullPath)) {
+                    $user->addMedia($fullPath)->preservingOriginal()->toMediaCollection('avatar');
+                }
+            }
+
             $byEmail->put($user->email, $user);
         }
 
@@ -260,7 +287,7 @@ class DemoDataSeeder extends Seeder
     }
 
     /**
-     * @param  array<int, array{status: string, title?: string, name?: string, assigneeEmail?: string|null, priority?: string|null, description?: string|null, deadline?: string|null}>  $cards
+     * @param  array<int, array<string, mixed>>  $cards
      */
     private function seedCards(Board $board, array $cards, Collection $usersByEmail): void
     {
@@ -271,11 +298,6 @@ class DemoDataSeeder extends Seeder
         $previousUser = Auth::user();
 
         foreach ($cards as $cardRow) {
-            $statusName = $cardRow['status'] ?? 'Pending';
-            $status = $statusByName->get($statusName) ?? $statusByName->first();
-            $sid = $status->id;
-            $nextPos[$sid] = ($nextPos[$sid] ?? 0) + 1;
-
             $title = $cardRow['title'] ?? $cardRow['name'] ?? 'Untitled card';
             $assigneeEmail = $cardRow['assigneeEmail'] ?? null;
             $assignee = $assigneeEmail ? $usersByEmail->get($assigneeEmail) : null;
@@ -287,6 +309,46 @@ class DemoDataSeeder extends Seeder
 
             $actor = $assignee ?? $allUsers[$fallbackIndex % $allUsers->count()];
             $fallbackIndex++;
+
+            $timeline = $cardRow['timeline'] ?? null;
+            if (is_array($timeline) && $timeline !== []) {
+                $this->seedCardWithTimeline(
+                    $statusByName,
+                    $nextPos,
+                    $cardRow,
+                    $title,
+                    $assignee,
+                    $priority,
+                    $actor,
+                    $usersByEmail,
+                    $timeline
+                );
+
+                continue;
+            }
+
+            $statusName = $cardRow['status'] ?? 'Pending';
+            $status = $statusByName->get($statusName) ?? $statusByName->first();
+            $sid = $status->id;
+            $nextPos[$sid] = ($nextPos[$sid] ?? 0) + 1;
+
+            $comments = $cardRow['comments'] ?? null;
+            if (is_array($comments) && $comments !== []) {
+                $this->seedCardAtTimeWithComments(
+                    $nextPos,
+                    $sid,
+                    $cardRow,
+                    $title,
+                    $assignee,
+                    $priority,
+                    $actor,
+                    $usersByEmail,
+                    $comments
+                );
+
+                continue;
+            }
+
             Auth::login($actor);
 
             Card::create([
@@ -303,6 +365,169 @@ class DemoDataSeeder extends Seeder
         if ($previousUser) {
             Auth::login($previousUser);
         }
+    }
+
+    /**
+     * @param  array<int, mixed>  $nextPos
+     * @param  list<array<string, mixed>>  $comments
+     */
+    private function seedCardAtTimeWithComments(
+        array &$nextPos,
+        int $sid,
+        array $cardRow,
+        string $title,
+        ?User $assignee,
+        ?string $priority,
+        User $actor,
+        Collection $usersByEmail,
+        array $comments
+    ): void {
+        $baseTime = Carbon::now()->subHours(36);
+
+        try {
+            Carbon::setTestNow($baseTime);
+            Auth::login($actor);
+
+            $card = Card::create([
+                'name' => $title,
+                'description' => $cardRow['description'] ?? null,
+                'pos' => $nextPos[$sid],
+                'priority' => $priority,
+                'deadline' => isset($cardRow['deadline']) ? $cardRow['deadline'] : null,
+                'status_id' => $sid,
+                'user_id' => $assignee?->id,
+            ]);
+
+            $n = 1;
+            foreach ($comments as $entry) {
+                if (! is_array($entry)) {
+                    continue;
+                }
+                $email = $entry['userEmail'] ?? null;
+                $text = $entry['text'] ?? null;
+                if (! is_string($email) || ! is_string($text) || $text === '') {
+                    continue;
+                }
+                $user = $usersByEmail->get($email);
+                if (! $user) {
+                    throw new \RuntimeException('Unknown userEmail in comments: '.$email);
+                }
+                Carbon::setTestNow($baseTime->copy()->addMinutes(20 + $n * 8));
+                $n++;
+                Auth::login($user);
+                activity()
+                    ->performedOn($card)
+                    ->causedBy($user)
+                    ->withProperties(['type' => 'comment', 'comment' => $text])
+                    ->log("{$user->name} added a comment - '{$text}'");
+                $card->update(['updated_at' => Carbon::now()]);
+            }
+        } finally {
+            Carbon::setTestNow();
+        }
+    }
+
+    private function seedCardWithTimeline(
+        Collection $statusByName,
+        array &$nextPos,
+        array $cardRow,
+        string $title,
+        ?User $assignee,
+        ?string $priority,
+        User $createActor,
+        Collection $usersByEmail,
+        array $timeline
+    ): void {
+        $finalStatusName = $cardRow['status'] ?? 'Pending';
+        $initialStatusName = $cardRow['initialStatus'] ?? 'Pending';
+
+        $initial = $statusByName->get($initialStatusName) ?? $statusByName->first();
+        $iid = $initial->id;
+        $nextPos[$iid] = ($nextPos[$iid] ?? 0) + 1;
+
+        Auth::login($createActor);
+
+        $baseTime = Carbon::now()->subHours(72);
+
+        try {
+            Carbon::setTestNow($baseTime);
+
+            $card = Card::create([
+                'name' => $title,
+                'description' => $cardRow['description'] ?? null,
+                'pos' => $nextPos[$iid],
+                'priority' => $priority,
+                'deadline' => isset($cardRow['deadline']) ? $cardRow['deadline'] : null,
+                'status_id' => $iid,
+                'user_id' => $assignee?->id,
+            ]);
+
+            $step = 1;
+            foreach ($timeline as $entry) {
+                if (! is_array($entry)) {
+                    continue;
+                }
+                $kind = $entry['kind'] ?? null;
+                $email = $entry['userEmail'] ?? null;
+                if (! is_string($email)) {
+                    throw new \RuntimeException('timeline entry requires userEmail: '.$title);
+                }
+                $user = $usersByEmail->get($email);
+                if (! $user) {
+                    throw new \RuntimeException('Unknown userEmail in timeline: '.$email);
+                }
+
+                Carbon::setTestNow($baseTime->copy()->addMinutes($step * 9));
+                $step++;
+
+                Auth::login($user);
+
+                if ($kind === 'comment') {
+                    $text = $entry['text'] ?? '';
+                    if (! is_string($text) || $text === '') {
+                        throw new \RuntimeException('comment timeline entry requires text: '.$title);
+                    }
+                    activity()
+                        ->performedOn($card)
+                        ->causedBy($user)
+                        ->withProperties(['type' => 'comment', 'comment' => $text])
+                        ->log("{$user->name} added a comment - '{$text}'");
+                    $card->update(['updated_at' => Carbon::now()]);
+                } elseif ($kind === 'status') {
+                    $toName = $entry['status'] ?? null;
+                    if (! is_string($toName)) {
+                        throw new \RuntimeException('status timeline entry requires status: '.$title);
+                    }
+                    $target = $statusByName->get($toName);
+                    if (! $target) {
+                        throw new \RuntimeException('Unknown status in timeline: '.$toName);
+                    }
+                    $this->moveCardToStatusColumn($card, $target);
+                    $card->refresh();
+                } else {
+                    throw new \RuntimeException('timeline kind must be comment or status: '.(string) $kind);
+                }
+            }
+
+            $card->refresh();
+            $final = $statusByName->get($finalStatusName);
+            if ($final && $card->status_id !== $final->id) {
+                throw new \RuntimeException(
+                    "Card '{$title}' final status mismatch: expected {$finalStatusName}, got ".$card->status->name
+                );
+            }
+        } finally {
+            Carbon::setTestNow();
+        }
+    }
+
+    private function moveCardToStatusColumn(Card $card, Status $targetStatus): void
+    {
+        $maxPos = $targetStatus->cards()->max('pos') ?? 0;
+        $card->update([
+            'status_id' => $targetStatus->id,
+            'pos' => $maxPos + 1,
+        ]);
     }
 
     private function mapVisibility(string $value): string

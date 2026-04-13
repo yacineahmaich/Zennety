@@ -4,6 +4,7 @@
             "name": "Yacine",
             "email": "yacine@zennety.app",
             "bio": "Default demo account. Full admin on shared orgs; owns a personal org for private tasks.",
+            "avatar": "files/users/yacine.jpeg",
             "bookmarks": [
                 [
                     "Notion Labs",
@@ -26,6 +27,7 @@
             "name": "Alex Rivera",
             "email": "alex@zennety.app",
             "bio": "Product manager focused on roadmap and stakeholder alignment.",
+            "avatar": "files/users/alex-rivera.jpg",
             "bookmarks": [
                 [
                     "Notion Labs",
@@ -48,6 +50,7 @@
             "name": "Jordan Lee",
             "email": "jordan@zennety.app",
             "bio": "Engineering lead; cares about delivery metrics and team health.",
+            "avatar": "files/users/jordan-lee.jpg",
             "bookmarks": [
                 [
                     "Atlassian",
@@ -70,6 +73,7 @@
             "name": "Sam Patel",
             "email": "sam@zennety.app",
             "bio": "DevOps engineer automating everything that repeats twice.",
+            "avatar": "files/users/sam-patel.avif",
             "bookmarks": [
                 [
                     "Atlassian",
@@ -92,6 +96,7 @@
             "name": "Casey Murphy",
             "email": "casey@zennety.app",
             "bio": "Designer translating research into shippable UI.",
+            "avatar": "files/users/casey-murphy.jpg",
             "bookmarks": [
                 [
                     "Amazon",
@@ -114,6 +119,7 @@
             "name": "Riley Chen",
             "email": "riley@zennety.app",
             "bio": "QA champion; breaks things before users do.",
+            "avatar": "files/users/riley-chen.avif",
             "bookmarks": [
                 [
                     "Amazon",
@@ -136,6 +142,7 @@
             "name": "Morgan Blake",
             "email": "morgan@zennety.app",
             "bio": "Technical writer keeping docs honest and findable.",
+            "avatar": "files/users/girl-1.jpg",
             "bookmarks": [
                 [
                     "Notion Labs",
@@ -158,6 +165,7 @@
             "name": "Taylor Kim",
             "email": "taylor@zennety.app",
             "bio": "Data analyst turning logs into decisions.",
+            "avatar": "files/users/taylor-kim.jpg",
             "bookmarks": [
                 [
                     "Atlassian",
@@ -180,6 +188,7 @@
             "name": "Jamie Ortiz",
             "email": "jamie@zennety.app",
             "bio": "Support lead triaging tickets and feedback loops.",
+            "avatar": "files/users/jamie-ortiz.jpg",
             "bookmarks": [
                 [
                     "Notion Labs",
@@ -202,6 +211,7 @@
             "name": "Drew Nguyen",
             "email": "drew@zennety.app",
             "bio": "Intern learning the stack; owns small vertical slices.",
+            "avatar": "files/users/girl-2.jpg",
             "bookmarks": [
                 [
                     "Notion Labs",
@@ -284,7 +294,17 @@
                                     "status": "Pending",
                                     "title": "Refine user story acceptance criteria",
                                     "assigneeEmail": "casey@zennety.app",
-                                    "priority": "High"
+                                    "priority": "High",
+                                    "comments": [
+                                        {
+                                            "userEmail": "alex@zennety.app",
+                                            "text": "Can we align this with the acceptance tests in the epic doc?"
+                                        },
+                                        {
+                                            "userEmail": "casey@zennety.app",
+                                            "text": "Drafted bullets \u2014 Casey will sync with PM on scope."
+                                        }
+                                    ]
                                 },
                                 {
                                     "status": "Pending",
@@ -316,13 +336,54 @@
                                     "status": "In progress",
                                     "title": "Backlog grooming session prep",
                                     "assigneeEmail": "drew@zennety.app",
-                                    "priority": "Urgent"
+                                    "priority": "Urgent",
+                                    "initialStatus": "Pending",
+                                    "timeline": [
+                                        {
+                                            "kind": "comment",
+                                            "userEmail": "alex@zennety.app",
+                                            "text": "Let\u2019s pull this into grooming Thursday."
+                                        },
+                                        {
+                                            "kind": "status",
+                                            "userEmail": "jordan@zennety.app",
+                                            "status": "In progress"
+                                        },
+                                        {
+                                            "kind": "comment",
+                                            "userEmail": "drew@zennety.app",
+                                            "text": "Prep doc is in the shared folder."
+                                        }
+                                    ]
                                 },
                                 {
                                     "status": "In Review",
                                     "title": "Dependency map for epic",
                                     "assigneeEmail": "alex@zennety.app",
-                                    "priority": "Normal"
+                                    "priority": "Normal",
+                                    "initialStatus": "Pending",
+                                    "timeline": [
+                                        {
+                                            "kind": "status",
+                                            "userEmail": "sam@zennety.app",
+                                            "status": "In progress"
+                                        },
+                                        {
+                                            "kind": "comment",
+                                            "userEmail": "jordan@zennety.app",
+                                            "text": "Blocked on API contract from the platform team."
+                                        },
+                                        {
+                                            "kind": "status",
+                                            "userEmail": "casey@zennety.app",
+                                            "status": "In Review"
+                                        },
+                                        {
+                                            "kind": "comment",
+                                            "userEmail": "riley@zennety.app",
+                                            "text": "Reviewed \u2014 one open question on edge cases."
+                                        }
+                                    ]
                                 },
                                 {
                                     "status": "In Review",
@@ -387,7 +448,17 @@
                                     "status": "Pending",
                                     "title": "Implement OAuth callback handler",
                                     "assigneeEmail": "taylor@zennety.app",
-                                    "priority": "Medium"
+                                    "priority": "Medium",
+                                    "comments": [
+                                        {
+                                            "userEmail": "jordan@zennety.app",
+                                            "text": "Please use the shared redirect URI list from infra."
+                                        },
+                                        {
+                                            "userEmail": "taylor@zennety.app",
+                                            "text": "Added error handling for invalid state \u2014 ready for another pair when you are."
+                                        }
+                                    ]
                                 },
                                 {
                                     "status": "Pending",
@@ -432,13 +503,39 @@
                                     "status": "In progress",
                                     "title": "Staging smoke test",
                                     "assigneeEmail": "riley@zennety.app",
-                                    "priority": "Normal"
+                                    "priority": "Normal",
+                                    "initialStatus": "Pending",
+                                    "timeline": [
+                                        {
+                                            "kind": "comment",
+                                            "userEmail": "jamie@zennety.app",
+                                            "text": "Smoke checklist is green except mobile Safari."
+                                        },
+                                        {
+                                            "kind": "status",
+                                            "userEmail": "riley@zennety.app",
+                                            "status": "In progress"
+                                        }
+                                    ]
                                 },
                                 {
                                     "status": "In Review",
                                     "title": "Performance regression check",
                                     "assigneeEmail": "morgan@zennety.app",
-                                    "priority": "Medium"
+                                    "priority": "Medium",
+                                    "initialStatus": "In progress",
+                                    "timeline": [
+                                        {
+                                            "kind": "comment",
+                                            "userEmail": "morgan@zennety.app",
+                                            "text": "Numbers look flat week over week."
+                                        },
+                                        {
+                                            "kind": "status",
+                                            "userEmail": "alex@zennety.app",
+                                            "status": "In Review"
+                                        }
+                                    ]
                                 },
                                 {
                                     "status": "In Review",
@@ -1099,7 +1196,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/atlassian/jira.png"
                 },
                 {
                     "name": "Confluence",
@@ -1754,7 +1852,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/atlassian/confluence.png"
                 },
                 {
                     "name": "Trello",
@@ -2551,7 +2650,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/atlassian/trello.png"
                 },
                 {
                     "name": "Bitbucket",
@@ -3553,9 +3653,11 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/atlassian/bitbucket.webp"
                 }
-            ]
+            ],
+            "avatar": "files/orgs/atlassian.webp"
         },
         {
             "name": "Amazon",
@@ -4353,7 +4455,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/amazon/amazon-store.png"
                 },
                 {
                     "name": "AWS",
@@ -5246,7 +5349,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/amazon/aws.png"
                 },
                 {
                     "name": "Prime Video",
@@ -6016,7 +6120,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/amazon/prive-video.webp"
                 },
                 {
                     "name": "Amazon Music",
@@ -6979,7 +7084,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/amazon/amazon-music.jpg"
                 },
                 {
                     "name": "Amazon Logistics",
@@ -7742,9 +7848,11 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/amazon/amazon-logistics.png"
                 }
-            ]
+            ],
+            "avatar": "files/orgs/amazon.webp"
         },
         {
             "name": "Notion Labs",
@@ -8545,7 +8653,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/notion-labs/notion.png"
                 },
                 {
                     "name": "Notion AI",
@@ -9433,7 +9542,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/notion-labs/notion-ai.png"
                 },
                 {
                     "name": "Notion Calendar",
@@ -10223,7 +10333,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/notion-labs/notion-calendar.png"
                 },
                 {
                     "name": "Notion Teams",
@@ -11269,9 +11380,11 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "avatar": "files/workspaces/notion-labs/notion-teams.png"
                 }
-            ]
+            ],
+            "avatar": "files/orgs/notion.png"
         },
         {
             "personal": true,
