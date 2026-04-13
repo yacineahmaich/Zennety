@@ -4,22 +4,29 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 
-type Props = { className?: string };
+type Props = { className?: string; collapsed?: boolean };
 
-export default function ThemeSwitcher({ className }: Props) {
+export default function ThemeSwitcher({ className, collapsed }: Props) {
   const { setTheme } = useTheme();
   const { t } = useTranslation("common");
 
   return (
     <div
-      className={cn("inline-flex rounded-md border border-input", className)}
+      className={cn(
+        "inline-flex items-stretch overflow-hidden rounded-md border border-input",
+        collapsed ? "h-auto !w-10 flex-col" : "h-9",
+        className
+      )}
       role="group"
       aria-label="Theme"
     >
       <Button
         variant="ghost"
-        size="icon"
-        className="flex-1 bg-accent text-accent-foreground dark:bg-transparent dark:text-muted-foreground"
+        size="sm"
+        className={cn(
+          "h-9 shrink-0 rounded-none bg-accent px-2.5 text-accent-foreground dark:bg-transparent dark:text-muted-foreground",
+          collapsed ? "w-full" : "flex-1"
+        )}
         onClick={() => setTheme("light")}
         aria-label={t("light")}
       >
@@ -27,8 +34,11 @@ export default function ThemeSwitcher({ className }: Props) {
       </Button>
       <Button
         variant="ghost"
-        size="icon"
-        className="flex-1 text-muted-foreground dark:bg-accent dark:text-accent-foreground"
+        size="sm"
+        className={cn(
+          "h-9 shrink-0 rounded-none px-2.5 text-muted-foreground dark:bg-accent dark:text-accent-foreground",
+          collapsed ? "w-full" : "flex-1"
+        )}
         onClick={() => setTheme("dark")}
         aria-label={t("dark")}
       >

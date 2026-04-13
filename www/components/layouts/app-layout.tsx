@@ -118,7 +118,7 @@ const AppLayout = ({ children }: PropsWithChildren) => {
                   </a>
                 </Card>
               )}
-              <ThemeSwitcher className={collapsed ? "flex-col" : undefined} />
+              <ThemeSwitcher collapsed={collapsed} className="w-full" />
             </div>
           </aside>
           <div className="flex-1 overflow-x-auto px-4 py-3 pb-0">
